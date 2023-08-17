@@ -1,49 +1,12 @@
 LAMMPS (2 Aug 2023 - Development - patch_2Aug2023-219-g06e2d5d306)
 OMP_NUM_THREADS environment is not set. Defaulting to 1 thread. (src/comm.cpp:98)
   using 1 OpenMP thread(s) per MPI task
-# Siviraman GAP test
-
-units          metal
-boundary       p p p
-atom_style     atomic
-
-read_data     tetrag_hfo2_sample_DATA
 Reading data file ...
   orthogonal box = (0 0 0) to (10.956 10.956 10.629)
   1 by 1 by 1 MPI processor grid
   reading atoms ...
   108 atoms
   read_data CPU = 0.001 seconds
-
-pair_style     quip
-pair_coeff     * * gap.xml "Potential xml_label=GAP_2020_2_11_0_18_44_47_601" 72 8
-
-variable T        equal  2000
-variable Tdamp    equal  0.1
-variable Tseed    equal  12280329
-variable dumpf    equal  50
-
-velocity     all create $T ${Tseed} mom yes rot yes dist gaussian
-velocity     all create 2000 ${Tseed} mom yes rot yes dist gaussian
-velocity     all create 2000 12280329 mom yes rot yes dist gaussian
-
-thermo       10
-thermo_style custom step temp pe ke etotal press
-
-dump           run_dump all xyz ${dumpf} dump_run.xyz
-dump           run_dump all xyz 50 dump_run.xyz
-dump_modify    run_dump sort id format line "%s %21.16f %21.16f %21.16f"
-
-dump           run_forces all custom ${dumpf} dump_run_forces.custom id type x y z fx fy fz
-dump           run_forces all custom 50 dump_run_forces.custom id type x y z fx fy fz
-dump_modify    run_forces sort id format line "%4d %1d %21.16f %21.16f %21.16f %21.16f %21.16f %21.16f"
-
-
-fix          nvt all nvt temp $T $T ${Tdamp}
-fix          nvt all nvt temp 2000 $T ${Tdamp}
-fix          nvt all nvt temp 2000 2000 ${Tdamp}
-fix          nvt all nvt temp 2000 2000 0.1
-run 500
 Neighbor list info ...
   update: every = 1 steps, delay = 0 steps, check = yes
   max neighbors/atom: 2000, page size: 100000
@@ -56,6 +19,10 @@ Neighbor list info ...
       pair build: full/bin/atomonly
       stencil: full/bin/3d
       bin: standard
+Setting up Verlet run ...
+  Unit style    : metal
+  Current step  : 0
+  Time step     : 0.001
 Per MPI rank memory allocation (min/avg/max) = 3.089 | 3.089 | 3.089 Mbytes
    Step          Temp          PotEng         KinEng         TotEng         Press     
          0   2000          -1063.2762      27.661671     -1035.6146      24960.978    

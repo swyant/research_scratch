@@ -1,0 +1,1 @@
+mpirun -np 6 ~/local_software/lammps/lammps_081723/static_build/lmp -in in.lammps | tee mpi6_out.txt

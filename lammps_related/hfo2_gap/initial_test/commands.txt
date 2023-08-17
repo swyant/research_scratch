@@ -1,2 +1,3 @@
 mpirun -np 6 ~/local_software/lammps/lammps_quip/build/lmp -in in.lammps | tee mpi6_out.txt
 ~/local_software/lammps/lammps_quip/build/lmp -in in.lammps | tee serial_out.txt
+mpirun -np 1 ~/local_software/lammps/lammps_quip/build/lmp -in in.lammps | tee mpi1_out.txt

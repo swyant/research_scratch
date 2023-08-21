@@ -1,0 +1,38 @@
+LAMMPS (2 Aug 2023 - Development - patch_2Aug2023-219-g06e2d5d306)
+OMP_NUM_THREADS environment is not set. Defaulting to 1 thread. (src/comm.cpp:98)
+  using 1 OpenMP thread(s) per MPI task
+Reading data file ...
+  orthogonal box = (0 0 0) to (11.10739 11.10739 11.10739)
+  1 by 2 by 3 MPI processor grid
+  reading atoms ...
+  96 atoms
+  read_data CPU = 0.003 seconds
+ACE version: 2022.6.27
+Recursive evaluator is used
+Loading Siviraman_GAP_HfO2_N3_rcut5_maxdeg10_regQR.yace
+Total number of basis functions
+	O: 20 (r=1) 1166 (r>1)
+	Hf: 20 (r=1) 1166 (r>1)
+Mapping LAMMPS atom type #1(Hf) -> ACE species type #1
+Mapping LAMMPS atom type #2(O) -> ACE species type #0
+Neighbor list info ...
+  update: every = 1 steps, delay = 0 steps, check = yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 7
+  ghost atom cutoff = 7
+  binsize = 3.5, bins = 4 4 4
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair pace, perpetual
+      attributes: full, newton on
+      pair build: full/bin/atomonly
+      stencil: full/bin/3d
+      bin: standard
+Setting up Verlet run ...
+  Unit style    : metal
+  Current step  : 0
+  Time step     : 0.001
+Per MPI rank memory allocation (min/avg/max) = 3.11 | 3.11 | 3.11 Mbytes
+   Step          Temp          PotEng         KinEng         TotEng         Press     
+         0   3600          -896.97632      44.20697      -852.76935      46598.487    
+ERROR: Lost atoms: original 96 current 9 (src/thermo.cpp:488)
+Last command: run 200

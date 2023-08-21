@@ -1,0 +1,30 @@
+# Siviraman GAP test 
+
+units          metal 
+boundary       p p p 
+atom_style     atomic
+
+read_data     probably_liquid_hfo2_sample_DATA 
+
+pair_style     pace
+pair_coeff     * * Siviraman_GAP_HfO2_N3_rcut5_maxdeg10_regQR.yace Hf O
+
+variable T        equal  3600
+variable Tdamp    equal  0.1
+variable Tseed    equal  12280329
+variable dumpf    equal  1
+
+velocity     all create $T ${Tseed} mom yes rot yes dist gaussian
+
+thermo       1000
+thermo_style custom step temp pe ke etotal press
+
+dump           run_dump all xyz ${dumpf} dump_run.xyz
+dump_modify    run_dump sort id format line "%s %21.16f %21.16f %21.16f"
+
+dump           run_forces all custom ${dumpf} dump_run_forces.custom id type x y z fx fy fz
+dump_modify    run_forces sort id format line "%4d %1d %21.16f %21.16f %21.16f %21.16f %21.16f %21.16f"
+
+
+fix          nvt all nvt temp $T $T ${Tdamp}
+run 200

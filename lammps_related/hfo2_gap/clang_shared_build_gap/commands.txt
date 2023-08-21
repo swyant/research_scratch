@@ -1,0 +1,1 @@
+ mpirun -np 6 /Users/swyant/local_software/lammps/lammps_081723/clang_shared_build/lmp -in in.lammps | tee mpi6_out.txt

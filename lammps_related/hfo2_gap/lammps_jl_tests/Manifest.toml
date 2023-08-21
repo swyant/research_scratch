@@ -1,6 +1,6 @@
 # This file is machine-generated - editing it directly is not advised
 
-julia_version = "1.9.0"
+julia_version = "1.9.2"
 manifest_format = "2.0"
 project_hash = "518c095396051d71bf5e751098fcfb84ba9cadb4"
 
@@ -22,7 +22,7 @@ version = "0.4.2"
 [[deps.CompilerSupportLibraries_jll]]
 deps = ["Artifacts", "Libdl"]
 uuid = "e66e0078-7015-5450-92f7-15fbd957f2ae"
-version = "1.0.2+0"
+version = "1.0.5+0"
 
 [[deps.Dates]]
 deps = ["Printf"]
@@ -58,7 +58,7 @@ version = "1.5.0"
 
 [[deps.LAMMPS]]
 deps = ["CEnum", "LAMMPS_jll", "Libdl", "MPI", "Preferences"]
-git-tree-sha1 = "43617919c415f6a2a89ead5775bc103ca12da607"
+path = "/Users/swyant/cesmix/dev/LAMMPS.jl/"
 uuid = "ee2e13b9-eee9-4449-aafa-cfa6a2dbe14d"
 version = "0.2.2"
 
@@ -161,7 +161,7 @@ version = "4.1.5+0"
 [[deps.Pkg]]
 deps = ["Artifacts", "Dates", "Downloads", "FileWatching", "LibGit2", "Libdl", "Logging", "Markdown", "Printf", "REPL", "Random", "SHA", "Serialization", "TOML", "Tar", "UUIDs", "p7zip_jll"]
 uuid = "44cfe95a-1eb2-52ea-b672-e2afdf69b78f"
-version = "1.9.0"
+version = "1.9.2"
 
 [[deps.PkgVersion]]
 deps = ["Pkg"]

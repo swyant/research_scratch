@@ -1,0 +1,7 @@
+[deps]
+ACE1 = "e3f9bc04-086e-409a-ba78-e9769fe067bb"
+ACE1pack = "8c4e8d19-0bd6-4234-8309-7210652e3178"
+CSV = "336ed68f-0bac-5ca0-87d4-7b16caf5d00b"
+DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
+JuLIP = "945c410c-986d-556a-acb1-167a618e0462"
+LAMMPS = "ee2e13b9-eee9-4449-aafa-cfa6a2dbe14d"

@@ -1,0 +1,13 @@
+units          metal
+boundary       p p p
+atom_style     atomic
+
+read_data     tetrag_hfo2_sample_DATA 
+
+pair_style     pace
+pair_coeff     * * Siviraman_GAP_HfO2_N3_rcut5_maxdeg10_regQR.yace Hf O
+
+dump           final_check all custom 1 dump_final_check.custom id type x y z fx fy fz
+dump_modify    final_check sort id element Ti Al format line "%4d %1d %21.16f %21.16f %21.16f %21.16f %21.16f %21.16f"
+
+run 0

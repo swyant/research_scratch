@@ -1,0 +1,1 @@
+mpirun -np 2 ~/local_software/lammps/lammps_081723/shared_build/lmp -in in.lammps | tee out.txt

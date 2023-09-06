@@ -1,0 +1,15 @@
+# Test GAP H2O
+
+units          metal 
+boundary       p p p 
+atom_style     atomic
+
+read_data      sample_h2o_DATA 
+
+pair_style     quip
+pair_coeff     * * GAP.xml "Potential xml_label=GAP_2018_10_7_60_14_59_24_970" 1 8 
+
+dump           final_dump all custom 1 dump_final.custom id type x y z fx fy fz
+dump_modify    final_dump sort id format line "%4d %1d %21.16f %21.16f %21.16f %21.16f %21.16f %21.16f"
+
+run 0

@@ -1,0 +1,56 @@
+LAMMPS (2 Aug 2023 - Development - patch_2Aug2023-219-g06e2d5d306)
+Reading data file ...
+  orthogonal box = (0 0 0) to (11.10739 11.10739 11.10739)
+  1 by 2 by 3 MPI processor grid
+  reading atoms ...
+  96 atoms
+  read_data CPU = 0.002 seconds
+Neighbor list info ...
+  update: every = 1 steps, delay = 0 steps, check = yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 6
+  ghost atom cutoff = 6
+  binsize = 3, bins = 4 4 4
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair quip, perpetual
+      attributes: full, newton on
+      pair build: full/bin/atomonly
+      stencil: full/bin/3d
+      bin: standard
+Setting up Verlet run ...
+  Unit style    : metal
+  Current step  : 0
+  Time step     : 0.001
+Per MPI rank memory allocation (min/avg/max) = 3.108 | 3.109 | 3.109 Mbytes
+   Step          Temp          PotEng         KinEng         TotEng         Press     
+         0   3600          -897.42539      44.20697      -853.21842      51269.911    
+       200   3349.0661     -899.11406      41.125573     -857.98849      67760.338    
+Loop time of 17.8526 on 6 procs for 200 steps with 96 atoms
+
+Performance: 0.968 ns/day, 24.795 hours/ns, 11.203 timesteps/s, 1.075 katom-step/s
+90.4% CPU use with 6 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 12.995     | 14.841     | 16.202     |  36.0 | 83.13
+Neigh   | 0.00033562 | 0.00036345 | 0.00041504 |   0.0 |  0.00
+Comm    | 1.5752     | 2.9378     | 4.7849     |  80.9 | 16.46
+Output  | 0.059059   | 0.062972   | 0.067366   |   1.0 |  0.35
+Modify  | 0.0044678  | 0.0055769  | 0.006381   |   1.1 |  0.03
+Other   |            | 0.005169   |            |       |  0.03
+
+Nlocal:             16 ave          19 max          12 min
+Histogram: 1 0 1 0 0 1 0 1 1 1
+Nghost:        429.667 ave         443 max         418 min
+Histogram: 1 0 1 1 0 1 1 0 0 1
+Neighs:              0 ave           0 max           0 min
+Histogram: 6 0 0 0 0 0 0 0 0 0
+FullNghs:          998 ave        1211 max         750 min
+Histogram: 1 0 1 0 1 0 0 2 0 1
+
+Total # of neighbors = 5988
+Ave neighs/atom = 62.375
+Neighbor list builds = 7
+Dangerous builds = 0
+Total wall time: 0:00:20

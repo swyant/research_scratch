@@ -1,0 +1,66 @@
+LAMMPS (2 Aug 2023 - Development - patch_2Aug2023-219-g06e2d5d306)
+Reading data file ...
+  orthogonal box = (0 0 0) to (10.956 10.956 10.629)
+  1 by 1 by 1 MPI processor grid
+  reading atoms ...
+  108 atoms
+  read_data CPU = 0.001 seconds
+ACE version: 2022.6.27
+Recursive evaluator is used
+Loading Siviraman_GAP_HfO2_N3_rcut5_maxdeg10_regQR.yace
+Total number of basis functions
+	O: 20 (r=1) 1166 (r>1)
+	Hf: 20 (r=1) 1166 (r>1)
+Mapping LAMMPS atom type #1(Hf) -> ACE species type #1
+Mapping LAMMPS atom type #2(O) -> ACE species type #0
+Neighbor list info ...
+  update: every = 1 steps, delay = 0 steps, check = yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 7
+  ghost atom cutoff = 7
+  binsize = 3.5, bins = 4 4 4
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair pace, perpetual
+      attributes: full, newton on
+      pair build: full/bin/atomonly
+      stencil: full/bin/3d
+      bin: standard
+Setting up Verlet run ...
+  Unit style    : metal
+  Current step  : 0
+  Time step     : 0.001
+Per MPI rank memory allocation (min/avg/max) = 3.102 | 3.102 | 3.102 Mbytes
+   Step          Temp          PotEng         KinEng         TotEng         Press     
+         0   2000          -1063.1311      27.661671     -1035.4694      29976.049    
+         1   1995.1938     -1063.064       27.595197     -1035.4688      30177.72     
+         2   1994.3479     -1063.0521      27.583498     -1035.4686      30186.459    
+         3   1997.7148     -1063.0988      27.630064     -1035.4688      29996.983    
+Loop time of 0.0101135 on 1 procs for 3 steps with 108 atoms
+
+Performance: 25.629 ns/day, 0.936 hours/ns, 296.632 timesteps/s, 32.036 katom-step/s
+98.6% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.0085982  | 0.0085982  | 0.0085982  |   0.0 | 85.02
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 7.667e-06  | 7.667e-06  | 7.667e-06  |   0.0 |  0.08
+Output  | 0.0014947  | 0.0014947  | 0.0014947  |   0.0 | 14.78
+Modify  | 9.791e-06  | 9.791e-06  | 9.791e-06  |   0.0 |  0.10
+Other   |            | 3.166e-06  |            |       |  0.03
+
+Nlocal:            108 ave         108 max         108 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:           1106 ave        1106 max        1106 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:              0 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:        13098 ave       13098 max       13098 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 13098
+Ave neighs/atom = 121.27778
+Neighbor list builds = 0
+Dangerous builds = 0
+Total wall time: 0:00:02

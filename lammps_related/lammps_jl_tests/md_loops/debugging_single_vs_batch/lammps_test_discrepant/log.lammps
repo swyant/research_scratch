@@ -5,13 +5,13 @@ units          metal
 boundary       p p p
 atom_style     atomic
 
-read_data      discrepant_hfo2_config_DATA
+read_data      discrepant_hfo2_config_highp_DATA
 Reading data file ...
   orthogonal box = (0 0 0) to (10.956 10.956 10.629)
   1 by 1 by 1 MPI processor grid
   reading atoms ...
   108 atoms
-  read_data CPU = 0.001 seconds
+  read_data CPU = 0.002 seconds
 
 pair_style     pace
 ACE version: 2022.6.27
@@ -24,8 +24,8 @@ Total number of basis functions
 Mapping LAMMPS atom type #1(Hf) -> ACE species type #1
 Mapping LAMMPS atom type #2(O) -> ACE species type #0
 
-dump           final_dump all custom 1 dump_final.custom id type x y z fx fy fz
-dump_modify    final_dump sort id format line "%4d %1d %21.16f %21.16f %21.16f %21.16f %21.16f %21.16f"
+dump           final_dump all custom 1 dump_final_highp.custom id type x y z fx fy fz
+dump_modify    final_dump sort id format line "%4d %1d %32.27f %32.27f %32.27f %32.27f %32.27f %32.27f"
 
 run 0
 WARNING: No fixes with time integration, atoms won't move (src/verlet.cpp:60)
@@ -44,9 +44,9 @@ Neighbor list info ...
 Per MPI rank memory allocation (min/avg/max) = 3.102 | 3.102 | 3.102 Mbytes
    Step          Temp          E_pair         E_mol          TotEng         Press     
          0   0             -1063.0521      0             -1063.0521      7093.9035    
-Loop time of 2.5e-07 on 1 procs for 0 steps with 108 atoms
+Loop time of 3.75e-07 on 1 procs for 0 steps with 108 atoms
 
-400.0% CPU use with 1 MPI tasks x no OpenMP threads
+266.7% CPU use with 1 MPI tasks x no OpenMP threads
 
 MPI task timing breakdown:
 Section |  min time  |  avg time  |  max time  |%varavg| %total
@@ -56,7 +56,7 @@ Neigh   | 0          | 0          | 0          |   0.0 |  0.00
 Comm    | 0          | 0          | 0          |   0.0 |  0.00
 Output  | 0          | 0          | 0          |   0.0 |  0.00
 Modify  | 0          | 0          | 0          |   0.0 |  0.00
-Other   |            | 2.5e-07    |            |       |100.00
+Other   |            | 3.75e-07   |            |       |100.00
 
 Nlocal:            108 ave         108 max         108 min
 Histogram: 1 0 0 0 0 0 0 0 0 0

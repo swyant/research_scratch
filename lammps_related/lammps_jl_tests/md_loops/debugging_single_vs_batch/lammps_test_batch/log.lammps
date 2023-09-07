@@ -11,7 +11,7 @@ Reading data file ...
   1 by 1 by 1 MPI processor grid
   reading atoms ...
   108 atoms
-  read_data CPU = 0.001 seconds
+  read_data CPU = 0.002 seconds
 
 pair_style     pace
 ACE version: 2022.6.27
@@ -36,13 +36,12 @@ velocity     all create 2000 12280329 mom yes rot yes dist gaussian
 thermo       1
 thermo_style custom step temp pe ke etotal press
 
-dump           run_dump all xyz ${dumpf} dump_run.xyz
-dump           run_dump all xyz 1 dump_run.xyz
-dump_modify    run_dump sort id format line "%s %21.16f %21.16f %21.16f"
+#dump           run_dump all xyz ${dumpf} dump_run.xyz
+#dump_modify    run_dump sort id format line "%s %32.27f %32.27f %32.27f"
 
-dump           run_forces all custom ${dumpf} dump_run_forces.custom id type x y z fx fy fz vx vy vz
-dump           run_forces all custom 1 dump_run_forces.custom id type x y z fx fy fz vx vy vz
-dump_modify    run_forces sort id format line "%4d %1d %21.16f %21.16f %21.16f %21.16f %21.16f %21.16f %21.16f %21.16f %21.16f"
+dump           run_forces all custom ${dumpf} dump_run_forces_highp.custom id type x y z fx fy fz vx vy vz
+dump           run_forces all custom 1 dump_run_forces_highp.custom id type x y z fx fy fz vx vy vz
+dump_modify    run_forces sort id format line "%4d %1d %32.27f %32.27f %32.27f %32.27f %32.27f %32.27f %32.27f %32.27f %32.27f"
 
 
 fix          nvt all nvt temp $T $T ${Tdamp}
@@ -68,20 +67,20 @@ Per MPI rank memory allocation (min/avg/max) = 3.102 | 3.102 | 3.102 Mbytes
          1   1995.1938     -1063.064       27.595197     -1035.4688      30177.72     
          2   1994.3479     -1063.0521      27.583498     -1035.4686      30186.459    
          3   1997.7148     -1063.0988      27.630064     -1035.4688      29996.983    
-Loop time of 0.0101135 on 1 procs for 3 steps with 108 atoms
+Loop time of 0.0102907 on 1 procs for 3 steps with 108 atoms
 
-Performance: 25.629 ns/day, 0.936 hours/ns, 296.632 timesteps/s, 32.036 katom-step/s
-98.6% CPU use with 1 MPI tasks x no OpenMP threads
+Performance: 25.188 ns/day, 0.953 hours/ns, 291.525 timesteps/s, 31.485 katom-step/s
+98.2% CPU use with 1 MPI tasks x no OpenMP threads
 
 MPI task timing breakdown:
 Section |  min time  |  avg time  |  max time  |%varavg| %total
 ---------------------------------------------------------------
-Pair    | 0.0085982  | 0.0085982  | 0.0085982  |   0.0 | 85.02
+Pair    | 0.0086693  | 0.0086693  | 0.0086693  |   0.0 | 84.24
 Neigh   | 0          | 0          | 0          |   0.0 |  0.00
-Comm    | 7.667e-06  | 7.667e-06  | 7.667e-06  |   0.0 |  0.08
-Output  | 0.0014947  | 0.0014947  | 0.0014947  |   0.0 | 14.78
-Modify  | 9.791e-06  | 9.791e-06  | 9.791e-06  |   0.0 |  0.10
-Other   |            | 3.166e-06  |            |       |  0.03
+Comm    | 7.999e-06  | 7.999e-06  | 7.999e-06  |   0.0 |  0.08
+Output  | 0.0016016  | 0.0016016  | 0.0016016  |   0.0 | 15.56
+Modify  | 8.332e-06  | 8.332e-06  | 8.332e-06  |   0.0 |  0.08
+Other   |            | 3.461e-06  |            |       |  0.03
 
 Nlocal:            108 ave         108 max         108 min
 Histogram: 1 0 0 0 0 0 0 0 0 0

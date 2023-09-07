@@ -1,5 +1,19 @@
 [deps]
+ACE1 = "e3f9bc04-086e-409a-ba78-e9769fe067bb"
+ACE1pack = "8c4e8d19-0bd6-4234-8309-7210652e3178"
+ACE1x = "5cc4c08c-8782-4a30-af6d-550b302e9707"
+ACEfit = "ad31a8ef-59f5-4a01-b543-a85c2f73e95c"
+AtomsBase = "a963bdd2-2df7-4f54-a1ee-49d51e6be12a"
+CSV = "336ed68f-0bac-5ca0-87d4-7b16caf5d00b"
+DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
+InteratomicBasisPotentials = "37c59853-c2ad-4e3a-930c-a41b2395fb19"
+InteratomicPotentials = "a9efe35a-c65d-452d-b8a8-82646cd5cb04"
+JuLIP = "945c410c-986d-556a-acb1-167a618e0462"
 LAMMPS = "ee2e13b9-eee9-4449-aafa-cfa6a2dbe14d"
+PotentialLearning = "82b0a93c-c2e3-44bc-a418-f0f89b0ae5c2"
+StaticArrays = "90137ffa-7385-5640-81b9-e52037218182"
+Unitful = "1986cc42-f94f-5a68-af5c-568840ba703d"
+UnitfulAtomic = "a7773ee8-282e-5fa2-be4e-bd808c38a91a"
 
 [extras]
 LAMMPS_jll = "5b3ab26d-9607-527c-88ea-8fe5ba57cafe"

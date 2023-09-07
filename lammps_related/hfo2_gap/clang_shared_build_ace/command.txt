@@ -1,0 +1,1 @@
+mpirun -np 1 ~/local_software/lammps/lammps_081723/clang_shared_build/lmp -in in.lammps | tee mpi1_out.txt

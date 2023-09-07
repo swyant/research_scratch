@@ -7,6 +7,7 @@ command(lmp, "units          metal")
 command(lmp, "boundary       p p p")
 command(lmp, "atom_style     atomic")
 command(lmp, "neigh_modify   delay 0 every 1 check no")
+command(lmp, "atom_modify    map yes")
 
 command(lmp, "read_data     tetrag_hfo2_sample_DATA")
 
@@ -23,7 +24,7 @@ command(lmp, "velocity     all create \$T \${Tseed} mom yes rot yes dist gaussia
 command(lmp, "thermo       1")
 command(lmp, "thermo_style custom step temp pe ke etotal press")
 
-command(lmp, "dump           run_forces all custom \${dumpf} dump_batch.custom id type x y z fx fy fz vx vy vz")
+command(lmp, "dump           run_forces all custom \${dumpf} dump_batch_mapyes.custom id type x y z fx fy fz vx vy vz")
 command(lmp, """dump_modify    run_forces sort id format line "%4d %1d %32.27f %32.27f %32.27f %32.27f %32.27f %32.27f %32.27f %32.27f %32.27f" """)
 
 

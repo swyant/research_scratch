@@ -4,7 +4,7 @@ Reading data file ...
   1 by 1 by 1 MPI processor grid
   reading atoms ...
   108 atoms
-  read_data CPU = 0.002 seconds
+  read_data CPU = 0.003 seconds
 ACE version: 2022.6.27
 Recursive evaluator is used
 Loading Siviraman_GAP_HfO2_N3_rcut5_maxdeg10_regQR.yace
@@ -35,20 +35,20 @@ Per MPI rank memory allocation (min/avg/max) = 2.602 | 2.602 | 2.602 Mbytes
          1   1995.1938     -1063.064       27.595197     -1035.4688      30177.72     
          2   1994.3479     -1063.0521      27.583498     -1035.4686      30186.459    
          3   1997.7148     -1063.0988      27.630064     -1035.4688      29996.983    
-Loop time of 0.0111177 on 1 procs for 3 steps with 108 atoms
+Loop time of 0.0116996 on 1 procs for 3 steps with 108 atoms
 
-Performance: 23.314 ns/day, 1.029 hours/ns, 269.840 timesteps/s, 29.143 katom-step/s
-98.5% CPU use with 1 MPI tasks x no OpenMP threads
+Performance: 22.155 ns/day, 1.083 hours/ns, 256.419 timesteps/s, 27.693 katom-step/s
+97.8% CPU use with 1 MPI tasks x no OpenMP threads
 
 MPI task timing breakdown:
 Section |  min time  |  avg time  |  max time  |%varavg| %total
 ---------------------------------------------------------------
-Pair    | 0.0086422  | 0.0086422  | 0.0086422  |   0.0 | 77.73
-Neigh   | 0.00082775 | 0.00082775 | 0.00082775 |   0.0 |  7.45
-Comm    | 2.6042e-05 | 2.6042e-05 | 2.6042e-05 |   0.0 |  0.23
-Output  | 0.0016096  | 0.0016096  | 0.0016096  |   0.0 | 14.48
-Modify  | 8.125e-06  | 8.125e-06  | 8.125e-06  |   0.0 |  0.07
-Other   |            | 4.002e-06  |            |       |  0.04
+Pair    | 0.0086865  | 0.0086865  | 0.0086865  |   0.0 | 74.25
+Neigh   | 0.00082129 | 0.00082129 | 0.00082129 |   0.0 |  7.02
+Comm    | 2.6375e-05 | 2.6375e-05 | 2.6375e-05 |   0.0 |  0.23
+Output  | 0.002152   | 0.002152   | 0.002152   |   0.0 | 18.39
+Modify  | 9.081e-06  | 9.081e-06  | 9.081e-06  |   0.0 |  0.08
+Other   |            | 4.334e-06  |            |       |  0.04
 
 Nlocal:            108 ave         108 max         108 min
 Histogram: 1 0 0 0 0 0 0 0 0 0

@@ -4,12 +4,12 @@ units          metal
 boundary       p p p 
 atom_style     atomic
 
-read_data      discrepant_hfo2_config_highp_DATA
+read_data      discrepant_hfo2_config_highp_nocheck_DATA
 
 pair_style     pace
 pair_coeff     * * Siviraman_GAP_HfO2_N3_rcut5_maxdeg10_regQR.yace Hf O 
 
-dump           final_dump all custom 1 dump_final_highp.custom id type x y z fx fy fz
+dump           final_dump all custom 1 dump_final_highp_nocheck.custom id type x y z fx fy fz
 dump_modify    final_dump sort id format line "%4d %1d %32.27f %32.27f %32.27f %32.27f %32.27f %32.27f"
 
 run 0

@@ -20,8 +20,8 @@ velocity     all create $T ${Tseed} mom yes rot yes dist gaussian
 thermo       1
 thermo_style custom step temp pe ke etotal press
 
-#dump           run_dump all xyz ${dumpf} dump_run.xyz
-#dump_modify    run_dump sort id format line "%s %32.27f %32.27f %32.27f"
+dump           run_dump all xyz ${dumpf} dump_run.xyz
+dump_modify    run_dump sort id format line "%s %32.27f %32.27f %32.27f"
 
 dump           run_forces all custom ${dumpf} dump_run_forces_highp_nocheck.custom id type x y z fx fy fz vx vy vz
 dump_modify    run_forces sort id format line "%4d %1d %32.27f %32.27f %32.27f %32.27f %32.27f %32.27f %32.27f %32.27f %32.27f"

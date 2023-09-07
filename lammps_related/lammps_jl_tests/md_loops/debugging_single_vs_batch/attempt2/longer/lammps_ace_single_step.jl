@@ -23,12 +23,13 @@ command(lmp, "velocity     all create \$T \${Tseed} mom yes rot yes dist gaussia
 command(lmp, "thermo       1")
 command(lmp, "thermo_style custom step temp pe ke etotal press")
 
-command(lmp, "dump           run_forces all custom \${dumpf} dump_single.custom id type x y z fx fy fz vx vy vz")
+command(lmp, "dump           run_forces all custom \${dumpf} dump_single_wrun0.custom id type x y z fx fy fz vx vy vz")
 command(lmp, """dump_modify    run_forces sort id format line "%4d %1d %32.27f %32.27f %32.27f %32.27f %32.27f %32.27f %32.27f %32.27f %32.27f" """)
 
 
 command(lmp, "fix          nvt all nvt temp \$T \$T \${Tdamp}")
 
 for i in 1:50
+    command(lmp, "run 0")
     command(lmp, "run 1")
 end

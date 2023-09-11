@@ -1,0 +1,40 @@
+LAMMPS (2 Aug 2023 - Development - patch_2Aug2023-219-g06e2d5d306)
+Reading data file ...
+  orthogonal box = (0 0 0) to (21.105599 21.105599 21.105599)
+  1 by 1 by 1 MPI processor grid
+  reading atoms ...
+  256 atoms
+  read_data CPU = 0.001 seconds
+Generated 0 of 0 mixed pair_coeff terms from geometric mixing rule
+Neighbor list info ...
+  update: every = 1 steps, delay = 0 steps, check = no
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 10.51
+  ghost atom cutoff = 10.51
+  binsize = 5.255, bins = 5 5 5
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair lj/cut, perpetual
+      attributes: half, newton on
+      pair build: half/bin/atomonly/newton
+      stencil: half/bin/3d
+      bin: standard
+Setting up Verlet run ...
+  Unit style    : metal
+  Current step  : 0
+  Time step     : 0.001
+Per MPI rank memory allocation (min/avg/max) = 2.63 | 2.63 | 2.63 Mbytes
+   Step          Temp          PotEng         KinEng         TotEng         Press     
+         0   100           -21.39855       3.2961337     -18.102416      374.48195    
+     10000   92.283191     -18.344315      3.0417773     -15.302538      2987.6601    
+     20000   96.599572     -18.183641      3.184051      -14.99959       3127.8068    
+     30000   93.315116     -18.382598      3.075791      -15.306807      2962.903     
+     40000   106.90685     -18.13381       3.5237927     -14.610017      3208.5478    
+     50000   104.50128     -18.100753      3.4445018     -14.656252      3240.2665    
+     60000   98.242239     -18.077789      3.2381956     -14.839593      3225.2944    
+     70000   102.97467     -18.073642      3.3941829     -14.679459      3268.3124    
+     80000   100.19056     -18.467915      3.3024147     -15.1655        2904.9047    
+     90000   99.569637     -18.224167      3.2819484     -14.942218      3121.9535    
+    100000   97.46432      -18.174422      3.2125543     -14.961868      3155.03      
+    110000   102.10009     -17.985935      3.3653553     -14.62058       3332.0868    
+    120000   94.707759     -18.318391      3.1216944     -15.196696      3012.165     
+    130000   100.20191     -18.257309      3.3027888     -14.95452       3105.3289    

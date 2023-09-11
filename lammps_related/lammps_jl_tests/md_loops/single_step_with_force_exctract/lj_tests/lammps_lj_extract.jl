@@ -38,11 +38,17 @@ command(lmp, """dump_modify    run_forces sort id format line "%4d %1d %32.27f %
 command(lmp, "fix          nvt all nvt temp \$T \$T \${Tdamp}")
 
 command(lmp,"run 1")
-forces = extract_atom(lmp, "f")
+raw_forces = extract_atom(lmp, "f")
+raw_pos    = extract_atom(lmp, "x")
+raw_types  = extract_atom(lmp,"type")
 atomids = extract_atom(lmp, "id")
-JLD.save("step1_extracts.jld", "atomids", atomids, "forces", forces)
 
-@show forces[2,id2idx(189,atomids)]
+forces = raw_forces[:,sortperm(atomids)]
+pos    = raw_pos[:,sortperm(atomids)]
+types  = raw_types[sortperm(atomids)]
+
+JLD.save("step1_ordered_extracts.jld", "forces", forces, "pos", pos, "types", types)
+
 if single
     for i in 1:num_steps
         command(lmp, "run 1")
@@ -52,4 +58,5 @@ else
 end
 
 
-id2idx(id::Integer, ids::Vector{<:Integer}) = findfirst(x -> x==id,ids)
+#id2idx(id::Integer, ids::Vector{<:Integer}) = findfirst(x -> x==id,ids)
+

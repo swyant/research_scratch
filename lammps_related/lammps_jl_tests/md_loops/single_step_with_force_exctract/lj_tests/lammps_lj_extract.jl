@@ -1,4 +1,5 @@
 using LAMMPS
+using JLD
 
 single = true
 num_steps = 50
@@ -36,6 +37,12 @@ command(lmp, """dump_modify    run_forces sort id format line "%4d %1d %32.27f %
 
 command(lmp, "fix          nvt all nvt temp \$T \$T \${Tdamp}")
 
+command(lmp,"run 1")
+forces = extract_atom(lmp, "f")
+atomids = extract_atom(lmp, "id")
+JLD.save("step1_extracts.jld", "atomids", atomids, "forces", forces)
+
+@show forces[2,id2idx(189,atomids)]
 if single
     for i in 1:num_steps
         command(lmp, "run 1")
@@ -43,3 +50,6 @@ if single
 else
     command(lmp, "run $(num_steps)")
 end
+
+
+id2idx(id::Integer, ids::Vector{<:Integer}) = findfirst(x -> x==id,ids)

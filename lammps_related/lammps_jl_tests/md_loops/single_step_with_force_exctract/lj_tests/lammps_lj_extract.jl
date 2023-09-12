@@ -1,5 +1,7 @@
 using LAMMPS
-using JLD
+#using JLD
+
+include("../../../utilities/parse_dump/parse_dump.jl")
 
 function extract_single_step_observables(lmp::LMP)
     atomids    = extract_atom(lmp, "id")
@@ -27,7 +29,7 @@ function lj_expts(; num_steps=50, vel_seed =12280329, single=true)
         command(lmp, "units          metal")
         command(lmp, "boundary       p p p")
         command(lmp, "atom_style     atomic")
-        command(lmp, "neigh_modify   delay 0 every 1 check no")
+        command(lmp, "neigh_modify   delay 0 every 1 check no") # neighborlist rebuilt every step
         
         command(lmp, "read_data     fcc_lj_Ar_smaller_DATA")
         
@@ -67,6 +69,8 @@ function lj_expts(; num_steps=50, vel_seed =12280329, single=true)
 
         else
             command(lmp, "run $(num_steps)")
+            configs = fragile_parse_dump("./dump_batch.custom")
+            #rm("./dump_batch.custom") # could also just be a file in /tmp
         end
         return configs
     end 
@@ -76,4 +80,10 @@ end
 
 #id2idx(id::Integer, ids::Vector{<:Integer}) = findfirst(x -> x==id,ids)
 #cd("/Users/swyant/cesmix/exploratory/new_public/lammps_related/lammps_jl_tests/md_loops/single_step_with_force_exctract/lj_tests")
-configs = lj_expts(; num_steps=1)
+single_step_configs = lj_expts(; num_steps=1, single=true)
+ss_all_forces = reshape(reduce(hcat,[config["forces"] for config in single_step_configs]), size(single_step_configs[1]["forces"])..., :) 
+
+batch_step_configs = lj_expts(; num_steps=1, single=false)
+batch_all_forces = reshape(reduce(hcat,[config["forces"] for config in batch_step_configs]), size(batch_step_configs[1]["forces"])..., :)
+
+max_force_discrep = maximum(abs.(batch_all_forces - ss_all_forces))

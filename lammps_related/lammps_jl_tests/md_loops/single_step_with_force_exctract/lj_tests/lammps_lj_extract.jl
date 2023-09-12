@@ -1,4 +1,5 @@
 using LAMMPS
+using CSV, DataFrames
 #using JLD
 
 include("../../../utilities/parse_dump/parse_dump.jl")
@@ -22,6 +23,13 @@ function extract_single_step_observables(lmp::LMP)
                         "velocities" => config_vels)
     
     config_dict
+end
+
+function parse_pe_file(fname::String="./pe.dat"; config_list = Nothing)
+    pe_data = CSV.read(fname, DataFrame, header=["tstep", "pe"], skipto=2, delim=" ")
+    if config_list == Nothing 
+        pe_data
+    end
 end
 
 function lj_expts(; num_steps=50, vel_seed =12280329, single=true)
@@ -70,6 +78,9 @@ function lj_expts(; num_steps=50, vel_seed =12280329, single=true)
         else
             command(lmp, "run $(num_steps)")
             configs = fragile_parse_dump("./dump_batch.custom")
+            
+            all_pes = parse_pe_file()
+            
             #rm("./dump_batch.custom") # could also just be a file in /tmp
         end
         return configs

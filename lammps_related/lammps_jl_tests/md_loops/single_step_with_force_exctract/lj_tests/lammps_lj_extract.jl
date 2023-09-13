@@ -3,45 +3,7 @@ using CSV, DataFrames
 #using JLD
 
 include("../../../utilities/parse_dump/parse_dump.jl")
-
-function extract_single_step_observables(lmp::LMP)
-    atomids    = extract_atom(lmp, "id")
-    raw_types  = extract_atom(lmp,"type")
-    raw_pos    = extract_atom(lmp, "x")
-    raw_forces = extract_atom(lmp, "f")
-    raw_vels   = extract_atom(lmp, "v")
-
-    pe = extract_compute(lmp,"pe",LAMMPS.API.LMP_STYLE_GLOBAL,LAMMPS.API.LMP_TYPE_SCALAR)
-    
-   
-    sort_idxs = sortperm(atomids)
-    config_types  = raw_types[sort_idxs]
-    config_pos    = raw_pos[:, sort_idxs] 
-    config_forces = raw_forces[:, sort_idxs]
-    config_vels   = raw_vels[:, sort_idxs]
-
-    config_dict = Dict( "types"      => config_types,
-                        "positions"  => config_pos,
-                        "forces"     => config_forces,
-                        "velocities" => config_vels,
-                        "pe"         => pe)
-    
-    config_dict
-end
-
-function parse_pe_file(fname::String="./pe.dat"; config_list = Nothing)
-    pe_data = CSV.read(fname, DataFrame, header=["tstep", "pe"], skipto=2, delim=" ")
-    if config_list == Nothing 
-        return pe_data
-    else
-        for (idx,pe_row) in enumerate(eachrow(pe_data))
-            #A bit of a fragile assumption
-            @assert config_list[idx]["timestep"] == pe_row.tstep
-            config_list[idx]["pe"] = pe_row.pe
-        end
-        return config_list
-    end
-end
+include("../lammps_extract_utils.jl")
 
 function lj_expts(; num_steps=50, vel_seed =12280329, single=true)
     configs = LMP(["-screen","none"]) do lmp  
@@ -105,13 +67,13 @@ function lj_expts(; num_steps=50, vel_seed =12280329, single=true)
 end
 
 
-single_step_configs = lj_expts(; num_steps=1, single=true)
+single_step_configs = lj_expts(; num_steps=50, single=true)
 ss_all_forces = reshape(reduce(hcat,[config["forces"] for config in single_step_configs]), size(single_step_configs[1]["forces"])..., :) 
 ss_all_pe = [config["pe"] for config in single_step_configs]
 
-batch_step_configs = lj_expts(; num_steps=1, single=false)
+batch_step_configs = lj_expts(; num_steps=50, single=false)
 batch_all_forces = reshape(reduce(hcat,[config["forces"] for config in batch_step_configs]), size(batch_step_configs[1]["forces"])..., :)
 batch_all_pe = [config["pe"] for config in batch_step_configs]
 
-@show max_force_discrep = maximum(abs.(batch_all_forces - ss_all_forces))
-@show max_pe_discrep = maximum(abs.(batch_all_pe - ss_all_pe))
+@show max_force_discrep = maximum(abs.(batch_all_forces - ss_all_forces)) # 4.985600920996795e-28
+@show max_pe_discrep = maximum(abs.(batch_all_pe - ss_all_pe)) # 0.0

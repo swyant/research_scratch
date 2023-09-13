@@ -3,6 +3,7 @@ using CSV, DataFrames
 #using JLD
 
 include("../../utilities/parse_dump/parse_dump.jl")
+include("./single_point_gap.jl")
 
 function extended_extract_ss_obs(lmp::LMP)
     atomids    = extract_atom(lmp, "id")
@@ -40,7 +41,7 @@ function extended_extract_ss_obs(lmp::LMP)
                         "positions"  => config_pos,
                         "forces"     => config_forces,
                         "velocities" => config_vels,
-                        "box_bounds" => [ [xlo,xhi], [ylo,yhi], [zlo,hi]],
+                        "box_bounds" => [ [xlo,xhi], [ylo,yhi], [zlo,zhi]],
                         "masses"     => masses,
                         "pe"         => pe)
     
@@ -49,7 +50,7 @@ end
 
 
 function ace_and_gap_expts(; num_steps=50, vel_seed =12280329, temp=100)
-    configs = LMP(["-screen","none"]) do lmp  
+    ace_configs, gap_configs = LMP(["-screen","none"]) do lmp  
         command(lmp, "log none")
 
         command(lmp, "units          metal")
@@ -91,21 +92,31 @@ function ace_and_gap_expts(; num_steps=50, vel_seed =12280329, temp=100)
 
         command(lmp, "fix          nvt all nvt temp \$T \$T \${Tdamp}")
          
-        configs = []
+        ace_configs = []
+        gap_configs = []
         command(lmp, "run 0")
-        config_dict = extended_extract_ss_obs(lmp)
-        push!(configs,config_dict)
+        cfg_dct = extended_extract_ss_obs(lmp)
+        gap_cfg_dct = get_gap_eandf(cfg_dct["box_bounds"],cfg_dct["types"],cfg_dct["positions"],cfg_dct["masses"])
+
+        push!(ace_configs,cfg_dct)
+        push!(gap_configs,gap_cfg_dct)
 
         for _ in 1:num_steps
             command(lmp, "run 1")
-            config_dict = extended_extract_ss_obs(lmp)
-            push!(configs, config_dict)
+            cfg_dct = extended_extract_ss_obs(lmp)
+            gap_cfg_dct = get_gap_eandf(cfg_dct["box_bounds"],cfg_dct["types"],cfg_dct["positions"],cfg_dct["masses"])
+
+            push!(ace_configs, cfg_dct)
+            push!(gap_configs,gap_cfg_dct)
         end
-        return configs
+        return ace_configs, gap_configs
     end 
-    configs
+    ace_configs, gap_configs
 end
 
 
-configs = ace_and_gap_expts(; num_steps=50, temp=100)
+ace_cfgs, gap_cfgs = ace_and_gap_expts(; num_steps=1, temp=100)
 
+# need to recheck how I fit ACE, because I thought I fit to cohesive energy?
+ace_pes = [config["pe"] for config in ace_cfgs]
+gap_pes = [config["pe"] for config in gap_cfgs] 

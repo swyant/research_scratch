@@ -70,13 +70,13 @@ function ace_expts(; num_steps=50, vel_seed =12280329, single=true, temp=100)
 end
 
 
-single_step_configs = ace_expts(; num_steps=4, single=true, temp=100)
+single_step_configs = ace_expts(; num_steps=50, single=true, temp=2000)
 ss_all_forces = reshape(reduce(hcat,[config["forces"] for config in single_step_configs]), size(single_step_configs[1]["forces"])..., :) 
 ss_all_pe = [config["pe"] for config in single_step_configs]
 
-batch_step_configs = ace_expts(; num_steps=4, single=false, temp=100)
+batch_step_configs = ace_expts(; num_steps=50, single=false, temp=2000)
 batch_all_forces = reshape(reduce(hcat,[config["forces"] for config in batch_step_configs]), size(batch_step_configs[1]["forces"])..., :)
 batch_all_pe = [config["pe"] for config in batch_step_configs]
 
-@show max_force_discrep = maximum(abs.(batch_all_forces - ss_all_forces)) # 0.0
-@show max_pe_discrep = maximum(abs.(batch_all_pe - ss_all_pe)) # 0.0
+@show max_force_discrep = maximum(abs.(batch_all_forces - ss_all_forces)) # 6.158185072990818e-12
+@show max_pe_discrep = maximum(abs.(batch_all_pe - ss_all_pe)) # 8.844835974741727e-11

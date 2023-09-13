@@ -24,6 +24,7 @@ thermo_style custom step temp pe ke etotal press
 dump           run_forces all custom ${dumpf} dump_batch.custom id type x y z fx fy fz vx vy vz
 dump           run_forces all custom 1 dump_batch.custom id type x y z fx fy fz vx vy vz
 dump_modify    run_forces sort id format line "%4d %1d %32.27f %32.27f %32.27f %32.27f %32.27f %32.27f %32.27f %32.27f %32.27f" 
+fix eprint all print 1 "$(step) $(pe)" file pe.dat
 fix          nvt all nvt temp $T $T ${Tdamp}
 fix          nvt all nvt temp 100 $T ${Tdamp}
 fix          nvt all nvt temp 100 100 ${Tdamp}
@@ -42,24 +43,26 @@ Neighbor list info ...
       pair build: half/bin/atomonly/newton
       stencil: half/bin/3d
       bin: standard
+0 -21.398550164767247139
 Per MPI rank memory allocation (min/avg/max) = 2.63 | 2.63 | 2.63 Mbytes
    Step          Temp          PotEng         KinEng         TotEng         Press     
          0   100           -21.39855       3.2961337     -18.102416      374.48195    
+1 -21.398304576418457401
          1   99.99255      -21.398305      3.2958881     -18.102416      374.68139    
-Loop time of 0.00421175 on 1 procs for 1 steps with 256 atoms
+Loop time of 0.00348371 on 1 procs for 1 steps with 256 atoms
 
-Performance: 20.514 ns/day, 1.170 hours/ns, 237.431 timesteps/s, 60.782 katom-step/s
+Performance: 24.801 ns/day, 0.968 hours/ns, 287.050 timesteps/s, 73.485 katom-step/s
 97.4% CPU use with 1 MPI tasks x no OpenMP threads
 
 MPI task timing breakdown:
 Section |  min time  |  avg time  |  max time  |%varavg| %total
 ---------------------------------------------------------------
-Pair    | 0.00027342 | 0.00027342 | 0.00027342 |   0.0 |  6.49
-Neigh   | 0.00058804 | 0.00058804 | 0.00058804 |   0.0 | 13.96
-Comm    | 3.8499e-05 | 3.8499e-05 | 3.8499e-05 |   0.0 |  0.91
-Output  | 0.0032934  | 0.0032934  | 0.0032934  |   0.0 | 78.20
-Modify  | 1.1001e-05 | 1.1001e-05 | 1.1001e-05 |   0.0 |  0.26
-Other   |            | 7.374e-06  |            |       |  0.18
+Pair    | 0.00022467 | 0.00022467 | 0.00022467 |   0.0 |  6.45
+Neigh   | 0.000462   | 0.000462   | 0.000462   |   0.0 | 13.26
+Comm    | 3.1791e-05 | 3.1791e-05 | 3.1791e-05 |   0.0 |  0.91
+Output  | 0.0027364  | 0.0027364  | 0.0027364  |   0.0 | 78.55
+Modify  | 2.2501e-05 | 2.2501e-05 | 2.2501e-05 |   0.0 |  0.65
+Other   |            | 6.333e-06  |            |       |  0.18
 
 Nlocal:            256 ave         256 max         256 min
 Histogram: 1 0 0 0 0 0 0 0 0 0
@@ -72,4 +75,4 @@ Total # of neighbors = 17152
 Ave neighs/atom = 67
 Neighbor list builds = 1
 Dangerous builds not checked
-Total wall time: 0:00:00
+Total wall time: 0:00:02

@@ -10,6 +10,9 @@ function extract_single_step_observables(lmp::LMP)
     raw_pos    = extract_atom(lmp, "x")
     raw_forces = extract_atom(lmp, "f")
     raw_vels   = extract_atom(lmp, "v")
+
+    pe = extract_compute(lmp,"pe",LAMMPS.API.LMP_STYLE_GLOBAL,LAMMPS.API.LMP_TYPE_SCALAR)
+    
    
     sort_idxs = sortperm(atomids)
     config_types  = raw_types[sort_idxs]
@@ -20,7 +23,8 @@ function extract_single_step_observables(lmp::LMP)
     config_dict = Dict( "types"      => config_types,
                         "positions"  => config_pos,
                         "forces"     => config_forces,
-                        "velocities" => config_vels)
+                        "velocities" => config_vels,
+                        "pe"         => pe)
     
     config_dict
 end
@@ -28,7 +32,14 @@ end
 function parse_pe_file(fname::String="./pe.dat"; config_list = Nothing)
     pe_data = CSV.read(fname, DataFrame, header=["tstep", "pe"], skipto=2, delim=" ")
     if config_list == Nothing 
-        pe_data
+        return pe_data
+    else
+        for (idx,pe_row) in enumerate(eachrow(pe_data))
+            #A bit of a fragile assumption
+            @assert config_list[idx]["timestep"] == pe_row.tstep
+            config_list[idx]["pe"] = pe_row.pe
+        end
+        return config_list
     end
 end
 
@@ -60,7 +71,12 @@ function lj_expts(; num_steps=50, vel_seed =12280329, single=true)
             command(lmp, "dump           run_forces all custom \${dumpf} dump_batch.custom id type x y z fx fy fz vx vy vz")
         end
         command(lmp, """dump_modify    run_forces sort id format line "%4d %1d %32.27f %32.27f %32.27f %32.27f %32.27f %32.27f %32.27f %32.27f %32.27f" """)
-            
+        
+        if single
+            command(lmp,"compute pe all pe")
+        else
+            command(lmp,"""fix eprint all print 1 "\$(step) \$(pe)" file pe.dat""")
+        end
         command(lmp, "fix          nvt all nvt temp \$T \$T \${Tdamp}")
          
         configs = []
@@ -79,7 +95,7 @@ function lj_expts(; num_steps=50, vel_seed =12280329, single=true)
             command(lmp, "run $(num_steps)")
             configs = fragile_parse_dump("./dump_batch.custom")
             
-            all_pes = parse_pe_file()
+            configs = parse_pe_file(;config_list=configs)
             
             #rm("./dump_batch.custom") # could also just be a file in /tmp
         end
@@ -89,12 +105,13 @@ function lj_expts(; num_steps=50, vel_seed =12280329, single=true)
 end
 
 
-#id2idx(id::Integer, ids::Vector{<:Integer}) = findfirst(x -> x==id,ids)
-#cd("/Users/swyant/cesmix/exploratory/new_public/lammps_related/lammps_jl_tests/md_loops/single_step_with_force_exctract/lj_tests")
 single_step_configs = lj_expts(; num_steps=1, single=true)
 ss_all_forces = reshape(reduce(hcat,[config["forces"] for config in single_step_configs]), size(single_step_configs[1]["forces"])..., :) 
+ss_all_pe = [config["pe"] for config in single_step_configs]
 
 batch_step_configs = lj_expts(; num_steps=1, single=false)
 batch_all_forces = reshape(reduce(hcat,[config["forces"] for config in batch_step_configs]), size(batch_step_configs[1]["forces"])..., :)
+batch_all_pe = [config["pe"] for config in batch_step_configs]
 
-max_force_discrep = maximum(abs.(batch_all_forces - ss_all_forces))
+@show max_force_discrep = maximum(abs.(batch_all_forces - ss_all_forces))
+@show max_pe_discrep = maximum(abs.(batch_all_pe - ss_all_pe))

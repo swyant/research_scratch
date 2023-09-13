@@ -1,5 +1,6 @@
 using LAMMPS
 using CSV, DataFrames
+using Plots
 #using JLD
 
 include("../../utilities/parse_dump/parse_dump.jl")
@@ -115,8 +116,11 @@ function ace_and_gap_expts(; num_steps=50, vel_seed =12280329, temp=100)
 end
 
 
-ace_cfgs, gap_cfgs = ace_and_gap_expts(; num_steps=1, temp=100)
+ace_cfgs, gap_cfgs = ace_and_gap_expts(; num_steps=50, temp=2000)
 
 # need to recheck how I fit ACE, because I thought I fit to cohesive energy?
+tsteps  = [config["timestep"] for config in ace_cfgs]
 ace_pes = [config["pe"] for config in ace_cfgs]
 gap_pes = [config["pe"] for config in gap_cfgs] 
+
+plot(1:size(ace_pes)[1], [ace_pes, gap_pes])

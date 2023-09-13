@@ -43,13 +43,11 @@ function get_gap_eandf(bbounds,atom_types,atom_pos,masses)
                 bbound_str = bbound_str * @sprintf " %.27f" bbounds[i][j]
             end
         end
-        @show bbound_str
 
         command(lmp, "region main block" * bbound_str)
         command(lmp, "create_box $(num_types) main ")
         
         for (type_idx,mass) in enumerate(masses)
-            @show "mass $(type_idx) $(mass)"
             command(lmp, "mass $(type_idx) $(mass)")
         end
 
@@ -59,7 +57,6 @@ function get_gap_eandf(bbounds,atom_types,atom_pos,masses)
             for i in 1:3
                 xyz_str = xyz_str * @sprintf " %.27f" atom_pos[i,j]
             end
-            @show "create_atoms $(atom_types[j])" * xyz_str
             command(lmp, "create_atoms $(atom_types[j]) single" * xyz_str)
         end
 

@@ -26,7 +26,7 @@ function extract_single_step_observables(lmp::LMP)
 end
 
 
-function get_gap_eandf(bbounds,atom_types,atom_pos,masses)
+function get_gap_eandf(bbounds,atom_types,atom_pos,masses, tstep)
     num_types = size(masses)[1]
     num_atoms = size(atom_pos)[2]
     config_dict = LMP(["-screen", "none"]) do lmp

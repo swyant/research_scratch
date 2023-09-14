@@ -9,6 +9,7 @@ function extract_single_step_observables(lmp::LMP)
     
    
     sort_idxs = sortperm(atomids)
+# Warning: If I didn't slice this, I'm not sure I'd have a valid memory reference afterwards. Should check!
     config_types  = raw_types[sort_idxs]
     config_pos    = raw_pos[:, sort_idxs] 
     config_forces = raw_forces[:, sort_idxs]

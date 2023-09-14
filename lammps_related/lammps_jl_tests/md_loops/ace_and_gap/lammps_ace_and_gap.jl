@@ -84,6 +84,7 @@ function ace_and_gap_expts(; num_steps=50, vel_seed =12280329, temp=100)
         command(lmp,"compute pe all pe")
          
         # implementing get_thermo would obviate the need for this
+        # Though maybe I should check extract_global() ???
         command(lmp,"variable xlo equal xlo")
         command(lmp,"variable xhi equal xhi" )
         command(lmp,"variable ylo equal ylo")

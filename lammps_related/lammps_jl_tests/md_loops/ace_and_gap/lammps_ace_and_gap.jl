@@ -73,11 +73,7 @@ function ace_and_gap_expts(; num_steps=50, vel_seed =12280329, temp=100)
         
         command(lmp, "thermo       1")
         command(lmp, "thermo_style custom step temp pe ke etotal press")
-       
-        #for the rerun test 
-        command(lmp, "run_dump all xyz \${dumpf} dump_run.xyz")
-        command(lmp, """ dump_modify    run_dump sort id format line "%s %32.27f %32.27f %32.27f" """)
-
+      
         command(lmp, "dump           run_forces all custom \${dumpf} dump_single.custom id type x y z fx fy fz vx vy vz")
         command(lmp, """dump_modify    run_forces sort id format line "%4d %1d %32.27f %32.27f %32.27f %32.27f %32.27f %32.27f %32.27f %32.27f %32.27f" """)
         
@@ -102,15 +98,15 @@ function ace_and_gap_expts(; num_steps=50, vel_seed =12280329, temp=100)
         gap_configs = []
         command(lmp, "run 0")
         cfg_dct = extended_extract_ss_obs(lmp)
-        gap_cfg_dct = get_gap_eandf(cfg_dct["box_bounds"],cfg_dct["types"],cfg_dct["positions"],cfg_dct["masses"])
+        gap_cfg_dct = get_gap_eandf(cfg_dct["box_bounds"],cfg_dct["types"],cfg_dct["positions"],cfg_dct["masses"],0)
 
         push!(ace_configs,cfg_dct)
         push!(gap_configs,gap_cfg_dct)
 
-        for _ in 1:num_steps
+        for tstep in 1:num_steps
             command(lmp, "run 1")
             cfg_dct = extended_extract_ss_obs(lmp)
-            gap_cfg_dct = get_gap_eandf(cfg_dct["box_bounds"],cfg_dct["types"],cfg_dct["positions"],cfg_dct["masses"])
+            gap_cfg_dct = get_gap_eandf(cfg_dct["box_bounds"],cfg_dct["types"],cfg_dct["positions"],cfg_dct["masses"],tstep)
 
             push!(ace_configs, cfg_dct)
             push!(gap_configs,gap_cfg_dct)
@@ -120,11 +116,12 @@ function ace_and_gap_expts(; num_steps=50, vel_seed =12280329, temp=100)
     ace_configs, gap_configs
 end
 
+rm("./dump_gap.custom";force=true)
+#@time ace_cfgs, gap_cfgs = ace_and_gap_expts(; num_steps=50, temp=2000)
+ace_cfgs, gap_cfgs = ace_and_gap_expts(; num_steps=50, temp=2000) # Manually timed, 2:00 almost exactly, single processor
 
-ace_cfgs, gap_cfgs = ace_and_gap_expts(; num_steps=50, temp=2000)
 
-# need to recheck how I fit ACE, because I thought I fit to cohesive energy?
-tsteps  = [config["timestep"] for config in ace_cfgs]
+#tsteps  = [config["timestep"] for config in ace_cfgs] # can't get extract_global(lmp, "step") working...
 ace_pes = [config["pe"] for config in ace_cfgs]
 gap_pes = [config["pe"] for config in gap_cfgs] 
 

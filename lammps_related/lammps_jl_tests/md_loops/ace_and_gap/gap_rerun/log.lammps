@@ -1,0 +1,99 @@
+LAMMPS (2 Aug 2023 - Development - patch_2Aug2023-219-g06e2d5d306)
+# Siviraman GAP test
+
+units          metal
+boundary       p p p
+atom_style     atomic
+neigh_modify   delay 0 every 1 check no
+
+read_data     ../tetrag_hfo2_sample_DATA
+Reading data file ...
+  orthogonal box = (0 0 0) to (10.956 10.956 10.629)
+  1 by 1 by 1 MPI processor grid
+  reading atoms ...
+  108 atoms
+  read_data CPU = 0.001 seconds
+
+pair_style     quip
+pair_coeff     * * ../gap.xml "Potential xml_label=GAP_2020_2_11_0_18_44_47_601" 72 8
+
+variable dumpf    equal  1
+
+thermo       1
+thermo_style custom step temp pe ke etotal press
+
+dump           run_forces all custom ${dumpf} dump_rerun_gap.custom id type x y z fx fy fz
+dump           run_forces all custom 1 dump_rerun_gap.custom id type x y z fx fy fz
+dump_modify    run_forces sort id format line "%4d %1d %32.27f %32.27f %32.27f %32.27f %32.27f %32.27f"
+
+rerun ../dump_single.custom dump x y z
+WARNING: No fixes with time integration, atoms won't move (src/verlet.cpp:60)
+Neighbor list info ...
+  update: every = 1 steps, delay = 0 steps, check = no
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 6
+  ghost atom cutoff = 6
+  binsize = 3, bins = 4 4 4
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair quip, perpetual
+      attributes: full, newton on
+      pair build: full/bin/atomonly
+      stencil: full/bin/3d
+      bin: standard
+Per MPI rank memory allocation (min/avg/max) = 2.464 | 2.464 | 2.464 Mbytes
+   Step          Temp          PotEng         KinEng         TotEng         Press     
+         0   0             -1063.2762      0             -1063.2762      1802.9774    
+         1   0             -1063.1943      0             -1063.1943      2276.5649    
+         2   0             -1063.1642      0             -1063.1642      2539.322     
+         3   0             -1063.1916      0             -1063.1916      2519.4825    
+         4   0             -1063.2754      0             -1063.2754      2171.5575    
+         5   0             -1063.4084      0             -1063.4084      1544.0881    
+         6   0             -1063.5797      0             -1063.5797      694.29151    
+         7   0             -1063.7756      0             -1063.7756     -338.2003     
+         8   0             -1063.9822      0             -1063.9822     -1566.4394    
+         9   0             -1064.1873      0             -1064.1873     -2815.962     
+        10   0             -1064.3826      0             -1064.3826     -4119.0625    
+        11   0             -1064.5641      0             -1064.5641     -5396.3329    
+        12   0             -1064.7308      0             -1064.7308     -6656.1789    
+        13   0             -1064.8839      0             -1064.8839     -7836.8558    
+        14   0             -1065.0251      0             -1065.0251     -8966.5865    
+        15   0             -1065.1558      0             -1065.1558     -10057.709    
+        16   0             -1065.2755      0             -1065.2755     -11102.841    
+        17   0             -1065.3832      0             -1065.3832     -12045.657    
+        18   0             -1065.4751      0             -1065.4751     -12955.59     
+        19   0             -1065.5439      0             -1065.5439     -13791.155    
+        20   0             -1065.5823      0             -1065.5823     -14494.803    
+        21   0             -1065.5833      0             -1065.5833     -15119.65     
+        22   0             -1065.5427      0             -1065.5427     -15647.1      
+        23   0             -1065.4596      0             -1065.4596     -16050.423    
+        24   0             -1065.3365      0             -1065.3365     -16340.138    
+        25   0             -1065.1804      0             -1065.1804     -16518.693    
+        26   0             -1064.9996      0             -1064.9996     -16562.07     
+        27   0             -1064.8033      0             -1064.8033     -16401.788    
+        28   0             -1064.6003      0             -1064.6003     -16114.543    
+        29   0             -1064.3971      0             -1064.3971     -15604.752    
+        30   0             -1064.1978      0             -1064.1978     -14898.377    
+        31   0             -1064.0029      0             -1064.0029     -14114.455    
+        32   0             -1063.8107      0             -1063.8107     -13213.068    
+        33   0             -1063.6177      0             -1063.6177     -12177.185    
+        34   0             -1063.42        0             -1063.42       -11099.456    
+        35   0             -1063.2166      0             -1063.2166     -9982.5514    
+        36   0             -1063.0102      0             -1063.0102     -8809.3203    
+        37   0             -1062.8061      0             -1062.8061     -7582.7512    
+        38   0             -1062.6131      0             -1062.6131     -6433.9988    
+        39   0             -1062.4442      0             -1062.4442     -5442.0136    
+        40   0             -1062.3152      0             -1062.3152     -4679.1179    
+        41   0             -1062.2418      0             -1062.2418     -4195.7473    
+        42   0             -1062.2376      0             -1062.2376     -4087.9235    
+        43   0             -1062.3116      0             -1062.3116     -4388.1964    
+        44   0             -1062.4672      0             -1062.4672     -5033.8078    
+        45   0             -1062.7012      0             -1062.7012     -6111.4362    
+        46   0             -1063.0023      0             -1063.0023     -7543.6587    
+        47   0             -1063.3524      0             -1063.3524     -9215.7247    
+        48   0             -1063.7279      0             -1063.7279     -11031.05     
+        49   0             -1064.1032      0             -1064.1032     -12804.773    
+        50   0             -1064.4534      0             -1064.4534     -14505.199    
+Loop time of 17.3619 on 1 procs for 51 steps with 108 atoms
+
+
+Total wall time: 0:00:19

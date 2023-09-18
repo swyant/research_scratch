@@ -49,7 +49,7 @@ lb = LBasisPotentialExt(ace1)
 ws, int = [1.0, 1.0], false
 learn!(lb, ds_train, ws, int)
 
-#lb, Σ = learn!(lb, ds_train; α=1e-6)
+lb, Σ = learn!(lb, ds_train, 1e-6)
 
 f_train = get_all_forces(ds_train)
 f_train_pred = get_all_forces(ds_train,lb)

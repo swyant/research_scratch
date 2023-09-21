@@ -1,0 +1,22 @@
+# Siviraman GAP test 
+
+units          metal 
+boundary       p p p 
+atom_style     atomic
+
+read_data      mod_tricky_nonorthog_DATA
+
+pair_style     quip
+pair_coeff     * * ../../../../lammps_related/hfo2_gap/siviraman_gap/gap.xml "Potential xml_label=GAP_2020_2_11_0_18_44_47_601" 72 8 
+
+variable dumpf    equal  1
+
+thermo       1
+thermo_style custom step temp pe ke etotal press pxx pyy pzz pxy pxz pyz
+
+fix thermo_out all print 1 "$(step) $(pe) $(pxx) $(pyy) $(pzz) $(pxy) $(pxz) $(pyz)" file thermo.dat screen no title "step pe pxx pyy pzz pxy pxz pyz"
+
+dump           run_forces all custom ${dumpf} dump_run_forces.custom id type x y z fx fy fz
+dump_modify    run_forces sort id format line "%4d %1d %32.27f %32.27f %32.27f %32.27f %32.27f %32.27f"
+
+run 0

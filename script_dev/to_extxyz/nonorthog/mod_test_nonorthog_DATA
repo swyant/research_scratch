@@ -7,6 +7,10 @@
 0.0             10.39029534  ylo yhi
 0.0             10.50058508  zlo zhi
                       0     -1.7900941399999999                       0  xy xz yz
+Masses 
+
+1 178.49 # element 72 
+2 15.999 # element 8 
 
 Atoms # atomic
 

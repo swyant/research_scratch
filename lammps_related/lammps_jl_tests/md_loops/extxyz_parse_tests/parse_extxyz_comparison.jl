@@ -35,3 +35,18 @@ energies_all = get_all_energies(ds2)
 
 @show max_force_discrep_all = maximum(abs.(all_force_comps_man - force_comps_all)) #0.0
 @show max_pe_discrep_all = maximum(abs.(all_energies_man-energies_all)) #0.0
+
+
+configs_man_nonorthog = fragile_parse_dump2("dump_forces_nonorthog.custom")
+configs_man_nonorthog = parse_thermo_file("thermo_nonorthog.dat"; config_list=configs_man_nonorthog)
+
+man_force_comps_nonorthog = [force_comp for config in configs_man_nonorthog for force_comp in config["forces"]]
+man_energies_nonorthog = [config["pe"] for config in configs_man_nonorthog]
+
+ds_nonorthog = fixed_load_data("configs_nonorthog.xyz", ExtXYZ(u"eV",u"Å"))
+
+force_comps_nonorthog = get_all_forces(ds_nonorthog)
+energies_nonorthog = get_all_energies(ds_nonorthog)
+
+@show max_force_discrep_nonorthog = maximum(abs.(man_force_comps_nonorthog - force_comps_nonorthog)) #0.0
+@show max_pe_discrep_all = maximum(abs.(man_energies_nonorthog - energies_nonorthog)) #0.0

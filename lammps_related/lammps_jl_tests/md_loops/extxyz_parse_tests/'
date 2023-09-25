@@ -18,7 +18,7 @@ function fixed_load_data(file, extxyz::ExtXYZ; T=Float64)
             lattice = parse.(Float64, split(lattice_line)) * extxyz.distance_units
             box = SVector{3}.([lattice[1:3], lattice[4:6], lattice[7:9]]) # MODIFIED: added SVector here
             energy = try
-                energy_line = match(r"energy=(.*?)($|\s)", line).captures[1] # MODIFIED, finishes with whitespace or EOL
+                energy_line = match(r"energy=(.*?)($|\s)", line).captures[1] # MODIFIED
                 energy = parse(Float64, energy_line)
                 Energy(energy, extxyz.energy_units)
             catch
@@ -65,7 +65,7 @@ function fixed_load_data(file, extxyz::ExtXYZ; T=Float64)
                     elseif prop[1] == "tags"
                         ft = Symbol(line[line_count])
                         line_count += 1
-                    elseif prop[1] == "forces" || prop[1] == "force" # MODIFIED: the property can  be "force", not just "forces"
+                    elseif prop[1] == "forces" || prop[1] == "force" # MODIFIED: the property is force, not forces
                         push!(
                             forces,
                             Force(

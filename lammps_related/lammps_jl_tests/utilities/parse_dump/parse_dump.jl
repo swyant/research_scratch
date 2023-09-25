@@ -1,4 +1,5 @@
 #using Printf
+using CSV, DataFrames
 
 """
 Question: Why doesn't the eachline iterator need the state to iterate past the first one?
@@ -155,4 +156,55 @@ function fragile_parse_dump2(fname::String)
     configs
 end 
 
+function parse_pe_file(fname::String="./pe.dat"; config_list = Nothing)
+    pe_data = CSV.read(fname, DataFrame, header=["tstep", "pe"], skipto=2, delim=" ")
+    if config_list == Nothing 
+        return pe_data
+    else
+        for (idx,pe_row) in enumerate(eachrow(pe_data))
+            #A bit of a fragile assumption
+            @assert config_list[idx]["timestep"] == pe_row.tstep
+            config_list[idx]["pe"] = pe_row.pe
+        end
+        return config_list
+    end
+end 
+
+function gen_tstep2idx_map(config_list)
+    tstep2idx = Dict()
+    for (idx,config) in enumerate(config_list)
+        tstep = config["timestep"]
+        @assert !(tstep in keys(tstep2idx)) # do not want ambiguities
+        tstep2idx[tstep] = idx
+    end
+    tstep2idx
+end
+
+function parse_thermo_file(fname::String="./thermo.dat"; config_list = Nothing)
+    thermo_data = CSV.read(fname, DataFrame, header=["tstep", "pe", "pxx", "pyy", "pzz", "pxy", "pxz", "pyz"], skipto=2, delim=" ")
+    if config_list == Nothing 
+        return thermo_data
+    else
+        seen_tsteps = []
+        tstep2idx_map = gen_tstep2idx_map(config_list)
+        for thermo_row in eachrow(thermo_data)
+            
+            tstep = thermo_row.tstep
+            @assert !(tstep in seen_tsteps) # do not want ambiguities
+            push!(seen_tsteps,tstep)
+
+            if tstep in keys(tstep2idx_map)
+                idx = tstep2idx_map[tstep]
+                config_list[idx]["pe"] = thermo_row.pe
+                config_list[idx]["virial"] = (pxx=thermo_row.pxx,
+                                              pyy=thermo_row.pyy,
+                                              pzz=thermo_row.pzz,
+                                              pxy=thermo_row.pxy,
+                                              pxz=thermo_row.pxz,
+                                              pyz=thermo_row.pzz)
+            end
+        end
+        return config_list
+    end
+end
 #test_configs = fragile_parse_dump("./dump_single.custom")

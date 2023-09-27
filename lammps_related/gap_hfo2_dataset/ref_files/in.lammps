@@ -1,0 +1,26 @@
+# Siviraman GAP test 
+log  ./output/log_10
+
+units          metal 
+boundary       p p p 
+atom_style     atomic
+
+read_data     ./data_files/prl_siviraman_HfO2_DATA_10
+
+pair_style     quip
+pair_coeff     * * ../hfo2_gap/siviraman_gap/gap.xml "Potential xml_label=GAP_2020_2_11_0_18_44_47_601" 72 8 
+
+variable thermo_fname  string "./output/thermo_10.dat"
+variable dump_fname    string "./output/dump_forces_10.custom"
+variable tstep         equal 10
+
+thermo       1
+thermo_style custom step temp pe ke etotal press pxx pyy pzz pxy pxz pyz
+
+fix thermo_out all print 1 "$(step) $(pe) $(pxx) $(pyy) $(pzz) $(pxy) $(pxz) $(pyz)" file ${thermo_fname} screen no title "step pe pxx pyy pzz pxy pxz pyz"
+
+dump           run_forces all custom 1 ${dump_fname} id type x y z fx fy fz
+dump_modify    run_forces sort id format line "%4d %1d %32.27f %32.27f %32.27f %32.27f %32.27f %32.27f"
+
+reset_timestep ${tstep}
+run 0

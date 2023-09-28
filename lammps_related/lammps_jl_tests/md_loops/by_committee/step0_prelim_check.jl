@@ -1,5 +1,6 @@
 using ACE1, ACE1pack, ACEfit
 using JuLIP
+using CSV, DataFrames 
 
 include("../../utilities/custom_export2lammps/custom_export2lammps.jl")
 

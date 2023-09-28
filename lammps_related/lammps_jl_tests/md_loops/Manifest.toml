@@ -2,13 +2,13 @@
 
 julia_version = "1.9.2"
 manifest_format = "2.0"
-project_hash = "4bd7a4e22ffeaff81ffac88236dd7ab17e1831b4"
+project_hash = "76748fe2ef31282d2e360fd3d1ea68f208f6a8f4"
 
 [[deps.ACE1]]
 deps = ["ACEbase", "BenchmarkTools", "Combinatorics", "ForwardDiff", "InteractiveUtils", "Interpolations", "JuLIP", "LinearAlgebra", "NeighbourLists", "Parameters", "Pkg", "Printf", "QuadGK", "Random", "Reexport", "Roots", "SparseArrays", "StaticArrays", "Test"]
-git-tree-sha1 = "6adc6da1c9c9819f6e077ffa29e357a42bb50c9b"
+git-tree-sha1 = "b3148a26be07f364c3ba74ffa4c8e70dc9acb087"
 uuid = "e3f9bc04-086e-409a-ba78-e9769fe067bb"
-version = "0.11.16"
+version = "0.11.15"
 
 [[deps.ACE1pack]]
 deps = ["ACE1", "ACE1x", "ACEfit", "ExtXYZ", "Interpolations", "JuLIP", "LinearAlgebra", "OrderedCollections", "PrettyTables", "Reexport", "StaticArrays", "YAML"]
@@ -510,9 +510,9 @@ version = "0.1.10"
 
 [[deps.ExtXYZ]]
 deps = ["AtomsBase", "PeriodicTable", "StaticArrays", "Unitful", "UnitfulAtomic", "extxyz_jll"]
-git-tree-sha1 = "a43854157359e1487f481fcd2e67c3bb23738bf2"
+git-tree-sha1 = "067ff49e8755f291f1c5016623f680ee64dd41a0"
 uuid = "352459e4-ddd7-4360-8937-99dcb397b478"
-version = "0.1.13"
+version = "0.1.12"
 
 [[deps.FFMPEG]]
 deps = ["FFMPEG_jll"]
@@ -874,9 +874,9 @@ version = "2.1.91+0"
 
 [[deps.JuLIP]]
 deps = ["ACEbase", "AlgebraicMultigrid", "AtomsBase", "Calculus", "CommonSubexpressions", "DataDeps", "DelimitedFiles", "ExtXYZ", "ForwardDiff", "FunctionWrappers", "Interpolations", "JSON", "LineSearches", "LinearAlgebra", "MacroTools", "NeighbourLists", "OffsetArrays", "Optim", "Printf", "Reexport", "Requires", "SparseArrays", "StaticArrays", "SuiteSparse", "Test", "Unitful", "ZipFile"]
-git-tree-sha1 = "04340bd99c27a77eb7aa21364b4013bdf0b4f8f4"
+git-tree-sha1 = "2c1adcafa30abe22effc25f9878485e95d2dd23c"
 uuid = "945c410c-986d-556a-acb1-167a618e0462"
-version = "0.14.5"
+version = "0.14.2"
 
 [[deps.JuliaVariables]]
 deps = ["MLStyle", "NameResolution"]
@@ -2303,10 +2303,10 @@ uuid = "35ca27e7-8b34-5b7f-bca9-bdc33f59eb06"
 version = "3.2.9+0"
 
 [[deps.extxyz_jll]]
-deps = ["Artifacts", "JLLWrappers", "Libdl", "PCRE2_jll", "libcleri_jll"]
-git-tree-sha1 = "873d06b969d13a1bd315ed847824b8cfded76542"
+deps = ["Artifacts", "JLLWrappers", "Libdl", "PCRE2_jll", "Pkg", "libcleri_jll"]
+git-tree-sha1 = "54c88fe9d4c57d59f3f51ac09f82e1e6ff7ef6c8"
 uuid = "6ecdc6fc-93a8-5528-aee3-ac7ae1c60be7"
-version = "0.1.3+0"
+version = "0.1.0+0"
 
 [[deps.fzf_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl", "Pkg"]

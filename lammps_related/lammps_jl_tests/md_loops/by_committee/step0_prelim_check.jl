@@ -4,7 +4,7 @@ using CSV, DataFrames
 
 include("../../utilities/custom_export2lammps/custom_export2lammps.jl")
 
-ds_path = "../../../../../../datasets/HfO2_Sivaraman/prl_2021/raw/train.xyz"
+ds_path = "../../../../../../datasets/HfO2_Sivaraman/prl_2021/raw/train.extxyz"
 raw_data = read_extxyz(ds_path)
 
 rpib = ACE1.rpi_basis(;
@@ -52,17 +52,19 @@ ACE1pack.linear_errors(all_data,pot_reg)
 ┌─────────┬─────────┬──────────┬─────────┐
 │    Type │ E [meV] │ F [eV/A] │ V [meV] │
 ├─────────┼─────────┼──────────┼─────────┤
-│ crystal │   0.006 │    0.286 │   0.000 │
+│ crystal │   8.293 │    0.372 │   0.000 │
+│  amorph │  13.364 │    0.447 │   0.000 │
 ├─────────┼─────────┼──────────┼─────────┤
-│     set │   0.006 │    0.286 │   0.000 │
+│     set │  10.113 │    0.396 │   0.000 │
 └─────────┴─────────┴──────────┴─────────┘
 [ Info: MAE Table
 ┌─────────┬─────────┬──────────┬─────────┐
 │    Type │ E [meV] │ F [eV/A] │ V [meV] │
 ├─────────┼─────────┼──────────┼─────────┤
-│ crystal │   0.006 │    0.230 │   0.000 │
+│ crystal │   6.803 │    0.271 │   0.000 │
+│  amorph │  10.435 │    0.339 │   0.000 │
 ├─────────┼─────────┼──────────┼─────────┤
-│     set │   0.006 │    0.230 │   0.000 │
+│     set │   7.910 │    0.291 │   0.000 │
 └─────────┴─────────┴──────────┴─────────┘
 =#
 custom_export2lammps("test.yace", pot_reg,rpib)
@@ -83,23 +85,25 @@ rpib3 = ACE1.rpi_basis(;
 prior_coeffs = vec(Matrix(CSV.read("N3_rcut5_maxdeg10_1e-3lambdaQR_fit_coeffs.csv",DataFrame,header=false)))
 pot_reg_tmp3 = JuLIP.MLIPs.combine(rpib3,prior_coeffs)
 pot_reg3 = JuLIP.MLIPs.SumIP(pot_reg_tmp3,vref)
-ACE1pack.linear_errors(train_data,pot_reg3)
+ACE1pack.linear_errors(all_data,pot_reg3)
 #=
 [ Info: RMSE Table
 ┌─────────┬─────────┬──────────┬─────────┐
 │    Type │ E [meV] │ F [eV/A] │ V [meV] │
 ├─────────┼─────────┼──────────┼─────────┤
-│ crystal │   5.795 │    0.226 │   0.000 │
+│ crystal │   5.032 │    0.194 │   0.000 │
+│  amorph │   5.974 │    0.269 │   0.000 │
 ├─────────┼─────────┼──────────┼─────────┤
-│     set │   5.795 │    0.226 │   0.000 │
+│     set │   5.337 │    0.219 │   0.000 │
 └─────────┴─────────┴──────────┴─────────┘
 [ Info: MAE Table
 ┌─────────┬─────────┬──────────┬─────────┐
 │    Type │ E [meV] │ F [eV/A] │ V [meV] │
 ├─────────┼─────────┼──────────┼─────────┤
-│ crystal │   5.795 │    0.176 │   0.000 │
+│ crystal │   3.937 │    0.142 │   0.000 │
+│  amorph │   4.682 │    0.202 │   0.000 │
 ├─────────┼─────────┼──────────┼─────────┤
-│     set │   5.795 │    0.176 │   0.000 │
+│     set │   4.164 │    0.160 │   0.000 │
 └─────────┴─────────┴──────────┴─────────┘
 =#
 custom_export2lammps("test_prior.yace", pot_reg3,rpib3)

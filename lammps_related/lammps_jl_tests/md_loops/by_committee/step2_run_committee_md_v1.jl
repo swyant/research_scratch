@@ -183,11 +183,11 @@ function ace_committee_expts(ace_list; num_steps=50, vel_seed =12280329, temp=10
         push!(data,cmte_data)
 
         for tstep in 1:num_steps
+            println(tstep)
             command(lmp, "run 1")
             main_cfg_dct = extended_extract_ss_obs(lmp) 
             cmte_data[1] = main_cfg_dct
             for i in 2:length(ace_list)
-                print(i)
                 other_cfg_dct = get_ace_eandf(main_cfg_dct["box_bounds"],main_cfg_dct["types"],main_cfg_dct["positions"],main_cfg_dct["masses"],tstep,ace_list[i])
                 cmte_data[i] = other_cfg_dct
             end
@@ -201,4 +201,5 @@ end
 label = "HfO2_N2_P6_r4"
 yace_files = ["./fits/$(label)_fit$(fit_idx).yace" for fit_idx in 1:5]
 
-ace_committee_expts(yace_files; num_steps=5, vel_seed =12280329, temp=100)
+@time ace_committee_expts(yace_files; num_steps=5, vel_seed =12280329, temp=100);
+# On second run, 38.835235 seconds (43.49 k allocations: 5.363 MiB)

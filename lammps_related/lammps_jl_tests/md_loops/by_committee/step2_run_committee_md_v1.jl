@@ -203,3 +203,6 @@ yace_files = ["./fits/$(label)_fit$(fit_idx).yace" for fit_idx in 1:5]
 
 @time ace_committee_expts(yace_files; num_steps=5, vel_seed =12280329, temp=100);
 # On second run, 38.835235 seconds (43.49 k allocations: 5.363 MiB)
+
+@time ace_committee_expts(yace_files; num_steps=50, vel_seed =12280329, temp=100);
+# 322.523994 seconds (369.57 k allocations: 45.576 MiB, 0.04% gc time)

@@ -1,1 +1,2 @@
-- Need to check that I'm recording the right indices, and can recover the correct fits. 
+- Need to check that I'm recording the right indices when fitting the committee, and can recover the correct fits. 
+- Need to check that the v1 committee md matches v2 committee md

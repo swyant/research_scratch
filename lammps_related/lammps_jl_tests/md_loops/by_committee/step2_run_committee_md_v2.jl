@@ -2,6 +2,7 @@ using LAMMPS
 using CSV, DataFrames
 using Plots
 using Printf
+using Statistics 
 
 function extended_extract_ss_obs(lmp::LMP)
     atomids    = extract_atom(lmp, "id")
@@ -184,15 +185,14 @@ function ace_committee_expts(driver_yace_fname, cmte_lmps; num_steps=50, vel_see
         push!(data,cmte_data)
 
         for tstep in 1:num_steps
-            println(tstep)
             command(lmp, "run 1")
             main_cfg_dct = extended_extract_ss_obs(lmp) 
-            cmte_data[1] = main_cfg_dct
+            cmte_data[1] = deepcopy(main_cfg_dct)
             for i in 1:length(cmte_lmps)
                 other_cfg_dct =ace_singlepoint(main_cfg_dct["box_bounds"],main_cfg_dct["types"],main_cfg_dct["positions"],main_cfg_dct["masses"],tstep,cmte_lmps[i])
-                cmte_data[i+1] = other_cfg_dct
+                cmte_data[i+1] = deepcopy(other_cfg_dct)
             end
-            push!(data,cmte_data)
+            push!(data,deepcopy(cmte_data))
         end
         return data 
     end 
@@ -204,16 +204,39 @@ yace_files = ["./fits/$(label)_fit$(fit_idx).yace" for fit_idx in 1:5]
 
 yace_lmps = [initialize_committee_member(yace_files[i],2) for i in 2:length(yace_files)] # hard-coding number of types currently...
 
-@time ace_committee_expts(yace_files[1],yace_lmps; num_steps=5, vel_seed =12280329, temp=100);
+#@time ace_committee_expts(yace_files[1],yace_lmps; num_steps=5, vel_seed =12280329, temp=100);
 # on second run, 1.618354 seconds (43.28 k allocations: 5.352 MiB, 0.55% gc time, 0.19% compilation time)
-
-@time ace_committee_expts(yace_files[1],yace_lmps; num_steps=50, vel_seed =12280329, temp=100);
+#@time ace_committee_expts(yace_files[1],yace_lmps; num_steps=50, vel_seed =12280329, temp=100);
 # 1.974278 seconds (367.53 k allocations: 45.478 MiB, 0.42% gc time)
-
-
-@time ace_committee_expts(yace_files[1],yace_lmps; num_steps=500, vel_seed =12280329, temp=100);
+#@time ace_committee_expts(yace_files[1],yace_lmps; num_steps=500, vel_seed =12280329, temp=100);
 # 5.471430 seconds (3.61 M allocations: 446.726 MiB, 0.66% gc time)
 
+data_200 = ace_committee_expts(yace_files[1],yace_lmps; num_steps=5000, vel_seed =12280329, temp=200);
+data_500 = ace_committee_expts(yace_files[1],yace_lmps; num_steps=5000, vel_seed =12280329, temp=500);
+data_1000 = ace_committee_expts(yace_files[1],yace_lmps; num_steps=5000, vel_seed =12280329, temp=1000);
+data_2000 = ace_committee_expts(yace_files[1],yace_lmps; num_steps=5000, vel_seed =12280329, temp=2000);
+
+function compute_avg_stdev(data)
+    avg_f_stdevs = []
+    for tstep_idx in eachindex(data)
+        tstep_f_stdevs = []
+        for f_idx in eachindex(data[tstep_idx][1]["forces"])
+            f_comp_std = Statistics.std([data[tstep_idx][cmte_idx]["forces"][f_idx] for cmte_idx in 1:5]) # HARDCODED
+            push!(tstep_f_stdevs, f_comp_std)
+        end
+        avg_tstep_stdev = mean(tstep_f_stdevs)
+        push!(avg_f_stdevs, avg_tstep_stdev)
+    end
+    avg_f_stdevs
+end 
+
+avg_f_stdevs_200 = compute_avg_stdev(data_200)
+avg_f_stdevs_500 = compute_avg_stdev(data_500)
+avg_f_stdevs_1000 = compute_avg_stdev(data_1000)
+avg_f_stdevs_2000 = compute_avg_stdev(data_2000)
+
+plot(1:5001, [avg_f_stdevs_200,avg_f_stdevs_500,avg_f_stdevs_1000,avg_f_stdevs_2000])
 for c_lmps in yace_lmps
     LAMMPS.API.lammps_close(c_lmps)
 end
+

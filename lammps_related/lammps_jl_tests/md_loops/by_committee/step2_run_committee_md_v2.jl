@@ -154,8 +154,8 @@ function ace_committee_expts(driver_yace_fname, cmte_lmps; num_steps=50, vel_see
         command(lmp, "thermo       1")
         command(lmp, "thermo_style custom step temp pe ke etotal press")
       
-        command(lmp, "dump           run_forces all custom \${dumpf} dump_single.custom id type x y z fx fy fz vx vy vz")
-        command(lmp, """dump_modify    run_forces sort id format line "%4d %1d %32.27f %32.27f %32.27f %32.27f %32.27f %32.27f %32.27f %32.27f %32.27f" """)
+        #command(lmp, "dump           run_forces all custom \${dumpf} dump_single.custom id type x y z fx fy fz vx vy vz")
+        #command(lmp, """dump_modify    run_forces sort id format line "%4d %1d %32.27f %32.27f %32.27f %32.27f %32.27f %32.27f %32.27f %32.27f %32.27f" """)
         
         command(lmp,"compute pe all pe")
          

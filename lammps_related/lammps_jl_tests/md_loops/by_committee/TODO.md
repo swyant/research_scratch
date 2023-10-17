@@ -1,2 +1,4 @@
 - Need to check that I'm recording the right indices when fitting the committee, and can recover the correct fits. 
 - Need to check that the v1 committee md matches v2 committee md
+- check that computing stdev locally in the active learning loop matches doing it outside the loop
+- investigate why higher energy structures have lower variance in prediction (perhaps more representative of dataset)

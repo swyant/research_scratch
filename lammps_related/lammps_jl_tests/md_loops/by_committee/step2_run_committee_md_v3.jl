@@ -1,5 +1,5 @@
 using LAMMPS
-using CSV, DataFrames
+using CSV, DataFrames, Tables
 using Plots
 using Printf
 using Statistics 
@@ -131,12 +131,26 @@ end
 function compute_avg_force_stdev(cmte_dict)
     f_stdevs = []
     for f_idx in eachindex(cmte_dict[1]["forces"])
-        f_comp_std = Statistics.std([cmte_dict[cmte_key]["forces"][f_idx] for cmte_key in keys(cmte_dict)]) # HARDCODED
+        f_comp_std = Statistics.std([cmte_dict[cmte_key]["forces"][f_idx] for cmte_key in keys(cmte_dict)]) 
         push!(f_stdevs, f_comp_std)
     end
     avg_fcomp_stdev = mean(f_stdevs)
     avg_fcomp_stdev
 end 
+
+function compute_force_comp_data(cmte_dict)
+    f_stdevs = [] # 3N standard deviations 
+    f_means  = []
+    for f_idx in eachindex(cmte_dict[1]["forces"])
+        tmp_fcomp_arr = [cmte_dict[cmte_key]["forces"][f_idx] for cmte_key in keys(cmte_dict)]
+        f_comp_std = Statistics.std(tmp_fcomp_arr) 
+        f_comp_mean = Statistics.mean(tmp_fcomp_arr)
+        push!(f_stdevs, f_comp_std)
+        push!(f_means, f_comp_mean)
+    end
+    avg_fcomp_stdev = mean(f_stdevs)
+    avg_fcomp_stdev, transpose(reshape(f_stdevs,3,:)), transpose(reshape(f_means,3,:))
+end
 
 function compute_energy_mean_and_stdev(cmte_dict)
     e_stdev = Statistics.std([ cmte_dict[cmte_key]["pe"] for cmte_key in keys(cmte_dict)])
@@ -146,12 +160,14 @@ end
 
 function ace_committee_expts(driver_yace_fname, cmte_lmps; num_steps=50, vel_seed =12280329, temp=100)
 
-    mean_fcomp_stdevs, energy_stdevs,energy_means, all_raw_energies = LMP(["-screen","none"]) do lmp  
+    ddict = LMP(["-screen","none"]) do lmp  
         data = []
         mean_fcomp_stdevs = []
         energy_stdevs = []
         energy_means = []
         all_raw_energies = []
+        all_fcomp_stdevs = []
+        all_fcomp_means = []
         command(lmp, "log none")
 
         command(lmp, "units          metal")
@@ -176,7 +192,9 @@ function ace_committee_expts(driver_yace_fname, cmte_lmps; num_steps=50, vel_see
       
         #command(lmp, "dump           run_forces all custom \${dumpf} dump_CHECK.custom id type x y z fx fy fz vx vy vz")
         #command(lmp, """dump_modify    run_forces sort id format line "%4d %1d %32.27f %32.27f %32.27f %32.27f %32.27f %32.27f %32.27f %32.27f %32.27f" """)
-        
+        command(lmp, "dump           run_forces all custom \${dumpf} dump_CHECK.custom id type x y z fx fy fz")
+        command(lmp, """dump_modify    run_forces sort id format line "%4d %1d %32.27f %32.27f %32.27f %32.27f %32.27f %32.27f" """)
+       
         command(lmp,"compute pe all pe")
          
         # implementing get_thermo would obviate the need for this
@@ -202,8 +220,10 @@ function ace_committee_expts(driver_yace_fname, cmte_lmps; num_steps=50, vel_see
             other_cfg_dct = ace_singlepoint(main_cfg_dct["box_bounds"],main_cfg_dct["types"],main_cfg_dct["positions"],main_cfg_dct["masses"],0,cmte_lmps[i])
             cmte_data[i+1] = other_cfg_dct
         end
-        avg_fcomp_stdev = compute_avg_force_stdev(cmte_data)
+        avg_fcomp_stdev, fcomp_stdevs, fcomp_means = compute_force_comp_data(cmte_data)
         push!(mean_fcomp_stdevs,avg_fcomp_stdev)
+        push!(all_fcomp_stdevs, fcomp_stdevs)
+        push!(all_fcomp_means, fcomp_means)
         energy_mean, energy_stdev = compute_energy_mean_and_stdev(cmte_data)
         raw_energies = [cmte_data[cmte_key]["pe"] for cmte_key in keys(cmte_data)]
 
@@ -219,8 +239,10 @@ function ace_committee_expts(driver_yace_fname, cmte_lmps; num_steps=50, vel_see
                 other_cfg_dct =ace_singlepoint(main_cfg_dct["box_bounds"],main_cfg_dct["types"],main_cfg_dct["positions"],main_cfg_dct["masses"],tstep,cmte_lmps[i])
                 cmte_data[i+1] = deepcopy(other_cfg_dct)
             end
-            avg_fcomp_stdev = compute_avg_force_stdev(cmte_data)
+            avg_fcomp_stdev, fcomp_stdevs, fcomp_means = compute_force_comp_data(cmte_data)
             push!(mean_fcomp_stdevs,avg_fcomp_stdev)
+            push!(all_fcomp_stdevs, fcomp_stdevs)
+            push!(all_fcomp_means, fcomp_means)
             energy_mean, energy_stdev = compute_energy_mean_and_stdev(cmte_data)
             raw_energies = [cmte_data[cmte_key]["pe"] for cmte_key in keys(cmte_data)]
             push!(energy_stdevs,energy_stdev)
@@ -228,9 +250,15 @@ function ace_committee_expts(driver_yace_fname, cmte_lmps; num_steps=50, vel_see
             push!(all_raw_energies,raw_energies)
 
         end
-        return mean_fcomp_stdevs, energy_stdevs, energy_means, all_raw_energies
+        ddict = Dict("mean_fcomp_stdevs" => mean_fcomp_stdevs,
+                    "energy_stdevs" => energy_stdevs,
+                    "energy_means" => energy_means,
+                    "all_raw_energies" =>all_raw_energies,
+                    "all_fcomp_stdevs" => all_fcomp_stdevs,
+                    "all_fcomp_means" => all_fcomp_means)
+        return ddict
     end 
-    mean_fcomp_stdevs, energy_stdevs,energy_means, all_raw_energies
+   ddict 
 end
 
 label = "HfO2_N2_P6_r4"
@@ -245,10 +273,13 @@ yace_lmps = [initialize_committee_member(yace_files[i],2) for i in 2:length(yace
 #@time ace_committee_expts(yace_files[1],yace_lmps; num_steps=500, vel_seed =12280329, temp=100);
 # 5.471430 seconds (3.61 M allocations: 446.726 MiB, 0.66% gc time)
 
-f_stdev_200, e_stdev_200, e_mean_200, raw_pe_200 = ace_committee_expts(yace_files[1],yace_lmps; num_steps=5000, vel_seed =12280329, temp=200);
-f_stdev_500, e_stdev_500, e_mean_500, raw_pe_500 = ace_committee_expts(yace_files[1],yace_lmps; num_steps=5000, vel_seed =12280329, temp=500);
-f_stdev_1000, e_stdev_1000, e_mean_1000, raw_pe_1000 = ace_committee_expts(yace_files[1],yace_lmps; num_steps=5000, vel_seed =12280329, temp=1000);
-f_stdev_2000, e_stdev_2000, e_mean_2000, raw_pe_2000 = ace_committee_expts(yace_files[1],yace_lmps; num_steps=5000, vel_seed =12280329, temp=2000);
+ddict_200  = ace_committee_expts(yace_files[1],yace_lmps; num_steps=5000, vel_seed =12280329, temp=200);
+ddict_500  = ace_committee_expts(yace_files[1],yace_lmps; num_steps=5000, vel_seed =12280329, temp=500);
+ddict_1000 = ace_committee_expts(yace_files[1],yace_lmps; num_steps=5000, vel_seed =12280329, temp=1000);
+ddict_2000 = ace_committee_expts(yace_files[1],yace_lmps; num_steps=5000, vel_seed =12280329, temp=2000);
+
+CSV.write("2000K_fcomp_stdevs.csv",DataFrame( Tables.table(reduce(vcat,ddict_2000["all_fcomp_stdevs"])) ) ,header=false, delim=" ")
+CSV.write("2000K_fcomp_means.csv",DataFrame( Tables.table(reduce(vcat,ddict_2000["all_fcomp_means"])) ) ,header=false, delim=" ")
 
 x_vals = [ i for i in 0:5000 for _ in 1:5]
 function gen_yvals(raw_pes)
@@ -261,27 +292,27 @@ function gen_yvals(raw_pes)
     y_vals
 end
 
-pe_200s = gen_yvals(raw_pe_200)
-pe_500s = gen_yvals(raw_pe_500)
-pe_1000s = gen_yvals(raw_pe_1000)
-pe_2000s = gen_yvals(raw_pe_2000)
+pe_200s  = gen_yvals(ddict_200["all_raw_energies"])
+pe_500s  = gen_yvals(ddict_500["all_raw_energies"])
+pe_1000s = gen_yvals(ddict_1000["all_raw_energies"])
+pe_2000s = gen_yvals(ddict_2000["all_raw_energies"])
 
 cur_colors = get_color_palette(:auto, 17);
-#plot(0:5000, [f_stdev_200,f_stdev_500,f_stdev_1000,f_stdev_2000])
-#plot(0:5000, [e_stdev_200,e_stdev_500,e_stdev_1000,e_stdev_2000])
-#plot(0:5000, [e_mean_200,e_mean_500,e_mean_1000,e_mean_2000], color=cur_colors[3])
+#plot(0:5000, [ddict_200["mean_fcomp_stdevs"],ddict_500["mean_fcomp_stdevs"],ddict_1000["mean_fcomp_stdevs"],ddict_2000["mean_fcomp_stdevs"]])
+#plot(0:5000, [ddict_200["energy_stdevs"],ddict_500["energy_stdevs"],ddict_1000["energy_stdevs"],ddict_2000["energy_stdevs"]])
+#plot(0:5000, [ddict_200["energy_means"],ddict_500["energy_means"],ddict_1000["energy_means"],ddict_2000["energy_means"]], color=cur_colors[3])
 
-plot(3000:3100, e_mean_200[3001:3101])
+plot(3000:3100, ddict_200["energy_means"][3001:3101])
 scatter!(x_vals[15001:15501],pe_200s[15001:15501], markersize=2, linewidth=0.00001)
-plot(3000:3100,e_stdev_200[3001:3101])
+plot(3000:3100,ddict_200["energy_stdevs"][3001:3101])
 
-plot(3000:3100, e_mean_2000[3001:3101])
+plot(3000:3100, ddict_2000["energy_means"][3001:3101])
 scatter!(x_vals[15001:15501],pe_2000s[15001:15501], markersize=2, linewidth=0.00001)
-plot(3000:3100,e_stdev_2000[3001:3101])
+plot(3000:3100,ddict_2000["energy_stdevs"][3001:3101])
 
-plot(3040:3070, e_mean_2000[3041:3071])
+plot(3040:3070, ddict_2000["energy_means"][3041:3071])
 scatter!(x_vals[15201:15351],pe_2000s[15201:15351], markersize=2, linewidth=0.00001)
-plot(3040:3070,e_stdev_2000[3041:3071])
+plot(3040:3070,ddict_2000["energy_stdevs"][3041:3071])
 for c_lmps in yace_lmps
     LAMMPS.API.lammps_close(c_lmps)
 end

@@ -146,11 +146,12 @@ end
 
 function ace_committee_expts(driver_yace_fname, cmte_lmps; num_steps=50, vel_seed =12280329, temp=100)
 
-    mean_fcomp_stdevs, energy_stdevs,energy_means = LMP(["-screen","none"]) do lmp  
+    mean_fcomp_stdevs, energy_stdevs,energy_means, all_raw_energies = LMP(["-screen","none"]) do lmp  
         data = []
         mean_fcomp_stdevs = []
         energy_stdevs = []
         energy_means = []
+        all_raw_energies = []
         command(lmp, "log none")
 
         command(lmp, "units          metal")
@@ -204,8 +205,11 @@ function ace_committee_expts(driver_yace_fname, cmte_lmps; num_steps=50, vel_see
         avg_fcomp_stdev = compute_avg_force_stdev(cmte_data)
         push!(mean_fcomp_stdevs,avg_fcomp_stdev)
         energy_mean, energy_stdev = compute_energy_mean_and_stdev(cmte_data)
+        raw_energies = [cmte_data[cmte_key]["pe"] for cmte_key in keys(cmte_data)]
+
         push!(energy_stdevs,energy_stdev)
         push!(energy_means,energy_mean)
+        push!(all_raw_energies,raw_energies)
 
         for tstep in 1:num_steps
             command(lmp, "run 1")
@@ -218,13 +222,15 @@ function ace_committee_expts(driver_yace_fname, cmte_lmps; num_steps=50, vel_see
             avg_fcomp_stdev = compute_avg_force_stdev(cmte_data)
             push!(mean_fcomp_stdevs,avg_fcomp_stdev)
             energy_mean, energy_stdev = compute_energy_mean_and_stdev(cmte_data)
+            raw_energies = [cmte_data[cmte_key]["pe"] for cmte_key in keys(cmte_data)]
             push!(energy_stdevs,energy_stdev)
             push!(energy_means,energy_mean)
+            push!(all_raw_energies,raw_energies)
 
         end
-        return mean_fcomp_stdevs, energy_stdevs, energy_means
+        return mean_fcomp_stdevs, energy_stdevs, energy_means, all_raw_energies
     end 
-    mean_fcomp_stdevs, energy_stdevs,energy_means
+    mean_fcomp_stdevs, energy_stdevs,energy_means, all_raw_energies
 end
 
 label = "HfO2_N2_P6_r4"
@@ -239,15 +245,43 @@ yace_lmps = [initialize_committee_member(yace_files[i],2) for i in 2:length(yace
 #@time ace_committee_expts(yace_files[1],yace_lmps; num_steps=500, vel_seed =12280329, temp=100);
 # 5.471430 seconds (3.61 M allocations: 446.726 MiB, 0.66% gc time)
 
-f_stdev_200, e_stdev_200, e_mean_200 = ace_committee_expts(yace_files[1],yace_lmps; num_steps=5000, vel_seed =12280329, temp=200);
-f_stdev_500, e_stdev_500, e_mean_500 = ace_committee_expts(yace_files[1],yace_lmps; num_steps=5000, vel_seed =12280329, temp=500);
-f_stdev_1000, e_stdev_1000, e_mean_1000 = ace_committee_expts(yace_files[1],yace_lmps; num_steps=5000, vel_seed =12280329, temp=1000);
-f_stdev_2000, e_stdev_2000, e_mean_2000 = ace_committee_expts(yace_files[1],yace_lmps; num_steps=5000, vel_seed =12280329, temp=2000);
+f_stdev_200, e_stdev_200, e_mean_200, raw_pe_200 = ace_committee_expts(yace_files[1],yace_lmps; num_steps=5000, vel_seed =12280329, temp=200);
+f_stdev_500, e_stdev_500, e_mean_500, raw_pe_500 = ace_committee_expts(yace_files[1],yace_lmps; num_steps=5000, vel_seed =12280329, temp=500);
+f_stdev_1000, e_stdev_1000, e_mean_1000, raw_pe_1000 = ace_committee_expts(yace_files[1],yace_lmps; num_steps=5000, vel_seed =12280329, temp=1000);
+f_stdev_2000, e_stdev_2000, e_mean_2000, raw_pe_2000 = ace_committee_expts(yace_files[1],yace_lmps; num_steps=5000, vel_seed =12280329, temp=2000);
 
-plot(1:5001, [f_stdev_200,f_stdev_500,f_stdev_1000,f_stdev_2000])
-plot(1:5001, [e_stdev_200,e_stdev_500,e_stdev_1000,e_stdev_2000])
-plot(1:5001, [e_mean_200,e_mean_500,e_mean_1000,e_mean_2000])
+x_vals = [ i for i in 0:5000 for _ in 1:5]
+function gen_yvals(raw_pes)
+    y_vals = []
+    for tstep_arr in raw_pes
+        for pe in tstep_arr
+            push!(y_vals,pe)
+        end
+    end
+    y_vals
+end
 
+pe_200s = gen_yvals(raw_pe_200)
+pe_500s = gen_yvals(raw_pe_500)
+pe_1000s = gen_yvals(raw_pe_1000)
+pe_2000s = gen_yvals(raw_pe_2000)
+
+cur_colors = get_color_palette(:auto, 17);
+#plot(0:5000, [f_stdev_200,f_stdev_500,f_stdev_1000,f_stdev_2000])
+#plot(0:5000, [e_stdev_200,e_stdev_500,e_stdev_1000,e_stdev_2000])
+#plot(0:5000, [e_mean_200,e_mean_500,e_mean_1000,e_mean_2000], color=cur_colors[3])
+
+plot(3000:3100, e_mean_200[3001:3101])
+scatter!(x_vals[15001:15501],pe_200s[15001:15501], markersize=2, linewidth=0.00001)
+plot(3000:3100,e_stdev_200[3001:3101])
+
+plot(3000:3100, e_mean_2000[3001:3101])
+scatter!(x_vals[15001:15501],pe_2000s[15001:15501], markersize=2, linewidth=0.00001)
+plot(3000:3100,e_stdev_2000[3001:3101])
+
+plot(3040:3070, e_mean_2000[3041:3071])
+scatter!(x_vals[15201:15351],pe_2000s[15201:15351], markersize=2, linewidth=0.00001)
+plot(3040:3070,e_stdev_2000[3041:3071])
 for c_lmps in yace_lmps
     LAMMPS.API.lammps_close(c_lmps)
 end

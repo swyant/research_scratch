@@ -4,6 +4,7 @@ using Plots
 using Printf
 using Statistics 
 
+include("./single_point_gap.jl")
 function extended_extract_ss_obs(lmp::LMP)
     atomids    = extract_atom(lmp, "id")
     raw_types  = extract_atom(lmp,"type")
@@ -164,7 +165,7 @@ end
 
 function ace_committee_expts(driver_yace_fname, cmte_lmps; num_steps=50, vel_seed =12280329, start_temp=100, end_temp=100)
 
-    cmte_ddict, other_ddict = LMP(["-screen","none"]) do lmp  
+    cmte_ddict, other_ddict, uncertain_configs = LMP(["-screen","none"]) do lmp  
         mean_fcomp_stdevs = []
         energy_stdevs = []
         energy_means = []
@@ -174,6 +175,8 @@ function ace_committee_expts(driver_yace_fname, cmte_lmps; num_steps=50, vel_see
 
         all_temps = []
         all_pes = []
+
+        uncertain_configs = []
         command(lmp, "log none")
 
         command(lmp, "units          metal")
@@ -190,24 +193,24 @@ function ace_committee_expts(driver_yace_fname, cmte_lmps; num_steps=50, vel_see
         command(lmp, "variable Tend     equal  $(end_temp)")
         command(lmp, "variable Tdamp    equal  0.1")
         command(lmp, "variable Tseed    equal  $(vel_seed)")
-        command(lmp, "variable dumpf    equal  2")
+        command(lmp, "variable dumpf    equal  100")
         
         command(lmp, "velocity     all create \${Tstart} \${Tseed} mom yes rot yes dist gaussian")
         
         command(lmp, "thermo       1")
         command(lmp, "thermo_style custom step temp pe ke etotal press")
      
-        command(lmp, "fix          equib_nvt all nvt temp \${Tstart} \${Tstart} \${Tdamp}")
-        command(lmp, "run 10000")
-        command(lmp, "unfix equib_nvt")
-        println("finished equilibration")
+        #command(lmp, "fix          equib_nvt all nvt temp \${Tstart} \${Tstart} \${Tdamp}")
+        #command(lmp, "run 10000")
+        #command(lmp, "unfix equib_nvt")
+        #println("finished equilibration")
 
         command(lmp, "reset_timestep 0")
 
         #command(lmp, "dump           run_forces all custom \${dumpf} dump_CHECK.custom id type x y z fx fy fz vx vy vz")
         #command(lmp, """dump_modify    run_forces sort id format line "%4d %1d %32.27f %32.27f %32.27f %32.27f %32.27f %32.27f %32.27f %32.27f %32.27f" """)
-        command(lmp, "dump           run_forces all custom \${dumpf} dump_CHECK.custom id type x y z fx fy fz")
-        command(lmp, """dump_modify    run_forces sort id format line "%4d %1d %32.27f %32.27f %32.27f %32.27f %32.27f %32.27f" """)
+        #command(lmp, "dump           run_forces all custom \${dumpf} dump_CHECK.custom id type x y z fx fy fz")
+        #command(lmp, """dump_modify    run_forces sort id format line "%4d %1d %32.27f %32.27f %32.27f %32.27f %32.27f %32.27f" """)
        
         command(lmp,"compute pe all pe")
         command(lmp,"compute temp all temp")
@@ -256,7 +259,6 @@ function ace_committee_expts(driver_yace_fname, cmte_lmps; num_steps=50, vel_see
             try
                 command(lmp, "run 1")
             catch e
-                println(typeof(e))
                 break 
             end
             main_cfg_dct = extended_extract_ss_obs(lmp) 
@@ -273,6 +275,9 @@ function ace_committee_expts(driver_yace_fname, cmte_lmps; num_steps=50, vel_see
             push!(all_fcomp_stdevs, fcomp_stdevs)
             push!(all_fcomp_means, fcomp_means)
             energy_mean, energy_stdev = compute_energy_mean_and_stdev(cmte_data)
+            if energy_stdev > 0.1
+                push!(uncertain_configs,main_cfg_dct)
+            end
             raw_energies = [cmte_data[cmte_key]["pe"] for cmte_key in keys(cmte_data)]
             push!(energy_stdevs,energy_stdev)
             push!(energy_means,energy_mean)
@@ -289,9 +294,9 @@ function ace_committee_expts(driver_yace_fname, cmte_lmps; num_steps=50, vel_see
         other_ddict = Dict("alltemps" => all_temps,
                            "allpes"   => all_pes)
 
-        return cmte_ddict, other_ddict
+        return cmte_ddict, other_ddict, uncertain_configs
     end 
-   cmte_ddict, other_ddict
+   cmte_ddict, other_ddict, uncertain_configs
 end
 
 label = "HfO2_N2_P6_r4"
@@ -300,11 +305,18 @@ yace_files = ["./fits/$(label)_fit$(fit_idx).yace" for fit_idx in 1:5]
 yace_lmps = [initialize_committee_member(yace_files[i],2) for i in 2:length(yace_files)] # hard-coding number of types currently...
 
 
-uq_ddict, thermo_ddict  = ace_committee_expts(yace_files[1],yace_lmps; num_steps=300000, vel_seed =12280329, start_temp=2500, end_temp=3600);
+uq_ddict, thermo_ddict, uncertain_configs  = ace_committee_expts(yace_files[1],yace_lmps; num_steps=300000, vel_seed =12280329, start_temp=3200, end_temp=3200);
 
-plot(0:300000,uq_ddict["energy_stdevs"])
-plot(0:300000,uq_ddict["mean_fcomp_stdevs"])
-plot(0:300000,thermo_ddict["alltemps"])
+new_cfg_tstep = 1
+for new_cfg in uncertain_configs
+    dummy_cfg = get_gap_eandf(new_cfg["box_bounds"],new_cfg["types"],new_cfg["positions"],new_cfg["masses"],new_cfg_tstep)
+    new_cfg_tstep += 1
+end
+
+run(`python `)
+num_complete = length(uq_ddict["energy_stdevs"])
+plot(1:num_complete,uq_ddict["energy_stdevs"], ylims=(-0.001,0.05))
+plot(1:num_complete,uq_ddict["mean_fcomp_stdevs"], ylims=(-0.001,0.01))
 
 x_vals = [ i for i in 0:5000 for _ in 1:5]
 function gen_yvals(raw_pes)

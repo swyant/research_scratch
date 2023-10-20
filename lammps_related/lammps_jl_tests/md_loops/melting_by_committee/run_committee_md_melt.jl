@@ -299,38 +299,28 @@ function ace_committee_expts(driver_yace_fname, cmte_lmps; num_steps=50, vel_see
    cmte_ddict, other_ddict, uncertain_configs
 end
 
-label = "HfO2_N2_P6_r4"
-yace_files = ["./fits/$(label)_fit$(fit_idx).yace" for fit_idx in 1:5]
-
-yace_lmps = [initialize_committee_member(yace_files[i],2) for i in 2:length(yace_files)] # hard-coding number of types currently...
-
-
-uq_ddict, thermo_ddict, uncertain_configs  = ace_committee_expts(yace_files[1],yace_lmps; num_steps=300000, vel_seed =12280329, start_temp=3200, end_temp=3200);
-
-new_cfg_tstep = 1
-for new_cfg in uncertain_configs
-    dummy_cfg = get_gap_eandf(new_cfg["box_bounds"],new_cfg["types"],new_cfg["positions"],new_cfg["masses"],new_cfg_tstep)
-    new_cfg_tstep += 1
-end
-
-run(`python `)
-num_complete = length(uq_ddict["energy_stdevs"])
-plot(1:num_complete,uq_ddict["energy_stdevs"], ylims=(-0.001,0.05))
-plot(1:num_complete,uq_ddict["mean_fcomp_stdevs"], ylims=(-0.001,0.01))
-
-x_vals = [ i for i in 0:5000 for _ in 1:5]
-function gen_yvals(raw_pes)
-    y_vals = []
-    for tstep_arr in raw_pes
-        for pe in tstep_arr
-            push!(y_vals,pe)
-        end
-    end
-    y_vals
-end
-
-
-for c_lmps in yace_lmps
-    LAMMPS.API.lammps_close(c_lmps)
-end
-
+#label = "HfO2_N2_P6_r4"
+#yace_files = ["./fits/$(label)_fit$(fit_idx).yace" for fit_idx in 1:5]
+#
+#yace_lmps = [initialize_committee_member(yace_files[i],2) for i in 2:length(yace_files)] # hard-coding number of types currently...
+#
+#
+#uq_ddict, thermo_ddict, uncertain_configs  = ace_committee_expts(yace_files[1],yace_lmps; num_steps=300000, vel_seed =12280329, start_temp=3200, end_temp=3200);
+#
+#new_cfg_tstep = 1
+#for new_cfg in uncertain_configs
+#    dummy_cfg = get_gap_eandf(new_cfg["box_bounds"],new_cfg["types"],new_cfg["positions"],new_cfg["masses"],new_cfg_tstep)
+#    new_cfg_tstep += 1
+#end
+#
+#run(`/opt/homebrew/Caskroom/miniforge/base/envs/ase_env/bin/python mod_lammps_to_extxyz.py . Hf O`)
+#
+#rm("dump_forces.custom", force=true)
+#rm("thermo.dat", force=true)
+#
+#num_complete = length(uq_ddict["energy_stdevs"])
+#
+#for c_lmps in yace_lmps
+#    LAMMPS.API.lammps_close(c_lmps)
+#end
+#

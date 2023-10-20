@@ -1,66 +1,9 @@
+#using Distributed; addprocs(4)
 
-using Distributed; addprocs(4)
-
-using ACE1, ACE1pack, ACEfit
-using JuLIP
-using CSV, DataFrames 
-using JLD2
-using Random 
 
 include("../../utilities/custom_export2lammps/custom_export2lammps.jl")
-
-#= 
-Why do it this way: I may want to naively take a random subset of the full data, or 
- I already have a list of subset idx, and I'm taking an additional subset of that, but 
- I still want the idx to be wrt the original dataset
- =#
-function obtain_train_idxs(frac; train_subset=none, set_size=nothing)
-    @assert frac <= 1.0
-    if !isnothing(train_subset)
-        if !isnothing(set_size)
-            print("set size will be overwritten")
-        end
-        set_size = length(train_subset)
-    end
-    num_select = Int(floor(frac*set_size))
-
-    perm_idxs = Random.randperm(set_size)
-    rand_set_idxs = perm_idxs[begin:1:num_select]
-
-    if isnothing(train_subset)
-        return rand_set_idxs
-    else 
-        return train_subset[rand_set_idxs]
-    end
-end
-
-function perform_and_record_fits(full_ds, rpib, vref, label, num_fits; frac=0.9, train_subset=nothing, val_subset=nothing)
-    for fit_idx in 1:num_fits
-        print("###### RUNNING FIT $(fit_idx) ######")
-        if isnothing(train_subset)
-            train_idxs = obtain_train_idxs(frac; set_size=length(full_ds))
-        else
-            train_idxs = obtain_train_idxs(frac; train_subset=train_subset)
-        end
-
-        CSV.write("indices/fit_$(fit_idx)_train_idxs.csv",DataFrame(Tables.table(train_idxs)),header=false)
-    
-        A, Y, W = ACEfit.assemble(full_ds[train_idxs], rpib)
-        solver_reg = ACEfit.QR(; lambda=1e-3)
-        results_reg = ACEfit.solve(solver_reg,A,Y)
-        CSV.write("fits/$(label)_fit$(fit_idx)_coeffs.csv", DataFrame(Tables.table(results_reg["C"])),header=false)
-    
-        pot_reg_tmp = JuLIP.MLIPs.combine(rpib,results_reg["C"])
-        pot_reg = JuLIP.MLIPs.SumIP(pot_reg_tmp,vref)
-        train_errors = ACE1pack.linear_errors(full_ds[train_idxs],pot_reg)
-        if !isnothing(val_subset)
-            val_errors = ACE1pack.linear_errors(full_ds[val_subset],pot_reg)
-        end
-    
-        save("./errors/$(label)_fit$(fit_idx)_errors.jld2","train_errors",train_errors,"val_errors",val_errors)
-        custom_export2lammps("./fits/$(label)_fit$(fit_idx).yace", pot_reg,rpib)
-    end
-end
+include("./train_utils.jl")
+include("./run_committee_md_melt.jl")
 
 ds_path = "../../../../../../datasets/HfO2_Sivaraman/prl_2021/raw/train.xyz"
 raw_data = read_extxyz(ds_path)
@@ -80,10 +23,64 @@ rpib = ACE1.rpi_basis(;
 weights = Dict("default" => Dict("E" =>1.0,"F" => 1.0, "V"=>0.0))
 vref = JuLIP.OneBody([:Hf => -2.70516846, :O => -0.01277342]...)
 
-all_data = [ AtomsData(at;  energy_key = "energy", force_key="forces",
+initial_data = [ AtomsData(at;  energy_key = "energy", force_key="forces",
                         weights = weights, v_ref=vref) for at in raw_data]
 
-all_train_idxs = vec(Matrix(CSV.read("./indices/Siviraman_HfO2_my_train_idxs.csv",DataFrame,header=false)))
-val_idxs = vec(Matrix(CSV.read("./indices/Siviraman_HfO2_my_val_idxs.csv",DataFrame,header=false)))
 
-perform_and_record_fits(all_data,rpib,vref,label,5;train_subset=all_train_idxs, val_subset=val_idxs)
+
+all_new_data = []
+
+label = "HfO2_N2_P6_r4"
+yace_files = ["./fits/$(label)_fit$(fit_idx).yace" for fit_idx in 1:5]
+
+yace_lmps = [initialize_committee_member(yace_files[i],2) for i in 2:length(yace_files)] # hard-coding number of types currently...
+
+
+uq_ddict, thermo_ddict, uncertain_configs  = ace_committee_expts(yace_files[1],yace_lmps; num_steps=300000, vel_seed =12280329, start_temp=3200, end_temp=3200);
+
+new_cfg_tstep = 1
+for new_cfg in uncertain_configs
+    dummy_cfg = get_gap_eandf(new_cfg["box_bounds"],new_cfg["types"],new_cfg["positions"],new_cfg["masses"],new_cfg_tstep)
+    new_cfg_tstep += 1
+end
+
+run(`/opt/homebrew/Caskroom/miniforge/base/envs/ase_env/bin/python mod_lammps_to_extxyz.py . Hf O`)
+
+rm("dump_forces.custom", force=true)
+rm("thermo.dat", force=true)
+
+for c_lmps in yace_lmps
+    LAMMPS.API.lammps_close(c_lmps)
+end
+
+cmte_orig_indices = [vec(Matrix(CSV.read("./indices/fit_$(i)_train_idxs.csv",DataFrame,header=false))) for i in 1:5]
+new_data = read_extxyz("./new_configs.xyz")
+
+new_data_atoms = [ AtomsData(at;  energy_key = "energy", force_key="forces",
+                    weights = weights, v_ref=vref) for at in new_data] 
+
+all_new_data = cat(all_new_data,new_data_atoms,dims=1)
+for fit_idx in 1:5
+
+    #train_ds = cat(initial_data[cmte_orig_indices[fit_idx]],all_new_data,dims=1)
+
+    train_ds = initial_data[cmte_orig_indices[fit_idx]]
+    #cat didn't preserve eltype? idk
+    for adata in all_new_data
+        push!(train_ds,adata)
+    end
+
+    A, Y, W = ACEfit.assemble(train_ds, rpib)
+    solver_reg = ACEfit.QR(; lambda=1e-3)
+    results_reg = ACEfit.solve(solver_reg,A,Y)
+
+    pot_reg_tmp = JuLIP.MLIPs.combine(rpib,results_reg["C"])
+    pot_reg = JuLIP.MLIPs.SumIP(pot_reg_tmp,vref)
+    custom_export2lammps("./new_fits/$(label)_fit$(fit_idx).yace", pot_reg,rpib)
+end
+#all_train_idxs = vec(Matrix(CSV.read("./indices/Siviraman_HfO2_my_train_idxs.csv",DataFrame,header=false)))
+#val_idxs = vec(Matrix(CSV.read("./indices/Siviraman_HfO2_my_val_idxs.csv",DataFrame,header=false)))
+#
+#perform_and_record_fits(all_data,rpib,vref,label,5;train_subset=all_train_idxs, val_subset=val_idxs)
+
+

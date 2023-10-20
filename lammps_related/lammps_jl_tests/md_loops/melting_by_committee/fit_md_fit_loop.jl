@@ -78,6 +78,14 @@ for fit_idx in 1:5
     pot_reg = JuLIP.MLIPs.SumIP(pot_reg_tmp,vref)
     custom_export2lammps("./new_fits/$(label)_fit$(fit_idx).yace", pot_reg,rpib)
 end
+
+yace_files = ["./new_fits/$(label)_fit$(fit_idx).yace" for fit_idx in 1:5]
+
+yace_lmps = [initialize_committee_member(yace_files[i],2) for i in 2:length(yace_files)] # hard-coding number of types currently...
+
+
+uq_ddict, thermo_ddict, uncertain_configs  = ace_committee_expts(yace_files[1],yace_lmps; num_steps=300000, vel_seed =12280329, start_temp=3200, end_temp=3200);
+plot(1:length(uq_ddict["energy_stdevs"]), uq_ddict["energy_stdevs"], ylim=(-0.01,0.1))
 #all_train_idxs = vec(Matrix(CSV.read("./indices/Siviraman_HfO2_my_train_idxs.csv",DataFrame,header=false)))
 #val_idxs = vec(Matrix(CSV.read("./indices/Siviraman_HfO2_my_val_idxs.csv",DataFrame,header=false)))
 #

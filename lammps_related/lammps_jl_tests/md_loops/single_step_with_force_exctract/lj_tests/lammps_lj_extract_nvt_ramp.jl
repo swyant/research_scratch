@@ -49,7 +49,7 @@ function lj_expts(; num_steps=50, vel_seed =12280329, single=true)
             push!(configs,config_dict)
 
             for _ in 1:num_steps
-                command(lmp, "run 1")
+                command(lmp, "run 1 start 0 stop 5000")
                 config_dict = extract_single_step_observables(lmp)
                 push!(configs, config_dict)
             end

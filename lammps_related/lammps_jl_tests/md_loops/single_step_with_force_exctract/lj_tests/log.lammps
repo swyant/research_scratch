@@ -10048,20 +10048,20 @@ Per MPI rank memory allocation (min/avg/max) = 2.63 | 2.63 | 2.63 Mbytes
       4999   187.43682     -15.268337      6.1781683     -9.0901685      5976.3181    
 5000 -15.25991777927234061
       5000   187.29699     -15.259918      6.1735593     -9.0863585      5982.5445    
-Loop time of 7.62174 on 1 procs for 5000 steps with 256 atoms
+Loop time of 7.59693 on 1 procs for 5000 steps with 256 atoms
 
-Performance: 56.680 ns/day, 0.423 hours/ns, 656.018 timesteps/s, 167.941 katom-step/s
-95.3% CPU use with 1 MPI tasks x no OpenMP threads
+Performance: 56.865 ns/day, 0.422 hours/ns, 658.161 timesteps/s, 168.489 katom-step/s
+95.9% CPU use with 1 MPI tasks x no OpenMP threads
 
 MPI task timing breakdown:
 Section |  min time  |  avg time  |  max time  |%varavg| %total
 ---------------------------------------------------------------
-Pair    | 0.54438    | 0.54438    | 0.54438    |   0.0 |  7.14
-Neigh   | 0.96398    | 0.96398    | 0.96398    |   0.0 | 12.65
-Comm    | 0.062933   | 0.062933   | 0.062933   |   0.0 |  0.83
-Output  | 6.0057     | 6.0057     | 6.0057     |   0.0 | 78.80
-Modify  | 0.037677   | 0.037677   | 0.037677   |   0.0 |  0.49
-Other   |            | 0.007111   |            |       |  0.09
+Pair    | 0.53583    | 0.53583    | 0.53583    |   0.0 |  7.05
+Neigh   | 1.0601     | 1.0601     | 1.0601     |   0.0 | 13.95
+Comm    | 0.062348   | 0.062348   | 0.062348   |   0.0 |  0.82
+Output  | 5.874      | 5.874      | 5.874      |   0.0 | 77.32
+Modify  | 0.057424   | 0.057424   | 0.057424   |   0.0 |  0.76
+Other   |            | 0.007195   |            |       |  0.09
 
 Nlocal:            256 ave         256 max         256 min
 Histogram: 1 0 0 0 0 0 0 0 0 0

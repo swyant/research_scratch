@@ -82,6 +82,7 @@ function updated_ace_committee_fits(initial_data,new_configs,rpib,vref,num_membe
         for adata in new_configs
             push!(train_ds,adata)
         end
+
     
         A, Y, W = ACEfit.assemble(train_ds, rpib)
         print("finished assemble")

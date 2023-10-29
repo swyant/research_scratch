@@ -228,7 +228,7 @@ function update_thermo_record!(cfg_dict,thermo_dict)
 end
 
 function md_activelearn(md_initialization::Function,init_param_dict,uq_metric,num_steps=1000)
-    lmp = md_initialization(;init_param_dict...)
+    lmp, startstop = md_initialization(;init_param_dict...)
 
     uq_dict = initialize_uq_dict(uq_metric)
     thermo_dict = Dict("all_temps" => [],
@@ -267,7 +267,11 @@ function md_activelearn(md_initialization::Function,init_param_dict,uq_metric,nu
         end
         
         try
-            command(lmp, "run 1")
+            run_command = "run 1"
+            if !isnothing(startstop)
+                run_command = run_command *""" start $(startstop[:start]) stop $(startstop[:stop])"""
+            end
+            command(lmp, run_command)
         catch e
             break 
         end

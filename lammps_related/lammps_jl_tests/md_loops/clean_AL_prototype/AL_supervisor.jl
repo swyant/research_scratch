@@ -30,15 +30,64 @@ function simple_ace_nvt(;driver_yace_fname="sample.yace",temp=300, vel_seed=1228
     command(lmp, "variable Tseed    equal  $(vel_seed)")
     #command(lmp, "variable dumpf    equal  100")
     
-    command(lmp, "velocity     all create \${T} \${T} mom yes rot yes dist gaussian")
+    command(lmp, "velocity     all create \${T} \${Tseed} mom yes rot yes dist gaussian")
     command(lmp, "fix          nvt all nvt temp \${T} \${T} \${Tdamp}")
 
     println("successfully ran the initialization commands")
 
-    lmp
+    lmp, nothing
 end 
 
 
+function simple_ace_iso_npt_melt(;driver_yace_fname="sample.yace",
+                                  start_temp=300, 
+                                  end_temp=36000,
+                                  equib_steps = 10000,
+                                  ramp_steps = 200000,
+                                  vel_seed=12280329, 
+                                  atom_type_list=["Hf","O"])
+
+    atomtype_str = ""
+    for elem_str in atom_type_list
+        atomtype_str = atomtype_str * " " * elem_str
+    end
+
+
+    lmp = LMP(["-screen","none"])
+    command(lmp, "log none")
+
+    command(lmp, "units          metal")
+    command(lmp, "boundary       p p p")
+    command(lmp, "atom_style     atomic")
+    command(lmp, "neigh_modify   delay 0 every 1 check no") # neighborlist rebuilt every step
+    
+    command(lmp, "read_data     tetrag_hfo2_sample_DATA")
+    
+    command(lmp, "pair_style     pace")
+    command(lmp, "pair_coeff     * * $(driver_yace_fname)$(atomtype_str)")
+    
+    #command(lmp, "variable Tdamp    equal  0.1")
+    #command(lmp, "variable dumpf    equal  100")
+    
+    command(lmp, "velocity     all create $(start_temp) $(vel_seed) mom yes rot yes dist gaussian")
+    command(lmp, "fix          equib_npt all npt temp  $(start_temp) $(start_temp) 0.1 iso 0.0 0.0 1.0")
+    command(lmp, "run          $(equib_steps)")
+
+    command(lmp, "unfix        equib_npt")
+    command(lmp, "reset_timestep 0")
+
+    command(lmp, "dump             run_forces all custom 100 dump_melt.custom id type x y z fx fy fz")
+    command(lmp, """dump_modify    run_forces append yes sort id format line "%4d %1d %12.7f %12.7f %12.7f %12.7f %12.7f %12.7f" """)
+
+    command(lmp, "fix          npt_ramp all npt temp $(start_temp) $(end_temp) 0.1 iso 0.0 0.0 1.0")
+
+    println("successfully ran the initialization commands")
+
+    start_stop_dict = Dict(:start => "0",
+                           :stop  => "$(ramp_steps)")
+
+    lmp, start_stop_dict
+end                            
 
 # initial parameters 
 ds_path = "../../../../../../datasets/HfO2_Sivaraman/prl_2021/raw/train.xyz"
@@ -73,8 +122,8 @@ all_uq_data = []
 all_thermo_data = []
 new_configs = []
 new_cfg_tstep = 1
-for iter_index in 1:5
-#iter_index = 1
+#for iter_index in 1:5
+iter_index=4
     if iter_index == 1
         fit_dir = "./initial_fits"
     else
@@ -90,8 +139,19 @@ for iter_index in 1:5
                       :vel_seed          =>12280329,
                       :atom_type_list    => ["Hf","O"],
                       )
+    
+    npt_melt_params = Dict(:driver_yace_fname => yace_files[1],
+                          :start_temp         => 2800,
+                          :end_temp           => 4000,
+                          :vel_seed           => 12280329,
+                          :ramp_steps         => 200000,
+                          :atom_type_list    => ["Hf","O"],
+                          )
 
-    uq_data, thermo_data, uq_configs = md_activelearn(simple_ace_nvt,nvt_params,ace_cmte,10000) 
+
+    #uq_data, thermo_data, uq_configs = md_activelearn(simple_ace_nvt,nvt_params,ace_cmte,10000) 
+    uq_data, thermo_data, uq_configs = md_activelearn(simple_ace_iso_npt_melt,npt_melt_params,ace_cmte,200000) 
+
     #close!(ace_cmte) # I think this fucks with the garbage collector :(
 
     push!(all_uq_data,deepcopy(uq_data))
@@ -106,8 +166,11 @@ for iter_index in 1:5
         updated_ace_committee_fits(initial_data,new_configs, rpib,vref,5; initial_indices=initial_indices)
     else
         println("Completed")
-        break
+        #break
     end
-end
+#end
 
-
+using Plots
+plot(1:length(all_uq_data[4]["energy_stdevs"]), all_uq_data[4]["energy_stdevs"], ylim=(-0.01,0.1))
+plot(1:length(all_thermo_data[4]["all_temps"]), all_thermo_data[4]["all_temps"], ylim=(2000,4000))
+plot(1:length(all_thermo_data[4]["all_pes"]), all_thermo_data[4]["all_pes"], ylim=(-1100,-1000))

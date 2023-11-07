@@ -1,3 +1,5 @@
+using Distributed; addprocs(4)
+
 
 # load things 
 include("./new_code/dependencies.jl")

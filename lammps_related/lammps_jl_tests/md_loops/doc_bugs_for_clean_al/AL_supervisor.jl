@@ -1,5 +1,6 @@
 #using Distributed; addprocs(4)
 
+cd("/Users/swyant/cesmix/exploratory/new_public/lammps_related/lammps_jl_tests/md_loops/doc_bugs_for_clean_al")
 
 # load things 
 include("./new_code/dependencies.jl")
@@ -117,15 +118,15 @@ all_train_idxs = vec(Matrix(CSV.read("./Siviraman_HfO2_my_train_idxs.csv",DataFr
 val_idxs = vec(Matrix(CSV.read("./Siviraman_HfO2_my_val_idxs.csv",DataFrame,header=false)))
 
 #initial_committee_fits(all_data,rpib,vref,label,5;train_subset=all_train_idxs, val_subset=val_idxs)
-initial_indices = [vec(Matrix(CSV.read("./initial_indices/fit_$(i)_train_idxs.csv",DataFrame,header=false))) for i in 1:5]
+initial_indices = [vec(Matrix(CSV.read("./initial_indices/fit_$(i)_train_idxs.csv",DataFrame,header=false))) for i in 1:20]
 smaller_initial_indices= [init_indices[1:500] for init_indices in initial_indices]
 
 all_uq_data = []
 all_thermo_data = []
 new_configs = []
-#new_cfg_tstep = 1
+new_cfg_tstep = 1
 for iter_index in 1:5
-    new_cfg_tstep = 1
+#    new_cfg_tstep = 1
 
 #iter_index=1
     if iter_index == 1
@@ -135,11 +136,11 @@ for iter_index in 1:5
     end
     println(fit_dir)
     
-    yace_files = ["$(fit_dir)/$(label)_fit$(fit_idx).yace" for fit_idx in 1:5]
+    yace_files = ["$(fit_dir)/$(label)_fit$(fit_idx).yace" for fit_idx in 1:10]
     ace_cmte = PACE_Ensemble(yace_files, ["Hf","O"]; energy_thresh=0.1)
     
     nvt_params = Dict(:driver_yace_fname => yace_files[1],
-                      :temp              => 3800,
+                      :temp              => 3200,
                       :vel_seed          =>12280329,
                       :atom_type_list    => ["Hf","O"],
                       )
@@ -153,8 +154,8 @@ for iter_index in 1:5
                           )
 
 
-    #uq_data, thermo_data, uq_configs = md_activelearn(simple_ace_nvt,nvt_params,ace_cmte,100000) 
-    uq_data, thermo_data, uq_configs = md_activelearn(simple_ace_iso_npt_melt,npt_melt_params,ace_cmte,200000) 
+    uq_data, thermo_data, uq_configs = md_activelearn(simple_ace_nvt,nvt_params,ace_cmte,100000) 
+    #uq_data, thermo_data, uq_configs = md_activelearn(simple_ace_iso_npt_melt,npt_melt_params,ace_cmte,200000) 
 
     #close!(ace_cmte) # I think this fucks with the garbage collector :(
 
@@ -162,14 +163,16 @@ for iter_index in 1:5
     push!(all_thermo_data, deepcopy(thermo_data))
 
     if length(uq_configs) > 1
-        new_atoms_data, new_cfg_tstep = label_new_configs(uq_configs,weights,vref; start_tstep=new_cfg_tstep)
+        new_atoms_data, dummy_cfg_tstep = label_new_configs(uq_configs,weights,vref; start_tstep=new_cfg_tstep)
+        global new_cfg_tstep = dummy_cfg_tstep
         for new_atoms in new_atoms_data
             push!(new_configs,new_atoms)
         end
 
-        updated_ace_committee_fits(initial_data,new_configs, rpib,vref,5; initial_indices=initial_indices)
+        updated_ace_committee_fits(initial_data,new_configs, rpib,vref,20; initial_indices=initial_indices)
     else
         println("Completed")
         #break
     end
 end
+

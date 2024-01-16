@@ -9,3 +9,4 @@ lammps_related/lammps_jl_tests/md_loops/clean_AL_prototype/plots/iterative_npt_m
 lammps_related/lammps_jl_tests/md_loops/clean_AL_prototype/plots/iterative_npt_melt_example_uq_data.jld2
 lammps_related/lammps_jl_tests/md_loops/clean_AL_prototype/dump_melt.custom
 lammps_related/lammps_jl_tests/md_loops/doc_bugs_for_clean_al/gen_new_fits/fits/*.yace
+lammps_related/lammps_jl_tests/md_loops/doc_bugs_for_clean_al/initial_fits/*.yace

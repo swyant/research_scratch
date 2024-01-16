@@ -26,7 +26,9 @@ end
 
 
 function get_gap_eandf(bbounds,atom_types,atom_pos,masses, tstep)
-    println("GAP CALCULATION")
+    #println("GAP CALCULATION")
+    println("GAP CALCULATION v2") #for debugging ReadOnlyMemoryError, I have code commented out
+
     num_types = size(masses)[1]
     num_atoms = size(atom_pos)[2]
     config_dict = LMP(["-screen", "none"]) do lmp
@@ -64,22 +66,22 @@ function get_gap_eandf(bbounds,atom_types,atom_pos,masses, tstep)
         command(lmp, "pair_style  quip")
         command(lmp, """pair_coeff  * * ../../../hfo2_gap/siviraman_gap/gap.xml "Potential xml_label=GAP_2020_2_11_0_18_44_47_601" 72 8""")
 
-        command(lmp, "dump           run_forces all custom 1 dump_forces.custom id type x y z fx fy fz")
-        command(lmp, """dump_modify    run_forces append yes sort id format line "%4d %1d %32.27f %32.27f %32.27f %32.27f %32.27f %32.27f" """)
+        ##command(lmp, "dump           run_forces all custom 1 dump_forces.custom id type x y z fx fy fz")
+        #command(lmp, """dump_modify    run_forces append yes sort id format line "%4d %1d %32.27f %32.27f %32.27f %32.27f %32.27f %32.27f" """)
 
 
-        #command(lmp, "dump           archive_configs all custom 1 dump_archive.custom id type x y z fx fy fz")
-        #command(lmp, """dump_modify    archive_configs append yes sort id format line "%4d %1d %32.27f %32.27f %32.27f %32.27f %32.27f %32.27f" """)
+        ##command(lmp, "dump           archive_configs all custom 1 dump_archive.custom id type x y z fx fy fz")
+        ##command(lmp, """dump_modify    archive_configs append yes sort id format line "%4d %1d %32.27f %32.27f %32.27f %32.27f %32.27f %32.27f" """)
 
-        command(lmp, "thermo       1")
-        command(lmp, "thermo_style custom step temp pe ke etotal press pxx pyy pzz pxy pxz pyz")
+        #command(lmp, "thermo       1")
+        #command(lmp, "thermo_style custom step temp pe ke etotal press pxx pyy pzz pxy pxz pyz")
 
-        command(lmp, """fix thermo_out all print 1 "\$(step) \$(pe) \$(pxx) \$(pyy) \$(pzz) \$(pxy) \$(pxz) \$(pyz)" append thermo.dat screen no title "step pe pxx pyy pzz pxy pxz pyz" """)
+        #command(lmp, """fix thermo_out all print 1 "\$(step) \$(pe) \$(pxx) \$(pyy) \$(pzz) \$(pxy) \$(pxz) \$(pyz)" append thermo.dat screen no title "step pe pxx pyy pzz pxy pxz pyz" """)
 
 
         command(lmp,"compute pe all pe")
         
-        command(lmp, "reset_timestep $(tstep)")
+        #command(lmp, "reset_timestep $(tstep)")
         command(lmp, "run 0")
         config_dict = extract_gap_single_step_observables(lmp)
         return config_dict

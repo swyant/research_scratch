@@ -1,0 +1,5 @@
+LAMMPS.jl : 6672ea4059a5637410864c8ec7325a2ec5e13dd5 
+InteratomicBasisPotentials.jl : db944b974739953d9b2efe1052c2602cbff1bab4 
+PotentialLearning.jl : 1f138589df95d1153e61a22ee21f14d5e0b59041 
+
+Julia version: 1.9.2+0.aarch64.apple.darwin14

@@ -9,7 +9,7 @@ struct InteratomicPotentialInter{P<:AbstractPotential}
 	potential::P
     eaf::Function
     # TODO: should also use the energy cache Jeremiah had, but ignoring that for now
-    # TODO: Default constructur with energy_and_force probably
+    # TODO: Default constructor with energy_and_force probably
 end
 
 # Extending Molly.forces with above struct

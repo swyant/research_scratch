@@ -709,7 +709,7 @@ uuid = "b77e0a4c-d291-57a0-90e8-8db25a27a240"
 
 [[deps.InteratomicPotentials]]
 deps = ["ACE1", "AtomsBase", "Distances", "Flux", "JuLIP", "LAMMPS", "LinearAlgebra", "NearestNeighbors", "StaticArrays", "Unitful", "UnitfulAtomic", "Zygote"]
-git-tree-sha1 = "2e0a09af617d34f6a1530fb9398e9c0c60b1d971"
+path = "/Users/swyant/cesmix/dev/InteratomicPotentials.jl/"
 uuid = "a9efe35a-c65d-452d-b8a8-82646cd5cb04"
 version = "0.2.7"
 

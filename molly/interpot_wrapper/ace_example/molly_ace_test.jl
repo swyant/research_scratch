@@ -19,6 +19,8 @@ inter_ace = InteratomicPotentialInter(lb,InteratomicPotentials.energy_and_force)
 general_inters = (inter_ace,)
 
 sys = load_system("test_tetrag_hfo2.xyz")
+
+compute_local_descriptors(sys,ace)
 compute_force_descriptors(sys,ace)
 InteratomicPotentials.force(sys, lb)
 
@@ -27,9 +29,9 @@ f_check = Molly.forces(inter_ace, sys)
 mp = molly_params(sys)
 m_sys = System(;mp...,
             general_inters=general_inters, 
-            loggers=(force=ForceLogger(typeof(1.0u"eV/Å"), 1),),
-            force_units=u"eV/Å",
-            energy_units=u"eV",
+            loggers=(force=ForceLogger(typeof(NoUnits), 1),),
+            force_units=NoUnits,
+            energy_units=NoUnits,
             #loggers=(force=ForceLogger(Float32, 1),),
             #force_units=NoUnits,
             )

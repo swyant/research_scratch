@@ -8,6 +8,7 @@ Goals:
 
 e_dim = dimension(u"eV")
 f_dim = dimension(u"eV/Å")
+l_dim = dimension(u"Å")
 
 
 # This is OK, but I'd prefer not to have to parameterize the type off of UE, UF as well. 
@@ -46,16 +47,63 @@ f_dim = dimension(u"eV/Å")
 #end
 
 
-## Should I also enforce defaults in the inner constructor like they do in AceMD?
+# Should I also enforce defaults in the inner constructor like they do in AceMD?
 def_eunit = u"eV"
 def_funit = u"eV/Å"
+def_lunit = u"Å"
 
+#struct InteratomicPotentialInter{P<:AbstractPotential}
+#    potential::P
+#    energy_units::Unitful.Unitlike
+#    force_units::Unitful.Unitlike
+#
+#    InteratomicPotentialInter(pot::AbstractPotential, 
+#                              eu::Unitful.Units{UE,e_dim,nothing} = def_eunit, 
+#                              fu::Unitful.Units{UF,f_dim,nothing} = def_funit) where {UE,UF} = new{typeof(pot)}(pot,eu,fu)
+#end
+
+nounit_t = typeof(NoUnits)
+
+# Should also account for the possibility of unitless simulations
+#struct InteratomicPotentialInter{P<:AbstractPotential}
+#    potential::P
+#    energy_units::Unitful.Unitlike
+#    force_units::Unitful.Unitlike
+#
+#    # internal constructor, ensuring energy units and force units have correct dimension
+#    ( InteratomicPotentialInter(pot::AbstractPotential, 
+#                                eu::Union{nounit_t, Unitful.Units{UE,e_dim,nothing}} = def_eunit, 
+#                                fu::Union{nounit_t, Unitful.Units{UF,f_dim,nothing}} = def_funit)
+#                                where {UE,UF} = new{typeof(pot)}(pot,eu,fu) )
+#end
+
+#struct InteratomicPotentialInter{P<:AbstractPotential}
+#    potential::P
+#    energy_units::Unitful.Unitlike
+#    force_units::Unitful.Unitlike
+#     
+#    # internal constructor, ensuring energy units and force units have correct dimensions
+#    ( InteratomicPotentialInter(pot::AbstractPotential, 
+#                                eu::Unitful.Units{UE,e_dim,nothing} = def_eunit, 
+#                                fu::Unitful.Units{UF,f_dim,nothing} = def_funit) 
+#                                where {UE,UF} = new{typeof(pot)}(pot,eu,fu) )
+#end
+#
+## to handle the NoUnit case
+# InteratomicPotentialInter(pot::AbstractPotential, 
+#                           eu::typeof(NoUnits),
+#                           fu::typeof(NoUnits)) = new{typeof(pot)}(pot,eu,fu)
+
+
+# Alt version that uses length units rather than force units
 struct InteratomicPotentialInter{P<:AbstractPotential}
     potential::P
-    energy_units::Unitful.Unitlike
-    force_units::Unitful.Unitlike
+    energy_units::Unitful.Unitlike 
+    length_units::Unitful.Unitlike
 
-    InteratomicPotentialInter(pot::AbstractPotential, 
-                              eu::Unitful.Units{UE,e_dim,nothing} = def_eunit, 
-                              fu::Unitful.Units{UF,f_dim,nothing} = def_funit) where {UE,UF} = new{typeof(pot)}(pot,eu,fu)
+    # internal constructor, ensuring energy units and length units have correct dimensions
+    ( InteratomicPotentialInter(pot::AbstractPotential, 
+                                eu::Union{nounit_t, Unitful.Units{UE,e_dim,nothing}} = def_eunit, 
+                                lu::Union{nounit_t, Unitful.Units{UL,l_dim,nothing}} = def_lunit) 
+                                where {UE,UL} = new{typeof(pot)}(pot,eu,lu) )
 end

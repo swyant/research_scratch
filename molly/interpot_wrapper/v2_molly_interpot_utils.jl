@@ -44,7 +44,10 @@ function Molly.forces(inter::InteratomicPotentialInter,
             forces = [ustrip.(fi)
                      for fi in forces]
         end
+    elseif eltype(forces[1]) <: Real && inter.energy_units != NoUnits
+        forces = forces * inter.energy_units/inter.length_units
     end
+
     forces
 end
 

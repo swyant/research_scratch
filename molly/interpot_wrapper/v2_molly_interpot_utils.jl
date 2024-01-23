@@ -51,6 +51,26 @@ function Molly.forces(inter::InteratomicPotentialInter,
     forces
 end
 
+function Molly.potential_energy(inter::InteratomicPotentialInter, 
+                                sys::AbstractSystem,
+                                neighbors = nothing;
+                                n_threads = Threads.nthreads())
+
+    energy = InteratomicPotentials.potential_energy(sys,inter.potential)
+
+    if typeof(energy) <: Unitful.Quantity 
+        if inter.energy_units != NoUnits
+            energy = uconvert(inter.energy_units, energy)
+        else
+            energy = ustrip(energy)
+        end
+    elseif typeof(energy) <: Real && inter.energy_units != NoUnits
+        energy = energy * inter.energy_units
+    end
+
+    energy
+end
+
 
 function molly_params(sys::AtomsBase.AbstractSystem)
     coords = [SVector{3}(pos) for pos in position(sys)] # need to be SVector for zero() func to work

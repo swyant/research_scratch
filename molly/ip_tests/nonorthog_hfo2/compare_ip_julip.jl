@@ -1,0 +1,114 @@
+using PotentialLearning
+using InteratomicPotentials
+using CSV, DataFrames
+using Unitful 
+using AtomsIO
+
+test_xyz_file = "./nonorthog_hfo2.xyz"
+
+include("../../../lammps_related/lammps_jl_tests/utilities/fixed_parse_extXYZ/parse_extXYZ.jl")
+ace = ACE(  species            = [:Hf, :O],
+            body_order         = 4, 
+            polynomial_degree  = 10,
+            wL                 = 1.5, 
+            csp                = 1.0,
+            r0                 = 2.15,
+            rcutoff            = 5.0)
+
+coeffs = vec(Matrix(CSV.read("./N3_rcut5_maxdeg10_1e-3lambdaQR_fit_coeffs.csv",DataFrame,header=false)))
+
+lb = LBasisPotential(coeffs,[0.0],ace)
+
+# PL.jl Dataset  way
+test_ds = fixed_load_data(test_xyz_file, ExtXYZ(u"eV", u"Å"))
+e_descr_test = compute_local_descriptors(test_ds,ace)
+f_descr_test = compute_force_descriptors(test_ds,ace)
+test_ds = DataSet(test_ds .+ e_descr_test .+ f_descr_test)
+
+@show transpose(reshape(get_all_forces(test_ds,lb),3,:))
+#= Initial result, w/o dev'ing into IP.jl for force descriptor fix
+  0.00788378  -0.491082     1.16711
+ -0.66599     -0.835156    -1.43705
+ -0.73353      0.742406     0.578487
+ -0.540393     0.00579879   0.168545
+ -0.446358     0.724144     0.751254
+  0.457646    -0.36194     -1.6867
+  0.747446     0.56371     -0.871432
+ -0.669008    -0.535389     0.596258
+  0.197066    -0.100318     0.0208236
+  ⋮                        
+  0.482189     0.145981     0.251617
+ -1.12633     -0.572016     0.0973772
+  0.833603     0.206454     1.25502
+ -0.26753     -0.546663     0.119172
+  0.831874    -0.23         0.322508
+ -0.245825    -0.752646     0.459783
+  0.558268     0.199989     0.772334
+  0.72154      0.539093     0.914747
+=#
+@show get_all_energies(test_ds,lb)
+#= Initial Result
+ -874.8599433660274
+=#
+
+# AtomsIO way 
+sys = AtomsIO.load_system(test_xyz_file)
+@show InteratomicPotentials.force(sys,lb)
+# Initial Result  (Doesn't work)
+@show InteratomicPotentials.potential_energy(sys,lb)
+#=Iniitial Result 
+-874.8599433660274
+=# 
+
+
+#### JuLIP approach
+using ACE1 
+using JuLIP
+
+rpib = ACE1.rpi_basis(;
+            species = [:Hf, :O],
+            N       = 3, 
+            maxdeg  = 10,
+            D       = ACE1.SparsePSHDegree(; wL = 1.5, csp = 1.0),
+            r0      = 2.15,
+            rin     = 0.65*2.15,  # Does this meaningfully get used in pin=0?
+            rcut    = 5.0,
+            pin     = 0,
+)
+
+vref = JuLIP.OneBody([:Hf => -2.70516846, :O => -0.01277342]...)
+
+pot_reg_tmp = JuLIP.MLIPs.combine(rpib,coeffs)
+pot_reg = JuLIP.MLIPs.SumIP(pot_reg_tmp,vref)
+
+test_data = read_extxyz(test_xyz_file)
+
+@show forces(pot_reg,test_data[1])
+#= 
+ [0.007883776209160587, -0.4910816522503837, 1.167105409355252]
+ [-0.6659899624852241, -0.8351559338312347, -1.4370534271475575]
+ [-0.7335300097830385, 0.7424058525418651, 0.5784871675206074]
+ [-0.5403925540948584, 0.005798786234058273, 0.16854479892312246]
+ [-0.44635788773198426, 0.7241443550000215, 0.7512537255621118]
+ [0.45764605415869, -0.3619397378983318, -1.6867018970841734]
+ [0.7474455989851543, 0.5637095770650984, -0.8714319778193409]
+ [-0.6690080855815317, -0.5353887681752072, 0.596257629228294]
+ [0.19706554590254965, -0.10031819570872869, 0.020823583302092274]
+ ⋮
+ [0.4821892676464399, 0.14598095584486703, 0.25161737327354095]
+ [-1.1263254243886698, -0.5720164089574444, 0.09737724104399081]
+ [0.8336027673563662, 0.2064540415001923, 1.2550215294897737]
+ [-0.2675302648961412, -0.5466633686288671, 0.11917240851393762]
+ [0.8318735274918068, -0.23000045857841167, 0.3225082262892589]
+ [-0.2458247874387749, -0.752645781655064, 0.45978289842163744]
+ [0.5582675531356497, 0.19998890598382296, 0.7723339949577195]
+ [0.7215400682021462, 0.5390925193420633, 0.9147467229174402]
+ =#
+@show energy(pot_reg, test_data[1])
+#= 
+-962.2300595461343
+=#
+@show energy(pot_reg_tmp, test_data[1])
+#=
+-874.8599433661344
+=#

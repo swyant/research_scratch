@@ -1,0 +1,15 @@
+units          metal
+boundary       p p p
+atom_style     atomic
+
+read_data     mod_tricky_nonorthog_DATA
+
+pair_style     pace
+pair_coeff     * * Siviraman_GAP_HfO2_N3_rcut5_maxdeg10_regQR.yace Hf O
+
+dump           run_forces all custom 1 dump_forces.custom id type x y z fx fy fz
+dump_modify    run_forces sort id element Hf O format line "%4d %1d %21.16f %21.16f %21.16f %21.16f %21.16f %21.16f" 
+
+fix eprint all print 1 "$(step) $(pe)" file pe.dat
+
+run 0

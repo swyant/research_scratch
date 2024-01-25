@@ -33,6 +33,11 @@ test_ds = DataSet(test_ds .+ e_descr_test .+ f_descr_test)
   2.08524  -1.84253  -0.739289
  -2.08524   1.84253   0.739289
 =#
+#= New result, dev'd into IP.jl and PL.jl with force descriptor fix 
+2×3 transpose(::Matrix{Float64}) with eltype Float64:
+  2.08524  -1.84253  -0.739289
+ -2.08524   1.84253   0.739289
+ =#
 @show get_all_energies(test_ds,lb)
 #= Initial Result
 -2.8331051332258355
@@ -42,6 +47,10 @@ test_ds = DataSet(test_ds .+ e_descr_test .+ f_descr_test)
 sys = AtomsIO.load_system(test_xyz_file)
 @show InteratomicPotentials.force(sys,lb)
 # Initial Result  (Doesn't work)
+#= New result 
+ [2.0852411651301614, -1.8425312483355993, -0.7392888870875393]
+ [-2.0852411651301614, 1.8425312483355993, 0.7392888870875393]
+=#
 @show InteratomicPotentials.potential_energy(sys,lb)
 #=Iniitial Result 
 -2.8331051332258355

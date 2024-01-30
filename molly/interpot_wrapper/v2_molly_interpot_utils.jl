@@ -4,7 +4,9 @@ using InteratomicPotentials
 using Unitful, UnitfulAtomic
 #import AtomsBase: AbstractSystem
 using AtomsBase
-
+using ExtXYZ
+using StaticArrays
+import LinearAlgebra: isdiag
 
 e_dim = dimension(u"eV")
 l_dim = dimension(u"Å")
@@ -80,9 +82,25 @@ function molly_params(sys::AtomsBase.AbstractSystem)
 
     # TODO: maybe check if cubic? Also really need to test the Triclinicboundary thing
     bbox = bounding_box(sys)
-    #boundary=CubicBoundary(bbox[1][1],bbox[2][2],bbox[3][3]) # FRAGILE! 
-    boundary = TriclinicBoundary(bbox...)
+    if isdiag(hcat(bbox...))
+        boundary=CubicBoundary(bbox[1][1],bbox[2][2],bbox[3][3]) 
+    else
+        boundary = TriclinicBoundary(bbox...)
+    end
 
     return NamedTuple((atoms=atoms, atoms_data=atoms_data, coords=coords, velocities = velocities, boundary=boundary))
 end 
 
+# TODO: A bit fragile because I'm assuming the bare minimum set of atoms_data keys
+function staticAtoms(orig_atoms::ExtXYZ.Atoms)
+    new_pos  = [SVector{3}(pos) for pos in position(orig_atoms)]
+    new_vels = [SVector{3}(pos) for pos in velocity(orig_atoms)]
+
+    new_atoms_data = Dict(:atomic_symbol => atomic_symbol(orig_atoms),
+                          :atomic_number => atomic_number(orig_atoms),
+                          :atomic_mass   => atomic_mass(orig_atoms), 
+                          :position     => new_pos,
+                          :velocity      => new_vels)
+    
+    ExtXYZ.Atoms(NamedTuple(new_atoms_data),orig_atoms.system_data)
+end

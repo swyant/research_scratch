@@ -1,0 +1,5 @@
+[deps]
+CairoMakie = "13f3f980-e62b-5c42-98c6-ff1f3baf88f0"
+Molly = "aa0f7f06-fcc0-5ec4-a7f3-a573f33f9c4c"
+PotentialLearning = "82b0a93c-c2e3-44bc-a418-f0f89b0ae5c2"
+SteinMD = "88c7affd-8d62-429a-882b-56817e2e3c6c"

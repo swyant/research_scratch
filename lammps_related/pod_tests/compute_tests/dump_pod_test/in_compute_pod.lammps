@@ -21,7 +21,7 @@ dump 		     mydump_ld all custom 1 dump_ld id type c_ld[*]
 dump_modify  mydump_ld sort id format float %20.15g
 
 dump 		     mydump_dd all custom 1 dump_dd id type c_dd[*]
-dump_modify  mydump_dd sort id
+dump_modify  mydump_dd sort id format float %20.15g
 
 compute ldd all pod/ldd ../HfO2_FPOD_020224_param.pod "" "" Hf O
 fix 		ldd all ave/time 1 1 1 c_ldd[*] file pod.ldd.dat mode vector

@@ -11,7 +11,7 @@ Reading data file ...
   1 by 1 by 1 MPI processor grid
   reading atoms ...
   12 atoms
-  read_data CPU = 0.001 seconds
+  read_data CPU = 0.009 seconds
 #displace_atoms 	all random 0.1 0.1 0.1 123456
 
 neighbor       0.5 bin
@@ -128,7 +128,7 @@ dump 		     mydump_ld all custom 1 dump_ld id type c_ld[*]
 dump_modify  mydump_ld sort id format float %20.15g
 
 dump 		     mydump_dd all custom 1 dump_dd id type c_dd[*]
-dump_modify  mydump_dd sort id
+dump_modify  mydump_dd sort id format float %20.15g
 
 compute ldd all pod/ldd ../HfO2_FPOD_020224_param.pod "" "" Hf O
 **************** Begin of POD Potentials ****************
@@ -248,9 +248,9 @@ Neighbor list info ...
 Per MPI rank memory allocation (min/avg/max) = 3.847 | 3.847 | 3.847 Mbytes
    Step          Temp          E_pair         E_mol          TotEng         Press     
          0   0             -111.05105      0             -111.05105      25969.817    
-Loop time of 5.83e-07 on 1 procs for 0 steps with 12 atoms
+Loop time of 5e-07 on 1 procs for 0 steps with 12 atoms
 
-171.5% CPU use with 1 MPI tasks x no OpenMP threads
+200.0% CPU use with 1 MPI tasks x no OpenMP threads
 
 MPI task timing breakdown:
 Section |  min time  |  avg time  |  max time  |%varavg| %total
@@ -260,7 +260,7 @@ Neigh   | 0          | 0          | 0          |   0.0 |  0.00
 Comm    | 0          | 0          | 0          |   0.0 |  0.00
 Output  | 0          | 0          | 0          |   0.0 |  0.00
 Modify  | 0          | 0          | 0          |   0.0 |  0.00
-Other   |            | 5.83e-07   |            |       |100.00
+Other   |            | 5e-07      |            |       |100.00
 
 Nlocal:             12 ave          12 max          12 min
 Histogram: 1 0 0 0 0 0 0 0 0 0

@@ -1,0 +1,5 @@
+[deps]
+LAMMPS = "ee2e13b9-eee9-4449-aafa-cfa6a2dbe14d"
+
+[extras]
+LAMMPS_jll = "5b3ab26d-9607-527c-88ea-8fe5ba57cafe"

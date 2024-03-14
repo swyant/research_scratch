@@ -1,0 +1,287 @@
+LAMMPS (15 Jun 2023 - Development - patch_2Jun2022-5531-g0ba557ed1e)
+units         metal
+boundary      p p p
+atom_style    atomic
+neighbor      0.5 bin
+neigh_modify  delay 0 every 1 check no
+region main prism 0.0 2.0 0.0 2.0 0.0 2.0 0.0 0.0 0.0
+create_box 2 main
+Created triclinic box = (0 0 0) to (2 2 2) with tilt (0 0 0)
+  1 by 1 by 1 MPI processor grid
+pair_style    zero 10.0
+pair_coeff    * * 
+compute ld all pod/atom ./sample_6body_hfo2_param.pod "" ""  Hf O
+**************** Begin of POD Potentials ****************
+species: Hf O 
+periodic boundary conditions: 1 1 1
+number of enviroment clusters: 1
+number of principal compoments: 1
+inner cut-off radius: 1
+outer cut-off radius: 5.5
+bessel polynomial degree: 4
+inverse polynomial degree: 8
+one-body potential: 1
+two-body radial basis functions: 8
+three-body radial basis functions: 6
+three-body angular degree: 4
+four-body radial basis functions: 4
+four-body angular degree: 2
+five-body radial basis functions: 4
+five-body angular degree: 2
+six-body radial basis functions: 3
+six-body angular degree: 2
+seven-body radial basis functions: 0
+seven-body angular degree: 0
+number of local descriptors per element for one-body potential: 1
+number of local descriptors per element for two-body potential: 16
+number of local descriptors per element for three-body potential: 90
+number of local descriptors per element for four-body potential: 64
+number of local descriptors per element for five-body potential: 192
+number of local descriptors per element for six-body potential: 198
+number of local descriptors per element for seven-body potential: 0
+number of local descriptors per element for all potentials: 561
+number of global descriptors: 1122
+**************** End of POD Potentials ****************
+
+Total wall time: 0:04:21
+999
+change_box all x final 0.000000000000000000000000000 5.136475506554315728635629057 y final 0.000000000000000000000000000 5.193413337544470209650171455 z final 0.000000000000000000000000000 5.246159804521276726063661044 xz final -0.883442968274303019882154331 boundary p p p
+Changing box ...
+  triclinic box = (0 0 0) to (5.1364755 2 2) with tilt (0 0 0)
+  triclinic box = (0 0 0) to (5.1364755 5.1934133 2) with tilt (0 0 0)
+  triclinic box = (0 0 0) to (5.1364755 5.1934133 5.2461598) with tilt (0 0 0)
+  triclinic box = (0 0 0) to (5.1364755 5.1934133 5.2461598) with tilt (0 -0.88344297 0)
+create_atoms 1 single 0.792968059999999974607476361 2.378919590000000194862650460 3.713793009999999839010342839
+Created 1 atoms
+  using lattice units in triclinic box = (0 0 0) to (5.1364755 5.1934133 5.2461598) with tilt (0 -0.88344297 0)
+  create_atoms CPU = 0.000 seconds
+create_atoms 1 single 3.018340939999999861242940824 4.975626779999999804715571372 4.155442589999999825067789061
+Created 1 atoms
+  using lattice units in triclinic box = (0 0 0) to (5.1364755 5.1934133 5.2461598) with tilt (0 -0.88344297 0)
+  create_atoms CPU = 0.000 seconds
+create_atoms 1 single 3.460063449999999818373908056 2.814494770000000034571030483 1.532364220000000054611177802
+Created 1 atoms
+  using lattice units in triclinic box = (0 0 0) to (5.1364755 5.1934133 5.2461598) with tilt (0 -0.88344297 0)
+  create_atoms CPU = 0.000 seconds
+create_atoms 1 single 1.234690059999999922624169812 0.217787590000000003120916858 1.090714650000000007779021871
+Created 1 atoms
+  using lattice units in triclinic box = (0 0 0) to (5.1364755 5.1934133 5.2461598) with tilt (0 -0.88344297 0)
+  create_atoms CPU = 0.000 seconds
+create_atoms 2 single 1.436610560000000091918082035 3.856244939999999843394107302 5.133774230000000216023181565
+Created 1 atoms
+  using lattice units in triclinic box = (0 0 0) to (5.1364755 5.1934133 5.2461598) with tilt (0 -0.88344297 0)
+  create_atoms CPU = 0.000 seconds
+create_atoms 2 single 2.374698439999999965976940075 1.259537759999999950721871755 2.735461879999999901258433965
+Created 1 atoms
+  using lattice units in triclinic box = (0 0 0) to (5.1364755 5.1934133 5.2461598) with tilt (0 -0.88344297 0)
+  create_atoms CPU = 0.000 seconds
+create_atoms 2 single 2.816420439999999913993633527 1.337169419999999941950363791 0.112382999999999996787458656
+Created 1 atoms
+  using lattice units in triclinic box = (0 0 0) to (5.1364755 5.1934133 5.2461598) with tilt (0 -0.88344297 0)
+  create_atoms CPU = 0.000 seconds
+create_atoms 2 single 1.878332560000000039934775486 3.933876609999999995892494553 2.510695360000000153632981892
+Created 1 atoms
+  using lattice units in triclinic box = (0 0 0) to (5.1364755 5.1934133 5.2461598) with tilt (0 -0.88344297 0)
+  create_atoms CPU = 0.000 seconds
+create_atoms 2 single 0.045238479999999997582804667 1.717767880000000024764972295 1.816496590000000077580466495
+Created 1 atoms
+  using lattice units in triclinic box = (0 0 0) to (5.1364755 5.1934133 5.2461598) with tilt (0 -0.88344297 0)
+  create_atoms CPU = 0.000 seconds
+create_atoms 2 single 4.649515029999999882193151279 4.314475060000000361526417691 0.806582290000000035057325931
+Created 1 atoms
+  using lattice units in triclinic box = (0 0 0) to (5.1364755 5.1934133 5.2461598) with tilt (0 -0.88344297 0)
+  create_atoms CPU = 0.000 seconds
+create_atoms 2 single 4.207792519999999925062184047 3.475646489999999921849394013 3.429660650000000199355554287
+Created 1 atoms
+  using lattice units in triclinic box = (0 0 0) to (5.1364755 5.1934133 5.2461598) with tilt (0 -0.88344297 0)
+  create_atoms CPU = 0.000 seconds
+create_atoms 2 single -0.396484029999999987303738180 0.878939310000000029177158467 4.439574949999999908811787463
+Created 1 atoms
+  using lattice units in triclinic box = (0 0 0) to (5.1364755 5.1934133 5.2461598) with tilt (0 -0.88344297 0)
+  create_atoms CPU = 0.000 seconds
+compute dd0 all podd/atom ./sample_6body_hfo2_param.pod "" ""  Hf O
+**************** Begin of POD Potentials ****************
+species: Hf O 
+periodic boundary conditions: 1 1 1
+number of enviroment clusters: 1
+number of principal compoments: 1
+inner cut-off radius: 1
+outer cut-off radius: 5.5
+bessel polynomial degree: 4
+inverse polynomial degree: 8
+one-body potential: 1
+two-body radial basis functions: 8
+three-body radial basis functions: 6
+three-body angular degree: 4
+four-body radial basis functions: 4
+four-body angular degree: 2
+five-body radial basis functions: 4
+five-body angular degree: 2
+six-body radial basis functions: 3
+six-body angular degree: 2
+seven-body radial basis functions: 0
+seven-body angular degree: 0
+number of local descriptors per element for one-body potential: 1
+number of local descriptors per element for two-body potential: 16
+number of local descriptors per element for three-body potential: 90
+number of local descriptors per element for four-body potential: 64
+number of local descriptors per element for five-body potential: 192
+number of local descriptors per element for six-body potential: 198
+number of local descriptors per element for seven-body potential: 0
+number of local descriptors per element for all potentials: 561
+number of global descriptors: 1122
+**************** End of POD Potentials ****************
+
+run 0
+WARNING: No fixes with time integration, atoms won't move (src/verlet.cpp:60)
+Generated 0 of 1 mixed pair_coeff terms from geometric mixing rule
+WARNING: More than one compute pod (src/ML-POD/compute_pod_atom.cpp:92)
+WARNING: More than one compute pod (src/ML-POD/compute_podd_atom.cpp:89)
+Neighbor list info ...
+  update: every = 1 steps, delay = 0 steps, check = no
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 10.5
+  ghost atom cutoff = 10.5
+  binsize = 5.25, bins = 2 1 1
+  3 neighbor lists, perpetual/occasional/extra = 1 2 0
+  (1) pair zero, perpetual
+      attributes: half, newton on
+      pair build: half/bin/newton/tri
+      stencil: half/bin/3d/tri
+      bin: standard
+  (2) compute pod/atom, occasional
+      attributes: full, newton on
+      pair build: full/bin/atomonly
+      stencil: full/bin/3d
+      bin: standard
+  (3) compute podd/atom, occasional
+      attributes: full, newton on
+      pair build: full/bin/atomonly
+      stencil: full/bin/3d
+      bin: standard
+Per MPI rank memory allocation (min/avg/max) = 3.787 | 3.787 | 3.787 Mbytes
+   Step          Temp          E_pair         E_mol          TotEng         Press     
+         0   0              0              0              0              0            
+Loop time of 5.83e-07 on 1 procs for 0 steps with 12 atoms
+
+171.5% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 5.83e-07   |            |       |100.00
+
+Nlocal:             12 ave          12 max          12 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:           1588 ave        1588 max        1588 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:           2496 ave        2496 max        2496 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:            0 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 2496
+Ave neighs/atom = 208
+Neighbor list builds = 0
+Dangerous builds not checked
+delete_atoms group all
+Deleted 12 atoms, new total = 0
+mass 1 178.486
+mass 2 15.999
+change_box all x final 0.000000000000000000000000000 5.136475506554315728635629057 y final 0.000000000000000000000000000 5.193413337544470209650171455 z final 0.000000000000000000000000000 5.246159804521276726063661044 xz final -0.883442968274303019882154331 boundary p p p
+Changing box ...
+  triclinic box = (0 0 0) to (5.1364755 5.1934133 5.2461598) with tilt (0 -0.88344297 0)
+  triclinic box = (0 0 0) to (5.1364755 5.1934133 5.2461598) with tilt (0 -0.88344297 0)
+  triclinic box = (0 0 0) to (5.1364755 5.1934133 5.2461598) with tilt (0 -0.88344297 0)
+  triclinic box = (0 0 0) to (5.1364755 5.1934133 5.2461598) with tilt (0 -0.88344297 0)
+create_atoms 1 single 0.776203818919444787916006590 2.350166829158174763847455324 3.682797980824850103687140290
+Created 1 atoms
+  using lattice units in triclinic box = (0 0 0) to (5.1364755 5.1934133 5.2461598) with tilt (0 -0.88344297 0)
+  create_atoms CPU = 0.000 seconds
+create_atoms 1 single 3.046909974681736965607115053 4.944150105556711416454618302 4.138358285486625653959436022
+Created 1 atoms
+  using lattice units in triclinic box = (0 0 0) to (5.1364755 5.1934133 5.2461598) with tilt (0 -0.88344297 0)
+  create_atoms CPU = 0.000 seconds
+create_atoms 1 single 3.476827233049027299216504616 2.843247525261339170299379475 1.563359341695713888853447315
+Created 1 atoms
+  using lattice units in triclinic box = (0 0 0) to (5.1364755 5.1934133 5.2461598) with tilt (0 -0.88344297 0)
+  create_atoms CPU = 0.000 seconds
+create_atoms 1 single 1.206121357063365095996232412 0.249264269623342554771383561 1.107798839749943642374319097
+Created 1 atoms
+  using lattice units in triclinic box = (0 0 0) to (5.1364755 5.1934133 5.2461598) with tilt (0 -0.88344297 0)
+  create_atoms CPU = 0.000 seconds
+create_atoms 2 single 1.992388292737735655535402657 3.756099553796239387537525545 0.094680110732730332623319214
+Created 1 atoms
+  using lattice units in triclinic box = (0 0 0) to (5.1364755 5.1934133 5.2461598) with tilt (0 -0.88344297 0)
+  create_atoms CPU = 0.000 seconds
+create_atoms 2 single 2.415659899710223434965428169 1.232091591716474976436757061 2.535088502166750856758881127
+Created 1 atoms
+  using lattice units in triclinic box = (0 0 0) to (5.1364755 5.1934133 5.2461598) with tilt (0 -0.88344297 0)
+  create_atoms CPU = 0.000 seconds
+create_atoms 2 single 2.260642995344876116092791563 1.437314984791091765359283272 5.151477127466908001451884047
+Created 1 atoms
+  using lattice units in triclinic box = (0 0 0) to (5.1364755 5.1934133 5.2461598) with tilt (0 -0.88344297 0)
+  create_atoms CPU = 0.000 seconds
+create_atoms 2 single 1.837371541104662497900790186 3.961322345404707068183824958 2.711068754608851882892395224
+Created 1 atoms
+  using lattice units in triclinic box = (0 0 0) to (5.1364755 5.1934133 5.2461598) with tilt (0 -0.88344297 0)
+  create_atoms CPU = 0.000 seconds
+create_atoms 2 single -0.040098562735613671459411478 1.710173262166000407447086218 1.839590910655264810458220381
+Created 1 atoms
+  using lattice units in triclinic box = (0 0 0) to (5.1364755 5.1934133 5.2461598) with tilt (0 -0.88344297 0)
+  create_atoms CPU = 0.000 seconds
+create_atoms 2 single 4.637992808257605403809975542 4.332359369278528937741157279 0.806657226745606470430516310
+Created 1 atoms
+  using lattice units in triclinic box = (0 0 0) to (5.1364755 5.1934133 5.2461598) with tilt (0 -0.88344297 0)
+  create_atoms CPU = 0.000 seconds
+create_atoms 2 single 4.293129979308621280154056876 3.483241329365950100793725142 3.406566397691777936529433646
+Created 1 atoms
+  using lattice units in triclinic box = (0 0 0) to (5.1364755 5.1934133 5.2461598) with tilt (0 -0.88344297 0)
+  create_atoms CPU = 0.000 seconds
+create_atoms 2 single -0.384961544867351790344400797 0.861055037948540880066161662 4.439500168075511510323849507
+Created 1 atoms
+  using lattice units in triclinic box = (0 0 0) to (5.1364755 5.1934133 5.2461598) with tilt (0 -0.88344297 0)
+  create_atoms CPU = 0.000 seconds
+run 0
+WARNING: No fixes with time integration, atoms won't move (src/verlet.cpp:60)
+Generated 0 of 1 mixed pair_coeff terms from geometric mixing rule
+WARNING: More than one compute pod (src/ML-POD/compute_pod_atom.cpp:92)
+WARNING: More than one compute pod (src/ML-POD/compute_podd_atom.cpp:89)
+Per MPI rank memory allocation (min/avg/max) = 3.793 | 3.793 | 3.793 Mbytes
+   Step          Temp          E_pair         E_mol          TotEng         Press     
+         0   0              0              0              0              0            
+Loop time of 4.59e-07 on 1 procs for 0 steps with 12 atoms
+
+0.0% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 4.59e-07   |            |       |100.00
+
+Nlocal:             12 ave          12 max          12 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:           1588 ave        1588 max        1588 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:           2508 ave        2508 max        2508 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:         4992 ave        4992 max        4992 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 4992
+Ave neighs/atom = 416
+Neighbor list builds = 0
+Dangerous builds not checked
+delete_atoms group all
+Deleted 12 atoms, new total = 0
+Total wall time: 0:04:20

@@ -21,21 +21,21 @@ pair_coeff     * * ../sample_6body_hfo2_param.pod ../sample_6body_2elem_coeffs.p
 
 compute dd all podd/atom ../sample_6body_hfo2_param.pod "" "" Hf O
 
-#variable sample_dd1 equal c_dd[1][49]
-#variable sample_dd2 equal c_dd[2][49]
-#variable sample_dd3 equal c_dd[3][49]
-#variable sample_dd4 equal c_dd[4][49]
+variable sample_dd1 equal c_dd[1][49]
+variable sample_dd2 equal c_dd[2][49]
+variable sample_dd3 equal c_dd[3][49]
+variable sample_dd4 equal c_dd[4][49]
 variable sample_dd5 equal c_dd[5][49]
-#variable sample_dd6 equal c_dd[6][49]
-#variable sample_dd7 equal c_dd[7][49]
-#variable sample_dd8 equal c_dd[8][49]
-#variable sample_dd9 equal c_dd[9][49]
-#variable sample_dd10 equal c_dd[10][49]
-#variable sample_dd11 equal c_dd[11][49]
-#variable sample_dd12 equal c_dd[12][49]
+variable sample_dd6 equal c_dd[6][49]
+variable sample_dd7 equal c_dd[7][49]
+variable sample_dd8 equal c_dd[8][49]
+variable sample_dd9 equal c_dd[9][49]
+variable sample_dd10 equal c_dd[10][49]
+variable sample_dd11 equal c_dd[11][49]
+variable sample_dd12 equal c_dd[12][49]
 
-#fix ddprint all print 1 "${sample_dd1} ${sample_dd2} ${sample_dd3} ${sample_dd4} ${sample_dd5} ${sample_dd6} ${sample_dd7} ${sample_dd8} ${sample_dd9} ${sample_dd10} ${sample_dd11} ${sample_dd12}" file sample_dd.txt
-fix ddprint all print 1 "${sample_dd5}" file sample_dd.txt
+fix ddprint all print 1 "${sample_dd1} ${sample_dd2} ${sample_dd3} ${sample_dd4} ${sample_dd5} ${sample_dd6} ${sample_dd7} ${sample_dd8} ${sample_dd9} ${sample_dd10} ${sample_dd11} ${sample_dd12}" file init_config_all_dd.txt
+#fix ddprint all print 1 "${sample_dd5}" file sample_dd.txt
 
 #dump 		     mydump_dd all custom 1 dump_dd id type c_dd[*]
 #dump_modify  mydump_dd sort id format float %20.15g
@@ -43,7 +43,7 @@ fix ddprint all print 1 "${sample_dd5}" file sample_dd.txt
 #rerun rerun.custom dump x y z
 run 0
 
-delete_atoms   group all
-read_data      spot_check_molly_step80_DATA  add merge
-run 0
+#delete_atoms   group all
+#read_data      spot_check_molly_step80_DATA  add merge
+#run 0
 

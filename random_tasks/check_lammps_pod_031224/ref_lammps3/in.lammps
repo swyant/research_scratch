@@ -1,0 +1,26 @@
+# NVT run
+
+units          metal 
+boundary       p p p 
+atom_style     atomic
+
+read_data      test_monoclinic_hfo2_unit_DATA
+#read_data      spot_check_molly_step80_DATA 
+
+neighbor       0.5 bin 
+neigh_modify   every 1 delay 0 check yes
+
+pair_style     pod
+pair_coeff     * * ../sample_6body_hfo2_param.pod ../sample_6body_2elem_coeffs.pod "" "" Hf O
+
+
+thermo       10
+thermo_style custom step temp pe ke etotal press
+
+velocity all create 200.0 2354243 rot yes dist gaussian
+
+fix          langevin all langevin 200 200 1.0 12532
+#fix          nve all nve 
+
+#run 300
+run 1000

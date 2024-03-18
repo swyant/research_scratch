@@ -1,0 +1,35 @@
+# NVT run
+
+units          metal 
+boundary       p p p 
+atom_style     atomic
+
+variable  stepnum  index 800
+
+read_data       spot_check_molly_redo2_step${stepnum}_DATA 
+
+neighbor       0.5 bin 
+neigh_modify   every 1 delay 0 check yes
+
+pair_style     pod
+pair_coeff     * * ../sample_6body_hfo2_param.pod ../sample_6body_2elem_coeffs.pod "" "" Hf O
+
+variable T        equal  500
+variable Tdamp    equal  0.1
+variable Tseed    equal  12280329
+variable dumpf    equal  1
+
+thermo       10
+thermo_style custom step temp pe ke etotal press
+
+#dump           run_forces all custom ${dumpf} dump_run_forces.custom id type x y z fx fy fz
+#dump_modify    run_forces sort id format line "%4d %1d %21.16f %21.16f %21.16f %21.16f %21.16f %21.16f"
+
+dump           run_forces all custom ${dumpf} dump_spot_redo2_step${stepnum}_forces.custom id type x y z fx fy fz
+dump_modify    run_forces sort id format line "%4d %1d %21.16f %21.16f %21.16f %21.16f %21.16f %21.16f"
+
+#fix          langevin all langevin 80 80 1.0 12532
+#fix          nve all nve 
+
+#run 300
+run 0

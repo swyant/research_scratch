@@ -1603,7 +1603,7 @@ version = "2.2.4"
 
 [[deps.Molly]]
 deps = ["Atomix", "AtomsBase", "AtomsCalculators", "BioStructures", "CUDA", "CellListMap", "ChainRules", "ChainRulesCore", "Chemfiles", "Colors", "Combinatorics", "DataStructures", "Distances", "Distributions", "Enzyme", "EzXML", "FLoops", "ForwardDiff", "Graphs", "KernelDensity", "LinearAlgebra", "NearestNeighbors", "PeriodicTable", "Random", "Reexport", "Requires", "SimpleCrystals", "SparseArrays", "StaticArrays", "Statistics", "Unitful", "UnitfulAtomic", "UnitfulChainRules", "UnsafeAtomicsLLVM", "Zygote"]
-git-tree-sha1 = "143527e19b854317fb3b1a3872b43eebaf77152b"
+path = "/Users/swyant/cesmix/dev/other/Molly.jl/"
 uuid = "aa0f7f06-fcc0-5ec4-a7f3-a573f33f9c4c"
 version = "0.18.4"
 

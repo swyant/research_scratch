@@ -1,0 +1,44 @@
+# NVT run
+
+units          metal 
+boundary       p p p 
+atom_style     atomic
+atom_modify    map yes
+
+read_data      test_monoclinic_hfo2_unit_DATA
+
+neighbor       0.5 bin 
+neigh_modify   every 1 delay 0 check yes
+
+pair_style     pod
+pair_coeff     * * ../sample_6body_hfo2_param.pod ../sample_6body_2elem_coeffs.pod "" "" Hf O
+
+
+compute dd all podd/atom ../sample_6body_hfo2_param.pod "" "" Hf O
+variable sample_dd1 equal c_dd[1][49]
+#variable sample_dd2 equal c_dd[3][1000]
+#variable sample_dd3 equal c_dd[3][49]
+#variable sample_dd4 equal c_dd[4][49]
+#variable sample_dd5 equal c_dd[5][49]
+#variable sample_dd6 equal c_dd[6][49]
+#variable sample_dd7 equal c_dd[7][49]
+#variable sample_dd8 equal c_dd[8][49]
+#variable sample_dd9 equal c_dd[9][49]
+#variable sample_dd10 equal c_dd[10][49]
+#variable sample_dd11 equal c_dd[11][49]
+#variable sample_dd12 equal c_dd[12][49]
+
+#fix ddprint all print 1 "${sample_dd1} ${sample_dd2} ${sample_dd3} ${sample_dd4} ${sample_dd5} ${sample_dd6} ${sample_dd7} ${sample_dd8} ${sample_dd9} ${sample_dd10} ${sample_dd11} ${sample_dd12}" file init_config_all_dd.txt
+#fix ddprint all print 1 "${sample_dd5}" file sample_dd.txt
+#dump 		     mydump_dd all custom 1 dump_dd id type c_dd[*]
+#dump_modify  mydump_dd sort id format float %20.15g
+
+thermo 1 
+#thermo_style custom step pe ke
+thermo_style custom step pe ke v_sample_dd1
+
+velocity all create 200.0 2354243 rot yes dist gaussian
+#fix          langevin all langevin 200.0 200.0 100.0 12532  # doesn't work???
+fix nvt all nvt temp 300.0 300.0 100.0
+
+run 1000

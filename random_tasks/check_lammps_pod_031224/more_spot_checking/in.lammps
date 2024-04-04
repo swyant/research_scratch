@@ -3,6 +3,7 @@
 units          metal 
 boundary       p p p 
 atom_style     atomic
+neigh_modify   delay 0 every 1 check no
 
 variable  stepnum  index 450
 

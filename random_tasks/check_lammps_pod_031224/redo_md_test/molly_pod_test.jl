@@ -38,7 +38,9 @@ m_sys = Molly.System(molly_hfo2_sys;
 #    remove_CM_motion=0,
 #)
 
-random_velocities!(m_sys,200.0u"K")
+#random_velocities!(m_sys,200.0u"K")
+random_velocities!(m_sys,500.0u"K")
+
 #simulator = Langevin(
 #    dt=0.001u"ps",
 #    temperature=200u"K",
@@ -48,8 +50,10 @@ random_velocities!(m_sys,200.0u"K")
 
 simulator = NoseHoover(
     dt=0.001u"ps",
-    temperature=200u"K",
-    remove_CM_motion=0
+    #temperature=200u"K",
+    temperature=500u"K",
+    #remove_CM_motion=0
+    remove_CM_motion=1
 )
 
 color_map = Dict(:Hf => :grey, :O => :red)

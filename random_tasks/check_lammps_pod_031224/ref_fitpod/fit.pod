@@ -1,0 +1,1 @@
+fitpod ../sample_6body_hfo2_param.pod data3.pod

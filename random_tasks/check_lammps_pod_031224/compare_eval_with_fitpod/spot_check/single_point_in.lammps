@@ -1,0 +1,24 @@
+# Single point calculation
+
+units          metal 
+boundary       p p p 
+atom_style     atomic
+neigh_modify   delay 0 every 1 check no
+
+#MODIFY
+read_data      small_HfO2_MC_rattled_random_config1_DATA
+
+#MODIFY
+pair_style     pod
+pair_coeff     * * ../../sample_6body_hfo2_param.pod ../ref_small_lammps_compat_HfO2_HIGHP_coefficients.pod "" "" Hf O
+
+# Maybe unneeded
+neighbor       0.5 bin 
+neigh_modify   every 1 delay 0 check yes
+
+dump           run_forces all custom 1 dump_highp_forces.custom id type x y z fx fy fz
+dump_modify    run_forces sort id format line "%4d %1d %32.27f %32.27f %32.27f %32.27f %32.27f %32.27f"
+
+fix eprint all print 1 "$(step) $(pe)" file pe.dat
+
+run 0

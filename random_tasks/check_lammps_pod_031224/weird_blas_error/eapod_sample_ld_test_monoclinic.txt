@@ -1,0 +1,2 @@
+# Fix print output for fix ldprint
+0.616554587307108

@@ -2,7 +2,7 @@
 
 julia_version = "1.9.2"
 manifest_format = "2.0"
-project_hash = "33267941a52239c55a0b5cd93e71cb48e8351968"
+project_hash = "694b1738149d888846bd011ba8feff3bfb6b9bb8"
 
 [[deps.ACE1]]
 deps = ["BenchmarkTools", "Combinatorics", "ForwardDiff", "InteractiveUtils", "JuLIP", "LinearAlgebra", "NeighbourLists", "Parameters", "Pkg", "Printf", "QuadGK", "Random", "Reexport", "SparseArrays", "StaticArrays", "Test"]
@@ -261,6 +261,12 @@ deps = ["Artifacts", "JLLWrappers", "Libdl", "Pkg"]
 git-tree-sha1 = "e329286945d0cfc04456972ea732551869af1cfc"
 uuid = "4e9b3aee-d8a1-5a3d-ad8b-7d824db253f0"
 version = "1.0.1+0"
+
+[[deps.CSV]]
+deps = ["CodecZlib", "Dates", "FilePathsBase", "InlineStrings", "Mmap", "Parsers", "PooledArrays", "PrecompileTools", "SentinelArrays", "Tables", "Unicode", "WeakRefStrings", "WorkerUtilities"]
+git-tree-sha1 = "a44910ceb69b0d44fe262dd451ab11ead3ed0be8"
+uuid = "336ed68f-0bac-5ca0-87d4-7b16caf5d00b"
+version = "0.10.13"
 
 [[deps.CUDA]]
 deps = ["AbstractFFTs", "Adapt", "BFloat16s", "CEnum", "CUDA_Driver_jll", "CUDA_Runtime_Discovery", "CUDA_Runtime_jll", "Crayons", "DataFrames", "ExprTools", "GPUArrays", "GPUCompiler", "KernelAbstractions", "LLVM", "LLVMLoopInfo", "LazyArtifacts", "Libdl", "LinearAlgebra", "Logging", "NVTX", "Preferences", "PrettyTables", "Printf", "Random", "Random123", "RandomNumbers", "Reexport", "Requires", "SparseArrays", "StaticArrays", "Statistics"]
@@ -1976,7 +1982,7 @@ version = "0.2.4"
 
 [[deps.PotentialLearning]]
 deps = ["AtomsBase", "Clustering", "Determinantal", "Distributions", "Flux", "InteratomicPotentials", "IterTools", "LinearAlgebra", "Optim", "Optimization", "OptimizationOptimJL", "OptimizationOptimisers", "OrderedCollections", "Printf", "ProgressBars", "Random", "StaticArrays", "Statistics", "Unitful", "UnitfulAtomic", "YAML", "Zygote"]
-git-tree-sha1 = "519b70051bcea9c88b30bd67c6fce132cd8affb2"
+path = "/Users/swyant/cesmix/dev/PotentialLearning.jl/"
 uuid = "82b0a93c-c2e3-44bc-a418-f0f89b0ae5c2"
 version = "0.2.2"
 
@@ -2667,11 +2673,22 @@ git-tree-sha1 = "7209df901e6ed7489fe9b7aa3e46fb788e15db85"
 uuid = "3d5dd08c-fd9d-11e8-17fa-ed2836048c2f"
 version = "0.21.65"
 
+[[deps.WeakRefStrings]]
+deps = ["DataAPI", "InlineStrings", "Parsers"]
+git-tree-sha1 = "b1be2855ed9ed8eac54e5caff2afcdb442d52c23"
+uuid = "ea10d353-3f73-51f8-a26c-33c1cb351aa5"
+version = "1.4.2"
+
 [[deps.WoodburyMatrices]]
 deps = ["LinearAlgebra", "SparseArrays"]
 git-tree-sha1 = "c1a7aa6219628fcd757dede0ca95e245c5cd9511"
 uuid = "efce3f68-66dc-5838-9240-27a6d6f5f9b6"
 version = "1.0.0"
+
+[[deps.WorkerUtilities]]
+git-tree-sha1 = "cd1659ba0d57b71a464a29e64dbc67cfe83d54e7"
+uuid = "76eceee3-57b5-4d4a-8e66-0e911cebbf60"
+version = "1.6.1"
 
 [[deps.XCrySDenStructureFormat]]
 deps = ["AtomsBase", "PeriodicTable", "Printf", "Unitful", "UnitfulAtomic"]

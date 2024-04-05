@@ -1,0 +1,1657 @@
+
+units          metal
+boundary       p p p
+atom_style     atomic
+neigh_modify   delay 0 every 1 check no
+
+read_data     ./data_files/lammps_pod_stress_test_DATA_0
+Reading data file ...
+  orthogonal box = (0 0 0) to (14.212109 14.212109 14.212109)
+  1 by 1 by 1 MPI processor grid
+  reading atoms ...
+  128 atoms
+  read_data CPU = 0.002 seconds
+
+pair_style     pod
+pair_coeff     * * ./sample_6body_hfo2_param.pod ./sample_6body_2elem_coeffs.pod "" "" Hf O
+**************** Begin of POD Potentials ****************
+species: Hf O 
+periodic boundary conditions: 1 1 1
+number of enviroment clusters: 1
+number of principal compoments: 1
+inner cut-off radius: 1
+outer cut-off radius: 5.5
+bessel polynomial degree: 4
+inverse polynomial degree: 8
+one-body potential: 1
+two-body radial basis functions: 8
+three-body radial basis functions: 6
+three-body angular degree: 4
+four-body radial basis functions: 4
+four-body angular degree: 2
+five-body radial basis functions: 4
+five-body angular degree: 2
+six-body radial basis functions: 3
+six-body angular degree: 2
+seven-body radial basis functions: 0
+seven-body angular degree: 0
+number of local descriptors per element for one-body potential: 1
+number of local descriptors per element for two-body potential: 16
+number of local descriptors per element for three-body potential: 90
+number of local descriptors per element for four-body potential: 64
+number of local descriptors per element for five-body potential: 192
+number of local descriptors per element for six-body potential: 198
+number of local descriptors per element for seven-body potential: 0
+number of local descriptors per element for all potentials: 561
+number of global descriptors: 1122
+**************** End of POD Potentials ****************
+
+**************** Begin of POD Coefficients ****************
+total number of coefficients for POD potential: 1122
+**************** End of POD Potentials ****************
+
+
+variable thermo_fname  string ./output/thermo_0.dat
+variable dump_fname    string ./output/dump_forces_0.custom
+variable tstep         equal 0
+
+# Maybe unneeded
+neighbor       0.5 bin
+neigh_modify   every 1 delay 0 check yes
+
+thermo       1
+thermo_style custom step temp pe ke etotal press pxx pyy pzz pxy pxz pyz
+
+fix thermo_out all print 1 "$(step) $(pe) $(pxx) $(pyy) $(pzz) $(pxy) $(pxz) $(pyz)" file ${thermo_fname} screen no title "step pe pxx pyy pzz pxy pxz pyz"
+fix thermo_out all print 1 "$(step) $(pe) $(pxx) $(pyy) $(pzz) $(pxy) $(pxz) $(pyz)" file ./output/thermo_0.dat screen no title "step pe pxx pyy pzz pxy pxz pyz"
+
+dump           run_forces all custom 1 ${dump_fname} id type x y z fx fy fz
+dump           run_forces all custom 1 ./output/dump_forces_0.custom id type x y z fx fy fz
+dump_modify    run_forces sort id format line "%4d %1d %32.27f %32.27f %32.27f %32.27f %32.27f %32.27f"
+
+reset_timestep ${tstep}
+reset_timestep 0
+run 0
+WARNING: No fixes with time integration, atoms won't move (src/verlet.cpp:60)
+Neighbor list info ...
+  update: every = 1 steps, delay = 0 steps, check = yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 6
+  ghost atom cutoff = 6
+  binsize = 3, bins = 5 5 5
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair pod, perpetual
+      attributes: full, newton on
+      pair build: full/bin/atomonly
+      stencil: full/bin/3d
+      bin: standard
+Per MPI rank memory allocation (min/avg/max) = 3.079 | 3.079 | 3.079 Mbytes
+   Step          Temp          PotEng         KinEng         TotEng         Press           Pxx            Pyy            Pzz            Pxy            Pxz            Pyz      
+         0   0             -911.59581      0             -911.59581      4772.8796      4739.5201      4750.0096      4829.1091      641.4414      -333.57673     -715.09043    
+Loop time of 1.042e-06 on 1 procs for 0 steps with 128 atoms
+
+191.9% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 1.042e-06  |            |       |100.00
+
+Nlocal:            128 ave         128 max         128 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:            727 ave         727 max         727 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:              0 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:         6050 ave        6050 max        6050 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 6050
+Ave neighs/atom = 47.265625
+Neighbor list builds = 0
+Dangerous builds = 0
+Total wall time: 0:00:00
+
+units          metal
+boundary       p p p
+atom_style     atomic
+neigh_modify   delay 0 every 1 check no
+
+read_data     ./data_files/lammps_pod_stress_test_DATA_1
+Reading data file ...
+  orthogonal box = (0 0 0) to (15.390456 15.390456 15.390456)
+  1 by 1 by 1 MPI processor grid
+  reading atoms ...
+  128 atoms
+  read_data CPU = 0.001 seconds
+
+pair_style     pod
+pair_coeff     * * ./sample_6body_hfo2_param.pod ./sample_6body_2elem_coeffs.pod "" "" Hf O
+**************** Begin of POD Potentials ****************
+species: Hf O 
+periodic boundary conditions: 1 1 1
+number of enviroment clusters: 1
+number of principal compoments: 1
+inner cut-off radius: 1
+outer cut-off radius: 5.5
+bessel polynomial degree: 4
+inverse polynomial degree: 8
+one-body potential: 1
+two-body radial basis functions: 8
+three-body radial basis functions: 6
+three-body angular degree: 4
+four-body radial basis functions: 4
+four-body angular degree: 2
+five-body radial basis functions: 4
+five-body angular degree: 2
+six-body radial basis functions: 3
+six-body angular degree: 2
+seven-body radial basis functions: 0
+seven-body angular degree: 0
+number of local descriptors per element for one-body potential: 1
+number of local descriptors per element for two-body potential: 16
+number of local descriptors per element for three-body potential: 90
+number of local descriptors per element for four-body potential: 64
+number of local descriptors per element for five-body potential: 192
+number of local descriptors per element for six-body potential: 198
+number of local descriptors per element for seven-body potential: 0
+number of local descriptors per element for all potentials: 561
+number of global descriptors: 1122
+**************** End of POD Potentials ****************
+
+**************** Begin of POD Coefficients ****************
+total number of coefficients for POD potential: 1122
+**************** End of POD Potentials ****************
+
+
+variable thermo_fname  string ./output/thermo_1.dat
+variable dump_fname    string ./output/dump_forces_1.custom
+variable tstep         equal 1
+
+# Maybe unneeded
+neighbor       0.5 bin
+neigh_modify   every 1 delay 0 check yes
+
+thermo       1
+thermo_style custom step temp pe ke etotal press pxx pyy pzz pxy pxz pyz
+
+fix thermo_out all print 1 "$(step) $(pe) $(pxx) $(pyy) $(pzz) $(pxy) $(pxz) $(pyz)" file ${thermo_fname} screen no title "step pe pxx pyy pzz pxy pxz pyz"
+fix thermo_out all print 1 "$(step) $(pe) $(pxx) $(pyy) $(pzz) $(pxy) $(pxz) $(pyz)" file ./output/thermo_1.dat screen no title "step pe pxx pyy pzz pxy pxz pyz"
+
+dump           run_forces all custom 1 ${dump_fname} id type x y z fx fy fz
+dump           run_forces all custom 1 ./output/dump_forces_1.custom id type x y z fx fy fz
+dump_modify    run_forces sort id format line "%4d %1d %32.27f %32.27f %32.27f %32.27f %32.27f %32.27f"
+
+reset_timestep ${tstep}
+reset_timestep 1
+run 0
+WARNING: No fixes with time integration, atoms won't move (src/verlet.cpp:60)
+Neighbor list info ...
+  update: every = 1 steps, delay = 0 steps, check = yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 6
+  ghost atom cutoff = 6
+  binsize = 3, bins = 6 6 6
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair pod, perpetual
+      attributes: full, newton on
+      pair build: full/bin/atomonly
+      stencil: full/bin/3d
+      bin: standard
+Per MPI rank memory allocation (min/avg/max) = 3.067 | 3.067 | 3.067 Mbytes
+   Step          Temp          PotEng         KinEng         TotEng         Press           Pxx            Pyy            Pzz            Pxy            Pxz            Pyz      
+         1   0             -704.07258      0             -704.07258      42582.296      36663.968      62038.167      29044.754      21762.644     -11556.71      -796.15035    
+Loop time of 5e-07 on 1 procs for 0 steps with 128 atoms
+
+0.0% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 5e-07      |            |       |100.00
+
+Nlocal:            128 ave         128 max         128 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:            615 ave         615 max         615 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:              0 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:         3928 ave        3928 max        3928 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 3928
+Ave neighs/atom = 30.6875
+Neighbor list builds = 0
+Dangerous builds = 0
+Total wall time: 0:00:00
+
+units          metal
+boundary       p p p
+atom_style     atomic
+neigh_modify   delay 0 every 1 check no
+
+read_data     ./data_files/lammps_pod_stress_test_DATA_2
+Reading data file ...
+  triclinic box = (0 0 0) to (12.734662 11.028535 20.206673) with tilt (-6.3673308 0 0)
+WARNING: Triclinic box skew is large. LAMMPS will run inefficiently. (src/domain.cpp:220)
+  1 by 1 by 1 MPI processor grid
+  reading atoms ...
+  128 atoms
+  read_data CPU = 0.001 seconds
+
+pair_style     pod
+pair_coeff     * * ./sample_6body_hfo2_param.pod ./sample_6body_2elem_coeffs.pod "" "" Hf O
+**************** Begin of POD Potentials ****************
+species: Hf O 
+periodic boundary conditions: 1 1 1
+number of enviroment clusters: 1
+number of principal compoments: 1
+inner cut-off radius: 1
+outer cut-off radius: 5.5
+bessel polynomial degree: 4
+inverse polynomial degree: 8
+one-body potential: 1
+two-body radial basis functions: 8
+three-body radial basis functions: 6
+three-body angular degree: 4
+four-body radial basis functions: 4
+four-body angular degree: 2
+five-body radial basis functions: 4
+five-body angular degree: 2
+six-body radial basis functions: 3
+six-body angular degree: 2
+seven-body radial basis functions: 0
+seven-body angular degree: 0
+number of local descriptors per element for one-body potential: 1
+number of local descriptors per element for two-body potential: 16
+number of local descriptors per element for three-body potential: 90
+number of local descriptors per element for four-body potential: 64
+number of local descriptors per element for five-body potential: 192
+number of local descriptors per element for six-body potential: 198
+number of local descriptors per element for seven-body potential: 0
+number of local descriptors per element for all potentials: 561
+number of global descriptors: 1122
+**************** End of POD Potentials ****************
+
+**************** Begin of POD Coefficients ****************
+total number of coefficients for POD potential: 1122
+**************** End of POD Potentials ****************
+
+
+variable thermo_fname  string ./output/thermo_2.dat
+variable dump_fname    string ./output/dump_forces_2.custom
+variable tstep         equal 2
+
+# Maybe unneeded
+neighbor       0.5 bin
+neigh_modify   every 1 delay 0 check yes
+
+thermo       1
+thermo_style custom step temp pe ke etotal press pxx pyy pzz pxy pxz pyz
+
+fix thermo_out all print 1 "$(step) $(pe) $(pxx) $(pyy) $(pzz) $(pxy) $(pxz) $(pyz)" file ${thermo_fname} screen no title "step pe pxx pyy pzz pxy pxz pyz"
+fix thermo_out all print 1 "$(step) $(pe) $(pxx) $(pyy) $(pzz) $(pxy) $(pxz) $(pyz)" file ./output/thermo_2.dat screen no title "step pe pxx pyy pzz pxy pxz pyz"
+
+dump           run_forces all custom 1 ${dump_fname} id type x y z fx fy fz
+dump           run_forces all custom 1 ./output/dump_forces_2.custom id type x y z fx fy fz
+dump_modify    run_forces sort id format line "%4d %1d %32.27f %32.27f %32.27f %32.27f %32.27f %32.27f"
+
+reset_timestep ${tstep}
+reset_timestep 2
+run 0
+WARNING: No fixes with time integration, atoms won't move (src/verlet.cpp:60)
+Neighbor list info ...
+  update: every = 1 steps, delay = 0 steps, check = yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 6
+  ghost atom cutoff = 6
+  binsize = 3, bins = 7 4 7
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair pod, perpetual
+      attributes: full, newton on
+      pair build: full/bin/atomonly
+      stencil: full/bin/3d
+      bin: standard
+Per MPI rank memory allocation (min/avg/max) = 3.069 | 3.069 | 3.069 Mbytes
+   Step          Temp          PotEng         KinEng         TotEng         Press           Pxx            Pyy            Pzz            Pxy            Pxz            Pyz      
+         2   0             -932.23512      0             -932.23512      13802.45       8649.6945      6842.7993      25914.856      526.39436     -262.31805     -1146.4947    
+Loop time of 4.58e-07 on 1 procs for 0 steps with 128 atoms
+
+218.3% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 4.58e-07   |            |       |100.00
+
+Nlocal:            128 ave         128 max         128 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:            640 ave         640 max         640 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:              0 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:         5790 ave        5790 max        5790 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 5790
+Ave neighs/atom = 45.234375
+Neighbor list builds = 0
+Dangerous builds = 0
+Total wall time: 0:00:00
+
+units          metal
+boundary       p p p
+atom_style     atomic
+neigh_modify   delay 0 every 1 check no
+
+read_data     ./data_files/lammps_pod_stress_test_DATA_3
+Reading data file ...
+  triclinic box = (0 0 0) to (3.1984857 2.7699686 5.0751844) with tilt (-1.5992428 0 0)
+WARNING: Triclinic box skew is large. LAMMPS will run inefficiently. (src/domain.cpp:220)
+  1 by 1 by 1 MPI processor grid
+  reading atoms ...
+  2 atoms
+  read_data CPU = 0.001 seconds
+
+pair_style     pod
+pair_coeff     * * ./sample_6body_hfo2_param.pod ./sample_6body_2elem_coeffs.pod "" "" Hf O
+**************** Begin of POD Potentials ****************
+species: Hf O 
+periodic boundary conditions: 1 1 1
+number of enviroment clusters: 1
+number of principal compoments: 1
+inner cut-off radius: 1
+outer cut-off radius: 5.5
+bessel polynomial degree: 4
+inverse polynomial degree: 8
+one-body potential: 1
+two-body radial basis functions: 8
+three-body radial basis functions: 6
+three-body angular degree: 4
+four-body radial basis functions: 4
+four-body angular degree: 2
+five-body radial basis functions: 4
+five-body angular degree: 2
+six-body radial basis functions: 3
+six-body angular degree: 2
+seven-body radial basis functions: 0
+seven-body angular degree: 0
+number of local descriptors per element for one-body potential: 1
+number of local descriptors per element for two-body potential: 16
+number of local descriptors per element for three-body potential: 90
+number of local descriptors per element for four-body potential: 64
+number of local descriptors per element for five-body potential: 192
+number of local descriptors per element for six-body potential: 198
+number of local descriptors per element for seven-body potential: 0
+number of local descriptors per element for all potentials: 561
+number of global descriptors: 1122
+**************** End of POD Potentials ****************
+
+**************** Begin of POD Coefficients ****************
+total number of coefficients for POD potential: 1122
+**************** End of POD Potentials ****************
+
+
+variable thermo_fname  string ./output/thermo_3.dat
+variable dump_fname    string ./output/dump_forces_3.custom
+variable tstep         equal 3
+
+# Maybe unneeded
+neighbor       0.5 bin
+neigh_modify   every 1 delay 0 check yes
+
+thermo       1
+thermo_style custom step temp pe ke etotal press pxx pyy pzz pxy pxz pyz
+
+fix thermo_out all print 1 "$(step) $(pe) $(pxx) $(pyy) $(pzz) $(pxy) $(pxz) $(pyz)" file ${thermo_fname} screen no title "step pe pxx pyy pzz pxy pxz pyz"
+fix thermo_out all print 1 "$(step) $(pe) $(pxx) $(pyy) $(pzz) $(pxy) $(pxz) $(pyz)" file ./output/thermo_3.dat screen no title "step pe pxx pyy pzz pxy pxz pyz"
+
+dump           run_forces all custom 1 ${dump_fname} id type x y z fx fy fz
+dump           run_forces all custom 1 ./output/dump_forces_3.custom id type x y z fx fy fz
+dump_modify    run_forces sort id format line "%4d %1d %32.27f %32.27f %32.27f %32.27f %32.27f %32.27f"
+
+reset_timestep ${tstep}
+reset_timestep 3
+run 0
+WARNING: No fixes with time integration, atoms won't move (src/verlet.cpp:60)
+Neighbor list info ...
+  update: every = 1 steps, delay = 0 steps, check = yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 6
+  ghost atom cutoff = 6
+  binsize = 3, bins = 2 1 2
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair pod, perpetual
+      attributes: full, newton on
+      pair build: full/bin/atomonly
+      stencil: full/bin/3d
+      bin: standard
+Per MPI rank memory allocation (min/avg/max) = 2.975 | 2.975 | 2.975 Mbytes
+   Step          Temp          PotEng         KinEng         TotEng         Press           Pxx            Pyy            Pzz            Pxy            Pxz            Pyz      
+         3   0             -14.676648      0             -14.676648     -14587.837     -21554.864     -21554.15      -654.49702      0.12672105     3.7676664e-07 -3.4933235e-07
+Loop time of 5.83e-07 on 1 procs for 0 steps with 2 atoms
+
+171.5% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 5.83e-07   |            |       |100.00
+
+Nlocal:              2 ave           2 max           2 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:            148 ave         148 max         148 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:              0 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:          100 ave         100 max         100 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 100
+Ave neighs/atom = 50
+Neighbor list builds = 0
+Dangerous builds = 0
+Total wall time: 0:00:00
+
+units          metal
+boundary       p p p
+atom_style     atomic
+neigh_modify   delay 0 every 1 check no
+
+read_data     ./data_files/lammps_pod_stress_test_DATA_4
+Reading data file ...
+  orthogonal box = (0 0 0) to (30 30 30)
+  1 by 1 by 1 MPI processor grid
+  reading atoms ...
+  2 atoms
+  read_data CPU = 0.000 seconds
+
+pair_style     pod
+pair_coeff     * * ./sample_6body_hfo2_param.pod ./sample_6body_2elem_coeffs.pod "" "" Hf O
+**************** Begin of POD Potentials ****************
+species: Hf O 
+periodic boundary conditions: 1 1 1
+number of enviroment clusters: 1
+number of principal compoments: 1
+inner cut-off radius: 1
+outer cut-off radius: 5.5
+bessel polynomial degree: 4
+inverse polynomial degree: 8
+one-body potential: 1
+two-body radial basis functions: 8
+three-body radial basis functions: 6
+three-body angular degree: 4
+four-body radial basis functions: 4
+four-body angular degree: 2
+five-body radial basis functions: 4
+five-body angular degree: 2
+six-body radial basis functions: 3
+six-body angular degree: 2
+seven-body radial basis functions: 0
+seven-body angular degree: 0
+number of local descriptors per element for one-body potential: 1
+number of local descriptors per element for two-body potential: 16
+number of local descriptors per element for three-body potential: 90
+number of local descriptors per element for four-body potential: 64
+number of local descriptors per element for five-body potential: 192
+number of local descriptors per element for six-body potential: 198
+number of local descriptors per element for seven-body potential: 0
+number of local descriptors per element for all potentials: 561
+number of global descriptors: 1122
+**************** End of POD Potentials ****************
+
+**************** Begin of POD Coefficients ****************
+total number of coefficients for POD potential: 1122
+**************** End of POD Potentials ****************
+
+
+variable thermo_fname  string ./output/thermo_4.dat
+variable dump_fname    string ./output/dump_forces_4.custom
+variable tstep         equal 4
+
+# Maybe unneeded
+neighbor       0.5 bin
+neigh_modify   every 1 delay 0 check yes
+
+thermo       1
+thermo_style custom step temp pe ke etotal press pxx pyy pzz pxy pxz pyz
+
+fix thermo_out all print 1 "$(step) $(pe) $(pxx) $(pyy) $(pzz) $(pxy) $(pxz) $(pyz)" file ${thermo_fname} screen no title "step pe pxx pyy pzz pxy pxz pyz"
+fix thermo_out all print 1 "$(step) $(pe) $(pxx) $(pyy) $(pzz) $(pxy) $(pxz) $(pyz)" file ./output/thermo_4.dat screen no title "step pe pxx pyy pzz pxy pxz pyz"
+
+dump           run_forces all custom 1 ${dump_fname} id type x y z fx fy fz
+dump           run_forces all custom 1 ./output/dump_forces_4.custom id type x y z fx fy fz
+dump_modify    run_forces sort id format line "%4d %1d %32.27f %32.27f %32.27f %32.27f %32.27f %32.27f"
+
+reset_timestep ${tstep}
+reset_timestep 4
+run 0
+WARNING: No fixes with time integration, atoms won't move (src/verlet.cpp:60)
+Neighbor list info ...
+  update: every = 1 steps, delay = 0 steps, check = yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 6
+  ghost atom cutoff = 6
+  binsize = 3, bins = 10 10 10
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair pod, perpetual
+      attributes: full, newton on
+      pair build: full/bin/atomonly
+      stencil: full/bin/3d
+      bin: standard
+Per MPI rank memory allocation (min/avg/max) = 3.069 | 3.069 | 3.069 Mbytes
+   Step          Temp          PotEng         KinEng         TotEng         Press           Pxx            Pyy            Pzz            Pxy            Pxz            Pyz      
+         4   0              129.2781       0              129.2781       12201.89       0              0              36605.67       0              0              0            
+Loop time of 5.42e-07 on 1 procs for 0 steps with 2 atoms
+
+184.5% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 5.42e-07   |            |       |100.00
+
+Nlocal:              2 ave           2 max           2 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:              0 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:              0 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:            2 ave           2 max           2 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 2
+Ave neighs/atom = 1
+Neighbor list builds = 0
+Dangerous builds = 0
+Total wall time: 0:00:00
+
+units          metal
+boundary       p p p
+atom_style     atomic
+neigh_modify   delay 0 every 1 check no
+
+read_data     ./data_files/lammps_pod_stress_test_DATA_5
+Reading data file ...
+  triclinic box = (0 0 0) to (5.1364755 5.1934133 5.2461598) with tilt (0 -0.88344297 0)
+  1 by 1 by 1 MPI processor grid
+  reading atoms ...
+  12 atoms
+  read_data CPU = 0.001 seconds
+
+pair_style     pod
+pair_coeff     * * ./sample_6body_hfo2_param.pod ./sample_6body_2elem_coeffs.pod "" "" Hf O
+**************** Begin of POD Potentials ****************
+species: Hf O 
+periodic boundary conditions: 1 1 1
+number of enviroment clusters: 1
+number of principal compoments: 1
+inner cut-off radius: 1
+outer cut-off radius: 5.5
+bessel polynomial degree: 4
+inverse polynomial degree: 8
+one-body potential: 1
+two-body radial basis functions: 8
+three-body radial basis functions: 6
+three-body angular degree: 4
+four-body radial basis functions: 4
+four-body angular degree: 2
+five-body radial basis functions: 4
+five-body angular degree: 2
+six-body radial basis functions: 3
+six-body angular degree: 2
+seven-body radial basis functions: 0
+seven-body angular degree: 0
+number of local descriptors per element for one-body potential: 1
+number of local descriptors per element for two-body potential: 16
+number of local descriptors per element for three-body potential: 90
+number of local descriptors per element for four-body potential: 64
+number of local descriptors per element for five-body potential: 192
+number of local descriptors per element for six-body potential: 198
+number of local descriptors per element for seven-body potential: 0
+number of local descriptors per element for all potentials: 561
+number of global descriptors: 1122
+**************** End of POD Potentials ****************
+
+**************** Begin of POD Coefficients ****************
+total number of coefficients for POD potential: 1122
+**************** End of POD Potentials ****************
+
+
+variable thermo_fname  string ./output/thermo_5.dat
+variable dump_fname    string ./output/dump_forces_5.custom
+variable tstep         equal 5
+
+# Maybe unneeded
+neighbor       0.5 bin
+neigh_modify   every 1 delay 0 check yes
+
+thermo       1
+thermo_style custom step temp pe ke etotal press pxx pyy pzz pxy pxz pyz
+
+fix thermo_out all print 1 "$(step) $(pe) $(pxx) $(pyy) $(pzz) $(pxy) $(pxz) $(pyz)" file ${thermo_fname} screen no title "step pe pxx pyy pzz pxy pxz pyz"
+fix thermo_out all print 1 "$(step) $(pe) $(pxx) $(pyy) $(pzz) $(pxy) $(pxz) $(pyz)" file ./output/thermo_5.dat screen no title "step pe pxx pyy pzz pxy pxz pyz"
+
+dump           run_forces all custom 1 ${dump_fname} id type x y z fx fy fz
+dump           run_forces all custom 1 ./output/dump_forces_5.custom id type x y z fx fy fz
+dump_modify    run_forces sort id format line "%4d %1d %32.27f %32.27f %32.27f %32.27f %32.27f %32.27f"
+
+reset_timestep ${tstep}
+reset_timestep 5
+run 0
+WARNING: No fixes with time integration, atoms won't move (src/verlet.cpp:60)
+Neighbor list info ...
+  update: every = 1 steps, delay = 0 steps, check = yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 6
+  ghost atom cutoff = 6
+  binsize = 3, bins = 3 2 2
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair pod, perpetual
+      attributes: full, newton on
+      pair build: full/bin/atomonly
+      stencil: full/bin/3d
+      bin: standard
+Per MPI rank memory allocation (min/avg/max) = 3.085 | 3.085 | 3.085 Mbytes
+   Step          Temp          PotEng         KinEng         TotEng         Press           Pxx            Pyy            Pzz            Pxy            Pxz            Pyz      
+         5   0             -111.05105      0             -111.05105      25969.817      25150.234      26153.697      26605.519      0.021134495   -4037.0559      0.27264144   
+Loop time of 5.42e-07 on 1 procs for 0 steps with 12 atoms
+
+0.0% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 5.42e-07   |            |       |100.00
+
+Nlocal:             12 ave          12 max          12 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:            384 ave         384 max         384 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:              0 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:          932 ave         932 max         932 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 932
+Ave neighs/atom = 77.666667
+Neighbor list builds = 0
+Dangerous builds = 0
+Total wall time: 0:00:00
+
+units          metal
+boundary       p p p
+atom_style     atomic
+neigh_modify   delay 0 every 1 check no
+
+read_data     ./data_files/lammps_pod_stress_test_DATA_6
+Reading data file ...
+  orthogonal box = (0 0 0) to (10.858127 10.858127 10.858127)
+  1 by 1 by 1 MPI processor grid
+  reading atoms ...
+  96 atoms
+  read_data CPU = 0.001 seconds
+
+pair_style     pod
+pair_coeff     * * ./sample_6body_hfo2_param.pod ./sample_6body_2elem_coeffs.pod "" "" Hf O
+**************** Begin of POD Potentials ****************
+species: Hf O 
+periodic boundary conditions: 1 1 1
+number of enviroment clusters: 1
+number of principal compoments: 1
+inner cut-off radius: 1
+outer cut-off radius: 5.5
+bessel polynomial degree: 4
+inverse polynomial degree: 8
+one-body potential: 1
+two-body radial basis functions: 8
+three-body radial basis functions: 6
+three-body angular degree: 4
+four-body radial basis functions: 4
+four-body angular degree: 2
+five-body radial basis functions: 4
+five-body angular degree: 2
+six-body radial basis functions: 3
+six-body angular degree: 2
+seven-body radial basis functions: 0
+seven-body angular degree: 0
+number of local descriptors per element for one-body potential: 1
+number of local descriptors per element for two-body potential: 16
+number of local descriptors per element for three-body potential: 90
+number of local descriptors per element for four-body potential: 64
+number of local descriptors per element for five-body potential: 192
+number of local descriptors per element for six-body potential: 198
+number of local descriptors per element for seven-body potential: 0
+number of local descriptors per element for all potentials: 561
+number of global descriptors: 1122
+**************** End of POD Potentials ****************
+
+**************** Begin of POD Coefficients ****************
+total number of coefficients for POD potential: 1122
+**************** End of POD Potentials ****************
+
+
+variable thermo_fname  string ./output/thermo_6.dat
+variable dump_fname    string ./output/dump_forces_6.custom
+variable tstep         equal 6
+
+# Maybe unneeded
+neighbor       0.5 bin
+neigh_modify   every 1 delay 0 check yes
+
+thermo       1
+thermo_style custom step temp pe ke etotal press pxx pyy pzz pxy pxz pyz
+
+fix thermo_out all print 1 "$(step) $(pe) $(pxx) $(pyy) $(pzz) $(pxy) $(pxz) $(pyz)" file ${thermo_fname} screen no title "step pe pxx pyy pzz pxy pxz pyz"
+fix thermo_out all print 1 "$(step) $(pe) $(pxx) $(pyy) $(pzz) $(pxy) $(pxz) $(pyz)" file ./output/thermo_6.dat screen no title "step pe pxx pyy pzz pxy pxz pyz"
+
+dump           run_forces all custom 1 ${dump_fname} id type x y z fx fy fz
+dump           run_forces all custom 1 ./output/dump_forces_6.custom id type x y z fx fy fz
+dump_modify    run_forces sort id format line "%4d %1d %32.27f %32.27f %32.27f %32.27f %32.27f %32.27f"
+
+reset_timestep ${tstep}
+reset_timestep 6
+run 0
+WARNING: No fixes with time integration, atoms won't move (src/verlet.cpp:60)
+Neighbor list info ...
+  update: every = 1 steps, delay = 0 steps, check = yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 6
+  ghost atom cutoff = 6
+  binsize = 3, bins = 4 4 4
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair pod, perpetual
+      attributes: full, newton on
+      pair build: full/bin/atomonly
+      stencil: full/bin/3d
+      bin: standard
+Per MPI rank memory allocation (min/avg/max) = 3.085 | 3.085 | 3.085 Mbytes
+   Step          Temp          PotEng         KinEng         TotEng         Press           Pxx            Pyy            Pzz            Pxy            Pxz            Pyz      
+         6   0             -801.99538      0             -801.99538      34893.781      80951.787      25047.788     -1318.2315      14837.94      -30303.366      14219.379    
+Loop time of 5.42e-07 on 1 procs for 0 steps with 96 atoms
+
+184.5% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 5.42e-07   |            |       |100.00
+
+Nlocal:             96 ave          96 max          96 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:            811 ave         811 max         811 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:              0 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:         6452 ave        6452 max        6452 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 6452
+Ave neighs/atom = 67.208333
+Neighbor list builds = 0
+Dangerous builds = 0
+Total wall time: 0:00:00
+
+units          metal
+boundary       p p p
+atom_style     atomic
+neigh_modify   delay 0 every 1 check no
+
+read_data     ./data_files/lammps_pod_stress_test_DATA_7
+Reading data file ...
+  orthogonal box = (0 0 0) to (11.10739 11.10739 11.10739)
+  1 by 1 by 1 MPI processor grid
+  reading atoms ...
+  96 atoms
+  read_data CPU = 0.003 seconds
+
+pair_style     pod
+pair_coeff     * * ./sample_6body_hfo2_param.pod ./sample_6body_2elem_coeffs.pod "" "" Hf O
+**************** Begin of POD Potentials ****************
+species: Hf O 
+periodic boundary conditions: 1 1 1
+number of enviroment clusters: 1
+number of principal compoments: 1
+inner cut-off radius: 1
+outer cut-off radius: 5.5
+bessel polynomial degree: 4
+inverse polynomial degree: 8
+one-body potential: 1
+two-body radial basis functions: 8
+three-body radial basis functions: 6
+three-body angular degree: 4
+four-body radial basis functions: 4
+four-body angular degree: 2
+five-body radial basis functions: 4
+five-body angular degree: 2
+six-body radial basis functions: 3
+six-body angular degree: 2
+seven-body radial basis functions: 0
+seven-body angular degree: 0
+number of local descriptors per element for one-body potential: 1
+number of local descriptors per element for two-body potential: 16
+number of local descriptors per element for three-body potential: 90
+number of local descriptors per element for four-body potential: 64
+number of local descriptors per element for five-body potential: 192
+number of local descriptors per element for six-body potential: 198
+number of local descriptors per element for seven-body potential: 0
+number of local descriptors per element for all potentials: 561
+number of global descriptors: 1122
+**************** End of POD Potentials ****************
+
+**************** Begin of POD Coefficients ****************
+total number of coefficients for POD potential: 1122
+**************** End of POD Potentials ****************
+
+
+variable thermo_fname  string ./output/thermo_7.dat
+variable dump_fname    string ./output/dump_forces_7.custom
+variable tstep         equal 7
+
+# Maybe unneeded
+neighbor       0.5 bin
+neigh_modify   every 1 delay 0 check yes
+
+thermo       1
+thermo_style custom step temp pe ke etotal press pxx pyy pzz pxy pxz pyz
+
+fix thermo_out all print 1 "$(step) $(pe) $(pxx) $(pyy) $(pzz) $(pxy) $(pxz) $(pyz)" file ${thermo_fname} screen no title "step pe pxx pyy pzz pxy pxz pyz"
+fix thermo_out all print 1 "$(step) $(pe) $(pxx) $(pyy) $(pzz) $(pxy) $(pxz) $(pyz)" file ./output/thermo_7.dat screen no title "step pe pxx pyy pzz pxy pxz pyz"
+
+dump           run_forces all custom 1 ${dump_fname} id type x y z fx fy fz
+dump           run_forces all custom 1 ./output/dump_forces_7.custom id type x y z fx fy fz
+dump_modify    run_forces sort id format line "%4d %1d %32.27f %32.27f %32.27f %32.27f %32.27f %32.27f"
+
+reset_timestep ${tstep}
+reset_timestep 7
+run 0
+WARNING: No fixes with time integration, atoms won't move (src/verlet.cpp:60)
+Neighbor list info ...
+  update: every = 1 steps, delay = 0 steps, check = yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 6
+  ghost atom cutoff = 6
+  binsize = 3, bins = 4 4 4
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair pod, perpetual
+      attributes: full, newton on
+      pair build: full/bin/atomonly
+      stencil: full/bin/3d
+      bin: standard
+Per MPI rank memory allocation (min/avg/max) = 3.08 | 3.08 | 3.08 Mbytes
+   Step          Temp          PotEng         KinEng         TotEng         Press           Pxx            Pyy            Pzz            Pxy            Pxz            Pyz      
+         7   0             -799.04015      0             -799.04015     -6483.2522      11715.037      4719.7182     -35884.512      2381.0546      39781.24       18369.032    
+Loop time of 5e-07 on 1 procs for 0 steps with 96 atoms
+
+0.0% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 5e-07      |            |       |100.00
+
+Nlocal:             96 ave          96 max          96 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:            756 ave         756 max         756 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:              0 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:         6014 ave        6014 max        6014 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 6014
+Ave neighs/atom = 62.645833
+Neighbor list builds = 0
+Dangerous builds = 0
+Total wall time: 0:00:00
+
+units          metal
+boundary       p p p
+atom_style     atomic
+neigh_modify   delay 0 every 1 check no
+
+read_data     ./data_files/lammps_pod_stress_test_DATA_8
+Reading data file ...
+  triclinic box = (0 0 0) to (11.339215 11.46491 11.581352) with tilt (0 -1.9502769 0)
+  1 by 1 by 1 MPI processor grid
+  reading atoms ...
+  96 atoms
+  read_data CPU = 0.001 seconds
+
+pair_style     pod
+pair_coeff     * * ./sample_6body_hfo2_param.pod ./sample_6body_2elem_coeffs.pod "" "" Hf O
+**************** Begin of POD Potentials ****************
+species: Hf O 
+periodic boundary conditions: 1 1 1
+number of enviroment clusters: 1
+number of principal compoments: 1
+inner cut-off radius: 1
+outer cut-off radius: 5.5
+bessel polynomial degree: 4
+inverse polynomial degree: 8
+one-body potential: 1
+two-body radial basis functions: 8
+three-body radial basis functions: 6
+three-body angular degree: 4
+four-body radial basis functions: 4
+four-body angular degree: 2
+five-body radial basis functions: 4
+five-body angular degree: 2
+six-body radial basis functions: 3
+six-body angular degree: 2
+seven-body radial basis functions: 0
+seven-body angular degree: 0
+number of local descriptors per element for one-body potential: 1
+number of local descriptors per element for two-body potential: 16
+number of local descriptors per element for three-body potential: 90
+number of local descriptors per element for four-body potential: 64
+number of local descriptors per element for five-body potential: 192
+number of local descriptors per element for six-body potential: 198
+number of local descriptors per element for seven-body potential: 0
+number of local descriptors per element for all potentials: 561
+number of global descriptors: 1122
+**************** End of POD Potentials ****************
+
+**************** Begin of POD Coefficients ****************
+total number of coefficients for POD potential: 1122
+**************** End of POD Potentials ****************
+
+
+variable thermo_fname  string ./output/thermo_8.dat
+variable dump_fname    string ./output/dump_forces_8.custom
+variable tstep         equal 8
+
+# Maybe unneeded
+neighbor       0.5 bin
+neigh_modify   every 1 delay 0 check yes
+
+thermo       1
+thermo_style custom step temp pe ke etotal press pxx pyy pzz pxy pxz pyz
+
+fix thermo_out all print 1 "$(step) $(pe) $(pxx) $(pyy) $(pzz) $(pxy) $(pxz) $(pyz)" file ${thermo_fname} screen no title "step pe pxx pyy pzz pxy pxz pyz"
+fix thermo_out all print 1 "$(step) $(pe) $(pxx) $(pyy) $(pzz) $(pxy) $(pxz) $(pyz)" file ./output/thermo_8.dat screen no title "step pe pxx pyy pzz pxy pxz pyz"
+
+dump           run_forces all custom 1 ${dump_fname} id type x y z fx fy fz
+dump           run_forces all custom 1 ./output/dump_forces_8.custom id type x y z fx fy fz
+dump_modify    run_forces sort id format line "%4d %1d %32.27f %32.27f %32.27f %32.27f %32.27f %32.27f"
+
+reset_timestep ${tstep}
+reset_timestep 8
+run 0
+WARNING: No fixes with time integration, atoms won't move (src/verlet.cpp:60)
+Neighbor list info ...
+  update: every = 1 steps, delay = 0 steps, check = yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 6
+  ghost atom cutoff = 6
+  binsize = 3, bins = 5 4 4
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair pod, perpetual
+      attributes: full, newton on
+      pair build: full/bin/atomonly
+      stencil: full/bin/3d
+      bin: standard
+Per MPI rank memory allocation (min/avg/max) = 3.079 | 3.079 | 3.079 Mbytes
+   Step          Temp          PotEng         KinEng         TotEng         Press           Pxx            Pyy            Pzz            Pxy            Pxz            Pyz      
+         8   0             -720.26855      0             -720.26855     -171959        -202333.82     -167030.07     -146513.1      -3145.9199      29256.621     -24435.781    
+Loop time of 5.42e-07 on 1 procs for 0 steps with 96 atoms
+
+184.5% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 5.42e-07   |            |       |100.00
+
+Nlocal:             96 ave          96 max          96 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:            732 ave         732 max         732 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:              0 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:         5460 ave        5460 max        5460 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 5460
+Ave neighs/atom = 56.875
+Neighbor list builds = 0
+Dangerous builds = 0
+Total wall time: 0:00:00
+
+units          metal
+boundary       p p p
+atom_style     atomic
+neigh_modify   delay 0 every 1 check no
+
+read_data     ./data_files/lammps_pod_stress_test_DATA_9
+Reading data file ...
+  triclinic box = (0 0 0) to (10.354206 10.468983 10.57531) with tilt (0 -1.7808613 0)
+  1 by 1 by 1 MPI processor grid
+  reading atoms ...
+  96 atoms
+  read_data CPU = 0.001 seconds
+
+pair_style     pod
+pair_coeff     * * ./sample_6body_hfo2_param.pod ./sample_6body_2elem_coeffs.pod "" "" Hf O
+**************** Begin of POD Potentials ****************
+species: Hf O 
+periodic boundary conditions: 1 1 1
+number of enviroment clusters: 1
+number of principal compoments: 1
+inner cut-off radius: 1
+outer cut-off radius: 5.5
+bessel polynomial degree: 4
+inverse polynomial degree: 8
+one-body potential: 1
+two-body radial basis functions: 8
+three-body radial basis functions: 6
+three-body angular degree: 4
+four-body radial basis functions: 4
+four-body angular degree: 2
+five-body radial basis functions: 4
+five-body angular degree: 2
+six-body radial basis functions: 3
+six-body angular degree: 2
+seven-body radial basis functions: 0
+seven-body angular degree: 0
+number of local descriptors per element for one-body potential: 1
+number of local descriptors per element for two-body potential: 16
+number of local descriptors per element for three-body potential: 90
+number of local descriptors per element for four-body potential: 64
+number of local descriptors per element for five-body potential: 192
+number of local descriptors per element for six-body potential: 198
+number of local descriptors per element for seven-body potential: 0
+number of local descriptors per element for all potentials: 561
+number of global descriptors: 1122
+**************** End of POD Potentials ****************
+
+**************** Begin of POD Coefficients ****************
+total number of coefficients for POD potential: 1122
+**************** End of POD Potentials ****************
+
+
+variable thermo_fname  string ./output/thermo_9.dat
+variable dump_fname    string ./output/dump_forces_9.custom
+variable tstep         equal 9
+
+# Maybe unneeded
+neighbor       0.5 bin
+neigh_modify   every 1 delay 0 check yes
+
+thermo       1
+thermo_style custom step temp pe ke etotal press pxx pyy pzz pxy pxz pyz
+
+fix thermo_out all print 1 "$(step) $(pe) $(pxx) $(pyy) $(pzz) $(pxy) $(pxz) $(pyz)" file ${thermo_fname} screen no title "step pe pxx pyy pzz pxy pxz pyz"
+fix thermo_out all print 1 "$(step) $(pe) $(pxx) $(pyy) $(pzz) $(pxy) $(pxz) $(pyz)" file ./output/thermo_9.dat screen no title "step pe pxx pyy pzz pxy pxz pyz"
+
+dump           run_forces all custom 1 ${dump_fname} id type x y z fx fy fz
+dump           run_forces all custom 1 ./output/dump_forces_9.custom id type x y z fx fy fz
+dump_modify    run_forces sort id format line "%4d %1d %32.27f %32.27f %32.27f %32.27f %32.27f %32.27f"
+
+reset_timestep ${tstep}
+reset_timestep 9
+run 0
+WARNING: No fixes with time integration, atoms won't move (src/verlet.cpp:60)
+Neighbor list info ...
+  update: every = 1 steps, delay = 0 steps, check = yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 6
+  ghost atom cutoff = 6
+  binsize = 3, bins = 5 4 4
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair pod, perpetual
+      attributes: full, newton on
+      pair build: full/bin/atomonly
+      stencil: full/bin/3d
+      bin: standard
+Per MPI rank memory allocation (min/avg/max) = 3.086 | 3.086 | 3.086 Mbytes
+   Step          Temp          PotEng         KinEng         TotEng         Press           Pxx            Pyy            Pzz            Pxy            Pxz            Pyz      
+         9   0             -724.04938      0             -724.04938      34926.951      32337.263      48993.592      23449.996     -23799.823      38162.588     -21782.756    
+Loop time of 5e-07 on 1 procs for 0 steps with 96 atoms
+
+200.0% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 5e-07      |            |       |100.00
+
+Nlocal:             96 ave          96 max          96 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:            844 ave         844 max         844 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:              0 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:         7214 ave        7214 max        7214 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 7214
+Ave neighs/atom = 75.145833
+Neighbor list builds = 0
+Dangerous builds = 0
+Total wall time: 0:00:00
+
+units          metal
+boundary       p p p
+atom_style     atomic
+neigh_modify   delay 0 every 1 check no
+
+read_data     ./data_files/lammps_pod_stress_test_DATA_10
+Reading data file ...
+  triclinic box = (0 0 0) to (10.260237 8.8856217 16.28039) with tilt (-5.1301185 0 0)
+WARNING: Triclinic box skew is large. LAMMPS will run inefficiently. (src/domain.cpp:220)
+  1 by 1 by 1 MPI processor grid
+  reading atoms ...
+  107 atoms
+  read_data CPU = 0.001 seconds
+
+pair_style     pod
+pair_coeff     * * ./sample_6body_hfo2_param.pod ./sample_6body_2elem_coeffs.pod "" "" Hf O
+**************** Begin of POD Potentials ****************
+species: Hf O 
+periodic boundary conditions: 1 1 1
+number of enviroment clusters: 1
+number of principal compoments: 1
+inner cut-off radius: 1
+outer cut-off radius: 5.5
+bessel polynomial degree: 4
+inverse polynomial degree: 8
+one-body potential: 1
+two-body radial basis functions: 8
+three-body radial basis functions: 6
+three-body angular degree: 4
+four-body radial basis functions: 4
+four-body angular degree: 2
+five-body radial basis functions: 4
+five-body angular degree: 2
+six-body radial basis functions: 3
+six-body angular degree: 2
+seven-body radial basis functions: 0
+seven-body angular degree: 0
+number of local descriptors per element for one-body potential: 1
+number of local descriptors per element for two-body potential: 16
+number of local descriptors per element for three-body potential: 90
+number of local descriptors per element for four-body potential: 64
+number of local descriptors per element for five-body potential: 192
+number of local descriptors per element for six-body potential: 198
+number of local descriptors per element for seven-body potential: 0
+number of local descriptors per element for all potentials: 561
+number of global descriptors: 1122
+**************** End of POD Potentials ****************
+
+**************** Begin of POD Coefficients ****************
+total number of coefficients for POD potential: 1122
+**************** End of POD Potentials ****************
+
+
+variable thermo_fname  string ./output/thermo_10.dat
+variable dump_fname    string ./output/dump_forces_10.custom
+variable tstep         equal 10
+
+# Maybe unneeded
+neighbor       0.5 bin
+neigh_modify   every 1 delay 0 check yes
+
+thermo       1
+thermo_style custom step temp pe ke etotal press pxx pyy pzz pxy pxz pyz
+
+fix thermo_out all print 1 "$(step) $(pe) $(pxx) $(pyy) $(pzz) $(pxy) $(pxz) $(pyz)" file ${thermo_fname} screen no title "step pe pxx pyy pzz pxy pxz pyz"
+fix thermo_out all print 1 "$(step) $(pe) $(pxx) $(pyy) $(pzz) $(pxy) $(pxz) $(pyz)" file ./output/thermo_10.dat screen no title "step pe pxx pyy pzz pxy pxz pyz"
+
+dump           run_forces all custom 1 ${dump_fname} id type x y z fx fy fz
+dump           run_forces all custom 1 ./output/dump_forces_10.custom id type x y z fx fy fz
+dump_modify    run_forces sort id format line "%4d %1d %32.27f %32.27f %32.27f %32.27f %32.27f %32.27f"
+
+reset_timestep ${tstep}
+reset_timestep 10
+run 0
+WARNING: No fixes with time integration, atoms won't move (src/verlet.cpp:60)
+Neighbor list info ...
+  update: every = 1 steps, delay = 0 steps, check = yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 6
+  ghost atom cutoff = 6
+  binsize = 3, bins = 6 3 6
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair pod, perpetual
+      attributes: full, newton on
+      pair build: full/bin/atomonly
+      stencil: full/bin/3d
+      bin: standard
+Per MPI rank memory allocation (min/avg/max) = 3.08 | 3.08 | 3.08 Mbytes
+   Step          Temp          PotEng         KinEng         TotEng         Press           Pxx            Pyy            Pzz            Pxy            Pxz            Pyz      
+        10   0             -875.00168      0             -875.00168      203675.72      193497.31      185841.38      231688.46      3374.1148     -2667.2126     -2417.8837    
+Loop time of 5.41e-07 on 1 procs for 0 steps with 107 atoms
+
+184.8% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 5.41e-07   |            |       |100.00
+
+Nlocal:            107 ave         107 max         107 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:            867 ave         867 max         867 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:              0 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:         6698 ave        6698 max        6698 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 6698
+Ave neighs/atom = 62.598131
+Neighbor list builds = 0
+Dangerous builds = 0
+Total wall time: 0:00:00
+
+units          metal
+boundary       p p p
+atom_style     atomic
+neigh_modify   delay 0 every 1 check no
+
+read_data     ./data_files/lammps_pod_stress_test_DATA_11
+Reading data file ...
+  triclinic box = (0 0 0) to (10.21749 8.8486018 16.212561) with tilt (-5.108745 0 0)
+WARNING: Triclinic box skew is large. LAMMPS will run inefficiently. (src/domain.cpp:220)
+  1 by 1 by 1 MPI processor grid
+  reading atoms ...
+  107 atoms
+  read_data CPU = 0.001 seconds
+
+pair_style     pod
+pair_coeff     * * ./sample_6body_hfo2_param.pod ./sample_6body_2elem_coeffs.pod "" "" Hf O
+**************** Begin of POD Potentials ****************
+species: Hf O 
+periodic boundary conditions: 1 1 1
+number of enviroment clusters: 1
+number of principal compoments: 1
+inner cut-off radius: 1
+outer cut-off radius: 5.5
+bessel polynomial degree: 4
+inverse polynomial degree: 8
+one-body potential: 1
+two-body radial basis functions: 8
+three-body radial basis functions: 6
+three-body angular degree: 4
+four-body radial basis functions: 4
+four-body angular degree: 2
+five-body radial basis functions: 4
+five-body angular degree: 2
+six-body radial basis functions: 3
+six-body angular degree: 2
+seven-body radial basis functions: 0
+seven-body angular degree: 0
+number of local descriptors per element for one-body potential: 1
+number of local descriptors per element for two-body potential: 16
+number of local descriptors per element for three-body potential: 90
+number of local descriptors per element for four-body potential: 64
+number of local descriptors per element for five-body potential: 192
+number of local descriptors per element for six-body potential: 198
+number of local descriptors per element for seven-body potential: 0
+number of local descriptors per element for all potentials: 561
+number of global descriptors: 1122
+**************** End of POD Potentials ****************
+
+**************** Begin of POD Coefficients ****************
+total number of coefficients for POD potential: 1122
+**************** End of POD Potentials ****************
+
+
+variable thermo_fname  string ./output/thermo_11.dat
+variable dump_fname    string ./output/dump_forces_11.custom
+variable tstep         equal 11
+
+# Maybe unneeded
+neighbor       0.5 bin
+neigh_modify   every 1 delay 0 check yes
+
+thermo       1
+thermo_style custom step temp pe ke etotal press pxx pyy pzz pxy pxz pyz
+
+fix thermo_out all print 1 "$(step) $(pe) $(pxx) $(pyy) $(pzz) $(pxy) $(pxz) $(pyz)" file ${thermo_fname} screen no title "step pe pxx pyy pzz pxy pxz pyz"
+fix thermo_out all print 1 "$(step) $(pe) $(pxx) $(pyy) $(pzz) $(pxy) $(pxz) $(pyz)" file ./output/thermo_11.dat screen no title "step pe pxx pyy pzz pxy pxz pyz"
+
+dump           run_forces all custom 1 ${dump_fname} id type x y z fx fy fz
+dump           run_forces all custom 1 ./output/dump_forces_11.custom id type x y z fx fy fz
+dump_modify    run_forces sort id format line "%4d %1d %32.27f %32.27f %32.27f %32.27f %32.27f %32.27f"
+
+reset_timestep ${tstep}
+reset_timestep 11
+run 0
+WARNING: No fixes with time integration, atoms won't move (src/verlet.cpp:60)
+Neighbor list info ...
+  update: every = 1 steps, delay = 0 steps, check = yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 6
+  ghost atom cutoff = 6
+  binsize = 3, bins = 6 3 6
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair pod, perpetual
+      attributes: full, newton on
+      pair build: full/bin/atomonly
+      stencil: full/bin/3d
+      bin: standard
+Per MPI rank memory allocation (min/avg/max) = 3.08 | 3.08 | 3.08 Mbytes
+   Step          Temp          PotEng         KinEng         TotEng         Press           Pxx            Pyy            Pzz            Pxy            Pxz            Pyz      
+        11   0             -867.24043      0             -867.24043      239301.7       219736.86      207657.19      290511.04      2139.0756      961.8769      -188.67603    
+Loop time of 1.083e-06 on 1 procs for 0 steps with 107 atoms
+
+92.3% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 1.083e-06  |            |       |100.00
+
+Nlocal:            107 ave         107 max         107 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:            875 ave         875 max         875 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:              0 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:         6616 ave        6616 max        6616 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 6616
+Ave neighs/atom = 61.831776
+Neighbor list builds = 0
+Dangerous builds = 0
+Total wall time: 0:00:00
+
+units          metal
+boundary       p p p
+atom_style     atomic
+neigh_modify   delay 0 every 1 check no
+
+read_data     ./data_files/lammps_pod_stress_test_DATA_12
+Reading data file ...
+  triclinic box = (0 0 0) to (3.6020569 3.1194713 2.9410686) with tilt (1.8010284 1.8010284 1.0398238)
+WARNING: Triclinic box skew is large. LAMMPS will run inefficiently. (src/domain.cpp:220)
+  1 by 1 by 1 MPI processor grid
+  reading atoms ...
+  3 atoms
+  read_data CPU = 0.001 seconds
+
+pair_style     pod
+pair_coeff     * * ./sample_6body_hfo2_param.pod ./sample_6body_2elem_coeffs.pod "" "" Hf O
+**************** Begin of POD Potentials ****************
+species: Hf O 
+periodic boundary conditions: 1 1 1
+number of enviroment clusters: 1
+number of principal compoments: 1
+inner cut-off radius: 1
+outer cut-off radius: 5.5
+bessel polynomial degree: 4
+inverse polynomial degree: 8
+one-body potential: 1
+two-body radial basis functions: 8
+three-body radial basis functions: 6
+three-body angular degree: 4
+four-body radial basis functions: 4
+four-body angular degree: 2
+five-body radial basis functions: 4
+five-body angular degree: 2
+six-body radial basis functions: 3
+six-body angular degree: 2
+seven-body radial basis functions: 0
+seven-body angular degree: 0
+number of local descriptors per element for one-body potential: 1
+number of local descriptors per element for two-body potential: 16
+number of local descriptors per element for three-body potential: 90
+number of local descriptors per element for four-body potential: 64
+number of local descriptors per element for five-body potential: 192
+number of local descriptors per element for six-body potential: 198
+number of local descriptors per element for seven-body potential: 0
+number of local descriptors per element for all potentials: 561
+number of global descriptors: 1122
+**************** End of POD Potentials ****************
+
+**************** Begin of POD Coefficients ****************
+total number of coefficients for POD potential: 1122
+**************** End of POD Potentials ****************
+
+
+variable thermo_fname  string ./output/thermo_12.dat
+variable dump_fname    string ./output/dump_forces_12.custom
+variable tstep         equal 12
+
+# Maybe unneeded
+neighbor       0.5 bin
+neigh_modify   every 1 delay 0 check yes
+
+thermo       1
+thermo_style custom step temp pe ke etotal press pxx pyy pzz pxy pxz pyz
+
+fix thermo_out all print 1 "$(step) $(pe) $(pxx) $(pyy) $(pzz) $(pxy) $(pxz) $(pyz)" file ${thermo_fname} screen no title "step pe pxx pyy pzz pxy pxz pyz"
+fix thermo_out all print 1 "$(step) $(pe) $(pxx) $(pyy) $(pzz) $(pxy) $(pxz) $(pyz)" file ./output/thermo_12.dat screen no title "step pe pxx pyy pzz pxy pxz pyz"
+
+dump           run_forces all custom 1 ${dump_fname} id type x y z fx fy fz
+dump           run_forces all custom 1 ./output/dump_forces_12.custom id type x y z fx fy fz
+dump_modify    run_forces sort id format line "%4d %1d %32.27f %32.27f %32.27f %32.27f %32.27f %32.27f"
+
+reset_timestep ${tstep}
+reset_timestep 12
+run 0
+WARNING: No fixes with time integration, atoms won't move (src/verlet.cpp:60)
+Neighbor list info ...
+  update: every = 1 steps, delay = 0 steps, check = yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 6
+  ghost atom cutoff = 6
+  binsize = 3, bins = 3 2 1
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair pod, perpetual
+      attributes: full, newton on
+      pair build: full/bin/atomonly
+      stencil: full/bin/3d
+      bin: standard
+Per MPI rank memory allocation (min/avg/max) = 3.112 | 3.112 | 3.112 Mbytes
+   Step          Temp          PotEng         KinEng         TotEng         Press           Pxx            Pyy            Pzz            Pxy            Pxz            Pyz      
+        12   0             -27.016618      0             -27.016618      103975.39      103975.24      103975.26      103975.67      0.00016836621  0.00011905629  0.4071893    
+Loop time of 5e-07 on 1 procs for 0 steps with 3 atoms
+
+0.0% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 5e-07      |            |       |100.00
+
+Nlocal:              3 ave           3 max           3 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:            463 ave         463 max         463 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:              0 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:          242 ave         242 max         242 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 242
+Ave neighs/atom = 80.666667
+Neighbor list builds = 0
+Dangerous builds = 0
+Total wall time: 0:00:00
+
+units          metal
+boundary       p p p
+atom_style     atomic
+neigh_modify   delay 0 every 1 check no
+
+read_data     ./data_files/lammps_pod_stress_test_DATA_13
+Reading data file ...
+  orthogonal box = (0 0 0) to (20 20 20)
+  1 by 1 by 1 MPI processor grid
+  reading atoms ...
+  2 atoms
+  read_data CPU = 0.001 seconds
+
+pair_style     pod
+pair_coeff     * * ./sample_6body_hfo2_param.pod ./sample_6body_2elem_coeffs.pod "" "" Hf O
+**************** Begin of POD Potentials ****************
+species: Hf O 
+periodic boundary conditions: 1 1 1
+number of enviroment clusters: 1
+number of principal compoments: 1
+inner cut-off radius: 1
+outer cut-off radius: 5.5
+bessel polynomial degree: 4
+inverse polynomial degree: 8
+one-body potential: 1
+two-body radial basis functions: 8
+three-body radial basis functions: 6
+three-body angular degree: 4
+four-body radial basis functions: 4
+four-body angular degree: 2
+five-body radial basis functions: 4
+five-body angular degree: 2
+six-body radial basis functions: 3
+six-body angular degree: 2
+seven-body radial basis functions: 0
+seven-body angular degree: 0
+number of local descriptors per element for one-body potential: 1
+number of local descriptors per element for two-body potential: 16
+number of local descriptors per element for three-body potential: 90
+number of local descriptors per element for four-body potential: 64
+number of local descriptors per element for five-body potential: 192
+number of local descriptors per element for six-body potential: 198
+number of local descriptors per element for seven-body potential: 0
+number of local descriptors per element for all potentials: 561
+number of global descriptors: 1122
+**************** End of POD Potentials ****************
+
+**************** Begin of POD Coefficients ****************
+total number of coefficients for POD potential: 1122
+**************** End of POD Potentials ****************
+
+
+variable thermo_fname  string ./output/thermo_13.dat
+variable dump_fname    string ./output/dump_forces_13.custom
+variable tstep         equal 13
+
+# Maybe unneeded
+neighbor       0.5 bin
+neigh_modify   every 1 delay 0 check yes
+
+thermo       1
+thermo_style custom step temp pe ke etotal press pxx pyy pzz pxy pxz pyz
+
+fix thermo_out all print 1 "$(step) $(pe) $(pxx) $(pyy) $(pzz) $(pxy) $(pxz) $(pyz)" file ${thermo_fname} screen no title "step pe pxx pyy pzz pxy pxz pyz"
+fix thermo_out all print 1 "$(step) $(pe) $(pxx) $(pyy) $(pzz) $(pxy) $(pxz) $(pyz)" file ./output/thermo_13.dat screen no title "step pe pxx pyy pzz pxy pxz pyz"
+
+dump           run_forces all custom 1 ${dump_fname} id type x y z fx fy fz
+dump           run_forces all custom 1 ./output/dump_forces_13.custom id type x y z fx fy fz
+dump_modify    run_forces sort id format line "%4d %1d %32.27f %32.27f %32.27f %32.27f %32.27f %32.27f"
+
+reset_timestep ${tstep}
+reset_timestep 13
+run 0
+WARNING: No fixes with time integration, atoms won't move (src/verlet.cpp:60)
+Neighbor list info ...
+  update: every = 1 steps, delay = 0 steps, check = yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 6
+  ghost atom cutoff = 6
+  binsize = 3, bins = 7 7 7
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair pod, perpetual
+      attributes: full, newton on
+      pair build: full/bin/atomonly
+      stencil: full/bin/3d
+      bin: standard
+Per MPI rank memory allocation (min/avg/max) = 3.063 | 3.063 | 3.063 Mbytes
+   Step          Temp          PotEng         KinEng         TotEng         Press           Pxx            Pyy            Pzz            Pxy            Pxz            Pyz      
+        13   0              38.897463      0              38.897463      19326.5        0              0              57979.5        0              0              0            
+Loop time of 4.17e-07 on 1 procs for 0 steps with 2 atoms
+
+0.0% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 4.17e-07   |            |       |100.00
+
+Nlocal:              2 ave           2 max           2 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:              0 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:              0 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:            2 ave           2 max           2 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 2
+Ave neighs/atom = 1
+Neighbor list builds = 0
+Dangerous builds = 0
+Total wall time: 0:00:00

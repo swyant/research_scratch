@@ -1,0 +1,3 @@
+LAMMPS (15 Jun 2023 - Development - patch_2Jun2022-5531-g0ba557ed1e)
+# POD single point
+log  ./output/log_13

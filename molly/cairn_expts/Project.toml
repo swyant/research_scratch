@@ -1,0 +1,9 @@
+[deps]
+ActiveSubspaces = "29479cc7-843d-4a33-be2d-78ba2bb6929b"
+Cairn = "f102e12b-bead-4d20-9368-b11e50e649cd"
+CairoMakie = "13f3f980-e62b-5c42-98c6-ff1f3baf88f0"
+LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
+Makie = "ee78f7c6-11fb-53f2-987a-cfe4a2b5a57a"
+Molly = "aa0f7f06-fcc0-5ec4-a7f3-a573f33f9c4c"
+PotentialLearning = "82b0a93c-c2e3-44bc-a418-f0f89b0ae5c2"
+SpecialPolynomials = "a25cea48-d430-424a-8ee7-0d3ad3742e9e"

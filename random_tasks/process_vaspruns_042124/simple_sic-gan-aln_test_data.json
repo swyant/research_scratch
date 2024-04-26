@@ -1,0 +1,163 @@
+{
+    "systems": [
+        {
+            "name": "aln-gan_interface_44",
+            "equil": [
+                {
+                    "xml_file": "./aln_gan_sic_vaspruns/equil/interface_aln-gan_aln-lp/44/vasprun.xml"
+                }
+            ],
+            "trainval": [
+                {
+                    "xml_dir": "./aln_gan_sic_vaspruns/aimd/interface_aln-gan_aln-lp/set1_nvt/200K",
+                    "file_nums": [
+                        "488..527",
+                        "1016..1055",
+                        "1545..1584"
+                    ]
+                },
+                {
+                    "xml_dir": "./aln_gan_sic_vaspruns/aimd/interface_aln-gan_aln-lp/set1_nvt/300K",
+                    "file_nums": [
+                        "483..522",
+                        "1000..1039",
+                        "1508..1547"
+                    ]
+                },
+                {
+                    "xml_dir": "./aln_gan_sic_vaspruns/aimd/interface_aln-gan_aln-lp/set1_nvt/400K",
+                    "file_nums": [
+                        "489..528",
+                        "1002..1041",
+                        "1527..1566"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "sic-aln_interface",
+            "equil": [
+                {
+                    "xml_file": "./aln_gan_sic_vaspruns/equil/interface_sic-aln_aln-lp/31/vasprun.xml"
+                }
+            ],
+            "trainval": [
+                {
+                    "xml_dir": "./aln_gan_sic_vaspruns/aimd/interface_sic-aln_aln-lp/set1_nvt/200K",
+                    "file_nums": [
+                        "521..560",
+                        "1318..1357",
+                        "1878..1917"
+                    ]
+                },
+                {
+                    "xml_dir": "./aln_gan_sic_vaspruns/aimd/interface_sic-aln_aln-lp/set1_nvt/300K",
+                    "file_nums": [
+                        "514..553",
+                        "1072..1111",
+                        "1626..1665"
+                    ]
+                },
+                {
+                    "xml_dir": "./aln_gan_sic_vaspruns/aimd/interface_sic-aln_aln-lp/set1_nvt/400K",
+                    "file_nums": [
+                        "553..592",
+                        "1143..1182",
+                        "1703..1742"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "bulk_AlN",
+            "equil": [
+                {
+                    "xml_file": "./aln_gan_sic_vaspruns/equil/aln/533_orthog/vasprun.xml"
+                }
+            ],
+            "trainval": [
+                {
+                    "xml_dir": "./aln_gan_sic_vaspruns/aimd/aln/set2_nvt/200K",
+                    "file_nums": [
+                        "338..377"
+                    ]
+                },
+                {
+                    "xml_dir": "./aln_gan_sic_vaspruns/aimd/aln/set2_nvt/300K",
+                    "file_nums": [
+                        "337..376",
+                        "706..745"
+                    ]
+                },
+                {
+                    "xml_dir": "./aln_gan_sic_vaspruns/aimd/aln/set2_nvt/400K",
+                    "file_nums": [
+                        "328..367",
+                        "697..736"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "bulk_GaN",
+            "equil": [
+                {
+                    "xml_file": "./aln_gan_sic_vaspruns/equil/gan/533_orthog/vasprun.xml"
+                }
+            ],
+            "trainval": [
+                {
+                    "xml_dir": "./aln_gan_sic_vaspruns/aimd/gan/set2_nvt/200K",
+                    "file_nums": [
+                        "243..282"
+                    ]
+                },
+                {
+                    "xml_dir": "./aln_gan_sic_vaspruns/aimd/gan/set2_nvt/300K",
+                    "file_nums": [
+                        "244..283",
+                        "530..569"
+                    ]
+                },
+                {
+                    "xml_dir": "./aln_gan_sic_vaspruns/aimd/gan/set2_nvt/400K",
+                    "file_nums": [
+                        "236..275",
+                        "515..554"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "bulk_SiC",
+            "equil": [
+                {
+                    "xml_file": "./aln_gan_sic_vaspruns/equil/sic/531_orthog/vasprun.xml"
+                }
+            ],
+            "trainval": [
+                {
+                    "xml_dir": "./aln_gan_sic_vaspruns/aimd/sic/set1_nvt/200K",
+                    "file_nums": [
+                        "321..360",
+                        "806..845"
+                    ]
+                },
+                {
+                    "xml_dir": "./aln_gan_sic_vaspruns/aimd/sic/set1_nvt/300K",
+                    "file_nums": [
+                        "321..360",
+                        "801..840"
+                    ]
+                },
+                {
+                    "xml_dir": "./aln_gan_sic_vaspruns/aimd/sic/set1_nvt/400K",
+                    "file_nums": [
+                        "321..360",
+                        "795..834"
+                    ]
+                }
+            ]
+        }
+    ]
+}

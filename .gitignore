@@ -12,3 +12,4 @@ lammps_related/lammps_jl_tests/md_loops/doc_bugs_for_clean_al/gen_new_fits/fits/
 lammps_related/lammps_jl_tests/md_loops/doc_bugs_for_clean_al/initial_fits/*.yace
 random_tasks/reorder_dio_xyz_020524/*.xyz
 random_tasks/reorder_dio_xyz_020524/*.dump
+*.mp4

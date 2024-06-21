@@ -31,6 +31,7 @@ function MaxCmteEStdev(; thresh::Real=0.1, cmte_pot::Committee_Potential=nothing
       return LowerThreshold(_estdev, thresh)
   else
     return LowerThreshold(energy_stdev, thresh)
+  end
 end 
 
 

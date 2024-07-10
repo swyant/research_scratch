@@ -458,7 +458,7 @@ function trigger_activated!(trigger::CmteTrigger,
 end
 
 struct SharedCmteTrigger <: ActiveLearningTrigger
-  cmte_pot::CommitteePotential
+  cmte_pot::CommitteePotential # technically this can be nothing if user wants to use sys.general_inters[1]
   subtriggers::Tuple{Vararg{<:CmteTrigger}} # Fundamentally a bit type unstable
   energy_cache_field::Union{Nothing,Symbol}
   force_cache_field::Union{Nothing,Symbol}
@@ -508,9 +508,11 @@ function initialize_data(shared_trigger::SharedCmteTrigger, ddict::Dict)
   end
 end 
 
+# not handling the case where the shared cmte pot is 
 function trigger_activated!(shared_trigger::SharedCmteTrigger,sys::Molly.System, step_n::Integer=0)
   all_res = Bool[]
   for subtrigger in shared_trigger.subtriggers
+    #How to pass appropriate cache field for custom Committee QoIs
     if typeof(subtrigger.cmte_qoi) <: Union{CommitteeForces, CommitteeFlatForces}
       res = trigger_activated!(subtrigger,sys, step_n; shared_cmte_pot=shared_trigger.cmte_pot, cache_field=shared_trigger.force_cache_field) 
     elseif typeof(subtrigger.cmte_qoi) <: CommitteeEnergy

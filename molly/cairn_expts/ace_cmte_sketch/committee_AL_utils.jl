@@ -2,6 +2,7 @@ import InteratomicPotentials: InteratomicPotentials, AbstractPotential
 import AtomsCalculators
 using AtomsBase
 import Molly: Molly, System, log_property!  # do I need the Molly?
+import PotentialLearning: SubsetSelector, AbstractLearningProblem, learn!
 using Unitful
 using Cairn
 
@@ -589,4 +590,57 @@ function perstep_reset!(triggers, sys::Molly.System)
       sys.data[dict_symb] = nothing 
     end
   end
+end
+
+
+
+####==========#####
+
+mutable struct ALRoutine
+  ref 
+  mlip 
+  trainset::Vector{<:AbstractSystem}
+end
+
+
+function strip_system(sys::Molly.System)
+  stripped_sys = System(
+                  atoms    = sys.atoms,
+                  coords   = sys.coords,
+                  boundary = sys.boundary)
+  stripped_sys
+end
+
+#=
+Should have an abstraction where for any kind of selector where you just append a new (labeled) configurated
+=#
+
+struct GreedySelector <: SubsetSelector 
+end 
+
+function update_trainset!(ss::GreedySelector, 
+                          sys::Molly.System,
+                          al::ALRoutine)
+  new_sys = strip_system(sys) 
+  new_trainset = reduce(vcat, [al.trainset, new_sys])
+
+  new_trainset, new_sys
+end
+
+# Recomputing all descriptors, energies, forces for entire trainset
+struct InefficientLearningProblem <: AbstractLearningProblem 
+    weights::Vector{Float64}
+    intcpt::Bool
+end 
+
+function InefficientLearningProblem(weights=[1000.0,1.0],intcpt=false)
+    return InefficientLearningProblem(weights,intcpt)
+end
+
+function retrain!(ilp::InefficientLearningProblem, sys::Molly.System, al::ALRoutine) 
+  lp = learn!(al.trainset, al.ref, al.mlip, ilp.weights, ilp.intcpt; e_flag=true, f_flag=true)
+  new_mlip = deepcopy(al.mlip) #How to generalize? Should mlip be modified in place
+  new_mlip.params = lp.β
+
+  new_mlip
 end

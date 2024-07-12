@@ -4,6 +4,7 @@ using CSV, DataFrames
 using Molly
 using Statistics 
 import LinearAlgebra: norm
+using FileIO
 
 includet("./committee_AL_utils.jl")
 
@@ -84,7 +85,7 @@ shared_trigger2 = SharedCmteTrigger(my_cmte_pot2,
                         energy_cache_field = :cmte_energies,
                         force_cache_field = :cmte_forces)
 
-### Some Testing 
+### Some Basic CmteTrigger and SharedCmteTrigger Testing 
 
 #test_sys = deepcopy(m_sys)
 #test_sys = initialize_triggers((trigger1,),test_sys)
@@ -102,7 +103,27 @@ shared_trigger2 = SharedCmteTrigger(my_cmte_pot2,
 #perstep_reset!((shared_trigger,),test_sys)
 #
 #test_sys = deepcopy(m_sys)
-#test_sys = deepcopy(m_sys)
 #test_sys = initialize_triggers((shared_trigger2,),test_sys)
 #trigger_activated!(shared_trigger2,test_sys)
 #perstep_reset!((shared_trigger2,),test_sys)
+
+
+### loading in the full_trainset 
+
+fdict = load("full_trainset.jld2")
+full_trainset = fdict["full_trainset"]
+
+#baby_alroutine = ALRoutine(full_trainset)
+#test_sys = deepcopy(m_sys)
+#@show position(test_sys)
+#baby_alroutine.trainset, new_sys = update_trainset!(GreedySelector(),test_sys,baby_alroutine)
+#@test position(new_sys) == [0.5,0.5]
+#new_stripped_positions = [ustrip.(position(config)[1]) for config in baby_alroutine.trainset]
+#@test any(map(x->x≈[0.5,0.5],new_stripped_positions)) == true
+
+
+#baby_alroutine = ALRoutine(MullerBrownRot(), pce_hq, full_trainset)
+#baby_alroutine.trainset, new_sys = update_trainset!(GreedySelector(),test_sys,baby_alroutine)
+#@show old_params = baby_alroutine.mlip.params
+#baby_alroutine.mlip = retrain!(InefficientLearningProblem(),test_sys,baby_alroutine)
+#@show baby_alroutine.mlip.params

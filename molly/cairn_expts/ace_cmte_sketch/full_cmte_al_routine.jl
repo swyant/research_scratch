@@ -63,10 +63,12 @@ function active_learn!(sys::Molly.System,
                                  rng=rng)
 
     # how to know which trigger activated? maybe return full result array
-    trigg_res, trigg_state = trigger_activated!(al.triggers,sys, step_n)
+    #trigg_res, trigg_state = trigger_activated!(al.triggers,sys, step_n)
+    trigg_res= trigger_activated!(al.triggers,sys, step_n)
+
     if trigg_res
       al.cache[:trigger_step] = step_n
-      al.cache[:trigger_state] = trigg_state
+      #al.cache[:trigger_state] = trigg_state
       
       # update trainset
       al.trainset, al.cache[:trainset_changes] = update_trainset!(al.ss,sys,al) # can modify caches
@@ -97,28 +99,34 @@ end
 Another tricky balance is how many arguments to pass. There's a case to be made of just offering all the information is the easiest, but then you risk not dispatching easily and type instabilities
 =#
 
-struct WrapperLearningProblem <: LearningProblem
-  weights::Vector{<:Real}
-  intcpt::Boolean
-end 
-
-# notice the extra boiler plate because I'm not just passing things in
-function retrain!(wlp::WrapperLearningProblem,sys::Molly.System,al)
-  current_lbp = al.mlip
-  trainset    = al.trainset
-
-  new_lbp = LinearBasisPotential(current_lbp.basis)
-  learn!(new_lbp,wlp.weights,wlp.intcpt)
-
-  new_lbp
-end
+#struct WrapperLearningProblem <: LearningProblem
+#  weights::Vector{<:Real}
+#  intcpt::Boolean
+#end 
+#
+## notice the extra boiler plate because I'm not just passing things in
+#function retrain!(wlp::WrapperLearningProblem,sys::Molly.System,al)
+#  current_lbp = al.mlip
+#  trainset    = al.trainset
+#
+#  new_lbp = LinearBasisPotential(current_lbp.basis)
+#  learn!(new_lbp,wlp.weights,wlp.intcpt)
+#
+#  new_lbp
+#end
 
 # Recomputing all descriptors, energies, forces for entire trainset
 struct InefficientLearningProblem <: LearningProblem 
+    weights::Vector{Float64}
+    intcpt::Bool
 end 
 
+function InefficientLearningProblem(weights=[1000.0,1.0],intcpt=false)
+    return InefficientLearningProblem(weights,intcpt)
+end
+
 function retrain!(ilp::InefficientLearningProblem, sys::Molly.System, al::AlRoutine) 
-  lp = learn!(al.trainset, al.ref, al.mlip; e_flag=true, f_flag=true)
+  lp = learn!(al.trainset, al.ref, al.mlip, ilp.weights, ilp.intcpt; e_flag=true, f_flag=true)
   new_mlip = deepcopy(al.mlip) #How to generalize? Should mlip be modified in place
   new_mlip.params = lp.β
 
@@ -127,11 +135,15 @@ end
 
 function strip_system(sys::Molly.System)
   stripped_sys = System(
-                  atoms=sys.atoms,
-                  coords = sys.coords,
+                  atoms    = sys.atoms,
+                  coords   = sys.coords,
                   boundary = sys.boundary)
   stripped_sys
 end
+
+#=
+Should have an abstraction where for any kind of selector where you just append a new (labeled) configurated
+=#
 
 struct GreedySelector <: SubsetSelector 
 end 

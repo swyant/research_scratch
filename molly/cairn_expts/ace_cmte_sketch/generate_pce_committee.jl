@@ -4,6 +4,7 @@ import StatsBase
 using StaticArrays
 using SpecialPolynomials 
 using CSV, DataFrames 
+using FileIO
 
 include("./training_utils.jl")
 
@@ -30,6 +31,7 @@ full_trainset = [let
                                     boundary = boundary)
                 end 
                 for coord_container in sys0.loggers.coords.history[ids]] # for some reason, each entry in the history is a one-elem array of the SVector
+save("full_trainset.jld2", Dict("full_trainset"=>full_trainset))
 
 # PCE specification 
 basisfam = Jacobi{0.5,0.5}

@@ -1,7 +1,7 @@
 import InteratomicPotentials: InteratomicPotentials, AbstractPotential
 import AtomsCalculators
 using AtomsBase
-using Molly: Molly, System  # do I need the Molly?
+import Molly: Molly, System, log_property!  # do I need the Molly?
 using Unitful
 using Cairn
 
@@ -11,13 +11,13 @@ Right now it's just hacky
 =#
 
 struct CommitteePotential{F,E}
-  members::Vector{<:AbstractPotential} #Should be AbstractPotential
+  members::Union{Vector{<:AbstractPotential}, Vector{<:PolynomialChaos}}#Should be AbstractPotential
   leader::Int64
   force_units::F 
   energy_units::E
 end 
 
-function CommitteePotential(members::Vector{<:AbstractPotential},
+function CommitteePotential(members::Union{Vector{<:AbstractPotential}, Vector{<:PolynomialChaos}},
                             leader=1;
                             force_units=u"eV/Å",
                             energy_units=u"eV")
@@ -29,7 +29,14 @@ function AtomsCalculators.potential_energy(sys::AbstractSystem,
                                            cmte_pot::CommitteePotential;
                                            neighbors=nothing,
                                            n_threads::Integer=Threads.nthreads())
-  poteng = InteratomicPotentials.potential_energy(sys,cmte_pot.members[cmte_pot.leader]) * cmte_pot.energy_units
+  # This manual type stuff is only needed so long as IP.jl doesn't satistfy the AtomsCalculators interface
+  leader_pot_type = typeof(cmte_pot.members[cmte_pot.leader])
+  if leader_pot_type <: AbstractPotential
+    poteng = InteratomicPotentials.potential_energy(sys,cmte_pot.members[cmte_pot.leader]) * cmte_pot.energy_units
+  else
+    poteng = AtomsCalculators.potential_energy(sys,cmte_pot.members[cmte_pot.leader])
+  end
+
   poteng
 end
 
@@ -37,21 +44,40 @@ function AtomsCalculators.forces(sys::AbstractSystem,
                                  cmte_pot::CommitteePotential;
                                  neighbors=nothing,
                                  n_threads::Integer=Threads.nthreads())
+  # This manual type stuff is only needed so long as IP.jl doesn't satistfy the AtomsCalculators interface
+  leader_pot_type = typeof(cmte_pot.members[cmte_pot.leader])
+  if leader_pot_type <: AbstractPotential
+    forces = InteratomicPotentials.force(sys,cmte_pot.members[cmte_pot.leader]) * cmte_pot.force_units
+  else 
+    forces = AtomsCalculators.forces(sys,cmte_pot.members[cmte_pot.leader])
+  end
 
-  forces = InteratomicPotentials.force(sys,cmte_pot.members[cmte_pot.leader]) * cmte_pot.force_units
   forces
 end
 
-# TODO: Assumes InteratomicPotential<:AbstractPotential !!!!
 function compute_all_energies(sys::AbstractSystem, cmte_pot::CommitteePotential)
-  all_potengs = [ InteratomicPotentials.potential_energy(sys,pot)
-                  for pot in cmte_pot.members]
+  # This manual type stuff is only needed so long as IP.jl doesn't satistfy the AtomsCalculators interface
+  leader_pot_type = typeof(cmte_pot.members[cmte_pot.leader])
+  if leader_pot_type <: AbstractPotential
+    all_potengs = [ InteratomicPotentials.potential_energy(sys,pot)
+                    for pot in cmte_pot.members]
+  else
+    all_potengs = [AtomsCalculators.potential_energy(sys,pot)
+                    for pot in cmte_pot.members]
+  end
   all_potengs
 end
 
 function compute_all_forces(sys::AbstractSystem, cmte_pot::CommitteePotential)
-  all_forces = [ InteratomicPotentials.force(sys,pot)
-                for pot in cmte_pot.members]
+  # This manual type stuff is only needed so long as IP.jl doesn't satistfy the AtomsCalculators interface
+  leader_pot_type = typeof(cmte_pot.members[cmte_pot.leader])
+  if leader_pot_type <: AbstractPotential
+    all_forces = [ InteratomicPotentials.force(sys,pot)
+                  for pot in cmte_pot.members]
+  else 
+    all_forces = [ AtomsCalculators.forces(sys,pot)
+                  for pot in cmte_pot.members]
+  end                
   all_forces
 end
 
@@ -82,7 +108,6 @@ function compute(qoi::CommitteeEnergy,sys::AbstractSystem,cmte_pot::CommitteePot
         all_energies = compute_all_energies(sys,cmte_pot)
     end
 
-    all_energies = compute_all_energies(sys,cmte_pot)
     if !isnothing(qoi.cmte_reduce)
       reduced_energies = qoi.cmte_reduce(all_energies)
       return reduced_energies
@@ -209,15 +234,16 @@ function compute(qoi::CommitteeFlatForces,sys::AbstractSystem,cmte_pot::Committe
       end
 
       if length(qoi.reduce_order) == 2 
-          @assert size(inter) == (1,1) && typeof(inter[1]) <: Union{<:Real, <:Integer, Bool}
-          final_qoi = inter[1]
+        # assert statement fails with units 
+        #@assert size(inter) == (1,1) && typeof(inter[1]) <: Union{<:Real, <:Integer, Bool}
+        final_qoi = inter[1]
       else 
-          for d in qoi.reduce_order
-            @assert size(inter,d) == 1 # ensure singleton dimension
-          end 
-          
-          #arguably should check if Int,bool, float, but once I put that in the inner constructor it's fine
-          final_qoi = dropdims(inter,dims=Tuple(qoi.reduce_order))
+        for d in qoi.reduce_order
+          @assert size(inter,d) == 1 # ensure singleton dimension
+        end 
+        
+        #arguably should check if Int,bool, float, but once I put that in the inner constructor it's fine
+        final_qoi = dropdims(inter,dims=Tuple(qoi.reduce_order))
       end 
       return final_qoi
     end
@@ -304,7 +330,8 @@ function compute(qoi::CommitteeForces,sys::AbstractSystem,cmte_pot::CommitteePot
     end
 
     if length(qoi.reduce_order) == 3 
-        @assert size(inter) == (1,1,1) && typeof(inter[1]) <: Union{<:Real, <:Integer, Bool}
+        # assert statement fails with units 
+        #@assert size(inter) == (1,1,1) && typeof(inter[1]) <: Union{<:Real, <:Integer, Bool}
         final_qoi = inter[1]
     else 
         for d in qoi.reduce_order
@@ -345,6 +372,10 @@ function log_property!(logger::SimpleTriggerLogger{T}, obs::T, step_n::Integer=0
   if logger.n_steps != 0 && (step_n % logger.n_steps) == 0
         push!(logger.history, obs)
   end
+end
+
+function reset_observable!(logger::SimpleTriggerLogger)
+  logger.observable = nothing
 end
 
 #function Base.show(io::IO, fl::SimpleTriggerLogger)
@@ -445,9 +476,10 @@ function trigger_activated!(trigger::CmteTrigger,
       error("No committee potential available for trigger activation")
     end
 
-    cmte_qoi = compute(trigger.cmte_qoi,sys,cmte_pot;cache_field=cache_field)
+    # Assuming it has to be unitless right now
+    cmte_qoi = ustrip(compute(trigger.cmte_qoi,sys,cmte_pot;cache_field=cache_field))
     @show cmte_qoi
-    @assert typeof(cmte_qoi) <: typeof(trigger.thresh)
+    @assert typeof(ustrip(cmte_qoi)) <: typeof(trigger.thresh)
     
     if !isnothing(trigger.logger_spec)
       log_property!(sys.loggers[trigger.logger_spec[1]], cmte_qoi,step_n)
@@ -527,9 +559,32 @@ function trigger_activated!(shared_trigger::SharedCmteTrigger,sys::Molly.System,
   final_res
 end
 
+#=
+This should be a reset_per_step!(sys, triggers) where you loop over triggers, and have a new reset_trigger_observables()
+=#
 
-function clear_cache_perstep!(sys::Molly.System)
-  if :_reset_every_step in keys(sys.data) && length(sys.data[:_reset_every_step]) > 0 
+function reset_logger!(trigger::CmteTrigger, sys::Molly.System)
+  if !isnothing(trigger.logger_spec)
+    reset_observable!(sys.loggers[trigger.logger_spec[1]])
+  end
+end
+
+function reset_logger!(shared_trigger::SharedCmteTrigger, sys::Molly.System)
+  for subtrigger in shared_trigger.subtriggers
+    reset_logger!(subtrigger,sys)
+  end
+end
+
+function perstep_reset!(triggers, sys::Molly.System)
+  # need an API to get whether trigger has associated logger and what the logger name is
+  for trigger in triggers 
+    reset_logger!(trigger,sys)
+  end
+
+  if (typeof(sys.data) <: Dict && 
+    :_reset_every_step in keys(sys.data) && 
+    length(sys.data[:_reset_every_step]) > 0)
+
     for dict_symb in sys.data[:_reset_every_step] 
       sys.data[dict_symb] = nothing 
     end

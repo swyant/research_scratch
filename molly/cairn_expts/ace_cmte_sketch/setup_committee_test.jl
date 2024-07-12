@@ -39,13 +39,13 @@ m_sys = Molly.System(raw_sys, energy_units=u"eV",
 m_sys = Molly.System(m_sys; 
                      general_inters = (my_cmte_pot,))                            
 
-trigger1 = CmteTrigger(CommitteeEnergy(maximum),>,-13.0) # make sure to pass a float 
-trigger2 = CmteTrigger(CommitteeFlatForces((cmte=std,
-                                            coord_and_atom=mean)),>,5.0; 
+cmte_qoi1 = CommitteeEnergy(maximum)
+trigger1  = CmteTrigger(cmte_qoi1,>,-13.0) # make sure to pass a float 
+cmte_qoi2 = CommitteeFlatForces((cmte=std,coord_and_atom=mean))
+trigger2  = CmteTrigger(cmte_qoi2,>,5.0; 
                        logger_spec=(:cmte_flat_forces,1))
-trigger3 = CmteTrigger(CommitteeForces((coord=norm, 
-                                       cmte=std,
-                                       atom=mean)),>,8.0; 
+cmte_qoi3 = CommitteeForces((coord=norm,cmte=std,atom=mean))
+trigger3 = CmteTrigger(cmte_qoi3,>,8.0; 
                         logger_spec=(:avg_cmt_std_fmags, 1))
 
 m_sys2 = Molly.System(m_sys;loggers=(coords=CoordinateLogger(10),

@@ -34,6 +34,11 @@ pots =  [let
         end
         for i in 1:10]
 
+cmte_indices = [let 
+                 indices = vec(Matrix(CSV.read(fit_folder*"lq_fit$(i)_train_idxs.csv",DataFrame,header=false)))
+                end 
+                for i in 1:10]
+
 ### setup committee potential
 my_cmte_pot  = CommitteePotential(pots[1:3],1; 
                                   energy_units=pce_lq_template.energy_units,
@@ -71,6 +76,7 @@ m_sys = Molly.System(sys0;
                            force=ForceLogger(10),
                            energy=PotentialEnergyLogger(10)))
 
+trigger0 = CmteTrigger(cmte_qoi1,>,-13.0,my_cmte_pot3)
 trigger1 = CmteTrigger(cmte_qoi1,>,-13.0)
 trigger2 = CmteTrigger(cmte_qoi2,>,5.0;
                        logger_spec=(:cmte_flat_forces,1))
@@ -127,3 +133,31 @@ full_trainset = fdict["full_trainset"]
 #@show old_params = baby_alroutine.mlip.params
 #baby_alroutine.mlip = retrain!(InefficientLearningProblem(),test_sys,baby_alroutine)
 #@show baby_alroutine.mlip.params
+
+#baby_alroutine = ALRoutine(MullerBrownRot(), pce_hq, full_trainset,GreedySelector(),InefficientLearningProblem())
+#baby_alroutine.trainset, new_sys = update_trainset!(baby_alroutine.ss,test_sys,baby_alroutine)
+#baby_alroutine.mlip = retrain!(baby_alroutine.lp,test_sys,baby_alroutine);
+
+greedy = GreedySelector()
+ilp = InefficientLearningProblem()
+
+#new_trigger0 = typeof(trigger0)(trigger0; cmte_pot=my_cmte_pot)
+#new_sharedtrigger = typeof(shared_trigger2) 
+
+#test_sys = deepcopy(m_sys);
+#cmte_lp = SubsampleAppendCmteRetrain(InefficientLearningProblem(;ref=ref),cmte_indices);
+#my_alroutine = ALRoutine(ref,pce_hq,full_trainset,(trigger0,),greedy,ilp,(cmte_lp,),Dict());
+#initialize_al_cache!(my_alroutine)
+#@show my_alroutine.cache
+#my_alroutine.trainset, my_alroutine.cache[:trainset_changes] = update_trainset!(my_alroutine.ss,test_sys,my_alroutine);
+#@show my_alroutine.cache[:trainset_changes]
+#@show my_alroutine.triggers[1].cmte_pot.members[1].params[1:5]
+#my_alroutine.triggers = update_triggers!(my_alroutine.triggers,my_alroutine.trigger_updates, test_sys, my_alroutine)
+#@show my_alroutine.triggers[1].cmte_pot.members[1].params[1:5]
+
+#cmte_lp2 = SubsampleAppendCmteRetrain(InefficientLearningProblem(;ref=ref), cmte_indices)
+#my_alroutine2 = ALRoutine(ref, my_cmte_pot, full_trainset, (trigger1,), greedy, cmte_lp2, nothing, Dict()) # no trigger update because using sys.general_inters for the committee potential
+#my_alroutine2.trainset, my_alroutine2.cache[:trainset_changes] = update_trainset!(my_alroutine2.ss,test_sys,my_alroutine2);
+#@show my_alroutine2.mlip.members[1].params[1:5]
+#my_alroutine2.mlip = retrain!(my_alroutine2.lp, test_sys, my_alroutine2)
+#@show my_alroutine2.mlip.members[1].params[1:5]

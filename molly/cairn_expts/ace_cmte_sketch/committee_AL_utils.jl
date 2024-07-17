@@ -11,6 +11,7 @@ TODO Will need to make this (properly!)AtomsCalculators compatible, but I need t
 Right now it's just hacky
 =#
 
+# maybe reorder energy and force units
 struct CommitteePotential{F,E}
   members::Union{Vector{<:AbstractPotential}, Vector{<:PolynomialChaos}}#Should be AbstractPotential
   leader::Int64
@@ -433,6 +434,17 @@ function CmteTrigger(cmte_qoi::AbstractCommitteeQoI,
   cmte_trigger
 end
 
+# need to use this trick https://stackoverflow.com/questions/40160120/generic-constructors-for-subtypes-of-an-abstract-type
+function (::Type{CmteTrigger{T, F}})(trigger::CmteTrigger{T,F};
+                     cmte_qoi::T=trigger.cmte_qoi,
+                     compare::F=trigger.compare, 
+                     thresh::Union{Float64,Int64,Bool}=trigger.thresh,
+                     cmte_pot::Union{Nothing,CommitteePotential}=trigger.cmte_pot,
+                     logger_spec::Union{Nothing,Tuple{Symbol,Int64}}=trigger.logger_spec) where {T<:AbstractCommitteeQoI, F<:Function}
+  cmte_trigger = CmteTrigger{T,F}(trigger.cmte_qoi,trigger.compare,trigger.thresh,cmte_pot,logger_spec)
+  cmte_trigger
+end 
+
 # Should this modify the system directly, return a modified loggers tuple, or return something like (new_keys), (new_loggers)
 function append_loggers(trigger::CmteTrigger, loggers::NamedTuple)
 
@@ -502,6 +514,16 @@ function SharedCmteTrigger(cmte_pot::CommitteePotential,
                            subtriggers::Tuple{Vararg{<:CmteTrigger}};
                            energy_cache_field = nothing,
                            force_cache_field = nothing)
+  shared_cmte_trigger = SharedCmteTrigger(cmte_pot,subtriggers,energy_cache_field, force_cache_field)
+  shared_cmte_trigger
+end
+
+
+function SharedCmteTrigger(trigger::SharedCmteTrigger;
+                           cmte_pot::CommitteePotential=trigger.cmte_pot, 
+                           subtriggers::Tuple{Vararg{<:CmteTrigger}}=trigger.subtriggers,
+                           energy_cache_field = trigger.energy_cache_field,
+                           force_cache_field = trigger.force_cache_field)
   shared_cmte_trigger = SharedCmteTrigger(cmte_pot,subtriggers,energy_cache_field, force_cache_field)
   shared_cmte_trigger
 end
@@ -600,8 +622,18 @@ mutable struct ALRoutine
   ref 
   mlip 
   trainset::Vector{<:AbstractSystem}
+  triggers::Tuple{Vararg{<:ActiveLearningTrigger}}
+  ss::SubsetSelector
+  lp::AbstractLearningProblem #need to enforce concrete
+  #trigger_updates::Union{Nothing,<:ALTriggerUpdate}
+  trigger_updates
+  cache::Dict
 end
 
+function initialize_al_cache!(al::ALRoutine)
+  al.cache[:trigger_step] = nothing 
+  al.cache[:trainset_changes] = nothing 
+end
 
 function strip_system(sys::Molly.System)
   stripped_sys = System(
@@ -624,23 +656,158 @@ function update_trainset!(ss::GreedySelector,
   new_sys = strip_system(sys) 
   new_trainset = reduce(vcat, [al.trainset, new_sys])
 
-  new_trainset, new_sys
+  new_trainset, [new_sys,]
 end
 
 # Recomputing all descriptors, energies, forces for entire trainset
 struct InefficientLearningProblem <: AbstractLearningProblem 
     weights::Vector{Float64}
     intcpt::Bool
+    ref
 end 
 
-function InefficientLearningProblem(weights=[1000.0,1.0],intcpt=false)
-    return InefficientLearningProblem(weights,intcpt)
-end
+function InefficientLearningProblem(weights=[1000.0,1.0],intcpt=false; ref=nothing)
+    return InefficientLearningProblem(weights,intcpt,ref)
+end 
 
-function retrain!(ilp::InefficientLearningProblem, sys::Molly.System, al::ALRoutine) 
-  lp = learn!(al.trainset, al.ref, al.mlip, ilp.weights, ilp.intcpt; e_flag=true, f_flag=true)
-  new_mlip = deepcopy(al.mlip) #How to generalize? Should mlip be modified in place
+function learn(ilp::InefficientLearningProblem, mlip, trainset; ref=ilp.ref)
+  lp = learn!(trainset, ref, mlip, ilp.weights, ilp.intcpt; e_flag=true, f_flag=true)
+  new_mlip = deepcopy(mlip) #How to generalize? Should mlip be modified in place
   new_mlip.params = lp.β
 
   new_mlip
+end
+
+function retrain!(ilp::InefficientLearningProblem, sys::Molly.System, al::ALRoutine) 
+  # if this is a common pattern, then could just change the method handle in the AL loop 
+  # or have a generalized retrain!() that calls a more detailed retrain!() function 
+  trainset = al.trainset 
+  ref_pot = al.ref 
+  mlip = al.mlip
+
+  new_mlip = learn(ilp,mlip,trainset;ref=ref_pot)
+
+  new_mlip
+end
+
+####=====#### 
+
+abstract type AbstractCmteLearningProblem <: AbstractLearningProblem end
+
+# assumming only a simple append mode here. Original name: LinearCmteTriggerUpdate_Append
+# Honestly there should be a cmtelearningproblem
+mutable struct SubsampleAppendCmteRetrain  <: AbstractCmteLearningProblem
+  lp::AbstractLearningProblem #need to enforce concrete
+  cmte_indices::Vector{Vector{Integer}}
+  #trainset (this could be a field, somewhat justified given tight coupling between indices and corresponding dataset)
+end
+
+# nothing is modified in place here
+function learn(clp::SubsampleAppendCmteRetrain, old_cmte_pot, new_trainset)
+  member_type = eltype(old_cmte_pot.members)
+  new_members = Vector{member_type}()
+  for (old_mlip, train_indices) in zip(old_cmte_pot.members, clp.cmte_indices)
+    new_mlip = learn(clp.lp, old_mlip, new_trainset[train_indices])
+    push!(new_members,new_mlip)
+  end
+
+  new_cmte_pot = CommitteePotential(new_members, 
+                                    old_cmte_pot.leader,
+                                    old_cmte_pot.force_units,
+                                    old_cmte_pot.energy_units)
+  new_cmte_pot
+end
+
+# CLP is updated in place (i.e, cmte_indices updated), learn!() new cmte_pot and return that
+function learn!(clp::SubsampleAppendCmteRetrain, 
+                  cmte_pot::CommitteePotential,
+                  num_new_configs::Integer,
+                  new_trainset::Vector{<:AbstractSystem})
+
+  new_trainset_size = length(new_trainset)
+  append_indices = (new_trainset_size-num_new_configs+1):new_trainset_size
+  
+  # append new indices (new configurations) to each cmte index set
+  updated_indices = []
+  for old_indices in clp.cmte_indices
+    new_indices = reduce(vcat, [old_indices, [x for x in append_indices]])
+    push!(updated_indices,new_indices)
+  end
+
+  clp.cmte_indices = updated_indices
+  new_cmte_pot = learn(clp,cmte_pot,new_trainset)
+
+  new_cmte_pot
+end
+
+# note that clp gets modified in place here 
+function retrain!(clp::SubsampleAppendCmteRetrain, sys::Molly.System, al::ALRoutine)
+  new_trainset = al.trainset 
+  num_new_configs = length(al.cache[:trainset_changes]) # hard assumption that this is just a list of new systems
+  @assert typeof(al.mlip) <: CommitteePotential
+  old_cmte_pot = al.mlip
+
+  new_cmte_pot = learn!(clp, old_cmte_pot, num_new_configs, new_trainset) # clp modified in place
+
+  new_cmte_pot
+end
+
+
+#abstract type ALTriggerUpdate end
+
+# This version can be used if I actually return updated updates
+#function update_triggers(triggers, updates, sys::Molly.System, al::ALRoutine)
+#  #new_trigger_updates = ALTriggerUpdate[]
+#  new_trigger_updates = []
+#  new_triggers = ActiveLearningTrigger[]
+#
+#  for (up,trigg) in zip(updates,triggers)
+#    if !isnothing(up)
+#      new_up, new_trigg = update_trigger(up, trigg;sys=sys,al=al)
+#      push!(new_trigger_updates, new_up)
+#      push!(new_triggers,new_trigg)
+#    else
+#      push!(new_trigger_updates, nothing)
+#      push!(new_triggers,trigg)
+#    end
+#  end
+#
+#  return Tuple(new_trigger_updates), Tuple(new_triggers)
+#end
+
+function update_triggers!(triggers, updates, sys::Molly.System, al::ALRoutine)
+  new_triggers = ActiveLearningTrigger[]
+  for (up,trigg) in zip(updates,triggers)
+    if !isnothing(up)
+      new_trigg = update_trigger!(up, trigg;sys=sys,al=al)
+      push!(new_triggers,new_trigg)
+    else
+      push!(new_triggers,trigg)
+    end
+  end
+
+  return Tuple(new_triggers)
+end
+
+
+function update_trigger!(update::SubsampleAppendCmteRetrain,
+                        cmte_trigger::Union{CmteTrigger,SharedCmteTrigger}; 
+                        al::ALRoutine, 
+                        kwargs...)
+
+  old_cmte_pot = cmte_trigger.cmte_pot
+  if isnothing(old_cmte_pot)
+    @warn "Not actually updating CmteTrigger, assuming committee potential used for sys.general_inters and updated with retrain!()"
+    return cmte_trigger
+  else   
+    new_trainset = al.trainset 
+    num_new_configs = length(al.cache[:trainset_changes]) # hard assumption that this is just a list of new systems
+
+    new_cmte_pot = learn!(update, old_cmte_pot, num_new_configs, new_trainset) # clp modified in place
+
+    #is this kind of notation discouraged?
+    new_cmte_trigger = typeof(cmte_trigger)(cmte_trigger; cmte_pot=new_cmte_pot)
+
+    return new_cmte_trigger
+  end
 end

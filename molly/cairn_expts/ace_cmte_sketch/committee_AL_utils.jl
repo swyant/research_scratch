@@ -84,6 +84,18 @@ function compute_all_forces(sys::AbstractSystem, cmte_pot::CommitteePotential)
 end
 
 
+function get_params(mlip)
+  params = mlip.params
+end
+
+function get_params(cmte_pot::CommitteePotential)
+  all_params = Float64[]
+  for member in cmte_pot.members
+    params = member.params
+    push!(all_params,params)
+  end
+end
+
 ##-----##
 
 abstract type AbstractCommitteeQoI end
@@ -472,8 +484,10 @@ function initialize_data(trigger::CmteTrigger, ddict::Dict)
   return ddict
 end 
 
+# also added the al argument, not sure if it should be there
 function trigger_activated!(trigger::CmteTrigger, 
                             sys::Molly.System, 
+                            al,
                             step_n::Integer=0; 
                             shared_cmte_pot::Union{Nothing,CommitteePotential}=nothing,
                             cache_field=nothing)
@@ -563,8 +577,9 @@ function initialize_data(shared_trigger::SharedCmteTrigger, ddict::Dict)
   end
 end 
 
-# not handling the case where the shared cmte pot is 
-function trigger_activated!(shared_trigger::SharedCmteTrigger,sys::Molly.System, step_n::Integer=0)
+# not handling the case where the shared cmte pot is (what? spencer what? lol)
+# also added the al argument, not sure if it should be there
+function trigger_activated!(shared_trigger::SharedCmteTrigger,sys::Molly.System, al, step_n::Integer=0)
   all_res = Bool[]
   for subtrigger in shared_trigger.subtriggers
     #How to pass appropriate cache field for custom Committee QoIs
@@ -614,6 +629,32 @@ function perstep_reset!(triggers, sys::Molly.System)
   end
 end
 
+function get_logger_ids(shared_trigger::SharedCmteTrigger)
+  trigger_ids = [get_logger_ids(subtrigger;from_shared=true) 
+                for subtrigger in shared_trigger.subtriggers]
+  Tuple(trigger_ids)
+end
+
+function get_logger_ids(trigger::CmteTrigger; from_shared=false)
+  if !isnothing(trigger.logger_spec)
+    if from_shared
+      return trigger.logger_spec[1]
+    else
+      return (trigger.logger_spec[1],)
+    end
+  else
+    return nothing
+  end
+end
+
+# Joanna's current way, immediate return true once any is satisfied
+function trigger_activated(triggers::Tuple{Vararg{<:ActiveLearningTrigger}}, sys::Molly.System, al, step_n::Integer=1)
+  for trigger in triggers 
+    if trigger_activated!(trigger, sys, al, step_n)
+        return true
+    end
+end
+end
 
 
 ####==========#####
@@ -627,6 +668,7 @@ mutable struct ALRoutine
   lp::AbstractLearningProblem #need to enforce concrete
   #trigger_updates::Union{Nothing,<:ALTriggerUpdate}
   trigger_updates
+  aldata_spec
   cache::Dict
 end
 
@@ -775,6 +817,7 @@ end
 #  return Tuple(new_trigger_updates), Tuple(new_triggers)
 #end
 
+#TODO is this the right order for the function arguments?
 function update_triggers!(triggers, updates, sys::Molly.System, al::ALRoutine)
   new_triggers = ActiveLearningTrigger[]
   for (up,trigg) in zip(updates,triggers)
@@ -809,5 +852,163 @@ function update_trigger!(update::SubsampleAppendCmteRetrain,
     new_cmte_trigger = typeof(cmte_trigger)(cmte_trigger; cmte_pot=new_cmte_pot)
 
     return new_cmte_trigger
+  end
+end
+
+###===From makie/plot_contours.jl===#### 
+
+## grid on 2d domain
+function coord_grid_2d(
+  limits::Vector{<:Vector},
+  step::Real;
+  dist_units = u"nm"
+)
+  xcoord = Vector(limits[1][1]:step:limits[1][2]) .* dist_units
+  ycoord = Vector(limits[2][1]:step:limits[2][2]) .* dist_units
+  return [xcoord, ycoord]
+end
+
+## generic potential energy function with coord as argument
+function potential(inter, coord::SVector{2})
+  sys = let coords=[coord]; () -> [SVector{2}(coords)]; end # pseudo-struct
+  return AtomsCalculators.potential_energy(sys, inter)
+end
+
+
+## grid across potential energy surface below cutoff
+function potential_grid_2d(
+  inter,
+  limits::Vector{<:Vector},
+  step::Real;
+  cutoff = nothing,
+  dist_units = u"nm",
+)
+  rng1, rng2 = coord_grid_2d(limits, step; dist_units=dist_units)
+  coords = SVector[]
+
+  for i = 1:length(rng1)
+      for j = 1:length(rng2)
+          coord = SVector{2}([rng1[i],rng2[j]])
+          Vij = ustrip(potential(inter, coord))
+          if typeof(cutoff) <: Real && Vij <= cutoff
+              append!(coords, [coord])
+          elseif typeof(cutoff) <: Vector && cutoff[1] <= Vij <= cutoff[2]
+              append!(coords, [coord])
+          end
+      end
+  end
+
+  return coords
+end
+
+###=========#####
+
+abstract type IPErrors end
+
+# train force and energy rmse, fisher divergence parameterized by integrator
+struct Simple2DPotErrors <: IPErrors
+  eval_int # if nothing, won't compute fisher divergence (e.g., for committee potential)
+  compute_fisher::Bool
+end
+
+function initialize_error_metrics!(error_metric_type::Simple2DPotErrors, ddict::Dict)
+  ddict["error_hist"] = Dict("rmse_e" => [], 
+                             "rmse_f" => [])
+  if error_metric_type.compute_fisher
+    ddict["error_hist"]["fd"] = []
+  end                             
+end
+
+# like this is nearly identical to what she did but it's more verbose, so you have to explain why do it like this
+function record_errors!(error_metric_type::Simple2DPotErrors, aldata::Dict, sys::Molly.System, al)
+  r_e, r_f = compute_rmse(al.ref, al.mlip, error_metric_type.eval_int)
+  append!(aldata["error_hist"]["rmse_e"], r_e)
+  append!(aldata["error_hist"]["rmse_f"], r_f)
+  if error_metric_type.compute_fisher
+    fd = compute_fisher_div(al.ref, al.mlip, error_metric_type.eval_int)
+    append!(aldata["error_hist"]["fd"], fd)
+  end
+end 
+
+struct DefaultALDataSpec
+  error_metrics::IPErrors # Needs to be a stuct because of the initialization 
+  record_trigger_step::Bool
+  #record_trigger_res::Bool
+  record_parameters::Bool
+  record_new_configs::Bool
+  record_trigger_logs::Bool # could in theory only record a few triggers, but whatever
+end
+
+function DefaultALDataSpec(error_metrics::IPErrors;
+          record_trigger_step::Bool=true,
+          record_parameters::Bool=true,
+          record_new_configs::Bool=false,
+          record_trigger_logs::Bool=false)
+
+  new_aldata_spec = DefaultALDataSpec(error_metrics,
+                       record_trigger_step,
+                       record_parameters,
+                       record_new_config,
+                       record_trigger_logs)
+  new_aldata_spec
+end
+
+function initialize_al_record(al_spec::DefaultALDataSpec, al)
+  aldata = Dict()
+  initialize_error_metrics!(al_spec.error_metrics,aldata)
+  if al_spec.record_trigger_step 
+    aldata["trigger_steps"] = []
+  end 
+
+  if al_spec.record_parameters
+    #this way the starting state is stored, but the "mlip_params" field will be the same length as the other fields
+    aldata["original_mlip_params"] = get_params(al.mlip) 
+    aldata["mlip_params"] = []
+  end 
+
+  if al_spec.record_new_configs
+    aldata["new_configs"] = []
+  end 
+
+  if al_spec.record_trigger_logs
+    aldata["activated_trigger_logs"] = Dict()
+    for trigger in al.triggers 
+      logger_ids = get_logger_ids(trigger) # can be more than one key
+      filtered_logger_ids = filter(x->!isnothing(x), logger_ids)
+      #setindex!.(Ref(aldata["activated_trigger_logs"]), 
+      #          [[] for _ in eachindex(filtered_logger_ids)], 
+      #          filtered_logger_ids) #this worked but ended up being more verbose than just the below for loop
+      for logger_id in filtered_logger_ids
+        aldata["activated_trigger_logs"][logger_id] = []
+      end
+    end
+  end 
+
+  aldata
+end 
+
+
+function record_al_record!(al_spec::DefaultALDataSpec, aldata::Dict, sys::Molly.System, al)
+    record_errors!(al_spec.error_metrics, aldata, sys, al)
+  
+  if al_spec.record_trigger_step 
+    push!(aldata["trigger_steps"], al.cache[:trigger_step])
+  end 
+
+  if al_spec.record_parameters
+    #TODO need to formalize an interface to get parameters from mlips vs committee potentials
+    params = get_params(al.mlip)
+    push!(aldata["mlip_params"],params)
+  end 
+
+  if al_spec.record_new_configs
+    push!(aldata["new_configs"], al.cache[:trainset_changes])
+  end 
+
+  if al_spec.record_trigger_logs
+    for logger_key in keys(aldata["activated_trigger_logs"])
+      observed_val = sys.loggers[logger_key].observable
+      push!(aldata["activated_trigger_logs"][logger_key], observed_val)
+    end
   end
 end

@@ -1,4 +1,4 @@
-using Cairn 
+using Cairn, AtomisticQoIs
 using SpecialPolynomials
 using CSV, DataFrames
 using Molly
@@ -75,6 +75,13 @@ m_sys = Molly.System(sys0;
                      loggers=(coords=CoordinateLogger(10),
                            force=ForceLogger(10),
                            energy=PotentialEnergyLogger(10)))
+
+m_sys1 = Molly.System(sys0;
+                     general_inters=(pce_hq,),
+                     loggers=(coords=CoordinateLogger(10),
+                           force=ForceLogger(10),
+                           energy=PotentialEnergyLogger(10)))
+
 
 trigger0 = CmteTrigger(cmte_qoi1,>,-13.0,my_cmte_pot3)
 trigger1 = CmteTrigger(cmte_qoi1,>,-13.0)
@@ -161,3 +168,40 @@ ilp = InefficientLearningProblem()
 #@show my_alroutine2.mlip.members[1].params[1:5]
 #my_alroutine2.mlip = retrain!(my_alroutine2.lp, test_sys, my_alroutine2)
 #@show my_alroutine2.mlip.members[1].params[1:5]
+
+
+# use grid to define uniform quadrature points
+coords_eval = potential_grid_2d(ref,limits,0.04,cutoff=800)
+sys_eval = Ensemble(ref,coords_eval)
+ζ = [ustrip.(Vector(coords)) for coords in coords_eval]
+GQint = GaussQuadrature(ζ,ones(length(ζ)) ./length(ζ))
+error_spec = Simple2DPotErrors(GQint,true)
+
+aldata_spec = DefaultALDataSpec(error_spec,true,true,true,true)
+
+#test_sys = deepcopy(m_sys1);
+#cmte_lp = SubsampleAppendCmteRetrain(InefficientLearningProblem(;ref=ref),cmte_indices);
+#my_alroutine = ALRoutine(ref,pce_hq,full_trainset,(shared_trigger2,),greedy,ilp,(cmte_lp,),aldata_spec,Dict());
+#initialize_al_cache!(my_alroutine)
+#test_sys = initialize_triggers(my_alroutine.triggers,test_sys)
+#check log
+#aldata = initialize_al_record(my_alroutine.aldata_spec)
+#check aldata
+#step_n = 10
+#trigger_activated(my_alroutine.triggers,test_sys,my_alroutine, step_n)
+#check logs
+#my_alroutine.cache[:trigger_step] = step_n
+#al.trainset, al.cache[:trainset_changes] = update_trainset!(my_alroutine.ss,test_sys,my_alroutine);
+#@show my_alroutine.mlip.params
+#my_alroutine.mlip = retrain!(my_alroutine.lp, test_sys, my_alroutine)
+#@show my_alroutine.mlip.params
+#@show my_alroutine.triggers[1].cmte_pot.members[1].params[1:5]
+#@show my_alroutine.trigger_updates[1].cmte_indices[1][end-10:end]
+#my_alroutine.triggers = update_triggers!(my_alroutine.triggers, my_alroutine.trigger_updates, test_sys, my_alroutine)
+#@show my_alroutine.triggers[1].cmte_pot.members[1].params[1:5]
+#@show my_alroutine.trigger_updates[1].cmte_indices[1][end-10:end]
+#@show aldata 
+#record_al_record!(my_alroutine.aldata_spec, aldata, test_sys, my_alroutine)
+#@show aldata
+#perstep_reset!(my_alroutine.triggers,test_sys)
+

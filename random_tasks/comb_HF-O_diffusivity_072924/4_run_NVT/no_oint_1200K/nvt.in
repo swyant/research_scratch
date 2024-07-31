@@ -1,0 +1,42 @@
+# user-set variables 
+variable TEMP equal 1200
+
+# necessary preliminaries
+units metal 
+atom_style charge 
+dimension 3 
+boundary p p p 
+
+read_data temporary_Hf_DATA 
+
+# neighbor parameters
+neighbor 2.0 bin 
+neigh_modify every 1 delay 0 check no
+
+# interatomic potential parameters
+pair_style comb 
+pair_coeff * * ffield.comb Hf O 
+
+#set up some qeq diagnostics
+group type1 type 1   
+compute charge1 type1 property/atom q 
+compute q1 type1 reduce ave c_charge1
+
+group type2 type 2 
+compute charge2 type2 property/atom q 
+compute q2 type2 reduce ave c_charge2
+
+thermo 100 
+thermo_style custom step temp etotal pe ke evdwl ecoul press vol c_q1 c_q2
+
+# dump output
+dump 1 all custom 50 ${TEMP}K_nvt.lammpstrj id type q x y z 
+dump_modify 1 sort id
+
+# set up qeq and NVT fixes
+fix qeq all qeq/comb 1 0.003
+velocity all create ${TEMP} 4928459 rot yes mom yes dist gaussian
+fix 1 all nvt temp ${TEMP} ${TEMP} 0.1 
+
+# run 
+run 100000

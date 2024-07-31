@@ -1,0 +1,52 @@
+# necessary preliminaries
+units metal 
+atom_style charge 
+dimension 3 
+boundary p p p 
+
+read_data intermediate_Hf_supercell_Oint_nonvt_DATA 
+
+# neighbor parameters
+neighbor 2.0 bin 
+neigh_modify every 1 delay 0 check no
+
+# interatomic potential parameters
+pair_style comb 
+pair_coeff * * ffield.comb Hf O 
+
+#set up some qeq diagnostics
+group type1 type 1   
+compute charge1 type1 property/atom q 
+compute q1 type1 reduce ave c_charge1
+
+group type2 type 2 
+compute charge2 type2 property/atom q 
+compute q2 type2 reduce ave c_charge2
+
+thermo 1 
+thermo_style custom step temp etotal pe evdwl ecoul press vol c_q1 c_q2
+
+
+#timestep 0.002
+min_style sd
+#min_modify line backtrack dmax 0.4
+min_modify line backtrack
+#min_style fire
+minimize 1.0e-12 1.0e-18 10000 100000
+
+
+velocity all create 100.0 4928459 rot yes mom yes dist gaussian
+fix 1 all nvt temp 100.0 10.0 0.1 
+thermo 100 
+run 2000
+
+thermo 1 
+min_style sd
+min_modify line backtrack
+minimize 1.0e-12 1.0e-18 10000 100000
+
+# output the final relaxed structure 
+#dump final all custom 1 relaxed_Hf_supercell_Oint.lammpstrj id type q x y z 
+dump final all custom 1 relaxed_Hf_supercell_Oint_nonvt.lammpstrj id type q x y z 
+dump_modify final sort id format float %20.15g
+run 0 

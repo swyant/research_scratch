@@ -1,0 +1,224 @@
+LAMMPS (27 Jun 2024)
+# necessary preliminaries
+units metal
+atom_style atomic
+dimension 3
+boundary p p p
+
+read_data orthog_Hf_15_9_9_singleOint_DATA
+Reading data file ...
+  orthogonal box = (0 0 0) to (48.302314 50.197237 45.139088)
+  1 by 1 by 1 MPI processor grid
+  reading atoms ...
+  4861 atoms
+  read_data CPU = 0.071 seconds
+
+# neighbor parameters
+neighbor 2.0 bin
+neigh_modify every 1 delay 0 check no
+
+# interatomic potential parameters
+pair_style     pod
+pair_coeff * * HfO2_param.pod HfO2_coefficients.pod Hf O
+**************** Begin of POD Potentials ****************
+species: Hf O 
+periodic boundary conditions: 1 1 1
+number of environment clusters: 1
+number of principal compoments: 2
+inner cut-off radius: 1.2
+outer cut-off radius: 5.5
+bessel polynomial degree: 4
+inverse polynomial degree: 10
+one-body potential: 1
+two-body radial basis functions: 8
+three-body radial basis functions: 8
+three-body angular degree: 5
+four-body radial basis functions: 6
+four-body angular degree: 4
+five-body radial basis functions: 5
+five-body angular degree: 3
+six-body radial basis functions: 4
+six-body angular degree: 2
+seven-body radial basis functions: 0
+seven-body angular degree: 0
+number of local descriptors per element for one-body potential: 1
+number of local descriptors per element for two-body potential: 16
+number of local descriptors per element for three-body potential: 144
+number of local descriptors per element for four-body potential: 264
+number of local descriptors per element for five-body potential: 468
+number of local descriptors per element for six-body potential: 387
+number of local descriptors per element for seven-body potential: 0
+number of local descriptors per element for all potentials: 1280
+number of global descriptors: 2560
+**************** End of POD Potentials ****************
+
+**************** Begin of Model Coefficients ****************
+total number of coefficients for POD potential: 2560
+total number of elements for PCA projection matrix: 0
+total number of elements for PCA centroids: 0
+**************** End of Model Coefficients ****************
+
+
+thermo 1
+thermo_style custom step temp etotal pe press vol
+
+# full atom minimization
+min_modify dmax 0.005 line backtrack
+min_style sd
+minimize 1.0e-12 1.0e-18 10000 100000
+
+CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE
+
+Your simulation uses code contributions which should be cited:
+
+- Type Label Framework: https://doi.org/10.1021/acs.jpcb.3c08419
+
+@Article{Gissinger24,
+ author = {Jacob R. Gissinger, Ilia Nikiforov, Yaser Afshar, Brendon Waters, Moon-ki Choi, Daniel S. Karls, Alexander Stukowski, Wonpil Im, Hendrik Heinz, Axel Kohlmeyer, and Ellad B. Tadmor},
+ title = {Type Label Framework for Bonded Force Fields in LAMMPS},
+ journal = {J. Phys. Chem. B},
+ year =    2024,
+ volume =  128,
+ number =  13,
+ pages =   {3282–-3297}
+}
+
+CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE
+
+Neighbor list info ...
+  update: every = 1 steps, delay = 0 steps, check = no
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 7.5
+  ghost atom cutoff = 7.5
+  binsize = 3.75, bins = 13 14 13
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair pod, perpetual
+      attributes: full, newton on
+      pair build: full/bin/atomonly
+      stencil: full/bin/3d
+      bin: standard
+Per MPI rank memory allocation (min/avg/max) = 5.096 | 5.096 | 5.096 Mbytes
+   Step          Temp          TotEng         PotEng         Press          Volume    
+         0   0             -35608.596     -35608.596      66.286206      109446.16    
+         1   0             -35608.624     -35608.624      53.820539      109446.16    
+         2   0             -35608.631     -35608.631      56.694163      109446.16    
+         3   0             -35608.633     -35608.633      53.02245       109446.16    
+         4   0             -35608.634     -35608.634      54.473578      109446.16    
+         5   0             -35608.635     -35608.635      52.821895      109446.16    
+         6   0             -35608.635     -35608.635      53.690449      109446.16    
+         7   0             -35608.635     -35608.635      52.751674      109446.16    
+         8   0             -35608.635     -35608.635      53.343207      109446.16    
+         9   0             -35608.636     -35608.636      52.726784      109446.16    
+        10   0             -35608.636     -35608.636      53.162018      109446.16    
+        11   0             -35608.636     -35608.636      52.719489      109446.16    
+        12   0             -35608.636     -35608.636      53.05584       109446.16    
+        13   0             -35608.636     -35608.636      52.720481      109446.16    
+        14   0             -35608.636     -35608.636      52.988206      109446.16    
+        15   0             -35608.636     -35608.636      52.725694      109446.16    
+        16   0             -35608.636     -35608.636      52.942481      109446.16    
+        17   0             -35608.636     -35608.636      52.732861      109446.16    
+        18   0             -35608.636     -35608.636      52.91021       109446.16    
+        19   0             -35608.636     -35608.636      52.740648      109446.16    
+        20   0             -35608.636     -35608.636      52.886728      109446.16    
+        21   0             -35608.636     -35608.636      52.748346      109446.16    
+        22   0             -35608.636     -35608.636      52.869263      109446.16    
+        23   0             -35608.636     -35608.636      52.755617      109446.16    
+        24   0             -35608.636     -35608.636      52.856064      109446.16    
+        25   0             -35608.636     -35608.636      52.762331      109446.16    
+        26   0             -35608.636     -35608.636      52.845969      109446.16    
+        27   0             -35608.636     -35608.636      52.768449      109446.16    
+        28   0             -35608.636     -35608.636      52.838174      109446.16    
+        29   0             -35608.636     -35608.636      52.773972      109446.16    
+        30   0             -35608.636     -35608.636      52.832109      109446.16    
+        31   0             -35608.636     -35608.636      52.778911      109446.16    
+        32   0             -35608.636     -35608.636      52.827358      109446.16    
+        33   0             -35608.636     -35608.636      52.783291      109446.16    
+        34   0             -35608.636     -35608.636      52.823615      109446.16    
+        35   0             -35608.636     -35608.636      52.787133      109446.16    
+        36   0             -35608.636     -35608.636      52.820651      109446.16    
+        37   0             -35608.636     -35608.636      52.790479      109446.16    
+        38   0             -35608.636     -35608.636      52.818295      109446.16    
+        39   0             -35608.636     -35608.636      52.793358      109446.16    
+        40   0             -35608.636     -35608.636      52.816412      109446.16    
+        41   0             -35608.636     -35608.636      52.795826      109446.16    
+        42   0             -35608.636     -35608.636      52.814906      109446.16    
+        43   0             -35608.636     -35608.636      52.797914      109446.16    
+        44   0             -35608.636     -35608.636      52.813694      109446.16    
+        45   0             -35608.636     -35608.636      52.799687      109446.16    
+        46   0             -35608.636     -35608.636      52.812721      109446.16    
+        47   0             -35608.636     -35608.636      52.801162      109446.16    
+        48   0             -35608.636     -35608.636      52.811932      109446.16    
+        49   0             -35608.636     -35608.636      52.802415      109446.16    
+Loop time of 45.4563 on 1 procs for 49 steps with 4861 atoms
+
+99.7% CPU use with 1 MPI tasks x no OpenMP threads
+
+Minimization stats:
+  Stopping criterion = energy tolerance
+  Energy initial, next-to-last, final = 
+     -35608.5955571891  -35608.6359239047  -35608.6359239373
+  Force two-norm initial, final = 0.93345313 0.000962995
+  Force max component initial, final = 0.3116538 0.00026973507
+  Final line search alpha, max atom move = 1 0.00026973507
+  Iterations, force evaluations = 49 98
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 44.82      | 44.82      | 44.82      |   0.0 | 98.60
+Neigh   | 0.62055    | 0.62055    | 0.62055    |   0.0 |  1.37
+Comm    | 0.0074657  | 0.0074657  | 0.0074657  |   0.0 |  0.02
+Output  | 0.00067337 | 0.00067337 | 0.00067337 |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 0.007809   |            |       |  0.02
+
+Nlocal:           4861 ave        4861 max        4861 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:           6372 ave        6372 max        6372 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:              0 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:       332488 ave      332488 max      332488 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 332488
+Ave neighs/atom = 68.399095
+Neighbor list builds = 99
+Dangerous builds not checked
+
+# output the final relaxed structure
+dump final all custom 1 relaxed_Hf_supercell_Oint_nonvt.lammpstrj id type x y z
+dump_modify final sort id format float %20.15g
+run 0
+WARNING: No fixes with time integration, atoms won't move (src/verlet.cpp:60)
+Per MPI rank memory allocation (min/avg/max) = 3.971 | 3.971 | 3.971 Mbytes
+   Step          Temp          TotEng         PotEng         Press          Volume    
+        49   0             -35608.636     -35608.636      52.802415      109446.16    
+Loop time of 5e-07 on 1 procs for 0 steps with 4861 atoms
+
+600.0% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 5e-07      |            |       |100.00
+
+Nlocal:           4861 ave        4861 max        4861 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:           6372 ave        6372 max        6372 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:              0 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:       332488 ave      332488 max      332488 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 332488
+Ave neighs/atom = 68.399095
+Neighbor list builds = 0
+Dangerous builds not checked
+Total wall time: 0:00:46

@@ -1,0 +1,175 @@
+LAMMPS (27 Jun 2024)
+# necessary preliminaries
+units metal
+atom_style atomic
+dimension 3
+boundary p p p
+
+read_data orthog_Hf_unit_cell_DATA
+Reading data file ...
+  orthogonal box = (0 0 0) to (3.1923846 5.5293724 5.0450416)
+  1 by 1 by 1 MPI processor grid
+  reading atoms ...
+  4 atoms
+  read_data CPU = 0.002 seconds
+
+# neighbor parameters
+neighbor 2.0 bin
+neigh_modify every 1 delay 0 check no
+
+# interatomic potential parameters
+pair_style     pod
+pair_coeff * * HfO2_param.pod HfO2_coefficients.pod Hf O
+**************** Begin of POD Potentials ****************
+species: Hf O 
+periodic boundary conditions: 1 1 1
+number of environment clusters: 1
+number of principal compoments: 2
+inner cut-off radius: 1.2
+outer cut-off radius: 5.5
+bessel polynomial degree: 4
+inverse polynomial degree: 10
+one-body potential: 1
+two-body radial basis functions: 8
+three-body radial basis functions: 8
+three-body angular degree: 5
+four-body radial basis functions: 6
+four-body angular degree: 4
+five-body radial basis functions: 5
+five-body angular degree: 3
+six-body radial basis functions: 4
+six-body angular degree: 2
+seven-body radial basis functions: 0
+seven-body angular degree: 0
+number of local descriptors per element for one-body potential: 1
+number of local descriptors per element for two-body potential: 16
+number of local descriptors per element for three-body potential: 144
+number of local descriptors per element for four-body potential: 264
+number of local descriptors per element for five-body potential: 468
+number of local descriptors per element for six-body potential: 387
+number of local descriptors per element for seven-body potential: 0
+number of local descriptors per element for all potentials: 1280
+number of global descriptors: 2560
+**************** End of POD Potentials ****************
+
+**************** Begin of Model Coefficients ****************
+total number of coefficients for POD potential: 2560
+total number of elements for PCA projection matrix: 0
+total number of elements for PCA centroids: 0
+**************** End of Model Coefficients ****************
+
+
+# minimization where we allow both the box parameters and the atomic positions to relax
+fix 1 all box/relax aniso 0.0 vmax 0.002
+min_modify dmax 0.005 line quadratic
+minimize 1.0e-12 1.0e-18 10000 100000
+
+CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE
+
+Your simulation uses code contributions which should be cited:
+
+- Type Label Framework: https://doi.org/10.1021/acs.jpcb.3c08419
+
+@Article{Gissinger24,
+ author = {Jacob R. Gissinger, Ilia Nikiforov, Yaser Afshar, Brendon Waters, Moon-ki Choi, Daniel S. Karls, Alexander Stukowski, Wonpil Im, Hendrik Heinz, Axel Kohlmeyer, and Ellad B. Tadmor},
+ title = {Type Label Framework for Bonded Force Fields in LAMMPS},
+ journal = {J. Phys. Chem. B},
+ year =    2024,
+ volume =  128,
+ number =  13,
+ pages =   {3282–-3297}
+}
+
+CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE
+
+Neighbor list info ...
+  update: every = 1 steps, delay = 0 steps, check = no
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 7.5
+  ghost atom cutoff = 7.5
+  binsize = 3.75, bins = 1 2 2
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair pod, perpetual
+      attributes: full, newton on
+      pair build: full/bin/atomonly
+      stencil: full/bin/3d
+      bin: standard
+WARNING: Energy due to 3 extra global DOFs will be included in minimizer energies
+ (src/min.cpp:219)
+Per MPI rank memory allocation (min/avg/max) = 3.593 | 3.593 | 3.593 Mbytes
+   Step          Temp          E_pair         E_mol          TotEng         Press          Volume    
+         0   0             -29.289974      0             -29.289974      12844.648      89.054487    
+         9   0             -29.299024      0             -29.299024     -0.0023616113   90.079145    
+Loop time of 0.00553075 on 1 procs for 9 steps with 4 atoms
+
+100.0% CPU use with 1 MPI tasks x no OpenMP threads
+
+Minimization stats:
+  Stopping criterion = energy tolerance
+  Energy initial, next-to-last, final = 
+     -29.2899741664082  -29.2990235481507  -29.2990235481564
+  Force two-norm initial, final = 1.4833447 1.3554705e-06
+  Force max component initial, final = 1.0483993 1.2236729e-06
+  Final line search alpha, max atom move = 1 1.2236729e-06
+  Iterations, force evaluations = 9 13
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.0053696  | 0.0053696  | 0.0053696  |   0.0 | 97.09
+Neigh   | 8.1043e-05 | 8.1043e-05 | 8.1043e-05 |   0.0 |  1.47
+Comm    | 3.1167e-05 | 3.1167e-05 | 3.1167e-05 |   0.0 |  0.56
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 4.891e-05  |            |       |  0.88
+
+Nlocal:              4 ave           4 max           4 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:            348 ave         348 max         348 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:              0 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:          272 ave         272 max         272 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 272
+Ave neighs/atom = 68
+Neighbor list builds = 14
+Dangerous builds not checked
+
+# output the final relaxed structure
+dump final all custom 1 relaxed_Hf.lammpstrj id type x y z
+dump_modify final sort id format float %20.15g
+run 0
+WARNING: No fixes with time integration, atoms won't move (src/verlet.cpp:60)
+Per MPI rank memory allocation (min/avg/max) = 2.468 | 2.468 | 2.468 Mbytes
+   Step          Temp          E_pair         E_mol          TotEng         Press          Volume    
+         9   0             -29.299024      0             -29.299024     -0.0023616113   90.079145    
+Loop time of 3.75e-07 on 1 procs for 0 steps with 4 atoms
+
+0.0% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 3.75e-07   |            |       |100.00
+
+Nlocal:              4 ave           4 max           4 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:            348 ave         348 max         348 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:              0 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:          272 ave         272 max         272 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 272
+Ave neighs/atom = 68
+Neighbor list builds = 0
+Dangerous builds not checked
+Total wall time: 0:00:00

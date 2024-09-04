@@ -15,9 +15,9 @@ Right now it's just hacky
 struct CommitteePotential{F,E}
   members::Union{Vector{<:AbstractPotential}, Vector{<:PolynomialChaos}}#Should be AbstractPotential
   leader::Int64
-  force_units::F 
+  force_units::F
   energy_units::E
-end 
+end
 
 function CommitteePotential(members::Union{Vector{<:AbstractPotential}, Vector{<:PolynomialChaos}},
                             leader=1;
@@ -27,7 +27,7 @@ function CommitteePotential(members::Union{Vector{<:AbstractPotential}, Vector{<
     cmte_pot
 end
 
-function AtomsCalculators.potential_energy(sys::AbstractSystem, 
+function AtomsCalculators.potential_energy(sys::AbstractSystem,
                                            cmte_pot::CommitteePotential;
                                            neighbors=nothing,
                                            n_threads::Integer=Threads.nthreads())
@@ -50,7 +50,7 @@ function AtomsCalculators.forces(sys::AbstractSystem,
   leader_pot_type = typeof(cmte_pot.members[cmte_pot.leader])
   if leader_pot_type <: AbstractPotential
     forces = InteratomicPotentials.force(sys,cmte_pot.members[cmte_pot.leader]) * cmte_pot.force_units
-  else 
+  else
     forces = AtomsCalculators.forces(sys,cmte_pot.members[cmte_pot.leader])
   end
 
@@ -76,10 +76,10 @@ function compute_all_forces(sys::AbstractSystem, cmte_pot::CommitteePotential)
   if leader_pot_type <: AbstractPotential
     all_forces = [ InteratomicPotentials.force(sys,pot)
                   for pot in cmte_pot.members]
-  else 
+  else
     all_forces = [ AtomsCalculators.forces(sys,pot)
                   for pot in cmte_pot.members]
-  end                
+  end
   all_forces
 end
 
@@ -110,11 +110,11 @@ function CommitteeEnergy()
 end
 
 function compute(qoi::CommitteeEnergy,sys::AbstractSystem,cmte_pot::CommitteePotential; cache_field=nothing)
-    
+
     if typeof(sys) <: Molly.System && !isnothing(cache_field)
       if isnothing(sys.data[cache_field])
         all_energies = compute_all_energies(sys,cmte_pot)
-        sys.data[cache_field] = all_energies 
+        sys.data[cache_field] = all_energies
       else
         all_energies = sys.data[cache_field]
       end
@@ -133,7 +133,7 @@ end
 #TODO need to be able to return site energies from arbitrary AbstractPotential
 #TODO inner constructor to enforce no (nothing,something)
 #struct CommitteeAtomicEnergy <: AbstractCommitteeQoI
-#    cmte_reduce::Union{Nothing,Function}    
+#    cmte_reduce::Union{Nothing,Function}
 #    atom_reduce::Union{Nothing,Function}
 #end
 
@@ -151,27 +151,27 @@ function _check_reduction_fn(fn::Function)
   local res = nothing # to deal with the scoping in the try statement, can now use res in else
   try
     res = fn(test_arr1)
-  catch 
+  catch
   else
-    check_res = typeof(res) <: Union{<:Real, <:Integer, Bool} 
+    check_res = typeof(res) <: Union{<:Real, <:Integer, Bool}
     return check_res
   end
 
   test_arr2 = [1,2,3,4,5]
   try
     res = fn(test_arr2)
-  catch 
+  catch
   else
-    check_res = typeof(res) <: Union{<:Real, <:Integer, Bool} 
+    check_res = typeof(res) <: Union{<:Real, <:Integer, Bool}
     return check_res
   end
 
   test_arr3 = [true,true,false,true,false]
   try
     res = fn(test_arr3)
-  catch 
+  catch
   else
-    check_res = typeof(res) <: Union{<:Real, <:Integer, Bool} 
+    check_res = typeof(res) <: Union{<:Real, <:Integer, Bool}
     return check_res
   end
 
@@ -179,7 +179,7 @@ function _check_reduction_fn(fn::Function)
 end
 
 function CommitteeFlatForces(nt::NamedTuple{<:Any, <:Tuple{Vararg{Function}}})
-    fn_dict = Dict(:cmte => 
+    fn_dict = Dict(:cmte =>
                     Dict{String,Union{Nothing,Function,Int64}}(
                         "fn"  => nothing,
                         "idx" => 1),
@@ -194,13 +194,13 @@ function CommitteeFlatForces(nt::NamedTuple{<:Any, <:Tuple{Vararg{Function}}})
     elseif length(nt) > 2
       error("There can be a maximum of 2 elements in the passed NamedTuple")
     end
-    
+
     #TODO this should really be in the inner constructor
     for fn in nt
       if !_check_reduction_fn(fn)
         error("reduction function must reduce to single Float, Integer, or Boolean")
       end
-    end 
+    end
 
     reduce_order = Int64[]
     for (k,fn) in pairs(nt)
@@ -241,24 +241,24 @@ function compute(qoi::CommitteeFlatForces,sys::AbstractSystem,cmte_pot::Committe
 
     if isnothing(qoi.cmte_reduce) && isnothing(qoi.coord_and_atom_reduce)
       return all_flat_forces
-    else 
-      inter = all_flat_forces 
+    else
+      inter = all_flat_forces
       for d in qoi.reduce_order
         inter = mapslices(reduce_dict[d],inter,dims=d)
       end
 
-      if length(qoi.reduce_order) == 2 
-        # assert statement fails with units 
+      if length(qoi.reduce_order) == 2
+        # assert statement fails with units
         #@assert size(inter) == (1,1) && typeof(inter[1]) <: Union{<:Real, <:Integer, Bool}
         final_qoi = inter[1]
-      else 
+      else
         for d in qoi.reduce_order
           @assert size(inter,d) == 1 # ensure singleton dimension
-        end 
-        
+        end
+
         #arguably should check if Int,bool, float, but once I put that in the inner constructor it's fine
         final_qoi = dropdims(inter,dims=Tuple(qoi.reduce_order))
-      end 
+      end
       return final_qoi
     end
 end
@@ -277,7 +277,7 @@ function CommitteeForces()
 end
 
 function CommitteeForces(nt::NamedTuple{<:Any, <:Tuple{Vararg{Function}}})
-    fn_dict = Dict(:cmte => 
+    fn_dict = Dict(:cmte =>
                     Dict{String,Union{Nothing,Function,Int64}}(
                         "fn"  => nothing,
                         "idx" => 1),
@@ -297,13 +297,13 @@ function CommitteeForces(nt::NamedTuple{<:Any, <:Tuple{Vararg{Function}}})
     elseif length(nt) > 3
       error("There can be a maximum of 3 elements in the passed NamedTuple")
     end
-    
+
     #TODO this should really be in the inner constructor
     for fn in nt
       if !_check_reduction_fn(fn)
         error("reduction function must reduce to single Float, Integer, or Boolean")
       end
-    end 
+    end
 
     reduce_order = Int64[]
     for (k,fn) in pairs(nt)
@@ -337,24 +337,24 @@ function compute(qoi::CommitteeForces,sys::AbstractSystem,cmte_pot::CommitteePot
 
   if isnothing(qoi.cmte_reduce) && isnothing(qoi.atom_reduce) && isnothing(qoi.coord_reduce)
     return raw_all_forces
-  else 
+  else
     inter = stack(map(elem->stack(elem,dims=1),raw_all_forces), dims=1)  # num_cmte x num_atoms x 3
     for d in qoi.reduce_order
       inter = mapslices(reduce_dict[d],inter,dims=d)
     end
 
-    if length(qoi.reduce_order) == 3 
-        # assert statement fails with units 
+    if length(qoi.reduce_order) == 3
+        # assert statement fails with units
         #@assert size(inter) == (1,1,1) && typeof(inter[1]) <: Union{<:Real, <:Integer, Bool}
         final_qoi = inter[1]
-    else 
+    else
         for d in qoi.reduce_order
           @assert size(inter,d) == 1 # ensure singleton dimension
-        end 
-        
+        end
+
         #arguably should check if Int,bool, float, but once I put that in the inner constructor it's fine
         final_qoi = dropdims(inter,dims=Tuple(qoi.reduce_order))
-    end 
+    end
     return final_qoi
   end
 end
@@ -368,7 +368,7 @@ mutable struct SimpleTriggerLogger{T}
 end
 
 # if n_steps=0, only observable is recorded for the length of that timestep
-function SimpleTriggerLogger(n_steps::Integer=0, T::DataType=Float64) 
+function SimpleTriggerLogger(n_steps::Integer=0, T::DataType=Float64)
   return SimpleTriggerLogger{T}(nothing, n_steps, T[])
 end
 
@@ -401,7 +401,7 @@ end
 
 ##========###
 
-function initialize_triggers(triggers::Tuple, sys::Molly.System) 
+function initialize_triggers(triggers::Tuple, sys::Molly.System)
   if typeof(sys.loggers) <: Tuple && length(sys.loggers) == 0  # if loggers empty Tuple, convert to empty NamedTuple
     loggers = NamedTuple()
   elseif typeof(sys.loggers) <: NamedTuple
@@ -414,7 +414,7 @@ function initialize_triggers(triggers::Tuple, sys::Molly.System)
     ddict = Dict{Any,Any}() #have to be flexible with types, user can do anything
   elseif sys.data <: Dict
     ddict = Dict{Any,Any}(sys.data) # existing data dict may be too strictly typed
-  else 
+  else
     error("System.data needs to be either nothing or a dictionary")
   end
 
@@ -435,10 +435,10 @@ struct CmteTrigger{T <:AbstractCommitteeQoI, F<:Function} <: ActiveLearningTrigg
   thresh::Union{Float64,Int64,Bool} #worth it to generalize?
   cmte_pot::Union{Nothing,CommitteePotential}
   logger_spec::Union{Nothing,Tuple{Symbol,Int64}}
-end 
+end
 
 function CmteTrigger(cmte_qoi::AbstractCommitteeQoI,
-                     compare::Function, 
+                     compare::Function,
                      thresh::Union{Float64,Int64,Bool},
                      cmte_pot::Union{Nothing,CommitteePotential}=nothing;
                      logger_spec::Union{Nothing,Tuple{Symbol,Int64}}=nothing)
@@ -449,20 +449,20 @@ end
 # need to use this trick https://stackoverflow.com/questions/40160120/generic-constructors-for-subtypes-of-an-abstract-type
 function (::Type{CmteTrigger{T, F}})(trigger::CmteTrigger{T,F};
                      cmte_qoi::T=trigger.cmte_qoi,
-                     compare::F=trigger.compare, 
+                     compare::F=trigger.compare,
                      thresh::Union{Float64,Int64,Bool}=trigger.thresh,
                      cmte_pot::Union{Nothing,CommitteePotential}=trigger.cmte_pot,
                      logger_spec::Union{Nothing,Tuple{Symbol,Int64}}=trigger.logger_spec) where {T<:AbstractCommitteeQoI, F<:Function}
   cmte_trigger = CmteTrigger{T,F}(trigger.cmte_qoi,trigger.compare,trigger.thresh,cmte_pot,logger_spec)
   cmte_trigger
-end 
+end
 
 # Should this modify the system directly, return a modified loggers tuple, or return something like (new_keys), (new_loggers)
 function append_loggers(trigger::CmteTrigger, loggers::NamedTuple)
 
   if !isnothing(trigger.logger_spec)
     prior_keys = keys(loggers)
-    prior_vals = values(loggers) 
+    prior_vals = values(loggers)
 
     log_symb = trigger.logger_spec[1]
     @assert !(log_symb in prior_keys)
@@ -475,20 +475,20 @@ function append_loggers(trigger::CmteTrigger, loggers::NamedTuple)
     updated_vals = (prior_vals...,new_logger)
 
     return NamedTuple{updated_keys}(updated_vals)
-  else 
+  else
     return loggers
   end
 end
 
 function initialize_data(trigger::CmteTrigger, ddict::Dict)
   return ddict
-end 
+end
 
 # also added the al argument, not sure if it should be there
-function trigger_activated!(trigger::CmteTrigger, 
-                            sys::Molly.System, 
+function trigger_activated!(trigger::CmteTrigger,
+                            sys::Molly.System,
                             al,
-                            step_n::Integer=0; 
+                            step_n::Integer=0;
                             shared_cmte_pot::Union{Nothing,CommitteePotential}=nothing,
                             cache_field=nothing)
 
@@ -499,7 +499,7 @@ function trigger_activated!(trigger::CmteTrigger,
       cmte_pot = trigger.cmte_pot
     elseif typeof(sys.general_inters[1]) <: CommitteePotential
       cmte_pot = sys.general_inters[1]
-    else 
+    else
       error("No committee potential available for trigger activation")
     end
 
@@ -507,7 +507,7 @@ function trigger_activated!(trigger::CmteTrigger,
     cmte_qoi = ustrip(compute(trigger.cmte_qoi,sys,cmte_pot;cache_field=cache_field))
     @show cmte_qoi
     @assert typeof(ustrip(cmte_qoi)) <: typeof(trigger.thresh)
-    
+
     if !isnothing(trigger.logger_spec)
       log_property!(sys.loggers[trigger.logger_spec[1]], cmte_qoi,step_n)
     end
@@ -524,7 +524,7 @@ struct SharedCmteTrigger <: ActiveLearningTrigger
 end
 
 #TODO this should just be inner constructor maybe?
-function SharedCmteTrigger(cmte_pot::CommitteePotential, 
+function SharedCmteTrigger(cmte_pot::CommitteePotential,
                            subtriggers::Tuple{Vararg{<:CmteTrigger}};
                            energy_cache_field = nothing,
                            force_cache_field = nothing)
@@ -534,7 +534,7 @@ end
 
 
 function SharedCmteTrigger(trigger::SharedCmteTrigger;
-                           cmte_pot::CommitteePotential=trigger.cmte_pot, 
+                           cmte_pot::CommitteePotential=trigger.cmte_pot,
                            subtriggers::Tuple{Vararg{<:CmteTrigger}}=trigger.subtriggers,
                            energy_cache_field = trigger.energy_cache_field,
                            force_cache_field = trigger.force_cache_field)
@@ -575,7 +575,7 @@ function initialize_data(shared_trigger::SharedCmteTrigger, ddict::Dict)
   else
     return ddict
   end
-end 
+end
 
 # not handling the case where the shared cmte pot is (what? spencer what? lol)
 # also added the al argument, not sure if it should be there
@@ -584,11 +584,11 @@ function trigger_activated!(shared_trigger::SharedCmteTrigger,sys::Molly.System,
   for subtrigger in shared_trigger.subtriggers
     #How to pass appropriate cache field for custom Committee QoIs
     if typeof(subtrigger.cmte_qoi) <: Union{CommitteeForces, CommitteeFlatForces}
-      res = trigger_activated!(subtrigger,sys, step_n; shared_cmte_pot=shared_trigger.cmte_pot, cache_field=shared_trigger.force_cache_field) 
+      res = trigger_activated!(subtrigger,sys, step_n; shared_cmte_pot=shared_trigger.cmte_pot, cache_field=shared_trigger.force_cache_field)
     elseif typeof(subtrigger.cmte_qoi) <: CommitteeEnergy
-      res = trigger_activated!(subtrigger,sys, step_n; shared_cmte_pot=shared_trigger.cmte_pot, cache_field=shared_trigger.energy_cache_field) 
-    else 
-      res = trigger_activated!(subtrigger,sys, step_n; shared_cmte_pot=shared_trigger.cmte_pot) 
+      res = trigger_activated!(subtrigger,sys, step_n; shared_cmte_pot=shared_trigger.cmte_pot, cache_field=shared_trigger.energy_cache_field)
+    else
+      res = trigger_activated!(subtrigger,sys, step_n; shared_cmte_pot=shared_trigger.cmte_pot)
     end
     push!(all_res, res)
   end
@@ -615,22 +615,22 @@ end
 
 function perstep_reset!(triggers, sys::Molly.System)
   # need an API to get whether trigger has associated logger and what the logger name is
-  for trigger in triggers 
+  for trigger in triggers
     reset_logger!(trigger,sys)
   end
 
-  if (typeof(sys.data) <: Dict && 
-    :_reset_every_step in keys(sys.data) && 
+  if (typeof(sys.data) <: Dict &&
+    :_reset_every_step in keys(sys.data) &&
     length(sys.data[:_reset_every_step]) > 0)
 
-    for dict_symb in sys.data[:_reset_every_step] 
-      sys.data[dict_symb] = nothing 
+    for dict_symb in sys.data[:_reset_every_step]
+      sys.data[dict_symb] = nothing
     end
   end
 end
 
 function get_logger_ids(shared_trigger::SharedCmteTrigger)
-  trigger_ids = [get_logger_ids(subtrigger;from_shared=true) 
+  trigger_ids = [get_logger_ids(subtrigger;from_shared=true)
                 for subtrigger in shared_trigger.subtriggers]
   Tuple(trigger_ids)
 end
@@ -649,7 +649,7 @@ end
 
 # Joanna's current way, immediate return true once any is satisfied
 function trigger_activated(triggers::Tuple{Vararg{<:ActiveLearningTrigger}}, sys::Molly.System, al, step_n::Integer=1)
-  for trigger in triggers 
+  for trigger in triggers
     if trigger_activated!(trigger, sys, al, step_n)
         return true
     end
@@ -660,8 +660,8 @@ end
 ####==========#####
 
 mutable struct ALRoutine
-  ref 
-  mlip 
+  ref
+  mlip
   trainset::Vector{<:AbstractSystem}
   triggers::Tuple{Vararg{<:ActiveLearningTrigger}}
   ss::SubsetSelector
@@ -673,8 +673,8 @@ mutable struct ALRoutine
 end
 
 function initialize_al_cache!(al::ALRoutine)
-  al.cache[:trigger_step] = nothing 
-  al.cache[:trainset_changes] = nothing 
+  al.cache[:step_n] = nothing
+  al.cache[:trainset_changes] = nothing
 end
 
 function strip_system(sys::Molly.System)
@@ -689,28 +689,28 @@ end
 Should have an abstraction where for any kind of selector where you just append a new (labeled) configurated
 =#
 
-struct GreedySelector <: SubsetSelector 
-end 
+struct GreedySelector <: SubsetSelector
+end
 
-function update_trainset!(ss::GreedySelector, 
+function update_trainset!(ss::GreedySelector,
                           sys::Molly.System,
                           al::ALRoutine)
-  new_sys = strip_system(sys) 
+  new_sys = strip_system(sys)
   new_trainset = reduce(vcat, [al.trainset, new_sys])
 
   new_trainset, [new_sys,]
 end
 
 # Recomputing all descriptors, energies, forces for entire trainset
-struct InefficientLearningProblem <: AbstractLearningProblem 
+struct InefficientLearningProblem <: AbstractLearningProblem
     weights::Vector{Float64}
     intcpt::Bool
     ref
-end 
+end
 
 function InefficientLearningProblem(weights=[1000.0,1.0],intcpt=false; ref=nothing)
     return InefficientLearningProblem(weights,intcpt,ref)
-end 
+end
 
 function learn(ilp::InefficientLearningProblem, mlip, trainset; ref=ilp.ref)
   lp = learn!(trainset, ref, mlip, ilp.weights, ilp.intcpt; e_flag=true, f_flag=true)
@@ -720,11 +720,11 @@ function learn(ilp::InefficientLearningProblem, mlip, trainset; ref=ilp.ref)
   new_mlip
 end
 
-function retrain!(ilp::InefficientLearningProblem, sys::Molly.System, al::ALRoutine) 
-  # if this is a common pattern, then could just change the method handle in the AL loop 
-  # or have a generalized retrain!() that calls a more detailed retrain!() function 
-  trainset = al.trainset 
-  ref_pot = al.ref 
+function retrain!(ilp::InefficientLearningProblem, sys::Molly.System, al::ALRoutine)
+  # if this is a common pattern, then could just change the method handle in the AL loop
+  # or have a generalized retrain!() that calls a more detailed retrain!() function
+  trainset = al.trainset
+  ref_pot = al.ref
   mlip = al.mlip
 
   new_mlip = learn(ilp,mlip,trainset;ref=ref_pot)
@@ -732,7 +732,7 @@ function retrain!(ilp::InefficientLearningProblem, sys::Molly.System, al::ALRout
   new_mlip
 end
 
-####=====#### 
+####=====####
 
 abstract type AbstractCmteLearningProblem <: AbstractLearningProblem end
 
@@ -753,7 +753,7 @@ function learn(clp::SubsampleAppendCmteRetrain, old_cmte_pot, new_trainset)
     push!(new_members,new_mlip)
   end
 
-  new_cmte_pot = CommitteePotential(new_members, 
+  new_cmte_pot = CommitteePotential(new_members,
                                     old_cmte_pot.leader,
                                     old_cmte_pot.force_units,
                                     old_cmte_pot.energy_units)
@@ -761,14 +761,14 @@ function learn(clp::SubsampleAppendCmteRetrain, old_cmte_pot, new_trainset)
 end
 
 # CLP is updated in place (i.e, cmte_indices updated), learn!() new cmte_pot and return that
-function learn!(clp::SubsampleAppendCmteRetrain, 
+function learn!(clp::SubsampleAppendCmteRetrain,
                   cmte_pot::CommitteePotential,
                   num_new_configs::Integer,
                   new_trainset::Vector{<:AbstractSystem})
 
   new_trainset_size = length(new_trainset)
   append_indices = (new_trainset_size-num_new_configs+1):new_trainset_size
-  
+
   # append new indices (new configurations) to each cmte index set
   updated_indices = []
   for old_indices in clp.cmte_indices
@@ -782,9 +782,9 @@ function learn!(clp::SubsampleAppendCmteRetrain,
   new_cmte_pot
 end
 
-# note that clp gets modified in place here 
+# note that clp gets modified in place here
 function retrain!(clp::SubsampleAppendCmteRetrain, sys::Molly.System, al::ALRoutine)
-  new_trainset = al.trainset 
+  new_trainset = al.trainset
   num_new_configs = length(al.cache[:trainset_changes]) # hard assumption that this is just a list of new systems
   @assert typeof(al.mlip) <: CommitteePotential
   old_cmte_pot = al.mlip
@@ -834,16 +834,16 @@ end
 
 
 function update_trigger!(update::SubsampleAppendCmteRetrain,
-                        cmte_trigger::Union{CmteTrigger,SharedCmteTrigger}; 
-                        al::ALRoutine, 
+                        cmte_trigger::Union{CmteTrigger,SharedCmteTrigger};
+                        al::ALRoutine,
                         kwargs...)
 
   old_cmte_pot = cmte_trigger.cmte_pot
   if isnothing(old_cmte_pot)
     @warn "Not actually updating CmteTrigger, assuming committee potential used for sys.general_inters and updated with retrain!()"
     return cmte_trigger
-  else   
-    new_trainset = al.trainset 
+  else
+    new_trainset = al.trainset
     num_new_configs = length(al.cache[:trainset_changes]) # hard assumption that this is just a list of new systems
 
     new_cmte_pot = learn!(update, old_cmte_pot, num_new_configs, new_trainset) # clp modified in place
@@ -855,7 +855,7 @@ function update_trigger!(update::SubsampleAppendCmteRetrain,
   end
 end
 
-###===From makie/plot_contours.jl===#### 
+###===From makie/plot_contours.jl===####
 
 ## grid on 2d domain
 function coord_grid_2d(
@@ -912,11 +912,11 @@ struct Simple2DPotErrors <: IPErrors
 end
 
 function initialize_error_metrics!(error_metric_type::Simple2DPotErrors, ddict::Dict)
-  ddict["error_hist"] = Dict("rmse_e" => [], 
+  ddict["error_hist"] = Dict("rmse_e" => [],
                              "rmse_f" => [])
   if error_metric_type.compute_fisher
     ddict["error_hist"]["fd"] = []
-  end                             
+  end
 end
 
 # like this is nearly identical to what she did but it's more verbose, so you have to explain why do it like this
@@ -928,10 +928,10 @@ function record_errors!(error_metric_type::Simple2DPotErrors, aldata::Dict, sys:
     fd = compute_fisher_div(al.ref, al.mlip, error_metric_type.eval_int)
     append!(aldata["error_hist"]["fd"], fd)
   end
-end 
+end
 
 struct DefaultALDataSpec
-  error_metrics::IPErrors # Needs to be a stuct because of the initialization 
+  error_metrics::IPErrors # Needs to be a stuct because of the initialization
   record_trigger_step::Bool
   #record_trigger_res::Bool
   record_parameters::Bool
@@ -956,54 +956,54 @@ end
 function initialize_al_record(al_spec::DefaultALDataSpec, al)
   aldata = Dict()
   initialize_error_metrics!(al_spec.error_metrics,aldata)
-  if al_spec.record_trigger_step 
+  if al_spec.record_trigger_step
     aldata["trigger_steps"] = []
-  end 
+  end
 
   if al_spec.record_parameters
     #this way the starting state is stored, but the "mlip_params" field will be the same length as the other fields
-    aldata["original_mlip_params"] = get_params(al.mlip) 
+    aldata["original_mlip_params"] = get_params(al.mlip)
     aldata["mlip_params"] = []
-  end 
+  end
 
   if al_spec.record_new_configs
     aldata["new_configs"] = []
-  end 
+  end
 
   if al_spec.record_trigger_logs
     aldata["activated_trigger_logs"] = Dict()
-    for trigger in al.triggers 
+    for trigger in al.triggers
       logger_ids = get_logger_ids(trigger) # can be more than one key
       filtered_logger_ids = filter(x->!isnothing(x), logger_ids)
-      #setindex!.(Ref(aldata["activated_trigger_logs"]), 
-      #          [[] for _ in eachindex(filtered_logger_ids)], 
+      #setindex!.(Ref(aldata["activated_trigger_logs"]),
+      #          [[] for _ in eachindex(filtered_logger_ids)],
       #          filtered_logger_ids) #this worked but ended up being more verbose than just the below for loop
       for logger_id in filtered_logger_ids
         aldata["activated_trigger_logs"][logger_id] = []
       end
     end
-  end 
+  end
 
   aldata
-end 
+end
 
 
 function record_al_record!(al_spec::DefaultALDataSpec, aldata::Dict, sys::Molly.System, al)
     record_errors!(al_spec.error_metrics, aldata, sys, al)
-  
-  if al_spec.record_trigger_step 
+
+  if al_spec.record_trigger_step
     push!(aldata["trigger_steps"], al.cache[:trigger_step])
-  end 
+  end
 
   if al_spec.record_parameters
     #TODO need to formalize an interface to get parameters from mlips vs committee potentials
     params = get_params(al.mlip)
     push!(aldata["mlip_params"],params)
-  end 
+  end
 
   if al_spec.record_new_configs
     push!(aldata["new_configs"], al.cache[:trainset_changes])
-  end 
+  end
 
   if al_spec.record_trigger_logs
     for logger_key in keys(aldata["activated_trigger_logs"])

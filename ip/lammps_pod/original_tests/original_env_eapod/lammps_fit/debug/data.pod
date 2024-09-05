@@ -1,0 +1,23 @@
+file_format extxyz
+file_extension xyz
+
+path_to_training_data_set "../../../files/debug_set"
+
+fitting_weight_energy 100.0
+fitting_weight_force 2.0
+fitting_regularization_parameter 1e-10
+
+error_analysis_for_training_data_set 1
+error_analysis_for_test_data_set 0
+
+fraction_training_data_set 1
+randomize_training_data_set 0
+
+fraction_test_data_set 1
+randomize_test_data_set 0
+
+compute_pod_descriptors 0 
+save_pod_descriptors 0
+
+basename_for_output_files debug_set 
+precision_for_pod_coefficients 24

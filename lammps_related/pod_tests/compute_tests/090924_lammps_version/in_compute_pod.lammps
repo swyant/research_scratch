@@ -1,0 +1,43 @@
+# compute POD descriptors
+
+units          metal 
+boundary       p p p 
+atom_style     atomic
+
+read_data      ../test_monoclinic_hfo2_unit_DATA
+#displace_atoms 	all random 0.1 0.1 0.1 123456
+
+neighbor       0.5 bin 
+neigh_modify   every 1 delay 0 check yes
+
+#pair_style     pod
+#pair_coeff     * * ../HfO2_FPOD_020224_param.pod ../HfO2_FPOD_020224_v2_coefficients.pod "" "" Hf O
+pair_style zero 10.0 
+pair_coeff * * 
+
+
+#compute ld all pod/atom ../HfO2_FPOD_020224_param.pod Hf O
+#compute dd all podd/atom ../HfO2_FPOD_020224_param.pod Hf O
+
+compute ld all pod/atom ../HfO2_FPOD_020224_param.pod ../HfO2_FPOD_020224_v2_coefficients.pod Hf O
+compute dd all podd/atom ../HfO2_FPOD_020224_param.pod ../HfO2_FPOD_020224_v2_coefficients.pod Hf O
+
+dump 		     mydump_ld all custom 1 dump_ld id type c_ld[*]
+dump_modify  mydump_ld sort id format float %20.15g
+
+dump 		     mydump_dd all custom 1 dump_dd id type c_dd[*]
+dump_modify  mydump_dd sort id format float %20.15g
+
+compute ldd all pod/ldd ../HfO2_FPOD_020224_param.pod "" "" Hf O
+fix 		ldd all ave/time 1 1 1 c_ldd[*] file pod.ldd.dat mode vector
+
+compute gdd all pod/gdd ../HfO2_FPOD_020224_param.pod "" "" Hf O
+fix 		gdd all ave/time 1 1 1 c_gdd[*] file pod.gdd.dat mode vector
+
+dump           forces all custom 1 dump_forces.custom id type x y z fx fy fz
+dump_modify    forces sort id format line "%4d %1d %22.17f %22.17f %22.17f %22.17f %22.17f %22.17f"
+
+fix eprint all print 1 "$(step) $(pe)" file pe.dat
+
+
+run 0

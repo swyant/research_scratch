@@ -1,0 +1,121 @@
+LAMMPS (7 Feb 2024 - Development - patch_2Jun2022-7271-g417598498c)
+Reading data file ...
+  triclinic box = (0 0 0) to (5.1364755 5.1934133 5.2461598) with tilt (0 -0.88344297 0)
+  1 by 1 by 1 MPI processor grid
+  reading atoms ...
+  12 atoms
+  read_data CPU = 0.001 seconds
+**************** Begin of POD Potentials ****************
+species: Hf O 
+periodic boundary conditions: 1 1 1
+number of enviroment clusters: 1
+number of principal compoments: 1
+inner cut-off radius: 1
+outer cut-off radius: 5.5
+bessel polynomial degree: 4
+inverse polynomial degree: 8
+one-body potential: 1
+two-body radial basis functions: 8
+three-body radial basis functions: 6
+three-body angular degree: 4
+four-body radial basis functions: 4
+four-body angular degree: 2
+five-body radial basis functions: 4
+five-body angular degree: 2
+six-body radial basis functions: 3
+six-body angular degree: 2
+seven-body radial basis functions: 0
+seven-body angular degree: 0
+number of local descriptors per element for one-body potential: 1
+number of local descriptors per element for two-body potential: 16
+number of local descriptors per element for three-body potential: 90
+number of local descriptors per element for four-body potential: 64
+number of local descriptors per element for five-body potential: 192
+number of local descriptors per element for six-body potential: 198
+number of local descriptors per element for seven-body potential: 0
+number of local descriptors per element for all potentials: 561
+number of global descriptors: 1122
+**************** End of POD Potentials ****************
+
+**************** Begin of POD Coefficients ****************
+total number of coefficients for POD potential: 1122
+**************** End of POD Potentials ****************
+
+Neighbor list info ...
+  update: every = 1 steps, delay = 0 steps, check = yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 6
+  ghost atom cutoff = 6
+  binsize = 3, bins = 3 2 2
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair pod, perpetual
+      attributes: full, newton on
+      pair build: full/bin/atomonly
+      stencil: full/bin/3d
+      bin: standard
+Setting up Verlet run ...
+  Unit style    : metal
+  Current step  : 0
+  Time step     : 0.001
+Per MPI rank memory allocation (min/avg/max) = 3.085 | 3.085 | 3.085 Mbytes
+   Step          Temp          PotEng         KinEng         TotEng         Press     
+         0   500           -111.05105      0.7109308     -110.34012      31395.904    
+       100   313.67156     -110.59121      0.44599754    -110.14521      94892.814    
+       200   496.69309     -110.57857      0.70622883    -109.87234      51463.891    
+       300   637.6592      -110.69454      0.90666313    -109.78788      75084.694    
+       400   376.95998     -110.34474      0.53598492    -109.80876      57704.86     
+       500   481.33108     -110.66307      0.68438617    -109.97868      58355.922    
+       600   343.3087      -110.71782      0.48813745    -110.22968      65616.446    
+       700   357.19523     -110.79306      0.50788219    -110.28518      61840.153    
+       800   508.20097     -110.63009      0.72259144    -109.9075       53830.585    
+       900   664.09154     -110.60259      0.94424625    -109.65835      41728.686    
+      1000   617.66916     -110.57287      0.87824005    -109.69463      43463.101    
+      1100   523.59468     -110.67963      0.74447917    -109.93515      79209.506    
+      1200   468.51658     -110.78643      0.66616574    -110.12026      23379.067    
+      1300   403.0351      -110.72169      0.57306013    -110.14863      37221.097    
+      1400   704.99278     -110.72453      1.0024022     -109.72212      54480.924    
+      1500   793.92777     -110.6506       1.1288554     -109.52175      54712.206    
+      1600   519.25768     -110.40656      0.73831256    -109.66825      58101.098    
+      1700   551.36487     -110.72614      0.78396454    -109.94217      58381.415    
+      1800   408.78396     -110.69643      0.58123421    -110.1152       50767.839    
+      1900   435.40063     -110.60114      0.61907944    -109.98206      27387.853    
+      2000   546.28167     -110.25562      0.77673692    -109.47889      54784.327    
+      2100   493.23726     -110.22795      0.70131511    -109.52664      97128.736    
+      2200   497.78324     -110.59223      0.70777887    -109.88445      67352.368    
+      2300   385.53749     -110.57221      0.54818095    -110.02403      55863.508    
+      2400   322.32567     -110.38992      0.4583025     -109.93162      95209.713    
+      2500   745.25129     -110.51666      1.0596442     -109.45702      71206.444    
+      2600   705.55282     -110.29388      1.0031985     -109.29068      62952.461    
+      2700   524.15444     -110.29865      0.74527506    -109.55338      86378.124    
+      2800   495.77409     -110.54171      0.70492213    -109.83678      29186.473    
+      2900   530.20089     -110.76057      0.75387228    -110.0067       46578.897    
+      3000   404.95176     -110.59557      0.57578536    -110.01979      70565.769    
+Loop time of 7.57339 on 1 procs for 3000 steps with 12 atoms
+
+Performance: 34.225 ns/day, 0.701 hours/ns, 396.124 timesteps/s, 4.753 katom-step/s
+98.8% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 7.5075     | 7.5075     | 7.5075     |   0.0 | 99.13
+Neigh   | 0.0035207  | 0.0035207  | 0.0035207  |   0.0 |  0.05
+Comm    | 0.0039965  | 0.0039965  | 0.0039965  |   0.0 |  0.05
+Output  | 0.055434   | 0.055434   | 0.055434   |   0.0 |  0.73
+Modify  | 0.0018463  | 0.0018463  | 0.0018463  |   0.0 |  0.02
+Other   |            | 0.00113    |            |       |  0.01
+
+Nlocal:             12 ave          12 max          12 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:            412 ave         412 max         412 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:              0 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:          928 ave         928 max         928 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 928
+Ave neighs/atom = 77.333333
+Neighbor list builds = 126
+Dangerous builds = 0
+Total wall time: 0:00:07

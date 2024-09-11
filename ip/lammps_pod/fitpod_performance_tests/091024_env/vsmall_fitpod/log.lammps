@@ -1,0 +1,132 @@
+LAMMPS (7 Feb 2024 - Development - patch_2Jun2022-7271-g417598498c)
+fitpod ../../files/sample_6body_hfo2_param.pod data.pod
+**************** Begin of POD Potentials ****************
+species: Hf O 
+periodic boundary conditions: 1 1 1
+number of enviroment clusters: 1
+number of principal compoments: 1
+inner cut-off radius: 1
+outer cut-off radius: 5.5
+bessel polynomial degree: 4
+inverse polynomial degree: 8
+one-body potential: 1
+two-body radial basis functions: 8
+three-body radial basis functions: 6
+three-body angular degree: 4
+four-body radial basis functions: 4
+four-body angular degree: 2
+five-body radial basis functions: 4
+five-body angular degree: 2
+six-body radial basis functions: 3
+six-body angular degree: 2
+seven-body radial basis functions: 0
+seven-body angular degree: 0
+number of local descriptors per element for one-body potential: 1
+number of local descriptors per element for two-body potential: 16
+number of local descriptors per element for three-body potential: 90
+number of local descriptors per element for four-body potential: 64
+number of local descriptors per element for five-body potential: 192
+number of local descriptors per element for six-body potential: 198
+number of local descriptors per element for seven-body potential: 0
+number of local descriptors per element for all potentials: 561
+number of global descriptors: 1122
+**************** End of POD Potentials ****************
+
+**************** Begin of Data File ****************
+file format: extxyz
+file extension: xyz
+path to training data set: ../../files/very_small_lammps_compat
+path to test data set: 
+path to enviroment configuration set: 
+basename for output files: ref_very_small_lammps_compat_HfO2
+training fraction: 1
+test fraction: 1
+randomize training data set: 0
+randomize test data set: 0
+error analysis for training data set: 1
+error analysis for test data set: 0
+energy/force calculation for training data set: 0
+energy/force calculation for test data set: 0
+fitting weight for energy: 100
+fitting weight for force: 2
+fitting weight for stress: 0
+save pod descriptors: 0
+compute pod descriptors: 0
+**************** End of Data File ****************
+**************** Begin of Training Data Set ****************
+------------------------------------------------------------------------------------------------------------
+                           data file                            | number of configurations | number of atoms
+------------------------------------------------------------------------------------------------------------
+ v_small_Hf2_mp103_EOS_1D_form_sorted.xyz                       |                40        |          80
+ v_small_HfO2_mp352_EOS_1D_form_sorted.xyz                      |                34        |         408
+ v_small_HfO2_mp550893_EOS_1D_form_sorted.xyz                   |                37        |         111
+ v_small_Hf_mp100_primitive_EOS_1D_form_sorted.xyz              |                54        |          54
+ v_small_below_5p5cutoff_Hf2_gas_form_extrapolated.xyz          |                66        |         132
+ v_small_below_5p5cutoff_HfO_gas_form_extrapolated.xyz          |                47        |          94
+ v_small_below_5p5cutoff_O2_gas_form_extrapolated.xyz           |                53        |         106
+ v_small_small_Hf128_MC_rattled_mp100_form_sorted.xyz           |                20        |        2560
+ v_small_small_Hf128_MC_rattled_mp103_form_sorted.xyz           |                26        |        3328
+ v_small_small_Hf128_MC_rattled_random_form_sorted.xyz          |                18        |        2304
+ v_small_small_HfO2_MC_rattled_random_form_sorted_selected.xyz  |                21        |        2016
+ v_small_small_HfOx_amorphous_SQS_MC_rattled_form_sorted.xyz    |                19        |        2659
+ v_small_small_Hf_MC_rattled_mp100_form_sorted.xyz              |                23        |        2944
+ v_small_small_Hf_MC_rattled_mp103_form_sorted.xyz              |                30        |        3840
+ v_small_small_Hf_Ox_hcp_octa_tetra_MC_rattled_form_sorted.xyz  |                16        |        2540
+ v_small_small_Hf_Ox_hcp_octahedral_MC_rattled_form_sorted.xyz  |                14        |        2620
+ v_small_small_Hf_Ox_hcp_tetrahedral_MC_rattled_form_sorted.xyz |                18        |        1918
+------------------------------------------------------------------------------------------------------------
+number of files: 17
+number of configurations in all files: 536
+number of atoms in all files: 27714
+minimum number of atoms: 1
+maximum number of atoms: 188
+**************** End of Training Data Set ****************
+**************** Begin of Memory Allocation ****************
+maximum number of atoms in periodic domain: 188
+maximum number of atoms in extended domain: 5076
+maximum number of neighbors in extended domain: 954288
+size of double memory: 41199840
+size of descriptor matrix: 1122 x 1122
+**************** End of Memory Allocation ****************
+**************** Begin of Least-Squares Fitting ****************
+Configuration: # 1
+Configuration: # 101
+Configuration: # 201
+Configuration: # 301
+Configuration: # 401
+Configuration: # 501
+**************** End of Least-Squares Fitting ****************
+**************** Begin of Error Calculation ****************
+Configuration: # 1
+Configuration: # 101
+Configuration: # 201
+Configuration: # 301
+Configuration: # 401
+Configuration: # 501
+**************** End of Error Calculation ****************
+**************** Begin of Error Analysis for the Training Data Set ****************
+------------------------------------------------------------------------------------------------------------------------------------------------
+                               File                               | # configs |  # atoms  | MAE energy  | RMSE energy | MAE force  | RMSE force
+------------------------------------------------------------------------------------------------------------------------------------------------
+v_small_Hf2_mp103_EOS_1D_form_sorted.xyz                                 40          80     0.014391      0.017744      0.000005      0.000006  
+v_small_HfO2_mp352_EOS_1D_form_sorted.xyz                                34         408     0.007912      0.010043      0.176402      0.235677  
+v_small_HfO2_mp550893_EOS_1D_form_sorted.xyz                             37         111     0.005959      0.007267      0.000006      0.000010  
+v_small_Hf_mp100_primitive_EOS_1D_form_sorted.xyz                        54          54     0.016546      0.019012      0.000000      0.000000  
+v_small_below_5p5cutoff_Hf2_gas_form_extrapolated.xyz                    66         132     0.041582      0.050883      0.388472      0.921396  
+v_small_below_5p5cutoff_HfO_gas_form_extrapolated.xyz                    47          94     0.041555      0.047014      0.514565      1.120291  
+v_small_below_5p5cutoff_O2_gas_form_extrapolated.xyz                     53         106     0.106400      0.119402      1.129999      2.572880  
+v_small_small_Hf128_MC_rattled_mp100_form_sorted.xyz                     20        2560     0.006092      0.006655      0.074544      0.092733  
+v_small_small_Hf128_MC_rattled_mp103_form_sorted.xyz                     26        3328     0.008852      0.009263      0.130527      0.166165  
+v_small_small_Hf128_MC_rattled_random_form_sorted.xyz                    18        2304     0.005543      0.007003      0.256688      0.338653  
+v_small_small_HfO2_MC_rattled_random_form_sorted_selected.xyz            21        2016     0.014319      0.016435      0.423411      0.543915  
+v_small_small_HfOx_amorphous_SQS_MC_rattled_form_sorted.xyz              19        2659     0.010757      0.014000      0.409483      0.522631  
+v_small_small_Hf_MC_rattled_mp100_form_sorted.xyz                        23        2944     0.010682      0.011774      0.096645      0.122909  
+v_small_small_Hf_MC_rattled_mp103_form_sorted.xyz                        30        3840     0.005273      0.006039      0.117013      0.149299  
+v_small_small_Hf_Ox_hcp_octa_tetra_MC_rattled_form_sorted.xyz            16        2540     0.005891      0.007049      0.222497      0.298299  
+v_small_small_Hf_Ox_hcp_octahedral_MC_rattled_form_sorted.xyz            14        2620     0.002983      0.003595      0.191223      0.246657  
+v_small_small_Hf_Ox_hcp_tetrahedral_MC_rattled_form_sorted.xyz           18        1918     0.004280      0.005492      0.196600      0.254210  
+------------------------------------------------------------------------------------------------------------------------------------------------
+All files                                                               536       27714     0.025875      0.045035      0.203057      0.344791  
+------------------------------------------------------------------------------------------------------------------------------------------------
+**************** End of Error Analysis for the Training Data Set ****************
+Total wall time: 0:00:11

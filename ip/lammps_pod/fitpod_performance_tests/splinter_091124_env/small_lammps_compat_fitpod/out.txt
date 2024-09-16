@@ -1,0 +1,77 @@
+LAMMPS (7 Feb 2024 - Development - patch_2Jun2022-7271-g417598498c)
+OMP_NUM_THREADS environment is not set. Defaulting to 1 thread. (src/comm.cpp:98)
+  using 1 OpenMP thread(s) per MPI task
+**************** Begin of POD Potentials ****************
+species: Hf O 
+periodic boundary conditions: 1 1 1
+number of enviroment clusters: 1
+number of principal compoments: 1
+inner cut-off radius: 1
+outer cut-off radius: 5.5
+bessel polynomial degree: 4
+inverse polynomial degree: 8
+one-body potential: 1
+two-body radial basis functions: 8
+three-body radial basis functions: 6
+three-body angular degree: 4
+four-body radial basis functions: 4
+four-body angular degree: 2
+five-body radial basis functions: 4
+five-body angular degree: 2
+six-body radial basis functions: 3
+six-body angular degree: 2
+seven-body radial basis functions: 0
+seven-body angular degree: 0
+number of local descriptors per element for one-body potential: 1
+number of local descriptors per element for two-body potential: 16
+number of local descriptors per element for three-body potential: 90
+number of local descriptors per element for four-body potential: 64
+number of local descriptors per element for five-body potential: 192
+number of local descriptors per element for six-body potential: 198
+number of local descriptors per element for seven-body potential: 0
+number of local descriptors per element for all potentials: 561
+number of global descriptors: 1122
+**************** End of POD Potentials ****************
+
+**************** Begin of Data File ****************
+file format: extxyz
+file extension: xyz
+path to training data set: ../../files/small_lammps_compat_subset
+path to test data set: 
+path to enviroment configuration set: 
+basename for output files: ref_very_small_lammps_compat_HfO2
+training fraction: 1
+test fraction: 1
+randomize training data set: 0
+randomize test data set: 0
+error analysis for training data set: 1
+error analysis for test data set: 0
+energy/force calculation for training data set: 0
+energy/force calculation for test data set: 0
+fitting weight for energy: 100
+fitting weight for force: 2
+fitting weight for stress: 0
+save pod descriptors: 0
+compute pod descriptors: 0
+**************** End of Data File ****************
+**************** Begin of Training Data Set ****************
+----------------------------------------------------------------------------------------------------
+                       data file                        | number of configurations | number of atoms
+----------------------------------------------------------------------------------------------------
+ Hf2_mp103_EOS_1D_form_sorted.xyz                       |                93        |         186
+ HfO2_mp352_EOS_1D_form_sorted.xyz                      |               200        |        2400
+ HfO2_mp550893_EOS_1D_form_sorted.xyz                   |               129        |         387
+ Hf_mp100_primitive_EOS_1D_form_sorted.xyz              |                67        |          67
+ below_5p5cutoff_Hf2_gas_form_extrapolated.xyz          |               339        |         678
+ below_5p5cutoff_HfO_gas_form_extrapolated.xyz          |               337        |         674
+ below_5p5cutoff_O2_gas_form_extrapolated.xyz           |               344        |         688
+ small_Hf128_MC_rattled_mp100_form_sorted.xyz           |               204        |       26112
+ small_Hf128_MC_rattled_mp103_form_sorted.xyz           |                35        |        4480
+ small_Hf128_MC_rattled_random_form_sorted.xyz          |               244        |       31232
+ small_HfO2_MC_rattled_random_form_sorted_selected.xyz  |               261        |       25056
+ small_HfOx_amorphous_SQS_MC_rattled_form_sorted.xyz    |               466        |       44637
+ small_Hf_MC_rattled_mp100_form_sorted.xyz              |               175        |       22400
+ small_Hf_MC_rattled_mp103_form_sorted.xyz              |               160        |       20480
+ small_Hf_Ox_hcp_octa_tetra_MC_rattled_form_sorted.xyz  |               124        |       12404
+ small_Hf_Ox_hcp_octahedral_MC_rattled_form_sorted.xyz  |               542        |       67234
+ small_Hf_Ox_hcp_tetrahe

@@ -1,0 +1,8 @@
+[LAMMPS_jll]
+liblammps_path = "/home/swyant/cesmix/dev/cesmix_lammps/build_alt/liblammps.so.0"
+
+[MKL_jll]
+libmkl_core = "/opt/intel/oneapi/mkl/2024.2/lib/libmkl_core.so.2"
+libmkl_core_path = "/opt/intel/oneapi/mkl/2024.2/lib/libmkl_core.so.2"
+libmkl_rt = "/opt/intel/oneapi/mkl/2024.2/lib/libmkl_rt.so.2"
+libmkl_rt_path = "/opt/intel/oneapi/mkl/2024.2/lib/libmkl_rt.so.2"

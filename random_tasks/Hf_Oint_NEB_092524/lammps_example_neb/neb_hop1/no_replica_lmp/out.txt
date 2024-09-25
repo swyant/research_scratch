@@ -1,0 +1,84 @@
+LAMMPS (27 Jun 2024)
+Lattice spacing in x,y,z = 1.1326962 1.9618873 1.1326962
+Reading data file ...
+  orthogonal box = (0 -0.0019618873 -0.28317404) to (22.653923 19.620835 0.28317404)
+  2 by 2 by 1 MPI processor grid
+  reading atoms ...
+  420 atoms
+  reading velocities ...
+  420 velocities
+  read_data CPU = 0.021 seconds
+
+CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE
+
+Your simulation uses code contributions which should be cited:
+- Type Label Framework: https://doi.org/10.1021/acs.jpcb.3c08419
+The log file lists these citations in BibTeX format.
+
+CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE
+
+Switching to 'neigh_modify every 1 delay 0 check yes' setting during minimization
+Generated 0 of 3 mixed pair_coeff terms from geometric mixing rule
+Neighbor list info ...
+  update: every = 1 steps, delay = 0 steps, check = yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 2.8
+  ghost atom cutoff = 2.8
+  binsize = 1.4, bins = 17 15 1
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair lj/cut, perpetual
+      attributes: half, newton on
+      pair build: half/bin/atomonly/newton
+      stencil: half/bin/2d
+      bin: standard
+Setting up cg style minimization ...
+  Unit style    : lj
+  Current step  : 0
+Per MPI rank memory allocation (min/avg/max) = 4.054 | 4.054 | 4.054 Mbytes
+   Step          Temp          E_pair         E_mol          TotEng         Press          Volume    
+         0   0             -3.0336755      0             -3.0336755     -1.5977026      444.53335    
+        18   0             -3.0535948      0             -3.0535948     -0.57268905     431.70531    
+Loop time of 0.000840479 on 4 procs for 18 steps with 420 atoms
+
+99.9% CPU use with 4 MPI tasks x no OpenMP threads
+
+Minimization stats:
+  Stopping criterion = energy tolerance
+  Energy initial, next-to-last, final = 
+     -3.03367547919512  -3.05359207891274  -3.05359479991383
+  Force two-norm initial, final = 9.5360666 0.36608002
+  Force max component initial, final = 1.4687744 0.043876235
+  Final line search alpha, max atom move = 1 0.043876235
+  Iterations, force evaluations = 18 36
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.00053721 | 0.00054014 | 0.00054334 |   0.0 | 64.27
+Neigh   | 2.1459e-05 | 2.3167e-05 | 2.4458e-05 |   0.0 |  2.76
+Comm    | 0.00013175 | 0.00013597 | 0.00014029 |   0.0 | 16.18
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 0.0001412  |            |       | 16.80
+
+Nlocal:            105 ave         110 max         100 min
+Histogram: 2 0 0 0 0 0 0 0 0 2
+Nghost:             84 ave          89 max          79 min
+Histogram: 2 0 0 0 0 0 0 0 0 2
+Neighs:            895 ave         900 max         890 min
+Histogram: 2 0 0 0 0 0 0 0 0 2
+
+Total # of neighbors = 3580
+Ave neighs/atom = 8.5238095
+Neighbor list builds = 2
+Dangerous builds = 0
+60 atoms in group lower
+360 atoms in group mobile
+Setting atom values ...
+  60 settings made for type
+21 atoms in group nebatoms
+Setting atom values ...
+  21 settings made for type
+399 atoms in group nonneb
+ERROR: Unrecognized fix style 'neb' is part of the REPLICA package which is not enabled in this LAMMPS binary. (src/modify.cpp:924)
+Last command: fix             2 nebatoms neb 1.0 parallel ideal

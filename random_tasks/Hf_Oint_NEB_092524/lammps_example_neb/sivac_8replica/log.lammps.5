@@ -1,0 +1,245 @@
+LAMMPS (29 Aug 2024)
+Processor partition = 5
+# NEB simulation of vacancy hopping in silicon crystal
+
+units           metal
+
+atom_style      atomic
+atom_modify     map array
+boundary        p p p
+atom_modify     sort 0 0.0
+
+# coordination number cutoff
+
+variable r equal 2.835
+
+# diamond unit cell
+
+variable a equal 5.431
+lattice         custom $a                               a1 1.0 0.0 0.0                          a2 0.0 1.0 0.0                          a3 0.0 0.0 1.0                          basis 0.0 0.0 0.0                       basis 0.0 0.5 0.5                       basis 0.5 0.0 0.5                       basis 0.5 0.5 0.0                       basis 0.25 0.25 0.25                    basis 0.25 0.75 0.75                    basis 0.75 0.25 0.75                    basis 0.75 0.75 0.25
+lattice         custom 5.431                               a1 1.0 0.0 0.0                          a2 0.0 1.0 0.0                          a3 0.0 0.0 1.0                          basis 0.0 0.0 0.0                       basis 0.0 0.5 0.5                       basis 0.5 0.0 0.5                       basis 0.5 0.5 0.0                       basis 0.25 0.25 0.25                    basis 0.25 0.75 0.75                    basis 0.75 0.25 0.75                    basis 0.75 0.75 0.25
+Lattice spacing in x,y,z = 5.431 5.431 5.431
+
+region          myreg block     0 4                                 0 4                                 0 4
+
+#create_box      1 myreg
+#create_atoms    1 region myreg
+#mass            1       28.06
+#write_data      initial.sivac
+
+read_data       initial.sivac
+Reading data file ...
+  orthogonal box = (0 0 0) to (21.724 21.724 21.724)
+  1 by 1 by 1 MPI processor grid
+  reading atoms ...
+  512 atoms
+  reading velocities ...
+  512 velocities
+  read_data CPU = 0.007 seconds
+
+# make a vacancy
+
+group Si type 1
+512 atoms in group Si
+
+group del id 300
+1 atoms in group del
+delete_atoms group del compress no
+Deleted 1 atoms, new total = 511
+group vacneigh id 174 175 301 304 306 331 337
+7 atoms in group vacneigh
+group background subtract all vacneigh
+504 atoms in group background
+set group background type 2
+Setting atom values ...
+  504 settings made for type
+
+# choose potential
+
+pair_style      sw
+pair_coeff * * Si.sw Si Si
+Reading sw potential file Si.sw with DATE: 2007-06-11
+
+# set up neb run
+
+variable        u uloop 20
+
+# initial minimization to relax vacancy
+
+displace_atoms all random 0.1 0.1 0.1 123456
+Displacing atoms ...
+minimize        1.0e-6 1.0e-4 1000 10000
+
+CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE
+
+Your simulation uses code contributions which should be cited:
+
+- Type Label Framework: https://doi.org/10.1021/acs.jpcb.3c08419
+
+@Article{Gissinger24,
+ author = {Jacob R. Gissinger, Ilia Nikiforov, Yaser Afshar, Brendon Waters, Moon-ki Choi, Daniel S. Karls, Alexander Stukowski, Wonpil Im, Hendrik Heinz, Axel Kohlmeyer, and Ellad B. Tadmor},
+ title = {Type Label Framework for Bonded Force Fields in LAMMPS},
+ journal = {J. Phys. Chem. B},
+ year =    2024,
+ volume =  128,
+ number =  13,
+ pages =   {3282–-3297}
+}
+
+CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE
+
+Neighbor list info ...
+  update: every = 1 steps, delay = 0 steps, check = yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 5.77118
+  ghost atom cutoff = 5.77118
+  binsize = 2.88559, bins = 8 8 8
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair sw, perpetual
+      attributes: full, newton on
+      pair build: full/bin/atomonly
+      stencil: full/bin/3d
+      bin: standard
+Per MPI rank memory allocation (min/avg/max) = 4.122 | 4.122 | 4.122 Mbytes
+   Step          Temp          E_pair         E_mol          TotEng         Press     
+         0   0             -593.40319      0             -593.40319      355294.02    
+        33   0             -2213.3343      0             -2213.3343     -3383.2606    
+Loop time of 0.0322939 on 1 procs for 33 steps with 511 atoms
+
+65.5% CPU use with 1 MPI tasks x no OpenMP threads
+
+Minimization stats:
+  Stopping criterion = energy tolerance
+  Energy initial, next-to-last, final = 
+     -593.403188091472  -2213.33209897182  -2213.33426537417
+  Force two-norm initial, final = 1101.8254 0.16683659
+  Force max component initial, final = 334.49264 0.014961353
+  Final line search alpha, max atom move = 1 0.014961353
+  Iterations, force evaluations = 33 44
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.030962   | 0.030962   | 0.030962   |   0.0 | 95.88
+Neigh   | 0.00063825 | 0.00063825 | 0.00063825 |   0.0 |  1.98
+Comm    | 0.00020884 | 0.00020884 | 0.00020884 |   0.0 |  0.65
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 0.000485   |            |       |  1.50
+
+Nlocal:            511 ave         511 max         511 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:           1451 ave        1451 max        1451 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:              0 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:        17378 ave       17378 max       17378 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 17378
+Ave neighs/atom = 34.007828
+Neighbor list builds = 1
+Dangerous builds = 0
+
+reset_timestep  0
+
+# only output atoms near vacancy
+
+dump events vacneigh custom 1000 dump.neb.sivac.$u id type x y z
+dump events vacneigh custom 1000 dump.neb.sivac.6 id type x y z
+dump bckgrnd background custom 1000 dump.background.sivac.$u id type x y z
+dump bckgrnd background custom 1000 dump.background.sivac.6 id type x y z
+
+
+fix             1 all neb 1.0
+
+thermo          100
+
+# run NEB for 2000 steps or to force tolerance
+
+timestep        0.01
+min_style       quickmin
+
+neb             0.0 0.01 100 100 10 final final.sivac
+Per MPI rank memory allocation (min/avg/max) = 2.997 | 2.997 | 2.997 Mbytes
+   Step          Temp          E_pair         E_mol          TotEng         Press     
+         0   0             -2212.192       0             -2212.192      -3401.3024    
+        77   5.1835275e-05 -2213.0094      0             -2213.0094     -3424.8054    
+Loop time of 0.121783 on 1 procs for 77 steps with 511 atoms
+
+90.9% CPU use with 1 MPI tasks x no OpenMP threads
+
+Minimization stats:
+  Stopping criterion = force tolerance
+  Energy initial, next-to-last, final = 
+     -2212.19204189473  -2213.00935533962  -2213.00943248662
+  Force two-norm initial, final = 5.1098505 0.0095033287
+  Force max component initial, final = 1.0422804 0.0025470128
+  Final line search alpha, max atom move = 0 0
+  Iterations, force evaluations = 77 77
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.036417   | 0.036417   | 0.036417   |   0.0 | 29.90
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0.00069566 | 0.00069566 | 0.00069566 |   0.0 |  0.57
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0.045329   | 0.045329   | 0.045329   |   0.0 | 37.22
+Other   |            | 0.03934    |            |       | 32.30
+
+Nlocal:            511 ave         511 max         511 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:           1451 ave        1451 max        1451 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:              0 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:        17376 ave       17376 max       17376 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 17376
+Ave neighs/atom = 34.003914
+Neighbor list builds = 0
+Dangerous builds = 0
+Per MPI rank memory allocation (min/avg/max) = 5.517 | 5.517 | 5.517 Mbytes
+   Step          Temp          E_pair         E_mol          TotEng         Press     
+        77   0             -2213.0094      0             -2213.0094     -3424.8058    
+       100   0.00045381129 -2212.9727      0             -2212.9727     -3440.8355    
+       132   1.8637164e-05 -2212.9575      0             -2212.9575     -3448.3387    
+Loop time of 0.06728 on 1 procs for 55 steps with 511 atoms
+
+93.1% CPU use with 1 MPI tasks x no OpenMP threads
+
+Minimization stats:
+  Stopping criterion = force tolerance
+  Energy initial, next-to-last, final = 
+     -2213.00943248662  -2212.95762231135  -2212.95750846584
+  Force two-norm initial, final = 0.0095033287 0.0038988094
+  Force max component initial, final = 0.0025470128 0.001465661
+  Final line search alpha, max atom move = 0 0
+  Iterations, force evaluations = 55 55
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.024064   | 0.024064   | 0.024064   |   0.0 | 35.77
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0.00045471 | 0.00045471 | 0.00045471 |   0.0 |  0.68
+Output  | 7.458e-06  | 7.458e-06  | 7.458e-06  |   0.0 |  0.01
+Modify  | 0.024653   | 0.024653   | 0.024653   |   0.0 | 36.64
+Other   |            | 0.0181     |            |       | 26.90
+
+Nlocal:            511 ave         511 max         511 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:           1451 ave        1451 max        1451 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:              0 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:        17376 ave       17376 max       17376 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 17376
+Ave neighs/atom = 34.003914
+Neighbor list builds = 0
+Dangerous builds = 0
+Total wall time: 0:00:00

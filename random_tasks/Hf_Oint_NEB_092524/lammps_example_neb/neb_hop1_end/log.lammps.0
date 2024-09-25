@@ -1,0 +1,190 @@
+LAMMPS (29 Aug 2024)
+Processor partition = 0
+# 2d NEB surface simulation, hop from surface to become adatom
+
+dimension       2
+boundary        p s p
+
+atom_style      atomic
+neighbor        0.3 bin
+neigh_modify    delay 5
+atom_modify     map array sort 0 0.0
+
+variable        u uloop 20
+
+# create geometry with flat surface
+
+lattice         hex 0.9
+Lattice spacing in x,y,z = 1.1326962 1.9618873 1.1326962
+region          box block 0 20 0 10 -0.25 0.25
+
+read_data        initial.hop1.end
+Reading data file ...
+  orthogonal box = (0 0.21918579 -0.28317404) to (22.653923 19.932852 0.28317404)
+  1 by 1 by 1 MPI processor grid
+  reading atoms ...
+  420 atoms
+  reading velocities ...
+  420 velocities
+  read_data CPU = 0.005 seconds
+
+# LJ potentials
+
+pair_style      lj/cut 2.5
+pair_coeff      * * 1.0 1.0 2.5
+pair_modify     shift yes
+
+# define groups
+
+region          1 block INF INF INF 1.25 INF INF
+group           lower region 1
+60 atoms in group lower
+group           mobile subtract all lower
+360 atoms in group mobile
+set             group lower type 2
+Setting atom values ...
+  60 settings made for type
+
+timestep        0.05
+
+# group of NEB atoms - either block or single atom ID 412
+
+region          surround block 10 18 17 20 0 0 units box
+group           nebatoms region surround
+21 atoms in group nebatoms
+#group          nebatoms id 412
+set             group nebatoms type 3
+Setting atom values ...
+  21 settings made for type
+group           nonneb subtract all nebatoms
+399 atoms in group nonneb
+
+fix             1 lower setforce 0.0 0.0 0.0
+fix             2 nebatoms neb 1.0 parallel ideal end first 1.0
+fix             3 all enforce2d
+
+thermo          100
+
+dump            1 nebatoms atom 10 dump.neb.$u
+dump            1 nebatoms atom 10 dump.neb.1
+dump            2 nonneb atom 10 dump.nonneb.$u
+dump            2 nonneb atom 10 dump.nonneb.1
+
+# run NEB for 2000 steps or to force tolerance
+
+min_style       quickmin
+
+neb             0.0 0.1 1000 1000 100 final final.hop1
+Switching to 'neigh_modify every 1 delay 0 check yes' setting during minimization
+Generated 0 of 3 mixed pair_coeff terms from geometric mixing rule
+Neighbor list info ...
+  update: every = 1 steps, delay = 0 steps, check = yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 2.8
+  ghost atom cutoff = 2.8
+  binsize = 1.4, bins = 17 15 1
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair lj/cut, perpetual
+      attributes: half, newton on
+      pair build: half/bin/atomonly/newton
+      stencil: half/bin/2d
+      bin: standard
+Per MPI rank memory allocation (min/avg/max) = 2.926 | 2.926 | 2.926 Mbytes
+   Step          Temp          E_pair         E_mol          TotEng         Press          Volume    
+         0   0             -3.048332       0             -3.048332      -0.5682342      446.5923     
+       100   1.2208283e-07 -3.0483467      0             -3.0483465     -0.57260494     446.5923     
+       125   6.057853e-08  -3.0483424      0             -3.0483423     -0.57315663     446.5923     
+Loop time of 0.0138747 on 1 procs for 125 steps with 420 atoms
+
+93.9% CPU use with 1 MPI tasks x no OpenMP threads
+
+Minimization stats:
+  Stopping criterion = force tolerance
+  Energy initial, next-to-last, final = 
+     -3.04833202100765  -3.04834246726066  -3.04834236743681
+  Force two-norm initial, final = 1.6774545 0.054353106
+  Force max component initial, final = 1.4658568 0.0042092624
+  Final line search alpha, max atom move = 0 0
+  Iterations, force evaluations = 125 125
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.0064926  | 0.0064926  | 0.0064926  |   0.0 | 46.79
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 3.6173e-05 | 3.6173e-05 | 3.6173e-05 |   0.0 |  0.26
+Output  | 0.0023488  | 0.0023488  | 0.0023488  |   0.0 | 16.93
+Modify  | 0.0031529  | 0.0031529  | 0.0031529  |   0.0 | 22.72
+Other   |            | 0.001844   |            |       | 13.29
+
+Nlocal:            420 ave         420 max         420 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:             95 ave          95 max          95 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:           3580 ave        3580 max        3580 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 3580
+Ave neighs/atom = 8.5238095
+Neighbor list builds = 0
+Dangerous builds = 0
+Switching to 'neigh_modify every 1 delay 0 check yes' setting during minimization
+Per MPI rank memory allocation (min/avg/max) = 4.942 | 4.942 | 4.942 Mbytes
+   Step          Temp          E_pair         E_mol          TotEng         Press          Volume    
+       125   0             -3.0483424      0             -3.0483424     -0.57339437     446.40718    
+       200   8.7562828e-08 -3.0483361      0             -3.0483361     -0.57417808     446.40718    
+       282   2.2972861e-08 -3.0483338      0             -3.0483338     -0.57485194     446.40718    
+Loop time of 0.0177468 on 1 procs for 157 steps with 420 atoms
+
+94.1% CPU use with 1 MPI tasks x no OpenMP threads
+
+Minimization stats:
+  Stopping criterion = force tolerance
+  Energy initial, next-to-last, final = 
+     -3.04834236743681  -3.04833381827661  -3.04833380796649
+  Force two-norm initial, final = 0.054353106 0.034748569
+  Force max component initial, final = 0.0042092624 0.0048308356
+  Final line search alpha, max atom move = 0 0
+  Iterations, force evaluations = 157 157
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.0089385  | 0.0089385  | 0.0089385  |   0.0 | 50.37
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 5.5085e-05 | 5.5085e-05 | 5.5085e-05 |   0.0 |  0.31
+Output  | 0.0031632  | 0.0031632  | 0.0031632  |   0.0 | 17.82
+Modify  | 0.0026944  | 0.0026944  | 0.0026944  |   0.0 | 15.18
+Other   |            | 0.002896   |            |       | 16.32
+
+Nlocal:            420 ave         420 max         420 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:             95 ave          95 max          95 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:           3580 ave        3580 max        3580 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 3580
+Ave neighs/atom = 8.5238095
+Neighbor list builds = 0
+Dangerous builds = 0
+
+CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE
+
+Your simulation uses code contributions which should be cited:
+
+- Type Label Framework: https://doi.org/10.1021/acs.jpcb.3c08419
+
+@Article{Gissinger24,
+ author = {Jacob R. Gissinger, Ilia Nikiforov, Yaser Afshar, Brendon Waters, Moon-ki Choi, Daniel S. Karls, Alexander Stukowski, Wonpil Im, Hendrik Heinz, Axel Kohlmeyer, and Ellad B. Tadmor},
+ title = {Type Label Framework for Bonded Force Fields in LAMMPS},
+ journal = {J. Phys. Chem. B},
+ year =    2024,
+ volume =  128,
+ number =  13,
+ pages =   {3282–-3297}
+}
+
+CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE
+
+Total wall time: 0:00:00

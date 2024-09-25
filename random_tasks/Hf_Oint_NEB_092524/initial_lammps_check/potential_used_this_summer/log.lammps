@@ -1,0 +1,156 @@
+LAMMPS (29 Aug 2024)
+# user-set variables
+variable TEMP equal 1500
+
+# necessary preliminaries
+units metal
+atom_style atomic
+dimension 3
+boundary p p p
+
+read_data pod_relaxed_Hf_supercell_Oint_nonvt_DATA
+Reading data file ...
+  orthogonal box = (0 0 0) to (48.302314 50.197237 45.139088)
+  2 by 2 by 1 MPI processor grid
+  reading atoms ...
+  4861 atoms
+  read_data CPU = 0.011 seconds
+
+# neighbor parameters
+neighbor 2.0 bin
+neigh_modify every 1 delay 0 check no
+
+# interatomic potential parameters
+pair_style     pod
+pair_coeff * * HfO2_param.pod HfO2_coefficients.pod Hf O
+**************** Begin of POD Potentials ****************
+species: Hf O 
+periodic boundary conditions: 1 1 1
+number of environment clusters: 1
+number of principal compoments: 2
+inner cut-off radius: 1.2
+outer cut-off radius: 5.5
+bessel polynomial degree: 4
+inverse polynomial degree: 10
+one-body potential: 1
+two-body radial basis functions: 8
+three-body radial basis functions: 8
+three-body angular degree: 5
+four-body radial basis functions: 6
+four-body angular degree: 4
+five-body radial basis functions: 5
+five-body angular degree: 3
+six-body radial basis functions: 4
+six-body angular degree: 2
+seven-body radial basis functions: 0
+seven-body angular degree: 0
+number of local descriptors per element for one-body potential: 1
+number of local descriptors per element for two-body potential: 16
+number of local descriptors per element for three-body potential: 144
+number of local descriptors per element for four-body potential: 264
+number of local descriptors per element for five-body potential: 468
+number of local descriptors per element for six-body potential: 387
+number of local descriptors per element for seven-body potential: 0
+number of local descriptors per element for all potentials: 1280
+number of global descriptors: 2560
+**************** End of POD Potentials ****************
+
+**************** Begin of Model Coefficients ****************
+total number of coefficients for POD potential: 2560
+total number of elements for PCA projection matrix: 0
+total number of elements for PCA centroids: 0
+**************** End of Model Coefficients ****************
+
+
+thermo 100
+thermo_style custom step temp etotal pe ke press vol
+
+# dump output
+dump 1 all custom 100 ${TEMP}K_nvt.lammpstrj id type x y z
+dump 1 all custom 100 1500K_nvt.lammpstrj id type x y z
+dump_modify 1 sort id
+
+velocity all create ${TEMP} 9928459 rot yes mom yes dist gaussian
+velocity all create 1500 9928459 rot yes mom yes dist gaussian
+fix 1 all nvt temp ${TEMP} ${TEMP} 0.1
+fix 1 all nvt temp 1500 ${TEMP} 0.1
+fix 1 all nvt temp 1500 1500 0.1
+
+# run
+run 10000
+
+CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE
+
+Your simulation uses code contributions which should be cited:
+
+- Type Label Framework: https://doi.org/10.1021/acs.jpcb.3c08419
+
+@Article{Gissinger24,
+ author = {Jacob R. Gissinger, Ilia Nikiforov, Yaser Afshar, Brendon Waters, Moon-ki Choi, Daniel S. Karls, Alexander Stukowski, Wonpil Im, Hendrik Heinz, Axel Kohlmeyer, and Ellad B. Tadmor},
+ title = {Type Label Framework for Bonded Force Fields in LAMMPS},
+ journal = {J. Phys. Chem. B},
+ year =    2024,
+ volume =  128,
+ number =  13,
+ pages =   {3282–-3297}
+}
+
+CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE
+
+Neighbor list info ...
+  update: every = 1 steps, delay = 0 steps, check = no
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 7.5
+  ghost atom cutoff = 7.5
+  binsize = 3.75, bins = 13 14 13
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair pod, perpetual
+      attributes: full, newton on
+      pair build: full/bin/atomonly
+      stencil: full/bin/3d
+      bin: standard
+Per MPI rank memory allocation (min/avg/max) = 2.689 | 2.689 | 2.689 Mbytes
+   Step          Temp          TotEng         PotEng         KinEng         Press          Volume    
+         0   1500          -34666.329     -35608.636      942.30646      9249.0517      109446.16    
+       100   506.30211     -34628.771     -34946.832      318.06117      20262.565      109446.16    
+       200   824.46407     -34522.189     -35040.121      517.93188      22094.279      109446.16    
+       300   931.35322     -34389.138     -34974.218      585.0801       23646.103      109446.16    
+       400   1032.4089     -34247.314     -34895.877      648.56372      25584.291      109446.16    
+       500   1261.185      -34095.372     -34887.653      792.28187      27608.506      109446.16    
+       600   1310.2056     -33945.886     -34768.962      823.07678      30843.249      109446.16    
+       700   1382.5152     -33803.538     -34672.04       868.50199      34094.395      109446.16    
+       800   1501.1479     -33686.294     -34629.321      943.02759      35929.06       109446.16    
+       900   1525.8397     -33618.375     -34576.914      958.53907      37254.328      109446.16    
+      1000   1566.3963     -33602.837     -34586.854      984.01692      37013.024      109446.16    
+      1100   1524.9582     -33645.331     -34603.316      957.98529      36467.233      109446.16    
+      1200   1486.7397     -33703.214     -34637.191      933.97629      35662.403      109446.16    
+      1300   1447.6408     -33741.721     -34651.135      909.41421      35009.638      109446.16    
+      1400   1468.1961     -33731.552     -34653.879      922.3271       35072.677      109446.16    
+      1500   1505.5135     -33688.984     -34634.754      945.77004      35504.425      109446.16    
+      1600   1519.5912     -33648.575     -34603.189      954.61371      36701.225      109446.16    
+      1700   1546.4615     -33634.558     -34606.052      971.49378      36799.952      109446.16    
+      1800   1513.4908     -33659.95      -34610.731      950.78141      36329.055      109446.16    
+      1900   1506.5011     -33694.388     -34640.778      946.39048      35889.122      109446.16    
+      2000   1456.1436     -33730.584     -34645.34       914.7557       35306.517      109446.16    
+      2100   1475.4246     -33728.829     -34655.697      926.86807      35187.855      109446.16    
+      2200   1462.7115     -33699.272     -34618.153      918.88167      35928.155      109446.16    
+      2300   1539.2646     -33648.123     -34615.095      966.97264      36099.711      109446.16    
+      2400   1544.9453     -33629.276     -34599.817      970.5413       36828.95       109446.16    
+      2500   1490.3082     -33656.222     -34592.44       936.21802      36470.603      109446.16    
+      2600   1490.1516     -33688.498     -34624.618      936.11964      35865.167      109446.16    
+      2700   1474.7102     -33713.83      -34640.25       926.4193       35550.631      109446.16    
+      2800   1481.8242     -33714.853     -34645.741      930.88837      35193.964      109446.16    
+      2900   1480.2186     -33695.585     -34625.465      929.87969      35705.972      109446.16    
+      3000   1530.089      -33662.202     -34623.41       961.20851      35981.074      109446.16    
+      3100   1540.6292     -33651.077     -34618.907      967.82989      36374.804      109446.16    
+      3200   1497.7176     -33669.381     -34610.254      940.87263      36302.173      109446.16    
+      3300   1503.3995     -33686.831     -34631.273      944.44203      35838.195      109446.16    
+      3400   1473.3773     -33705.005     -34630.587      925.58196      35974.729      109446.16    
+      3500   1473.7848     -33708.648     -34634.486      925.83794      35606.408      109446.16    
+      3600   1482.3688     -33692.904     -34624.135      931.23047      36006.24       109446.16    
+      3700   1540.211      -33664.117     -34631.684      967.5672       36155.958      109446.16    
+      3800   1511.4088     -33662.553     -34612.027      949.47354      36295.973      109446.16    
+      3900   1479.8914     -33674.875     -34604.549      929.67414      36761.16       109446.16    
+      4000   1505.9531     -33678.957     -34625.003      946.0462       35669.649      109446.16    
+      4100   1505.7793     -33680.861     -34626.798      945.93707      35897.415      109446.16    
+      4200   1515.6422     -33683.092     -34635.225     

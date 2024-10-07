@@ -1,0 +1,34 @@
+units metal 
+atom_style atomic
+dimension 3 
+boundary p p p 
+
+atom_modify     map array
+#atom_modify     map array sort 0 0.0
+
+read_data 1500K_image.coords.0 
+
+# neighbor parameters
+neighbor 2.0 bin 
+neigh_modify every 1 delay 0 check no
+
+# interatomic potential parameters
+pair_style     pod
+pair_coeff * * HfO2_param.pod HfO2_coefficients.pod Hf O Hf
+
+#variable        u uloop 20
+variable i equal part
+
+region  hopblock block 20.0 28.0 22.0 31.0 20.0 25.0 
+group   nebatoms region hopblock
+group   oatom type 2
+group   nebHf subtract nebatoms oatom 
+set     group nebHf type 3
+
+dump            1 all atom 100 dump.neb.$i
+
+timestep 0.01
+fix             1 nebatoms neb 1.0 parallel ideal
+min_style       quickmin
+
+neb             0.0 0.01 1000 1000 10 each 1500K_image.coords.$i 

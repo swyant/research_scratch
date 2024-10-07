@@ -1,0 +1,188 @@
+LAMMPS (29 Aug 2024)
+Processor partition = 6
+units metal
+atom_style atomic
+dimension 3
+boundary p p p
+
+atom_modify     map array
+#atom_modify     map array sort 0 0.0
+
+read_data hexag_Hf_octOint_DATA  # initial Oint in octahedral spot
+Reading data file ...
+  triclinic box = (0 0 0) to (12.880619 11.154943 15.046356) with tilt (-6.4403078 0 0)
+WARNING: Triclinic box skew is large. LAMMPS will run inefficiently. (src/domain.cpp:221)
+  1 by 1 by 1 MPI processor grid
+  reading atoms ...
+  97 atoms
+  read_data CPU = 0.003 seconds
+
+# neighbor parameters
+neighbor 2.0 bin
+neigh_modify every 1 delay 0 check no
+
+# interatomic potential parameters
+pair_style     pod
+pair_coeff * * HfO2_param.pod HfO2_coefficients.pod Hf O
+**************** Begin of POD Potentials ****************
+species: Hf O 
+periodic boundary conditions: 1 1 1
+number of environment clusters: 1
+number of principal compoments: 2
+inner cut-off radius: 1.2
+outer cut-off radius: 5.5
+bessel polynomial degree: 4
+inverse polynomial degree: 10
+one-body potential: 1
+two-body radial basis functions: 8
+three-body radial basis functions: 8
+three-body angular degree: 5
+four-body radial basis functions: 6
+four-body angular degree: 4
+five-body radial basis functions: 5
+five-body angular degree: 3
+six-body radial basis functions: 4
+six-body angular degree: 2
+seven-body radial basis functions: 0
+seven-body angular degree: 0
+number of local descriptors per element for one-body potential: 1
+number of local descriptors per element for two-body potential: 16
+number of local descriptors per element for three-body potential: 144
+number of local descriptors per element for four-body potential: 264
+number of local descriptors per element for five-body potential: 468
+number of local descriptors per element for six-body potential: 387
+number of local descriptors per element for seven-body potential: 0
+number of local descriptors per element for all potentials: 1280
+number of global descriptors: 2560
+**************** End of POD Potentials ****************
+
+**************** Begin of Model Coefficients ****************
+total number of coefficients for POD potential: 2560
+total number of elements for PCA projection matrix: 0
+total number of elements for PCA centroids: 0
+**************** End of Model Coefficients ****************
+
+
+variable        u uloop 20
+variable i equal part
+
+dump            1 all atom 10 dump.neb.$u
+dump            1 all atom 10 dump.neb.7
+
+timestep 0.01
+fix             1 all neb 1.0 parallel ideal
+min_style       quickmin
+
+neb             0.0 0.01 1000 1000 10 final coords.initial.6
+Neighbor list info ...
+  update: every = 1 steps, delay = 0 steps, check = no
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 7.5
+  ghost atom cutoff = 7.5
+  binsize = 3.75, bins = 6 3 5
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair pod, perpetual
+      attributes: full, newton on
+      pair build: full/bin/atomonly
+      stencil: full/bin/3d
+      bin: standard
+Per MPI rank memory allocation (min/avg/max) = 2.588 | 2.588 | 2.588 Mbytes
+   Step          Temp          E_pair         E_mol          TotEng         Press     
+         0   0             -712.7371       0             -712.7371       5342.327     
+        65   7.5337723e-18 -712.7371       0             -712.7371       5342.3296    
+Loop time of 1.38143 on 1 procs for 65 steps with 97 atoms
+
+92.6% CPU use with 1 MPI tasks x no OpenMP threads
+
+Minimization stats:
+  Stopping criterion = force tolerance
+  Energy initial, next-to-last, final = 
+      -712.73709945758  -712.737099457666  -712.737099457664
+  Force two-norm initial, final = 3.3180293e-05 1.2050538e-09
+  Force max component initial, final = 8.3899606e-06 2.3080565e-10
+  Final line search alpha, max atom move = 0 0
+  Iterations, force evaluations = 65 65
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 1.0263     | 1.0263     | 1.0263     |   0.0 | 74.29
+Neigh   | 0.022311   | 0.022311   | 0.022311   |   0.0 |  1.62
+Comm    | 0.0015656  | 0.0015656  | 0.0015656  |   0.0 |  0.11
+Output  | 0.00056146 | 0.00056146 | 0.00056146 |   0.0 |  0.04
+Modify  | 0.29645    | 0.29645    | 0.29645    |   0.0 | 21.46
+Other   |            | 0.03428    |            |       |  2.48
+
+Nlocal:             97 ave          97 max          97 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:            897 ave         897 max         897 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:              0 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:         7282 ave        7282 max        7282 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 7282
+Ave neighs/atom = 75.072165
+Neighbor list builds = 66
+Dangerous builds not checked
+Per MPI rank memory allocation (min/avg/max) = 3.592 | 3.592 | 3.592 Mbytes
+   Step          Temp          E_pair         E_mol          TotEng         Press     
+        65   0             -712.7371       0             -712.7371       5342.3296    
+       104   6.5672188e-21 -712.7371       0             -712.7371       5342.3296    
+Loop time of 0.842365 on 1 procs for 39 steps with 97 atoms
+
+91.3% CPU use with 1 MPI tasks x no OpenMP threads
+
+Minimization stats:
+  Stopping criterion = force tolerance
+  Energy initial, next-to-last, final = 
+     -712.737099457664  -712.737099457663  -712.737099457668
+  Force two-norm initial, final = 1.2050613e-09 2.9856848e-11
+  Force max component initial, final = 2.3080346e-10 4.8126572e-12
+  Final line search alpha, max atom move = 0 0
+  Iterations, force evaluations = 39 39
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.65173    | 0.65173    | 0.65173    |   0.0 | 77.37
+Neigh   | 0.013139   | 0.013139   | 0.013139   |   0.0 |  1.56
+Comm    | 0.00090575 | 0.00090575 | 0.00090575 |   0.0 |  0.11
+Output  | 0.00037496 | 0.00037496 | 0.00037496 |   0.0 |  0.04
+Modify  | 0.17156    | 0.17156    | 0.17156    |   0.0 | 20.37
+Other   |            | 0.004654   |            |       |  0.55
+
+Nlocal:             97 ave          97 max          97 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:            897 ave         897 max         897 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:              0 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:         7282 ave        7282 max        7282 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 7282
+Ave neighs/atom = 75.072165
+Neighbor list builds = 40
+Dangerous builds not checked
+
+CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE
+
+Your simulation uses code contributions which should be cited:
+
+- Type Label Framework: https://doi.org/10.1021/acs.jpcb.3c08419
+
+@Article{Gissinger24,
+ author = {Jacob R. Gissinger, Ilia Nikiforov, Yaser Afshar, Brendon Waters, Moon-ki Choi, Daniel S. Karls, Alexander Stukowski, Wonpil Im, Hendrik Heinz, Axel Kohlmeyer, and Ellad B. Tadmor},
+ title = {Type Label Framework for Bonded Force Fields in LAMMPS},
+ journal = {J. Phys. Chem. B},
+ year =    2024,
+ volume =  128,
+ number =  13,
+ pages =   {3282–-3297}
+}
+
+CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE
+
+Total wall time: 0:00:02

@@ -1,0 +1,158 @@
+LAMMPS (29 Aug 2024)
+Reading data file ...
+  triclinic box = (0 0 0) to (12.880619 11.154943 15.046356) with tilt (-6.4403078 0 0)
+WARNING: Triclinic box skew is large. LAMMPS will run inefficiently. (src/domain.cpp:221)
+  1 by 1 by 2 MPI processor grid
+  reading atoms ...
+  97 atoms
+  read_data CPU = 0.003 seconds
+**************** Begin of POD Potentials ****************
+species: Hf O 
+periodic boundary conditions: 1 1 1
+number of environment clusters: 1
+number of principal compoments: 2
+inner cut-off radius: 1.2
+outer cut-off radius: 5.5
+bessel polynomial degree: 4
+inverse polynomial degree: 10
+one-body potential: 1
+two-body radial basis functions: 8
+three-body radial basis functions: 8
+three-body angular degree: 5
+four-body radial basis functions: 6
+four-body angular degree: 4
+five-body radial basis functions: 5
+five-body angular degree: 3
+six-body radial basis functions: 4
+six-body angular degree: 2
+seven-body radial basis functions: 0
+seven-body angular degree: 0
+number of local descriptors per element for one-body potential: 1
+number of local descriptors per element for two-body potential: 16
+number of local descriptors per element for three-body potential: 144
+number of local descriptors per element for four-body potential: 264
+number of local descriptors per element for five-body potential: 468
+number of local descriptors per element for six-body potential: 387
+number of local descriptors per element for seven-body potential: 0
+number of local descriptors per element for all potentials: 1280
+number of global descriptors: 2560
+**************** End of POD Potentials ****************
+
+**************** Begin of Model Coefficients ****************
+total number of coefficients for POD potential: 2560
+total number of elements for PCA projection matrix: 0
+total number of elements for PCA centroids: 0
+**************** End of Model Coefficients ****************
+
+
+CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE
+
+Your simulation uses code contributions which should be cited:
+- Type Label Framework: https://doi.org/10.1021/acs.jpcb.3c08419
+The log file lists these citations in BibTeX format.
+
+CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE
+
+Neighbor list info ...
+  update: every = 1 steps, delay = 0 steps, check = no
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 7.5
+  ghost atom cutoff = 7.5
+  binsize = 3.75, bins = 6 3 5
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair pod, perpetual
+      attributes: full, newton on
+      pair build: full/bin/atomonly
+      stencil: full/bin/3d
+      bin: standard
+Setting up cg style minimization ...
+  Unit style    : metal
+  Current step  : 0
+Per MPI rank memory allocation (min/avg/max) = 3.723 | 3.723 | 3.723 Mbytes
+   Step         PotEng         Press           Pxx            Pyy            Pzz           Volume           Lx             Ly             Lz             Xy             Xz             Yz      
+         0  -713.4696       2758.7102      2708.5954      2708.6302      2858.9051      2161.8992      12.880619      11.154943      15.046356     -6.4403078      0              0            
+         1  -713.48719      2795.0213      2767.3544      2767.3879      2850.3215      2161.8992      12.880619      11.154943      15.046356     -6.4403078      0              0            
+         2  -713.4933       2787.0186      2771.8822      2771.9135      2817.2601      2161.8992      12.880619      11.154943      15.046356     -6.4403078      0              0            
+         3  -713.49458      2717.036       2703.4512      2703.4801      2744.1766      2161.8992      12.880619      11.154943      15.046356     -6.4403078      0              0            
+         4  -713.49491      2739.6723      2732.5459      2732.5731      2753.898       2161.8992      12.880619      11.154943      15.046356     -6.4403078      0              0            
+         5  -713.49495      2731.28        2723.7673      2723.7937      2746.2789      2161.8992      12.880619      11.154943      15.046356     -6.4403078      0              0            
+         6  -713.49496      2735.8462      2728.9306      2728.9566      2749.6514      2161.8992      12.880619      11.154943      15.046356     -6.4403078      0              0            
+         7  -713.49497      2735.319       2728.4283      2728.4542      2749.0744      2161.8992      12.880619      11.154943      15.046356     -6.4403078      0              0            
+         8  -713.49497      2735.2421      2728.3329      2728.3589      2749.0345      2161.8992      12.880619      11.154943      15.046356     -6.4403078      0              0            
+         9  -713.49497      2735.418       2728.4931      2728.5191      2749.2417      2161.8992      12.880619      11.154943      15.046356     -6.4403078      0              0            
+        10  -713.49497      2735.3183      2728.3637      2728.3898      2749.2016      2161.8992      12.880619      11.154943      15.046356     -6.4403078      0              0            
+        11  -713.49497      2735.4158      2728.4653      2728.4914      2749.2906      2161.8992      12.880619      11.154943      15.046356     -6.4403078      0              0            
+        12  -713.49497      2735.3439      2728.3824      2728.4085      2749.2408      2161.8992      12.880619      11.154943      15.046356     -6.4403078      0              0            
+        13  -713.49497      2735.355       2728.3924      2728.4186      2749.2541      2161.8992      12.880619      11.154943      15.046356     -6.4403078      0              0            
+Loop time of 0.15604 on 2 procs for 13 steps with 97 atoms
+
+99.5% CPU use with 2 MPI tasks x no OpenMP threads
+
+Minimization stats:
+  Stopping criterion = energy tolerance
+  Energy initial, next-to-last, final = 
+     -713.469597437166  -713.494965578507  -713.494965578958
+  Force two-norm initial, final = 0.80962013 3.4407571e-05
+  Force max component initial, final = 0.13412962 6.7179961e-06
+  Final line search alpha, max atom move = 1 6.7179961e-06
+  Iterations, force evaluations = 13 24
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.098891   | 0.12492    | 0.15094    |   7.4 | 80.05
+Neigh   | 0.002085   | 0.0026559  | 0.0032269  |   1.1 |  1.70
+Comm    | 0.00047346 | 0.027071   | 0.053668   |  16.2 | 17.35
+Output  | 0.0010075  | 0.0010932  | 0.0011789  |   0.3 |  0.70
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 0.0003029  |            |       |  0.19
+
+Nlocal:           48.5 ave          59 max          38 min
+Histogram: 1 0 0 0 0 0 0 0 0 1
+Nghost:          681.5 ave         690 max         673 min
+Histogram: 1 0 0 0 0 0 0 0 0 1
+Neighs:              0 ave           0 max           0 min
+Histogram: 2 0 0 0 0 0 0 0 0 0
+FullNghs:         3618 ave        4426 max        2810 min
+Histogram: 1 0 0 0 0 0 0 0 0 1
+
+Total # of neighbors = 7236
+Ave neighs/atom = 74.597938
+Neighbor list builds = 25
+Dangerous builds not checked
+WARNING: No fixes with time integration, atoms won't move (src/verlet.cpp:60)
+Setting up Verlet run ...
+  Unit style    : metal
+  Current step  : 13
+  Time step     : 0.001
+Per MPI rank memory allocation (min/avg/max) = 3.869 | 3.87 | 3.87 Mbytes
+   Step         PotEng         Press           Pxx            Pyy            Pzz           Volume           Lx             Ly             Lz             Xy             Xz             Yz      
+        13  -713.49497      2735.355       2728.3924      2728.4186      2749.2541      2161.8992      12.880619      11.154943      15.046356     -6.4403078      0              0            
+Loop time of 6.46e-07 on 2 procs for 0 steps with 97 atoms
+
+154.8% CPU use with 2 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 6.46e-07   |            |       |100.00
+
+Nlocal:           48.5 ave          59 max          38 min
+Histogram: 1 0 0 0 0 0 0 0 0 1
+Nghost:          681.5 ave         690 max         673 min
+Histogram: 1 0 0 0 0 0 0 0 0 1
+Neighs:              0 ave           0 max           0 min
+Histogram: 2 0 0 0 0 0 0 0 0 0
+FullNghs:         3618 ave        4426 max        2810 min
+Histogram: 1 0 0 0 0 0 0 0 0 1
+
+Total # of neighbors = 7236
+Ave neighs/atom = 74.597938
+Neighbor list builds = 0
+Dangerous builds not checked
+Total wall time: 0:00:00

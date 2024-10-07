@@ -1,0 +1,34 @@
+# necessary preliminaries
+units metal 
+atom_style atomic
+dimension 3 
+boundary p p p 
+
+read_data OT_path_rescaled_DATA0
+
+# neighbor parameters
+neighbor 2.0 bin 
+neigh_modify every 1 delay 0 check no
+
+# interatomic potential parameters
+pair_style     pod
+pair_coeff * * HfO2_param.pod HfO2_coefficients.pod Hf O 
+
+thermo 1 
+thermo_style custom step pe press pxx pyy pzz vol lx ly lz xy xz yz
+
+dump min all custom 1 minimize_HfOint.lammpstrj id type x y z 
+dump_modify min sort id format float %20.15g
+
+
+# optional displace than minimization 
+displace_atoms all random 0.1 0.1 0.1 123456
+
+min_modify dmax 0.005 line quadratic
+minimize 1.0e-12 1.0e-18 10000 100000
+
+
+# output the final relaxed structure 
+dump final all custom 1 relaxed_HfOint.lammpstrj id type x y z 
+dump_modify final sort id format float %20.15g
+run 0 

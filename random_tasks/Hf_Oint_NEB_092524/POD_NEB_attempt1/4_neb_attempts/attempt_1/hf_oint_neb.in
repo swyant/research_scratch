@@ -1,0 +1,28 @@
+units metal 
+atom_style atomic
+dimension 3 
+boundary p p p 
+
+atom_modify     map array
+#atom_modify     map array sort 0 0.0
+
+read_data hexag_Hf_octOint_DATA  # initial Oint in octahedral spot
+
+# neighbor parameters
+neighbor 2.0 bin 
+neigh_modify every 1 delay 0 check no
+
+# interatomic potential parameters
+pair_style     pod
+pair_coeff * * HfO2_param.pod HfO2_coefficients.pod Hf O 
+
+variable        u uloop 20
+variable i equal part
+
+dump            1 all atom 10 dump.neb.$u
+
+timestep 0.01
+fix             1 all neb 1.0 parallel ideal
+min_style       quickmin
+
+neb             0.0 0.01 1000 1000 10 each coords.initial.$i

@@ -1,0 +1,159 @@
+LAMMPS (29 Aug 2024)
+Processor partition = 2
+Reading data file ...
+  orthogonal box = (0 0 0) to (48.302314 50.197237 45.139088)
+  1 by 1 by 1 MPI processor grid
+  reading atoms ...
+  4861 atoms
+  read_data CPU = 0.021 seconds
+**************** Begin of POD Potentials ****************
+species: Hf O 
+periodic boundary conditions: 1 1 1
+number of environment clusters: 1
+number of principal compoments: 2
+inner cut-off radius: 1.2
+outer cut-off radius: 5.5
+bessel polynomial degree: 4
+inverse polynomial degree: 10
+one-body potential: 1
+two-body radial basis functions: 8
+three-body radial basis functions: 8
+three-body angular degree: 5
+four-body radial basis functions: 6
+four-body angular degree: 4
+five-body radial basis functions: 5
+five-body angular degree: 3
+six-body radial basis functions: 4
+six-body angular degree: 2
+seven-body radial basis functions: 0
+seven-body angular degree: 0
+number of local descriptors per element for one-body potential: 1
+number of local descriptors per element for two-body potential: 16
+number of local descriptors per element for three-body potential: 144
+number of local descriptors per element for four-body potential: 264
+number of local descriptors per element for five-body potential: 468
+number of local descriptors per element for six-body potential: 387
+number of local descriptors per element for seven-body potential: 0
+number of local descriptors per element for all potentials: 1280
+number of global descriptors: 2560
+**************** End of POD Potentials ****************
+
+**************** Begin of Model Coefficients ****************
+total number of coefficients for POD potential: 2560
+total number of elements for PCA projection matrix: 0
+total number of elements for PCA centroids: 0
+**************** End of Model Coefficients ****************
+
+16 atoms in group nebatoms
+1 atoms in group oatom
+15 atoms in group nebHf
+Setting atom values ...
+  15 settings made for type
+Neighbor list info ...
+  update: every = 1 steps, delay = 0 steps, check = no
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 7.5
+  ghost atom cutoff = 7.5
+  binsize = 3.75, bins = 13 14 13
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair pod, perpetual
+      attributes: full, newton on
+      pair build: full/bin/atomonly
+      stencil: full/bin/3d
+      bin: standard
+Setting up quickmin style minimization ...
+  Unit style    : metal
+  Current step  : 0
+Per MPI rank memory allocation (min/avg/max) = 4.05 | 4.05 | 4.05 Mbytes
+   Step          Temp          E_pair         E_mol          TotEng         Press     
+         0   0             -34605.599      0             -34605.599      27591.352    
+       901   7.6728562e-06 -35608          0             -35608          61.080624    
+Loop time of 1382.91 on 1 procs for 901 steps with 4861 atoms
+
+48.8% CPU use with 1 MPI tasks x no OpenMP threads
+
+Minimization stats:
+  Stopping criterion = force tolerance
+  Energy initial, next-to-last, final = 
+     -34605.5989974401   -35608.000071989  -35608.0000756856
+  Force two-norm initial, final = 118.88781 0.0075332186
+  Force max component initial, final = 4.9115551 0.00015156588
+  Final line search alpha, max atom move = 0 0
+  Iterations, force evaluations = 901 901
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 1283.2     | 1283.2     | 1283.2     |   0.0 | 92.79
+Neigh   | 57.359     | 57.359     | 57.359     |   0.0 |  4.15
+Comm    | 0.54273    | 0.54273    | 0.54273    |   0.0 |  0.04
+Output  | 0.045249   | 0.045249   | 0.045249   |   0.0 |  0.00
+Modify  | 31.83      | 31.83      | 31.83      |   0.0 |  2.30
+Other   |            | 9.921      |            |       |  0.72
+
+Nlocal:           4861 ave        4861 max        4861 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:           6372 ave        6372 max        6372 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:              0 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:       337498 ave      337498 max      337498 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 337498
+Ave neighs/atom = 69.429747
+Neighbor list builds = 902
+Dangerous builds not checked
+Setting up quickmin style minimization ...
+  Unit style    : metal
+  Current step  : 901
+Per MPI rank memory allocation (min/avg/max) = 5.241 | 5.241 | 5.241 Mbytes
+   Step          Temp          E_pair         E_mol          TotEng         Press     
+       901   0             -35608          0             -35608          61.080577    
+       973   1.9125676e-05 -35608.064      0             -35608.064      59.530921    
+Loop time of 89.8244 on 1 procs for 72 steps with 4861 atoms
+
+59.1% CPU use with 1 MPI tasks x no OpenMP threads
+
+Minimization stats:
+  Stopping criterion = force tolerance
+  Energy initial, next-to-last, final = 
+     -35608.0000756856  -35608.0636981851  -35608.0637171722
+  Force two-norm initial, final = 0.0075332999 0.0069061707
+  Force max component initial, final = 0.00015156588 0.0001305748
+  Final line search alpha, max atom move = 0 0
+  Iterations, force evaluations = 72 72
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 81.838     | 81.838     | 81.838     |   0.0 | 91.11
+Neigh   | 2.3749     | 2.3749     | 2.3749     |   0.0 |  2.64
+Comm    | 0.24581    | 0.24581    | 0.24581    |   0.0 |  0.27
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 3.7674     | 3.7674     | 3.7674     |   0.0 |  4.19
+Other   |            | 1.598      |            |       |  1.78
+
+Nlocal:           4861 ave        4861 max        4861 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:           6372 ave        6372 max        6372 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:              0 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:       337086 ave      337086 max      337086 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 337086
+Ave neighs/atom = 69.344991
+Neighbor list builds = 73
+Dangerous builds not checked
+
+CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE
+
+Your simulation uses code contributions which should be cited:
+- Type Label Framework: https://doi.org/10.1021/acs.jpcb.3c08419
+The log file lists these citations in BibTeX format.
+
+CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE
+
+Total wall time: 0:24:35

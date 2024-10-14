@@ -1,8 +1,8 @@
 [deps]
-ACE1x = "5cc4c08c-8782-4a30-af6d-550b302e9707"
-ACEpotentials = "3b96b61c-0fcc-4693-95ed-1ef9f35fcc53"
 CSV = "336ed68f-0bac-5ca0-87d4-7b16caf5d00b"
 DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
 Debugger = "31a5f54b-26ea-5ae9-a837-f05ce5417438"
+InteratomicPotentials = "a9efe35a-c65d-452d-b8a8-82646cd5cb04"
 JLD2 = "033835bb-8acc-5ee8-8aae-3f567f8a3819"
-PrettyTables = "08abe8d2-0d0c-5749-adfa-8a2ac140af0d"
+PotentialLearning = "82b0a93c-c2e3-44bc-a418-f0f89b0ae5c2"
+Unitful = "1986cc42-f94f-5a68-af5c-568840ba703d"

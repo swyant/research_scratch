@@ -1,0 +1,10 @@
+[deps]
+ACEfit = "ad31a8ef-59f5-4a01-b543-a85c2f73e95c"
+Atomistic = "3e762ff9-b8d8-45cf-a902-edcbc7124e71"
+CSV = "336ed68f-0bac-5ca0-87d4-7b16caf5d00b"
+DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
+InteratomicPotentials = "a9efe35a-c65d-452d-b8a8-82646cd5cb04"
+JLD2 = "033835bb-8acc-5ee8-8aae-3f567f8a3819"
+Molly = "aa0f7f06-fcc0-5ec4-a7f3-a573f33f9c4c"
+PotentialLearning = "82b0a93c-c2e3-44bc-a418-f0f89b0ae5c2"
+Unitful = "1986cc42-f94f-5a68-af5c-568840ba703d"

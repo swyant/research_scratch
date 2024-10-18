@@ -47,34 +47,33 @@ ws, int = [1.0, 1.0], false
 
 lp = PotentialLearning.LinearProblem(ds_train)
 
-learn!(lp,ws,int)
-default_learn_β = lp.β[:]
+learn!(lp,ws,int; λ=0.01)
 
-original_AtWA, original_AtWb  = PotentialLearning.ooc_learn!(lb, ds_train; ws=ws, symmetrize=false, lambda=nothing)
-
-vanilla_ooc_β = lb.β[:]
-
-_AtWA, _AtWb = PotentialLearning.ooc_learn!(lb, ds_train; 
-                                            ws=ws, 
-                                            reg_style=:default, 
-                                            symmetrize=false, 
-                                            lambda=0.01,
-                                            AtWA = original_AtWA,
-                                            AtWb = original_AtWb)
-
-default_reg_β = lb.β[:]
-
-_AtWA, _AtWb = PotentialLearning.ooc_learn!(lb, ds_train; 
-                                            ws=ws, 
-                                            reg_style=:scale_thresh, 
-                                            symmetrize=true, 
-                                            lambda=1e-10,
-                                            AtWA = original_AtWA,
-                                            AtWb = original_AtWb)
-
-cuong_reg_β = lb.β[:]
-
-save("beta_sets.jld2", Dict("default_learn_β" => default_learn_β,
-                            "vanilla_ooc_β"   => vanilla_ooc_β,
-                            "default_reg_β"   => default_reg_β,
-                            "cuong_reg_β"     => cuong_reg_β))
+#original_AtWA, original_AtWb  = PotentialLearning.ooc_learn!(lb, ds_train; ws=ws, symmetrize=false, λ=nothing)
+#
+#vanilla_ooc_β = lb.β[:]
+#
+#_AtWA, _AtWb = PotentialLearning.ooc_learn!(lb, ds_train; 
+#                                            ws=ws, 
+#                                            reg_style=:default, 
+#                                            symmetrize=false, 
+#                                            λ=0.01,
+#                                            AtWA = original_AtWA,
+#                                            AtWb = original_AtWb)
+#
+#default_reg_β = lb.β[:]
+#
+#_AtWA, _AtWb = PotentialLearning.ooc_learn!(lb, ds_train; 
+#                                            ws=ws, 
+#                                            reg_style=:scale_thresh, 
+#                                            symmetrize=true, 
+#                                            λ=1e-10,
+#                                            AtWA = original_AtWA,
+#                                            AtWb = original_AtWb)
+#
+#cuong_reg_β = lb.β[:]
+#
+#save("beta_sets.jld2", Dict("default_learn_β" => default_learn_β,
+#                            "vanilla_ooc_β"   => vanilla_ooc_β,
+#                            "default_reg_β"   => default_reg_β,
+#                            "cuong_reg_β"     => cuong_reg_β))

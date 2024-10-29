@@ -1,0 +1,5 @@
+[deps]
+AtomsBase = "a963bdd2-2df7-4f54-a1ee-49d51e6be12a"
+DFTK = "acf6eb54-70d9-11e9-0013-234b7a5f5337"
+Molly = "aa0f7f06-fcc0-5ec4-a7f3-a573f33f9c4c"
+Pluto = "c3e4b0f8-55cb-11ea-2926-15256bba5781"

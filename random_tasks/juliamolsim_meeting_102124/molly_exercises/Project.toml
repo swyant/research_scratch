@@ -1,0 +1,9 @@
+[deps]
+Bio3DView = "99c8bb3a-9d13-5280-9740-b4880ed9c598"
+KernelDensity = "5ab0869b-81aa-558d-bb23-cbf5423bbe9b"
+Measurements = "eff96d63-e80a-5855-80a2-b1b0885c5ab7"
+Molly = "aa0f7f06-fcc0-5ec4-a7f3-a573f33f9c4c"
+Plots = "91a5bcdd-55d7-5caf-9e0b-520d859cae80"
+StaticArrays = "90137ffa-7385-5640-81b9-e52037218182"
+Unitful = "1986cc42-f94f-5a68-af5c-568840ba703d"
+Zygote = "e88e6eb3-aa80-5325-afca-941959d7151f"

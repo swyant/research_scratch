@@ -4,6 +4,8 @@ using Unitful
 using JLD2 
 using LinearAlgebra 
 
+include("./no_pair_basis.jl") # also using ACEpotentials
+
 aspirin_xyzfile = "../../../../../../datasets/revMD17/rmd17_aspirin.xyz"
 
 train_indexfile = "../../../../../../datasets/revMD17/rmd17/splits/index_train_01.csv" 
@@ -11,71 +13,6 @@ test_indexfile  = "../../../../../../datasets/revMD17/rmd17/splits/index_test_01
 
 train_idxs = vec(Matrix(CSV.read(train_indexfile,DataFrame,header=false)))
 test_idxs  = vec(Matrix(CSV.read(test_indexfile,DataFrame,header=false)))
-
-#ace = ACE(species           = [:C,:O,:H],
-#      body_order        = 5,
-#      polynomial_degree = 9,
-#      wL                = 2.0,
-#      csp               = 1.0,
-#      r0                = 1.43,
-#      rcutoff           = 4.4 )
-
-#ace = ACE(species           = [:C,:O,:H],
-#      body_order        = 5,
-#      polynomial_degree = 8,
-#      wL                = 2.0,
-#      csp               = 1.0,
-#      r0                = 1.43,
-#      rcutoff           = 4.4 )
-
-#ace = ACE(species           = [:C,:O,:H],
-#      body_order        = 5,
-#      polynomial_degree = 7,
-#      wL                = 2.0,
-#      csp               = 1.0,
-#      r0                = 1.43,
-#      rcutoff           = 4.4 )
-
-
-#ace = ACE(species           = [:C,:O,:H],
-#      body_order        = 5,
-#      polynomial_degree = 6,
-#      wL                = 2.0,
-#      csp               = 1.0,
-#      r0                = 1.43,
-#      rcutoff           = 4.4 )
-
-#ace = ACE(species           = [:C,:O,:H],
-#      body_order        = 4,
-#      polynomial_degree = 9,
-#      wL                = 2.0,
-#      csp               = 1.0,
-#      r0                = 1.43,
-#      rcutoff           = 4.4 )
-
-#ace = ACE(species           = [:C,:O,:H],
-#      body_order        = 4,
-#      polynomial_degree = 8,
-#      wL                = 2.0,
-#      csp               = 1.0,
-#      r0                = 1.43,
-#      rcutoff           = 4.4 )
-
-#ace = ACE(species           = [:C,:O,:H],
-#      body_order        = 3,
-#      polynomial_degree = 9,
-#      wL                = 2.0,
-#      csp               = 1.0,
-#      r0                = 1.43,
-#      rcutoff           = 4.4 )
-
-#ace = ACE(species           = [:C,:O,:H],
-#      body_order        = 3,
-#      polynomial_degree = 12,
-#      wL                = 2.0,
-#      csp               = 1.0,
-#      r0                = 1.43,
-#      rcutoff           = 4.4 )
 
 
 ace = ACE(species           = [:C,:O,:H],
@@ -85,6 +22,8 @@ ace = ACE(species           = [:C,:O,:H],
       csp               = 1.0,
       r0                = 1.43,
       rcutoff           = 4.4 )
+
+@show length(ace)
 
 include("../../splinter/pl_fit/subtract_peratom_e.jl")
 
@@ -114,12 +53,11 @@ ds_test = DataSet(data_test .+ e_descr_test .+ f_descr_test)
 e_test = get_all_energies(ds_test)
 f_test = get_all_forces(ds_test)
 
-@show length(ace)
 
-ws, int = [30.0, 1.0], false
+#ws, int = [30.0, 1.0], false
+ws, int = [1.0, 1.0], false
 lp = PotentialLearning.LinearProblem(ds_train)
-learn!(lp,ws,int; λ=0.01)
-lb.β .= lp.β
+
 
 #A, W, b = PotentialLearning.assemble_matrices(lp,ws)
 #learn!(lp,ws,int)

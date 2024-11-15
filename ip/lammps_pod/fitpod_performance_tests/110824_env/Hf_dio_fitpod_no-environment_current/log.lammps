@@ -1,0 +1,195 @@
+LAMMPS (29 Aug 2024)
+fitpod Hf_param.pod data.pod
+**************** Begin of POD Potentials ****************
+species: Hf 
+periodic boundary conditions: 1 1 1
+number of environment clusters: 1
+number of principal compoments: 1
+inner cut-off radius: 1
+outer cut-off radius: 5
+bessel polynomial degree: 4
+inverse polynomial degree: 10
+one-body potential: 1
+two-body radial basis functions: 8
+three-body radial basis functions: 8
+three-body angular degree: 6
+four-body radial basis functions: 7
+four-body angular degree: 5
+five-body radial basis functions: 0
+five-body angular degree: 0
+six-body radial basis functions: 0
+six-body angular degree: 0
+seven-body radial basis functions: 0
+seven-body angular degree: 0
+number of local descriptors per element for one-body potential: 1
+number of local descriptors per element for two-body potential: 8
+number of local descriptors per element for three-body potential: 56
+number of local descriptors per element for four-body potential: 112
+number of local descriptors per element for five-body potential: 0
+number of local descriptors per element for six-body potential: 0
+number of local descriptors per element for seven-body potential: 0
+number of local descriptors per element for all potentials: 177
+number of global descriptors: 177
+**************** End of POD Potentials ****************
+
+**************** Begin of Data File ****************
+file format: extxyz
+file extension: xyz
+path to training data set: train
+path to test data set: train
+path to environment configuration set: 
+basename for output files: Hf
+training fraction: 1
+test fraction: 0
+randomize training data set: 0
+randomize test data set: 0
+error analysis for training data set: 1
+error analysis for test data set: 0
+energy/force calculation for training data set: 0
+energy/force calculation for test data set: 0
+fitting weight for energy: 1000
+fitting weight for force: 2
+fitting weight for stress: 0
+save pod descriptors: 0
+compute pod descriptors: 0
+**************** End of Data File ****************
+**************** Begin of Training Data Set ****************
+------------------------------------------------------------------------------------------
+                  data file                   | number of configurations | number of atoms
+------------------------------------------------------------------------------------------
+ Hf128_MC_rattled_mp100_form_sorted.xyz       |               499        |       63872
+ Hf128_MC_rattled_random_form_sorted.xyz      |               210        |       26880
+ Hf_MC_rattled_mp1009460_form_sorted.xyz      |               199        |       26865
+ Hf_MC_rattled_mp100_form_sorted.xyz          |               200        |       25600
+ Hf_MC_rattled_mp103_form_sorted.xyz          |               200        |       25600
+ Hf_bcc_MC_phonons_form_sorted.xyz            |               199        |       10746
+ Hf_hcp_MC_phonons_form_sorted.xyz            |               201        |       10854
+ Hf_mp1009460_EOS_convex_hull_form_sorted.xyz |              1251        |        3753
+ Hf_mp100_EOS_form_sorted.xyz                 |               300        |         600
+ Hf_mp103_EOS_convex_hull_form_sorted.xyz     |              1201        |        2402
+------------------------------------------------------------------------------------------
+number of files: 10
+number of configurations in all files: 4460
+number of atoms in all files: 197172
+minimum number of atoms: 2
+maximum number of atoms: 135
+**************** End of Training Data Set ****************
+**************** Begin of Memory Allocation ****************
+maximum number of atoms in periodic domain: 135
+maximum number of atoms in extended domain: 3645
+maximum number of neighbors in extended domain: 492075
+size of double memory: 2469150
+size of descriptor matrix: 177 x 177
+**************** End of Memory Allocation ****************
+**************** Begin of Least-Squares Fitting ****************
+Configuration: # 1
+Configuration: # 101
+Configuration: # 201
+Configuration: # 301
+Configuration: # 401
+Configuration: # 501
+Configuration: # 601
+Configuration: # 701
+Configuration: # 801
+Configuration: # 901
+Configuration: # 1001
+Configuration: # 1101
+Configuration: # 1201
+Configuration: # 1301
+Configuration: # 1401
+Configuration: # 1501
+Configuration: # 1601
+Configuration: # 1701
+Configuration: # 1801
+Configuration: # 1901
+Configuration: # 2001
+Configuration: # 2101
+Configuration: # 2201
+Configuration: # 2301
+Configuration: # 2401
+Configuration: # 2501
+Configuration: # 2601
+Configuration: # 2701
+Configuration: # 2801
+Configuration: # 2901
+Configuration: # 3001
+Configuration: # 3101
+Configuration: # 3201
+Configuration: # 3301
+Configuration: # 3401
+Configuration: # 3501
+Configuration: # 3601
+Configuration: # 3701
+Configuration: # 3801
+Configuration: # 3901
+Configuration: # 4001
+Configuration: # 4101
+Configuration: # 4201
+Configuration: # 4301
+Configuration: # 4401
+**************** Begin of Error Calculation ****************
+Configuration: # 1
+Configuration: # 101
+Configuration: # 201
+Configuration: # 301
+Configuration: # 401
+Configuration: # 501
+Configuration: # 601
+Configuration: # 701
+Configuration: # 801
+Configuration: # 901
+Configuration: # 1001
+Configuration: # 1101
+Configuration: # 1201
+Configuration: # 1301
+Configuration: # 1401
+Configuration: # 1501
+Configuration: # 1601
+Configuration: # 1701
+Configuration: # 1801
+Configuration: # 1901
+Configuration: # 2001
+Configuration: # 2101
+Configuration: # 2201
+Configuration: # 2301
+Configuration: # 2401
+Configuration: # 2501
+Configuration: # 2601
+Configuration: # 2701
+Configuration: # 2801
+Configuration: # 2901
+Configuration: # 3001
+Configuration: # 3101
+Configuration: # 3201
+Configuration: # 3301
+Configuration: # 3401
+Configuration: # 3501
+Configuration: # 3601
+Configuration: # 3701
+Configuration: # 3801
+Configuration: # 3901
+Configuration: # 4001
+Configuration: # 4101
+Configuration: # 4201
+Configuration: # 4301
+Configuration: # 4401
+**************** End of Error Calculation ****************
+**************** Begin of Error Analysis for the Training Data Set ****************
+------------------------------------------------------------------------------------------------------------------------------
+                      File                      | # configs |  # atoms  | MAE energy  | RMSE energy | MAE force  | RMSE force
+------------------------------------------------------------------------------------------------------------------------------
+Hf128_MC_rattled_mp100_form_sorted.xyz                499       63872     0.000629      0.000937      0.074286      0.100304  
+Hf128_MC_rattled_random_form_sorted.xyz               210       26880     0.005840      0.007437      0.264068      0.351955  
+Hf_MC_rattled_mp1009460_form_sorted.xyz               199       26865     0.002751      0.003567      0.200284      0.263758  
+Hf_MC_rattled_mp100_form_sorted.xyz                   200       25600     0.002382      0.003277      0.128588      0.172089  
+Hf_MC_rattled_mp103_form_sorted.xyz                   200       25600     0.002341      0.002960      0.112545      0.149987  
+Hf_bcc_MC_phonons_form_sorted.xyz                     199       10746     0.000049      0.000062      0.007448      0.009374  
+Hf_hcp_MC_phonons_form_sorted.xyz                     201       10854     0.000081      0.000099      0.011398      0.015049  
+Hf_mp1009460_EOS_convex_hull_form_sorted.xyz         1251        3753     0.000875      0.001180      0.000000      0.000000  
+Hf_mp100_EOS_form_sorted.xyz                          300         600     0.000529      0.000643      0.000000      0.000000  
+Hf_mp103_EOS_convex_hull_form_sorted.xyz             1201        2402     0.000498      0.000632      0.000000      0.000000  
+------------------------------------------------------------------------------------------------------------------------------
+All files                                            4460      197172     0.001101      0.002161      0.119694      0.190809  
+------------------------------------------------------------------------------------------------------------------------------
+**************** End of Error Analysis for the Training Data Set ****************
+Total wall time: 0:01:41

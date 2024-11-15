@@ -1,0 +1,114 @@
+LAMMPS (29 Aug 2024)
+# NVT run
+
+variable Tseed    equal  12280329
+#variable Tseed    equal  92353424
+#variable Tseed    equal  13234532
+#variable Tseed    equal  98639823
+#variable Tseed    equal  45582371
+
+units          metal
+boundary       p p p
+atom_style     atomic
+
+read_data      ../../files/dummy_Hf_DATA
+Reading data file ...
+  triclinic box = (0 0 0) to (5.1364755 5.1934133 5.2461598) with tilt (0 -0.88344297 0)
+  1 by 1 by 1 MPI processor grid
+  reading atoms ...
+  4 atoms
+  read_data CPU = 0.003 seconds
+
+neighbor       0.5 bin
+neigh_modify   every 1 delay 0 check yes
+
+pair_style     pod
+pair_coeff     * * ../../files/Hf_param.pod ../../files/Hf_coefficients.pod Hf
+**************** Begin of POD Potentials ****************
+species: Hf 
+periodic boundary conditions: 1 1 1
+number of environment clusters: 1
+number of principal compoments: 1
+inner cut-off radius: 1
+outer cut-off radius: 5
+bessel polynomial degree: 4
+inverse polynomial degree: 10
+one-body potential: 1
+two-body radial basis functions: 8
+three-body radial basis functions: 8
+three-body angular degree: 6
+four-body radial basis functions: 7
+four-body angular degree: 5
+five-body radial basis functions: 0
+five-body angular degree: 0
+six-body radial basis functions: 0
+six-body angular degree: 0
+seven-body radial basis functions: 0
+seven-body angular degree: 0
+number of local descriptors per element for one-body potential: 1
+number of local descriptors per element for two-body potential: 8
+number of local descriptors per element for three-body potential: 56
+number of local descriptors per element for four-body potential: 112
+number of local descriptors per element for five-body potential: 0
+number of local descriptors per element for six-body potential: 0
+number of local descriptors per element for seven-body potential: 0
+number of local descriptors per element for all potentials: 177
+number of global descriptors: 177
+**************** End of POD Potentials ****************
+
+**************** Begin of Model Coefficients ****************
+total number of coefficients for POD potential: 177
+total number of elements for PCA projection matrix: 0
+total number of elements for PCA centroids: 0
+**************** End of Model Coefficients ****************
+
+
+variable T        equal  500
+variable Tdamp    equal  0.1
+#variable dumpf    equal  50
+
+velocity     all create $T ${Tseed} mom yes rot yes dist gaussian
+velocity     all create 500 ${Tseed} mom yes rot yes dist gaussian
+velocity     all create 500 12280329 mom yes rot yes dist gaussian
+
+compute dd all podd/atom ../../files/Hf_param.pod ../../files/Hf_coefficients.pod Hf
+**************** Begin of POD Potentials ****************
+species: Hf 
+periodic boundary conditions: 1 1 1
+number of environment clusters: 1
+number of principal compoments: 1
+inner cut-off radius: 1
+outer cut-off radius: 5
+bessel polynomial degree: 4
+inverse polynomial degree: 10
+one-body potential: 1
+two-body radial basis functions: 8
+three-body radial basis functions: 8
+three-body angular degree: 6
+four-body radial basis functions: 7
+four-body angular degree: 5
+five-body radial basis functions: 0
+five-body angular degree: 0
+six-body radial basis functions: 0
+six-body angular degree: 0
+seven-body radial basis functions: 0
+seven-body angular degree: 0
+number of local descriptors per element for one-body potential: 1
+number of local descriptors per element for two-body potential: 8
+number of local descriptors per element for three-body potential: 56
+number of local descriptors per element for four-body potential: 112
+number of local descriptors per element for five-body potential: 0
+number of local descriptors per element for six-body potential: 0
+number of local descriptors per element for seven-body potential: 0
+number of local descriptors per element for all potentials: 177
+number of global descriptors: 177
+**************** End of POD Potentials ****************
+
+**************** Begin of Model Coefficients ****************
+total number of coefficients for POD potential: 177
+total number of elements for PCA projection matrix: 0
+total number of elements for PCA centroids: 0
+**************** End of Model Coefficients ****************
+
+ERROR: Per-atom data too large (src/ML-POD/compute_podd_atom.cpp:62)
+Last command: compute dd all podd/atom ../../files/Hf_param.pod ../../files/Hf_coefficients.pod Hf

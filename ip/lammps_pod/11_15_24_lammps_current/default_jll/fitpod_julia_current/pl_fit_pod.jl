@@ -1,3 +1,4 @@
+using AppleAccelerate
 using PotentialLearning, InteratomicPotentials 
 using Unitful
 using DelimitedFiles

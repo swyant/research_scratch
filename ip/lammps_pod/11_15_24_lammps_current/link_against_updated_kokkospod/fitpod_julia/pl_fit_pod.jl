@@ -2,7 +2,7 @@
 using PotentialLearning, InteratomicPotentials
 using Unitful
 using DelimitedFiles
-using FileIO
+#using FileIO
 using LinearAlgebra: norm
 
 #cd("./fitpod_julia_current")

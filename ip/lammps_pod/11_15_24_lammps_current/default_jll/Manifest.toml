@@ -2,7 +2,7 @@
 
 julia_version = "1.10.5"
 manifest_format = "2.0"
-project_hash = "15ddafd6a097cea8896f52b5d37bb44f244b58aa"
+project_hash = "0d673939d98b1a7e0af77fd6a1c4267b92bc0ce9"
 
 [[deps.ACE1]]
 deps = ["ACEbase", "BenchmarkTools", "Combinatorics", "ForwardDiff", "InteractiveUtils", "Interpolations", "JuLIP", "LinearAlgebra", "NeighbourLists", "Parameters", "Pkg", "Printf", "QuadGK", "Random", "Reexport", "Roots", "SparseArrays", "StaticArrays", "Test"]
@@ -276,6 +276,12 @@ git-tree-sha1 = "9ebb045901e9bbf58767a9f34ff89831ed711aae"
 uuid = "aaaa29a8-35af-508c-8bc3-b662a17a0fe5"
 version = "0.15.7"
 
+[[deps.CodeTracking]]
+deps = ["InteractiveUtils", "UUIDs"]
+git-tree-sha1 = "7eee164f122511d3e4e1ebadb7956939ea7e1c77"
+uuid = "da1fd8a2-8d9e-5ec2-8556-3022fb5608a2"
+version = "1.3.6"
+
 [[deps.CodecInflate64]]
 deps = ["TranscodingStreams"]
 git-tree-sha1 = "d981a6e8656b1e363a2731716f46851a2257deb7"
@@ -413,6 +419,12 @@ version = "1.0.0"
 [[deps.Dates]]
 deps = ["Printf"]
 uuid = "ade2ca70-3891-5945-98fb-dc099432e06a"
+
+[[deps.Debugger]]
+deps = ["CodeTracking", "Crayons", "Highlights", "InteractiveUtils", "JuliaInterpreter", "Markdown", "REPL"]
+git-tree-sha1 = "35e6b5a354449f0fbd504d7f9248870b060f177e"
+uuid = "31a5f54b-26ea-5ae9-a837-f05ce5417438"
+version = "0.7.10"
 
 [[deps.DefineSingletons]]
 git-tree-sha1 = "0fba8b706d0178b4dc7fd44a96a92382c9065c2c"
@@ -694,6 +706,12 @@ git-tree-sha1 = "1336e07ba2eb75614c99496501a8f4b233e9fafe"
 uuid = "cd3eb016-35fb-5094-929b-558a96fad6f3"
 version = "1.10.10"
 
+[[deps.Highlights]]
+deps = ["DocStringExtensions", "InteractiveUtils", "REPL"]
+git-tree-sha1 = "9e13b8d8b1367d9692a90ea4711b4278e4755c32"
+uuid = "eafb193a-b7ab-5a9e-9068-77385905fa72"
+version = "0.5.3"
+
 [[deps.HostCPUFeatures]]
 deps = ["BitTwiddlingConvenienceFunctions", "IfElse", "Libdl", "Static"]
 git-tree-sha1 = "8e070b599339d622e9a081d17230d74a5c473293"
@@ -763,7 +781,7 @@ deps = ["Markdown"]
 uuid = "b77e0a4c-d291-57a0-90e8-8db25a27a240"
 
 [[deps.InteratomicPotentials]]
-deps = ["ACE1", "AtomsBase", "DelimitedFiles", "Distances", "Flux", "JuLIP", "LAMMPS", "LinearAlgebra", "NearestNeighbors", "Printf", "StaticArrays", "Unitful", "UnitfulAtomic", "Zygote"]
+deps = ["ACE1", "AtomsBase", "DelimitedFiles", "Distances", "Flux", "JuLIP", "LAMMPS", "LinearAlgebra", "NearestNeighbors", "OpenBLAS32_jll", "Printf", "StaticArrays", "Unitful", "UnitfulAtomic", "Zygote"]
 path = "/Users/swyant/cesmix/dev/InteratomicPotentials.jl/"
 uuid = "a9efe35a-c65d-452d-b8a8-82646cd5cb04"
 version = "0.2.9"
@@ -825,6 +843,12 @@ deps = ["ACEbase", "AlgebraicMultigrid", "AtomsBase", "Calculus", "CommonSubexpr
 git-tree-sha1 = "00cae0078dfe015bb02213f92b1a02eef5a07126"
 uuid = "945c410c-986d-556a-acb1-167a618e0462"
 version = "0.14.8"
+
+[[deps.JuliaInterpreter]]
+deps = ["CodeTracking", "InteractiveUtils", "Random", "UUIDs"]
+git-tree-sha1 = "10da5154188682e5c0726823c2b5125957ec3778"
+uuid = "aa1ae85d-cabe-5617-a682-6adf51b2e16a"
+version = "0.9.38"
 
 [[deps.JuliaVariables]]
 deps = ["MLStyle", "NameResolution"]
@@ -1294,6 +1318,12 @@ deps = ["Adapt", "ChainRulesCore", "Compat", "GPUArraysCore", "LinearAlgebra", "
 git-tree-sha1 = "c8c7f6bfabe581dc40b580313a75f1ecce087e27"
 uuid = "0b1bfda6-eb8a-41d2-88d8-f5af5cad476f"
 version = "0.2.6"
+
+[[deps.OpenBLAS32_jll]]
+deps = ["Artifacts", "CompilerSupportLibraries_jll", "JLLWrappers", "Libdl"]
+git-tree-sha1 = "6065c4cff8fee6c6770b277af45d5082baacdba1"
+uuid = "656ef2d0-ae68-5445-9ca0-591084a874a2"
+version = "0.3.24+0"
 
 [[deps.OpenBLAS_jll]]
 deps = ["Artifacts", "CompilerSupportLibraries_jll", "Libdl"]

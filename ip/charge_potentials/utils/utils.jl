@@ -1,6 +1,7 @@
 import AtomsBase # For now, 0.3.5, because it's what PL.jl is based off of. 
-using  Unitful, UnitfulAtomic
+using Unitful, UnitfulAtomic
 using StaticArrays
+using InteratomicPotentials
 
 # right now, ignoring PL.jl framework, so no Configuration, no DataSet, no Energy, no Forces
 # not well-sanitized
@@ -26,9 +27,9 @@ function read_behler_input(fname::String;
 
             elseif tokens[1] == "end"
                 if length(curr_box) == 0
-                    curr_box = SVector{3}(SVector{3}([50.0,0.0,0.0]*energy_units),
-                                          SVector{3}([0.0,50.0,0.0]*energy_units),
-                                          SVector{3}([0.0,0.0,50.0]*energy_units))
+                    curr_box = SVector{3}(SVector{3}([50.0,0.0,0.0]*length_units),
+                                          SVector{3}([0.0,50.0,0.0]*length_units),
+                                          SVector{3}([0.0,0.0,50.0]*length_units))
                 elseif length(curr_box) == 3
                     curr_box = SVector{3}(curr_box)
                 else
@@ -80,3 +81,50 @@ function read_behler_input(fname::String;
 end
 
 
+function get_atomic_charges(sys::AtomsBase.FlexibleSystem)
+    atomic_charges = [particle[:atomic_charge] for particle in sys.particles]
+    atomic_charges
+end
+
+function get_total_charge(sys::AtomsBase.FlexibleSystem)
+    total_charge = sys[:total_charge]
+    total_charge   
+end
+
+function get_energy(sys::AtomsBase.FlexibleSystem)
+    total_energy = sys[:total_energy]
+    total_energy
+end
+
+function get_forces(sys::AtomsBase.FlexibleSystem)
+     forces = [particle[:force] for particle in sys.particles]
+     forces  
+end
+
+function get_all_atomic_charges(configs::Vector{<:AtomsBase.FlexibleSystem}; strip_units=true)
+    if strip_units
+        all_atomic_charges = [ustrip.(get_atomic_charges(config)) for config in configs]
+    else
+        all_atomic_charges = [get_atomic_charges(config) for config in configs]
+    end
+
+    return reduce(vcat,all_atomic_charges)
+end
+
+function get_all_atomic_charges(configs::Vector{<:AtomsBase.FlexibleSystem}, lbp::LBasisPotential; strip_units=true)
+    if strip_units
+        all_atomic_charges = [atomic_charges(config,lbp; with_units=false) for config in configs]
+    else
+        all_atomic_charges = [atomic_charges(config,lbp; with_units=true) for config in configs]
+    end
+
+    return reduce(vcat,all_atomic_charges)
+end
+
+function calc_mae_rmse_mape(x_pred, x)
+    x_mae = sum(abs.(x_pred .- x)) / length(x)
+    x_rmse = sqrt(sum((x_pred .- x) .^ 2) / length(x))
+    x_mape = sum(abs.( (x_pred .- x)./x )) / length(x)
+
+    x_mae, x_rmse, x_mape
+end

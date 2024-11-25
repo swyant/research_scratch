@@ -1,5 +1,12 @@
 [deps]
+AppleAccelerate = "13e28ba4-7ad8-5781-acae-3021b1ed3924"
 AtomsBase = "a963bdd2-2df7-4f54-a1ee-49d51e6be12a"
+InteratomicPotentials = "a9efe35a-c65d-452d-b8a8-82646cd5cb04"
+LAMMPS = "ee2e13b9-eee9-4449-aafa-cfa6a2dbe14d"
+ProgressBars = "49802e3a-d2f1-5c88-81d8-b72133a6f568"
 StaticArrays = "90137ffa-7385-5640-81b9-e52037218182"
 Unitful = "1986cc42-f94f-5a68-af5c-568840ba703d"
 UnitfulAtomic = "a7773ee8-282e-5fa2-be4e-bd808c38a91a"
+
+[extras]
+LAMMPS_jll = "5b3ab26d-9607-527c-88ea-8fe5ba57cafe"

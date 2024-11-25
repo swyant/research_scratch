@@ -781,10 +781,10 @@ deps = ["Markdown"]
 uuid = "b77e0a4c-d291-57a0-90e8-8db25a27a240"
 
 [[deps.InteratomicPotentials]]
-deps = ["ACE1", "AtomsBase", "DelimitedFiles", "Distances", "Flux", "JuLIP", "LAMMPS", "LinearAlgebra", "NearestNeighbors", "OpenBLAS32_jll", "Printf", "StaticArrays", "Unitful", "UnitfulAtomic", "Zygote"]
+deps = ["ACE1", "AtomsBase", "DelimitedFiles", "Distances", "Flux", "JuLIP", "LAMMPS", "LinearAlgebra", "NearestNeighbors", "Printf", "StaticArrays", "Unitful", "UnitfulAtomic", "Zygote"]
 path = "/Users/swyant/cesmix/dev/InteratomicPotentials.jl/"
 uuid = "a9efe35a-c65d-452d-b8a8-82646cd5cb04"
-version = "0.2.9"
+version = "0.3.1"
 
 [[deps.Interpolations]]
 deps = ["Adapt", "AxisAlgorithms", "ChainRulesCore", "LinearAlgebra", "OffsetArrays", "Random", "Ratios", "Requires", "SharedArrays", "SparseArrays", "StaticArrays", "WoodburyMatrices"]
@@ -891,10 +891,10 @@ uuid = "ba0b0d4f-ebba-5204-a429-3ac8c609bfb7"
 version = "0.9.8"
 
 [[deps.LAMMPS]]
-deps = ["CEnum", "LAMMPS_jll", "Libdl", "MPI", "Preferences"]
+deps = ["CEnum", "LAMMPS_jll", "Libdl", "LinearAlgebra", "MPI", "OpenBLAS32_jll", "Preferences"]
 path = "/Users/swyant/cesmix/dev/LAMMPS.jl/"
 uuid = "ee2e13b9-eee9-4449-aafa-cfa6a2dbe14d"
-version = "0.7.2"
+version = "0.8.0"
 
 [[deps.LAMMPS_jll]]
 deps = ["Artifacts", "CUDA_Driver_jll", "CUDA_Runtime_jll", "CompilerSupportLibraries_jll", "FFTW_jll", "JLLWrappers", "LLVMOpenMP_jll", "LazyArtifacts", "Libdl", "MPICH_jll", "MPIPreferences", "MPItrampoline_jll", "MicrosoftMPI_jll", "OpenMPI_jll", "TOML", "libblastrampoline_jll"]

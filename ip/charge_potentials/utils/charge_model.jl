@@ -32,7 +32,11 @@ function learn_charge_model(configs::Vector{<:AtomsBase.FlexibleSystem}, basis::
     end
 
     for config in iter
+        num_atoms = length(config)::Int64
+        total_charge = ustrip(get_total_charge(config))
+
         b = atomic_charges = ustrip.(get_atomic_charges(config))
+        b .-= total_charge/num_atoms
 
         A = centered_descrs = stack(compute_centered_descriptors(config,basis))'
 
@@ -49,11 +53,14 @@ function learn_charge_model(configs::Vector{<:AtomsBase.FlexibleSystem}, basis::
     β
 end
 
-function atomic_charges(A::AtomsBase.AbstractSystem, lbp::LBasisPotential, Qtot=0.0; with_units=false)
+function atomic_charges(A::AtomsBase.AbstractSystem, lbp::LBasisPotential, Qtot::Float64=0.0; with_units=false)
     cld = compute_centered_descriptors(A,lbp.basis)    
     cld = stack(cld)'
 
     atomic_charges = cld*lbp.β
+
+    num_atoms = length(A)::Int64
+    atomic_charges .+= Qtot/num_atoms
 
     if with_units
         return atomic_charges * u"e_au"

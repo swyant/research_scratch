@@ -113,9 +113,9 @@ end
 
 function get_all_atomic_charges(configs::Vector{<:AtomsBase.FlexibleSystem}, lbp::LBasisPotential; strip_units=true)
     if strip_units
-        all_atomic_charges = [atomic_charges(config,lbp; with_units=false) for config in configs]
+        all_atomic_charges = [atomic_charges(config,lbp,ustrip(get_total_charge(config)); with_units=false) for config in configs]
     else
-        all_atomic_charges = [atomic_charges(config,lbp; with_units=true) for config in configs]
+        all_atomic_charges = [atomic_charges(config,lbp,ustrip(get_total_charge(config)); with_units=true) for config in configs]
     end
 
     return reduce(vcat,all_atomic_charges)

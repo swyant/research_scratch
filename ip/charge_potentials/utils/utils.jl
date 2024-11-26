@@ -1,7 +1,8 @@
-import AtomsBase # For now, 0.3.5, because it's what PL.jl is based off of. 
+using AtomsBase # For now, 0.3.5, because it's what PL.jl is based off of. 
 using Unitful, UnitfulAtomic
 using StaticArrays
 using InteratomicPotentials
+using Printf
 
 # right now, ignoring PL.jl framework, so no Configuration, no DataSet, no Energy, no Forces
 # not well-sanitized
@@ -127,4 +128,40 @@ function calc_mae_rmse_mape(x_pred, x)
     x_mape = sum(abs.( (x_pred .- x)./x )) / length(x)
 
     x_mae, x_rmse, x_mape
+end
+
+
+function write_extxyz(out_fname::String, configs::Vector{<:AtomsBase.FlexibleSystem})
+    open(out_fname, "w") do outf
+        for config in configs 
+            num_atoms = length(config)
+            # Write number of atoms
+            println(outf, num_atoms)
+
+            # Construct lattice string
+            latvecs = ustrip.(bounding_box(config)) 
+            lattice_str = @sprintf("Lattice=\"%.16f %.16f %.16f %.16f %.16f %.16f %.16f %.16f %.16f\" ",
+                                   latvecs[1]..., latvecs[2]..., latvecs[3]...)
+
+            # Property string
+            property_str = "Properties=species:S:1:pos:R:3:forces:R:3:atomic_charge:R:1 "
+
+            # PBC and energy string
+            pbc_energy_str = @sprintf("pbc=\"T T T\" energy=%.16f charge=%.16f", ustrip(get_energy(config)), ustrip(get_total_charge(config)))
+
+            ## Combine info line
+            #info_line = lattice_str * property_str * stress_str * pbc_energy_str
+            info_line = lattice_str * property_str * pbc_energy_str
+            println(outf, info_line)
+
+            # Write atom data
+            for atom in config.particles 
+                @printf(outf, "%s %21.16f %21.16f %21.16f %21.16f %21.16f %21.16f %21.16f \n",
+                        string(atomic_symbol(atom)),
+                        ustrip.(position(atom))...,
+                        ustrip.(atom.data[:force])...,
+                        ustrip(atom.data[:atomic_charge]))
+            end
+        end
+    end
 end

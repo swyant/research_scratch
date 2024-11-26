@@ -35,9 +35,8 @@ config_dict = Dict("all_data" => configs,
 
 for key in keys(config_dict)
     config_set = config_dict[key]
-    #β = learn_charge_model(config_set, lmp_pod; λ=0.001)
-    
-    β = learn_charge_model(config_set, lmp_pod; λ=1e-10, reg_style=:scale)
+    β = learn_charge_model(config_set, lmp_pod; λ=0.01)    
+    #β = learn_charge_model(config_set, lmp_pod; λ=1e-10, reg_style=:scale)
     lbp = LBasisPotential(β,[0.0,],lmp_pod)
     
     all_ref_charges = get_all_atomic_charges(config_set)

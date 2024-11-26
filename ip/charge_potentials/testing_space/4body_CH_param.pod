@@ -9,6 +9,7 @@ rin 1.0
 
 # outer cut-off radius
 rcut 5.5
+#rcut 7.5
 
 # polynomial degrees for radial basis functions
 bessel_polynomial_degree 4

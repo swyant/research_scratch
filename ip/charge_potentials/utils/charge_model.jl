@@ -18,6 +18,7 @@ end
 # No weights
 function learn_charge_model(configs::Vector{<:AtomsBase.FlexibleSystem}, basis::BasisSystem; 
                             λ=0.01,
+                            reg_style::Symbol=:default,
                             pbar=true)
 
     basis_size = length(basis)
@@ -44,8 +45,17 @@ function learn_charge_model(configs::Vector{<:AtomsBase.FlexibleSystem}, basis::
         Atb .+= A'*b
     end 
 
-    reg_matrix = λ*Diagonal(ones(size(AtA)[1]))
-    AtA += reg_matrix
+    if reg_style == :default
+        reg_matrix = λ*Diagonal(ones(size(AtA)[1]))
+        AtA += reg_matrix
+    elseif reg_style == :scale
+        for i in 1:size(AtA,1)
+           reg_elem = AtA[i,i]*(1+λ)
+           reg_elem = max(λ,reg_elem)
+           AtA[i,i] = reg_elem        
+        end
+    end
+
     println("condition number of AtA: $(cond(AtA))")
 
     β = AtA \ Atb

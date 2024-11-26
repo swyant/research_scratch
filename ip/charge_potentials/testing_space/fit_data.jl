@@ -1,6 +1,7 @@
 
 include("../utils/utils.jl")
-include("../utils/charge_model.jl")
+#include("../utils/charge_model.jl")
+include("../utils/alt_charge_model.jl")
 
 param_file = "./4body_CH_param.pod"
 data_fname = "../behler_charge_datasets/Carbon_chain/input.data"
@@ -24,8 +25,8 @@ configs = read_behler_input(data_fname)
 #            if isapprox(0.0, ustrip(config[:total_charge]); atol=1e-8)]
 
 
-configs = [config for config in configs 
-            if isapprox(1.0, ustrip(config[:total_charge]); atol=1e-8)]
+#configs = [config for config in configs 
+#            if isapprox(1.0, ustrip(config[:total_charge]); atol=1e-8)]
 
 β = learn_charge_model(configs, lmp_pod)
 lbp = LBasisPotential(β,[0.0,],lmp_pod)

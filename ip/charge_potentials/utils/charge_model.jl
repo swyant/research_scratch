@@ -3,11 +3,22 @@ using InteratomicPotentials
 using ProgressBars
 using LinearAlgebra: Diagonal, cond
 
-# -> Vector (size N) of Vectors (size K)
-function compute_centered_descriptors(A::AtomsBase.AbstractSystem, basis::BasisSystem)
-    num_atoms = length(A)::Int64
+struct ChargedBasisPotential
+    basis::InteratomicPotentials.BasisSystem
+    α::Vector{Float64} #for pure basis 
+    γ::Vector{Float64} #for basis*charge portion
+    β::Vector{Float64} #for charge model
+end
 
-    ld = compute_local_descriptors(A,basis)
+
+# -> Vector (size N) of Vectors (size K)
+function compute_centered_descriptors(A::AtomsBase.AbstractSystem, basis::BasisSystem; ld=nothing)
+    
+    num_atoms = length(A)::Int64
+    
+    if isnothing(ld)
+        ld = compute_local_descriptors(A,basis)
+    end
     mean_ld = sum(ld)/num_atoms
     centered_ld = ld .- (mean_ld,)
 
@@ -63,14 +74,19 @@ function learn_charge_model(configs::Vector{<:AtomsBase.FlexibleSystem}, basis::
     β
 end
 
-function atomic_charges(A::AtomsBase.AbstractSystem, lbp::LBasisPotential, Qtot::Float64=0.0; with_units=false)
+function atomic_charges(A::AtomsBase.AbstractSystem, lbp::Union{ChargedBasisPotential,LBasisPotential}, Qtot::Float64=0.0; with_units=false)
     cld = compute_centered_descriptors(A,lbp.basis)    
+    num_atoms = length(A)::Int64
+    per_atom_Qtot = Qtot/num_atoms
+    return atomic_charges(cld, lbp.β, per_atom_Qtot; with_units=with_units)
+end
+
+function atomic_charges(cld, β, per_atom_Qtot::Float64=0.0; with_units=false)
     cld = stack(cld)'
 
-    atomic_charges = cld*lbp.β
+    atomic_charges = cld*β
 
-    num_atoms = length(A)::Int64
-    atomic_charges .+= Qtot/num_atoms
+    atomic_charges .+= per_atom_Qtot 
 
     if with_units
         return atomic_charges * u"e_au"
@@ -78,3 +94,175 @@ function atomic_charges(A::AtomsBase.AbstractSystem, lbp::LBasisPotential, Qtot:
         return atomic_charges
     end
 end
+
+function potential_energy1(A::AtomsBase.AbstractSystem, cbp::ChargedBasisPotential, Qtot::Float64=0.0)
+    ld  = compute_local_descriptors(A,cbp.basis)
+    cld = compute_centered_descriptors(A,cbp.basis)
+
+    per_atom_Qtot = Qtot/length(A)
+
+    qi  = atomic_charges(cld, cbp.β, per_atom_Qtot; with_units=false)
+    
+    # can't use eachindex
+    pe=0.0
+    for atm_idx in 1:length(A)
+        pe += (cbp.α' * ld[atm_idx]) + cbp.γ'*(ld[atm_idx] * qi[atm_idx])
+    end
+    return pe
+end 
+
+function potential_energy2(A::AtomsBase.AbstractSystem, cbp::ChargedBasisPotential, Qtot::Float64=0.0)
+    ld  = compute_local_descriptors(A,cbp.basis)
+    cld = compute_centered_descriptors(A,cbp.basis)
+
+    per_atom_Qtot = Qtot/length(A)
+
+    qi  = atomic_charges(cld, cbp.β, per_atom_Qtot; with_units=false)
+    
+    pe = cbp.α' * sum(ld) + cbp.γ' * sum( ld .* qi)
+    pe
+end 
+
+function potential_energy3(A::AtomsBase.AbstractSystem, cbp::ChargedBasisPotential, Qtot::Float64=0.0)
+    ld  = compute_local_descriptors(A,cbp.basis)
+    cld = compute_centered_descriptors(A,cbp.basis)
+
+    per_atom_Qtot = Qtot/length(A)
+
+    pe = cbp.α' * sum(ld)
+
+    for i in 1:length(A)
+        for k in 1:length(cbp.basis)
+            for d in 1:length(cbp.basis)
+                pe += cbp.γ[k]*cbp.β[d]*ld[i][k]*cld[i][d]
+            end
+         end
+     end
+    
+    pe += per_atom_Qtot*cbp.γ'*sum(ld)    
+    pe
+end 
+
+function potential_energy4(A::AtomsBase.AbstractSystem, cbp::ChargedBasisPotential, Qtot::Float64=0.0)
+    
+    basis_size = length(cbp.basis)
+
+    ld  = compute_local_descriptors(A,cbp.basis)
+    gd = sum(ld)
+    cld = compute_centered_descriptors(A,cbp.basis)
+
+    per_atom_Qtot = Qtot/length(A)
+
+    pe = cbp.α' * gd 
+
+    outer_ld_cld = zeros((basis_size, basis_size))
+
+    for i in 1:length(A)
+        outer_ld_cld += ld[i]*cld'[i]
+    end
+
+    pe += sum(cbp.γ*cbp.β' .* outer_ld_cld)
+   
+    pe += per_atom_Qtot*cbp.γ'*gd    
+    pe
+end 
+
+# here the parameters are explicitly passed
+function potential_energy5(A::AtomsBase.AbstractSystem, cbp::ChargedBasisPotential, ps::Vector{Float64}, Qtot::Float64=0.0)
+    basis_size = length(cbp.basis)
+    num_atoms = length(A)::Int64
+    per_atom_Qtot = Qtot/length(A)
+
+    α = ps[1:basis_size]
+    β = ps[basis_size+1:2*basis_size]
+    γ = ps[2*basis_size+1:end]
+
+    ld = compute_local_descriptors(A,cbp.basis)
+    gd = sum(ld)
+    cld = stack(compute_centered_descriptors(A,cbp.basis))'
+
+    outer_ld_cld = dropdims(sum(stack(ld[i]*cld[i,:]' for i in 1:num_atoms);dims=3),dims=3) #This should not be a one-liner
+
+    pe = α'*gd + sum(γ*β' .* outer_ld_cld) + per_atom_Qtot*γ'*gd
+    pe   
+end
+
+
+function potential_energy6(gd::Vector{Float64}, outer_ld_cld::Matrix{Float64}, cbp::ChargedBasisPotential, ps::Vector{Float64}, per_atom_Qtot::Float64=0.0)
+    α = ps[1:basis_size]
+    β = ps[basis_size+1:2*basis_size]
+    γ = ps[2*basis_size+1:end]
+
+    pe = α'*gd + sum(γ*β' .* outer_ld_cld) + per_atom_Qtot*γ'*gd
+    pe   
+end
+
+#ld is vector of vector 
+#cld is matrix. 
+#This is dumb
+function compute_outer_ld_cld(ld, cld, num_atoms)
+    basis_size = size(cld)[2]
+    outer_ld_cld = zeros((basis_size,basis_size))
+    for i in 1:num_atoms
+        outer_ld_cld += ld[i] * cld[i,:]'
+    end
+    outer_ld_cld
+end
+
+function compute_outer_ld_cld2(ld, cld, num_atoms)
+    outer_ld_cld = dropdims(sum(stack(ld[i]*cld[i,:]' for i in 1:num_atoms);dims=3),dims=3)
+    outer_ld_cld
+end
+
+#function potential_energy(A::AtomsBase.AbstractSystem, cbp::ChargedBasisPotential, Qtot::Float64=0.0; ld=nothing, cld=nothing; qis=nothing)
+#    if isnothing(ld)
+#        ld = compute_local_descriptors(A,cbp.basis)
+#    end 
+#
+#    if isnothing(cld)
+#        cld = compute_centered_descriptors(A, cbp.basis; ld=ld) 
+#    end 
+#    
+#    #if isnothing(qis)
+#    #    qis = atomic_charges(cld, cbp, Qtot) 
+#    #end
+#
+#    pe = cbp.γ*(cld .* ld)
+#    pe
+#end
+#
+##This is probably not the right set of arguments, probably should dispatch off of cbp somehow...
+#function potential_energy(ld, cld, γ)
+#     pe = γ*(cld .* ld)
+#     pe 
+#end
+#
+##qi_ref <: Vector{Vector}
+#function loss(params,configs, qi_ref, eref)
+#    #compute residiuals of charges
+#
+#    param_seglength = length(params)/2
+#
+#    β = params[1:param_seglength]
+#    γ = paramas[param_seglength+1:end]
+#    
+#    loss = 0.0
+#    for (i,config) in enumerate(configs)
+#        qtot = get_total_charge(config)
+#        ld = compute_local_descriptors(config, cbp.basis)
+#        cld = compute_centered_descriptors(config, cbp.basis; ld=ld)
+#
+#        qis_hat = atomic_charges(cld,β,qtot)
+#        loss += sum(.^(qis_hat .- qi_ref[i],2))
+#        
+#        e_hat = potential_energy(ld, cld, γ)
+#        loss += (e_hat - eref[i])^2
+#    end
+#
+#    loss
+#end
+#
+## compute local descriptors 
+#config_dict = Dict[]
+#for config 
+#res = optimize(loss, initial_guess)

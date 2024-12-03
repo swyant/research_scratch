@@ -1,7 +1,7 @@
 import AtomsBase
 using InteratomicPotentials
 using ProgressBars
-using LinearAlgebra: Diagonal, cond
+using LinearAlgebra: Diagonal, cond, norm
 
 struct ChargedBasisPotential
     basis::InteratomicPotentials.BasisSystem
@@ -197,6 +197,19 @@ function potential_energy6(gd::Vector{Float64}, outer_ld_cld::Matrix{Float64}, c
     pe   
 end
 
+function potential_energy7(gd::Vector{Float64}, 
+                           outer_ld_cld::Matrix{Float64}, 
+                           cbp::ChargedBasisPotential, 
+                           α::Vector{Float64}, 
+                           β::Vector{Float64}, 
+                           γ::Vector{Float64},
+                           per_atom_Qtot::Float64=0.0)
+
+    pe = α'*gd + sum(γ*β' .* outer_ld_cld) + per_atom_Qtot*γ'*gd
+    pe   
+end
+
+
 #ld is vector of vector 
 #cld is matrix. 
 #This is dumb
@@ -214,55 +227,75 @@ function compute_outer_ld_cld2(ld, cld, num_atoms)
     outer_ld_cld
 end
 
-#function potential_energy(A::AtomsBase.AbstractSystem, cbp::ChargedBasisPotential, Qtot::Float64=0.0; ld=nothing, cld=nothing; qis=nothing)
-#    if isnothing(ld)
-#        ld = compute_local_descriptors(A,cbp.basis)
-#    end 
-#
-#    if isnothing(cld)
-#        cld = compute_centered_descriptors(A, cbp.basis; ld=ld) 
-#    end 
-#    
-#    #if isnothing(qis)
-#    #    qis = atomic_charges(cld, cbp, Qtot) 
-#    #end
-#
-#    pe = cbp.γ*(cld .* ld)
-#    pe
-#end
-#
-##This is probably not the right set of arguments, probably should dispatch off of cbp somehow...
-#function potential_energy(ld, cld, γ)
-#     pe = γ*(cld .* ld)
-#     pe 
-#end
-#
-##qi_ref <: Vector{Vector}
-#function loss(params,configs, qi_ref, eref)
-#    #compute residiuals of charges
-#
-#    param_seglength = length(params)/2
-#
-#    β = params[1:param_seglength]
-#    γ = paramas[param_seglength+1:end]
-#    
+function prepare_train_db(configs::Vector{<:AtomsBase.FlexibleSystem}, basis::BasisSystem)
+    dataset = Dict{String,Any}[]
+    for config in configs
+        num_atoms = length(config)
+        ld = compute_local_descriptors(config,basis)
+        gd = sum(ld)
+        cld = compute_centered_descriptors(config,basis;ld=ld)
+        _cld = stack(cld)'
+        outer_ld_cld = compute_outer_ld_cld(ld,_cld,num_atoms)
+        qtot = ustrip(get_total_charge(config))
+
+        push!(dataset, Dict("config" => config,
+                            "gd"     => gd,
+                            "cld"    => cld,
+                            "outer_ld_cld" => outer_ld_cld,
+                            "qtot" => qtot,
+                            "num_atoms" => num_atoms))
+    end
+    dataset        
+end
+
+function loss(ps, ds, cbp, qi_ref, eref; we=30.0)
+    α = ps[1:basis_size]
+    β = ps[basis_size+1:2*basis_size]
+    γ = ps[2*basis_size+1:end]
+
+    loss = 0.0
+    for (i,ddict) in enumerate(ds)
+        qis_hat = atomic_charges(ddict["cld"],β,ddict["per_atom_qtot"])
+        loss += sum(.^(qis_hat .- qi_ref[i],2))
+
+        e_hat = potential_energy7(ddict["gd"], 
+                                  ddict["outer_ld_cld"],
+                                  cbp, 
+                                  α,
+                                  β,
+                                  γ,
+                                  ddict["qtot"]/ddict["num_atoms"])
+
+        loss += we/ddict["num_atoms"]*(e_hat-eref[i])^2
+    end
+    loss
+end
+
+function only_charge_loss(β, ds, qi_ref)
+    loss = 0.0
+    for (i,ddict) in enumerate(ds)
+        qis_hat = atomic_charges(ddict["cld"],β,ddict["qtot"]/ddict["num_atoms"])
+        loss += sum(.^(qis_hat .- qi_ref[i],2))
+    end
+    #loss += sqrt(0.01)*norm(β)
+    loss += 0.01*norm(β)^2
+    loss
+end
+
+#function only_charge_loss(β, ds, qi_ref)
 #    loss = 0.0
-#    for (i,config) in enumerate(configs)
-#        qtot = get_total_charge(config)
-#        ld = compute_local_descriptors(config, cbp.basis)
-#        cld = compute_centered_descriptors(config, cbp.basis; ld=ld)
-#
-#        qis_hat = atomic_charges(cld,β,qtot)
-#        loss += sum(.^(qis_hat .- qi_ref[i],2))
-#        
-#        e_hat = potential_energy(ld, cld, γ)
-#        loss += (e_hat - eref[i])^2
+#    for (i,ddict) in enumerate(ds)
+#        #qis_hat = atomic_charges(ddict["cld"],β,0.0)
+#        qis_hat = stack(ddict["cld"])'*β
+#        qi_ref_sbtrkt = qi_ref[i] .- ddict["qtot"]/ddict["num_atoms"]
+#        loss += sum(.^(qis_hat .- qi_ref_sbtrkt,2))
 #    end
-#
+#    #loss += sqrt(0.01)*norm(β)
+#    loss += 0.01*norm(β)^2
 #    loss
 #end
-#
-## compute local descriptors 
-#config_dict = Dict[]
-#for config 
-#res = optimize(loss, initial_guess)
+
+
+
+#obj_func = p -> only_charge_loss(p, ds, qi_ref)
+#optimize(obj_fun, β0, NelderMead()

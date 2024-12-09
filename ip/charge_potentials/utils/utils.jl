@@ -102,6 +102,21 @@ function get_forces(sys::AtomsBase.FlexibleSystem)
      forces  
 end
 
+function get_all_energies(configs::Vector{<:AtomsBase.FlexibleSystem}; strip_units=true)
+    if strip_units
+        all_energies = [ustrip.(get_energy(config)) for config in configs]
+    else
+        all_energies = [get_energy(config) for config in configs]
+    end
+    return all_energies
+end
+
+function get_all_energies(configs::Vector{<:AtomsBase.FlexibleSystem}, lbp::LBasisPotential)
+    all_energies = [potential_energy(config,lbp) for config in configs]
+    return all_energies
+end
+
+
 function get_all_atomic_charges(configs::Vector{<:AtomsBase.FlexibleSystem}; strip_units=true)
     if strip_units
         all_atomic_charges = [ustrip.(get_atomic_charges(config)) for config in configs]
@@ -164,4 +179,42 @@ function write_extxyz(out_fname::String, configs::Vector{<:AtomsBase.FlexibleSys
             end
         end
     end
+end
+
+function learn_only_energy(
+    configs::Vector{<:AtomsBase.FlexibleSystem},
+    basis::BasisSystem,
+    ref_energies::Vector{Float64};
+    λ::Float64 = 0.01,
+    pbar::Bool = true,
+)
+    basis_size = length(basis)
+
+    AtA = zeros(basis_size,basis_size)
+    Atb = zeros(basis_size)
+
+    if pbar
+        iter = ProgressBar(configs)
+    else
+        iter = configs 
+    end
+
+    for (i,config) in enumerate(iter)
+        ref_energy = ref_energies[i]
+
+        global_descrs = reshape(sum(compute_local_descriptors(config,basis)),:,1)'
+
+        A = [global_descrs;]
+        b = [ref_energy;]
+
+        AtA .+= A'*A
+        Atb .+= A'*b
+    end
+
+    reg_matrix = λ*Diagonal(ones(size(AtA)[1]))
+    AtA += reg_matrix
+
+    β =  AtA \ Atb
+    println("condition number of AtA: $(cond(AtA))")
+    return β
 end

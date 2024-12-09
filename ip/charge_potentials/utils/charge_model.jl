@@ -248,6 +248,16 @@ function potential_energy9(gd::Vector{Float64},
     pe   
 end
 
+function potential_energy10(gd::Vector{Float64}, 
+                           outer_ld_cld::Matrix{Float64}, 
+                           cbp::ChargedBasisPotential, 
+                           α, 
+                           per_atom_Qtot::Float64=0.0)
+
+    pe = α'*gd
+    pe   
+end
+
 #ld is vector of vector 
 #cld is matrix. 
 #This is dumb
@@ -363,6 +373,30 @@ function ∇simpler_loss(ps, ds, cbp, qi_ref, eref; we=30.0, λ=0.01)
     deriv += 2*λ*ps
     deriv
 end
+
+function reference_loss(ps, ds, cbp, qi_ref, eref; we=30.0, λ=0.01)
+    basis_size = length(cbp.basis)
+    α = ps[1:basis_size]
+    β = ps[basis_size+1:end]
+
+    loss = 0.0
+    for (i,ddict) in enumerate(ds)
+        qis_hat = atomic_charges(ddict["cld"],β,ddict["qtot"]/ddict["num_atoms"])
+        loss += sum(.^(qis_hat .- qi_ref[i],2))
+        
+        e_hat = potential_energy10(ddict["gd"], 
+                                  ddict["outer_ld_cld"],
+                                  cbp, 
+                                  α,
+                                  ddict["qtot"]/ddict["num_atoms"])
+
+        loss += we/ddict["num_atoms"]*(e_hat-eref[i])^2
+    end
+    loss += λ*norm(ps)^2
+    loss
+end
+
+
 #function check_derivative(sys_dict, cbp, ps)
 #    basis_size = length(cbp.basis)
 #    β = ps[1:basis_size]
@@ -521,4 +555,34 @@ function only_charge_loss(β, ds, qi_ref)
     #loss += sqrt(0.01)*norm(β)
     loss += 0.01*norm(β)^2
     loss
+end
+
+
+function get_nonlinear_energies(ds,cbp,ps, all_qi_ref, all_e_ref)
+    basis_size = length(cbp.basis)
+    β = ps[1:basis_size]
+    γ = ps[basis_size+1:end]
+
+    pred_energies = Float64[]
+    pred_charges =  Vector{Float64}[]
+    for config_dict in ds
+        gd = config_dict["gd"]
+        cld = config_dict["cld"]
+        outer_ld_cld = config_dict["outer_ld_cld"]
+        qtot_per_atom = config_dict["qtot"]/config_dict["num_atoms"]
+        
+        charges = atomic_charges(cld,β,qtot_per_atom)
+        push!(pred_charges,charges)
+
+        pe = potential_energy9(gd,outer_ld_cld,cbp,β,γ,qtot_per_atom)
+        push!(pred_energies,pe)
+        
+    end
+    all_pred_charges = reduce(vcat, pred_charges)
+
+    charge_mae,charge_rmse,charge_mape = calc_mae_rmse_mape(all_pred_charges,all_qi_ref)
+    println("CHARGE\nmae: $(1000*charge_mae) me\nrmse: $(1000*charge_rmse) me\nmape: $(100*charge_mape) %\n")
+
+    energy_mae,energy_rmse,energy_mape = calc_mae_rmse_mape(all_pred_energies,all_e_ref)
+    println("ENERGY\nmae: $(1000*energy_mae) meV\nrmse: $(1000*energy_rmse) meV\nmape: $(100*energy_mape) %\n")
 end

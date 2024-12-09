@@ -49,57 +49,20 @@ all_pred_energies = get_all_energies(configs_train, lbp_energy)
 energy_mae,energy_rmse,energy_mape = calc_mae_rmse_mape(all_pred_energies,ecentered_ref)
 println("ENERGY\nmae: $(1000*energy_mae) meV\nrmse: $(1000*energy_rmse) meV\nmape: $(100*energy_mape) %\n")
 
+cbp0 = ChargedBasisPotential(lmp_pod, zeros(basis_size), zeros(basis_size), zeros(basis_size))
+
+ds = prepare_train_db(configs_train,lmp_pod)
+
+ps_ref = [α0;β0]
+ref_loss = reference_loss(ps_ref, ds, cbp0, qi_ref, ecentered_ref; we=30.0, λ=0.01)
+@show ref_loss
+
 γ0 = randn(basis_size)
 
 #ps0 = [α0+randn(basis_size);β0+randn(basis_size);γ0]
 ps0 = [β0+randn(basis_size);γ0]
 
-cbp0 = ChargedBasisPotential(lmp_pod, zeros(basis_size), zeros(basis_size), zeros(basis_size))
-
-ds = prepare_train_db(configs_train,lmp_pod)
 obj_fun = p -> simpler_loss(p,ds, cbp0, qi_ref, ecentered_ref; we=30.0, λ=0.01)
-
-test_sys = ds[1]
-simple_fun = p -> check_derivative(test_sys,cbp0,p)
-
-#gcfg = ForwardDiff.GradientConfig(obj_fun,ps0,ForwardDiff.Chunk(ps0))
-#g! = (out, x) -> ForwardDiff.gradient!(out, obj_fun, x, gcfg)
-#fg! = (out, x) -> begin
-#           gr_res = DiffResults.DiffResult(zero(Float64),out)
-#           ForwardDiff.gradient!(gr_res, obj_fun, x, gcfg)
-#           DiffResults.value(gr_res)
-#           end
-#DF = fill!(Float64.(ps0), Float64(NaN))
-
-function fg_rad!(F, G, x)
-    if F != nothing && G != nothing
-        val, grad = Zygote.withgradient(obj_fun, x)
-        G .= only(grad)
-        return val
-    elseif G != nothing
-        grad = Zygote.gradient(obj_fun, x)
-        G .= only(grad)
-        return nothing
-    elseif F != nothing
-        return obj_fun(x)
-      end
-end
 
 g_rad! = (out,x) -> out .= only(Zygote.gradient(obj_fun, x))
 g_a!   = (out,x) -> out .= ∇simpler_loss(x,ds,cbp0,qi_ref,ecentered_ref)
-
-function fg_a!(F,G,x)
-    if F != nothing && G != nothing
-        val = obj_fun(x)
-        g_a!(G,x)
-        return val
-    elseif G != nothing
-        g_a!(G, x)
-        return nothing
-    elseif F != nothing
-        return obj_fun(x)
-    end
-end
-#g_simple! = (out,x) -> out .= only(Zygote.gradient(simple_fun,x))
-
-#res = optimize(obj_fun, ps0, LBFGS(), Optim.Options(iterations=1000); autodiff=:forward)

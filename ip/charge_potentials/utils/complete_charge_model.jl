@@ -1,4 +1,5 @@
 import AtomsBase
+import InteratomicPotentials: potential_energy
 using InteratomicPotentials
 using ProgressBars
 using LinearAlgebra: Diagonal, cond, norm
@@ -81,27 +82,14 @@ function atomic_charges(A::AtomsBase.AbstractSystem, lbp::Union{ChargedBasisPote
     return atomic_charges(cld, lbp.β, per_atom_Qtot; with_units=with_units)
 end
 
-#function atomic_charges(cld, β, per_atom_Qtot::Float64=0.0; with_units=false)
-#    cld = stack(cld)'
-#
-#    atomic_charges = cld*β
-#
-#    atomic_charges .+= per_atom_Qtot 
-#
-#    if with_units
-#        return atomic_charges * u"e_au"
-#    else
-#        return atomic_charges
-#    end
-#end
 
-function atomic_charges(cld, β, per_atom_Qtot::Float64=0.0; with_units=false)
+function atomic_charges(cld, ζ, per_atom_Qtot::Float64=0.0; with_units=false)
     cld = stack(cld)'
 
-    atomic_charges = cld*β
+    atomic_charges = cld*ζ
 
     #atomic_charges .+= per_atom_Qtot 
-    full_atomic_charges = atomic_charges .+ per_atom_Qtot
+    full_atomic_charges = atomic_charges .+ per_atom_Qtot # Zygote and mutable arrays
 
     if with_units
         return full_atomic_charges * u"e_au"
@@ -110,88 +98,33 @@ function atomic_charges(cld, β, per_atom_Qtot::Float64=0.0; with_units=false)
     end
 end
 
-
-function potential_energy1(A::AtomsBase.AbstractSystem, cbp::ChargedBasisPotential, Qtot::Float64=0.0)
-    ld  = compute_local_descriptors(A,cbp.basis)
-    cld = compute_centered_descriptors(A,cbp.basis)
-
-    per_atom_Qtot = Qtot/length(A)
-
-    qi  = atomic_charges(cld, cbp.β, per_atom_Qtot; with_units=false)
-    
-    # can't use eachindex
-    pe=0.0
-    for atm_idx in 1:length(A)
-        pe += (cbp.α' * ld[atm_idx]) + cbp.γ'*(ld[atm_idx] * qi[atm_idx])
-    end
-    return pe
-end 
-
-function potential_energy2(A::AtomsBase.AbstractSystem, cbp::ChargedBasisPotential, Qtot::Float64=0.0)
-    ld  = compute_local_descriptors(A,cbp.basis)
-    cld = compute_centered_descriptors(A,cbp.basis)
-
-    per_atom_Qtot = Qtot/length(A)
-
-    qi  = atomic_charges(cld, cbp.β, per_atom_Qtot; with_units=false)
-    
-    pe = cbp.α' * sum(ld) + cbp.γ' * sum( ld .* qi)
-    pe
-end 
-
-function potential_energy3(A::AtomsBase.AbstractSystem, cbp::ChargedBasisPotential, Qtot::Float64=0.0)
-    ld  = compute_local_descriptors(A,cbp.basis)
-    cld = compute_centered_descriptors(A,cbp.basis)
-
-    per_atom_Qtot = Qtot/length(A)
-
-    pe = cbp.α' * sum(ld)
-
-    for i in 1:length(A)
-        for k in 1:length(cbp.basis)
-            for d in 1:length(cbp.basis)
-                pe += cbp.γ[k]*cbp.β[d]*ld[i][k]*cld[i][d]
-            end
-         end
-     end
-    
-    pe += per_atom_Qtot*cbp.γ'*sum(ld)    
-    pe
-end 
-
-function potential_energy4(A::AtomsBase.AbstractSystem, cbp::ChargedBasisPotential, Qtot::Float64=0.0)
-    
-    basis_size = length(cbp.basis)
-
+function potential_energy_simple(A::AtomsBase.AbstractSystem, cbp::ChargedBasisPotential, ps, Qtot::Float64=0.0)
+    ζ = ps[1:basis_size]
+    α = ps[basis_size+1:2*basis_size]
+    κ = ps[2*basis_size+1:end]
+   
     ld  = compute_local_descriptors(A,cbp.basis)
     gd = sum(ld)
     cld = compute_centered_descriptors(A,cbp.basis)
 
     per_atom_Qtot = Qtot/length(A)
 
-    pe = cbp.α' * gd 
-
-    outer_ld_cld = zeros((basis_size, basis_size))
-
-    for i in 1:length(A)
-        outer_ld_cld += ld[i]*cld'[i]
-    end
-
-    pe += sum(cbp.γ*cbp.β' .* outer_ld_cld)
-   
-    pe += per_atom_Qtot*cbp.γ'*gd    
+    qi  = atomic_charges(cld, ζ, per_atom_Qtot; with_units=false)
+    
+    pe = α'*gd + κ'*sum( ld .* qi)
     pe
 end 
 
+
 # here the parameters are explicitly passed
-function potential_energy5(A::AtomsBase.AbstractSystem, cbp::ChargedBasisPotential, ps::Vector{Float64}, Qtot::Float64=0.0)
+function potential_energy(A::AtomsBase.AbstractSystem, cbp::ChargedBasisPotential, ps::Vector{Float64}, Qtot::Float64=0.0)
     basis_size = length(cbp.basis)
     num_atoms = length(A)::Int64
     per_atom_Qtot = Qtot/length(A)
 
-    α = ps[1:basis_size]
-    β = ps[basis_size+1:2*basis_size]
-    γ = ps[2*basis_size+1:end]
+    ζ = ps[1:basis_size]
+    α = ps[basis_size+1:2*basis_size]
+    κ = ps[2*basis_size+1:end]
 
     ld = compute_local_descriptors(A,cbp.basis)
     gd = sum(ld)
@@ -199,64 +132,25 @@ function potential_energy5(A::AtomsBase.AbstractSystem, cbp::ChargedBasisPotenti
 
     outer_ld_cld = dropdims(sum(stack(ld[i]*cld[i,:]' for i in 1:num_atoms);dims=3),dims=3) #This should not be a one-liner
 
-    pe = α'*gd + sum(γ*β' .* outer_ld_cld) + per_atom_Qtot*γ'*gd
+    pe = α'*gd + sum(κ*ζ' .* outer_ld_cld) + per_atom_Qtot*κ'*gd
     pe   
 end
 
 
-function potential_energy6(gd::Vector{Float64}, outer_ld_cld::Matrix{Float64}, cbp::ChargedBasisPotential, ps::Vector{Float64}, per_atom_Qtot::Float64=0.0)
-    α = ps[1:basis_size]
-    β = ps[basis_size+1:2*basis_size]
-    γ = ps[2*basis_size+1:end]
-
-    pe = α'*gd + sum(γ*β' .* outer_ld_cld) + per_atom_Qtot*γ'*gd
-    pe   
-end
-
-function potential_energy7(gd::Vector{Float64}, 
+function potential_energy( gd::Vector{Float64}, 
                            outer_ld_cld::Matrix{Float64}, 
                            cbp::ChargedBasisPotential, 
-                           α::Vector{Float64}, 
-                           β::Vector{Float64}, 
-                           γ::Vector{Float64},
+                           ps,
                            per_atom_Qtot::Float64=0.0)
-
-    pe = α'*gd + sum(γ*β' .* outer_ld_cld) + per_atom_Qtot*γ'*gd
+    basis_size = length(cbp.basis)
+    ζ = ps[1:basis_size]
+    α = ps[basis_size+1:2*basis_size]
+    κ = ps[2*basis_size+1:end]
+   
+    pe = α'*gd + sum(κ*ζ' .* outer_ld_cld) + per_atom_Qtot*κ'*gd
     pe   
 end
 
-function potential_energy8(gd::Vector{Float64}, 
-                           outer_ld_cld::Matrix{Float64}, 
-                           cbp::ChargedBasisPotential, 
-                           α, 
-                           β, 
-                           γ,
-                           per_atom_Qtot::Float64=0.0)
-
-    pe = α'*gd + sum(γ*β' .* outer_ld_cld) + per_atom_Qtot*γ'*gd
-    pe   
-end
-
-function potential_energy9(gd::Vector{Float64}, 
-                           outer_ld_cld::Matrix{Float64}, 
-                           cbp::ChargedBasisPotential, 
-                           β, 
-                           γ,
-                           per_atom_Qtot::Float64=0.0)
-
-    pe = sum(γ*β' .* outer_ld_cld) + per_atom_Qtot*γ'*gd
-    pe   
-end
-
-function potential_energy10(gd::Vector{Float64}, 
-                           outer_ld_cld::Matrix{Float64}, 
-                           cbp::ChargedBasisPotential, 
-                           α, 
-                           per_atom_Qtot::Float64=0.0)
-
-    pe = α'*gd
-    pe   
-end
 
 #ld is vector of vector 
 #cld is matrix. 
@@ -298,22 +192,20 @@ end
 
 function loss(ps, ds, cbp, qi_ref, eref; we=30.0, λ=0.01)
     basis_size = length(cbp.basis)
-    α = ps[1:basis_size]
-    β = ps[basis_size+1:2*basis_size]
-    γ = ps[2*basis_size+1:end]
+    ζ = ps[1:basis_size]
+    α = ps[basis_size+1:2*basis_size]
+    κ = ps[2*basis_size+1:end]
 
     loss = 0.0
     for (i,ddict) in enumerate(ds)
-        qis_hat = atomic_charges(ddict["cld"],β,ddict["qtot"]/ddict["num_atoms"])
+        qis_hat = atomic_charges(ddict["cld"],ζ,ddict["qtot"]/ddict["num_atoms"])
         loss += sum(.^(qis_hat .- qi_ref[i],2))
         
-        e_hat = potential_energy8(ddict["gd"], 
-                                  ddict["outer_ld_cld"],
-                                  cbp, 
-                                  α,
-                                  β,
-                                  γ,
-                                  ddict["qtot"]/ddict["num_atoms"])
+        e_hat = potential_energy(ddict["gd"], 
+                                 ddict["outer_ld_cld"],
+                                 cbp, 
+                                 ps,
+                                 ddict["qtot"]/ddict["num_atoms"])
 
         loss += we/ddict["num_atoms"]*(e_hat-eref[i])^2
     end
@@ -321,21 +213,56 @@ function loss(ps, ds, cbp, qi_ref, eref; we=30.0, λ=0.01)
     loss
 end
 
+function ∇loss(ps, ds, cbp, qi_ref, eref; we=30.0, λ=0.01)
+    basis_size = length(cbp.basis)
+    ζ = ps[1:basis_size]
+    α = ps[basis_size+1:2*basis_size]
+    κ = ps[2*basis_size+1:end]
+
+    deriv = zero(ps)
+    for (i,ddict) in enumerate(ds)
+        outer_ld_cld = ddict["outer_ld_cld"]
+        cld = stack(ddict["cld"])'
+        qtot_per_atom = ddict["qtot"]/ddict["num_atoms"]
+        gd = ddict["gd"]
+
+        deriv[1:basis_size] += 2*cld'*cld*ζ - 2*cld'*qi_ref[i] # atomic charge loss contribution 2AtA - 2Ab
+
+        # derivative of potential energy
+        pe_deriv = zero(ps)
+        pe_deriv[1:basis_size] += outer_ld_cld'*κ
+        pe_deriv[basis_size+1:2*basis_size] += gd
+        pe_deriv[2*basis_size+1:end] += outer_ld_cld*ζ
+        pe_deriv[2*basis_size+1:end] += qtot_per_atom*gd
+        
+        # energy loss derivative 
+        e_hat = potential_energy(gd,outer_ld_cld,cbp,ps,qtot_per_atom)
+        pe_deriv *= 2*(we/ddict["num_atoms"])*(e_hat-eref[i])
+        deriv += pe_deriv
+    end
+
+    deriv += 2*λ*ps
+    deriv
+end
+
+
+
+
 function simpler_loss(ps, ds, cbp, qi_ref, eref; we=30.0, λ=0.01)
     basis_size = length(cbp.basis)
-    β = ps[1:basis_size]
-    γ = ps[basis_size+1:end]
+    ζ = ps[1:basis_size]
+    κ = ps[basis_size+1:end]
 
     loss = 0.0
     for (i,ddict) in enumerate(ds)
-        qis_hat = atomic_charges(ddict["cld"],β,ddict["qtot"]/ddict["num_atoms"])
+        qis_hat = atomic_charges(ddict["cld"],ζ,ddict["qtot"]/ddict["num_atoms"])
         loss += sum(.^(qis_hat .- qi_ref[i],2))
         
         e_hat = potential_energy9(ddict["gd"], 
                                   ddict["outer_ld_cld"],
                                   cbp, 
-                                  β,
-                                  γ,
+                                  ζ,
+                                  κ,
                                   ddict["qtot"]/ddict["num_atoms"])
 
         loss += we/ddict["num_atoms"]*(e_hat-eref[i])^2
@@ -346,8 +273,8 @@ end
 
 function ∇simpler_loss(ps, ds, cbp, qi_ref, eref; we=30.0, λ=0.01)
     basis_size = length(cbp.basis)
-    β = ps[1:basis_size]
-    γ = ps[basis_size+1:end]
+    ζ = ps[1:basis_size]
+    κ = ps[basis_size+1:end]
 
     deriv = zero(ps)
     for (i,ddict) in enumerate(ds)
@@ -356,16 +283,16 @@ function ∇simpler_loss(ps, ds, cbp, qi_ref, eref; we=30.0, λ=0.01)
         qtot_per_atom = ddict["qtot"]/ddict["num_atoms"]
         gd = ddict["gd"]
 
-        deriv[1:basis_size] += 2*cld'*cld*β - 2*cld'*qi_ref[i] # atomic charge loss contribution
+        deriv[1:basis_size] += 2*cld'*cld*ζ - 2*cld'*qi_ref[i] # atomic charge loss contribution
 
         # derivative of potential energy
         pe_deriv = zero(ps)
-        pe_deriv[1:basis_size] += outer_ld_cld'*γ
-        pe_deriv[basis_size+1:end] += outer_ld_cld*β
+        pe_deriv[1:basis_size] += outer_ld_cld'*κ
+        pe_deriv[basis_size+1:end] += outer_ld_cld*ζ
         pe_deriv[basis_size+1:end] += qtot_per_atom*gd
         
         # energy loss derivative 
-        e_hat = potential_energy9(gd,outer_ld_cld,cbp,β,γ,qtot_per_atom)
+        e_hat = potential_energy9(gd,outer_ld_cld,cbp,ζ,κ,qtot_per_atom)
         pe_deriv *= 2*(we/ddict["num_atoms"])*(e_hat-eref[i])
         deriv += pe_deriv
     end
@@ -374,44 +301,23 @@ function ∇simpler_loss(ps, ds, cbp, qi_ref, eref; we=30.0, λ=0.01)
     deriv
 end
 
-function reference_loss(ps, ds, cbp, qi_ref, eref; we=30.0, λ=0.01)
-    basis_size = length(cbp.basis)
-    α = ps[1:basis_size]
-    β = ps[basis_size+1:end]
-
+function only_charge_loss(ζ, ds, qi_ref)
     loss = 0.0
     for (i,ddict) in enumerate(ds)
-        qis_hat = atomic_charges(ddict["cld"],β,ddict["qtot"]/ddict["num_atoms"])
-        loss += sum(.^(qis_hat .- qi_ref[i],2))
-        
-        e_hat = potential_energy10(ddict["gd"], 
-                                  ddict["outer_ld_cld"],
-                                  cbp, 
-                                  α,
-                                  ddict["qtot"]/ddict["num_atoms"])
-
-        loss += we/ddict["num_atoms"]*(e_hat-eref[i])^2
-    end
-    loss += λ*norm(ps)^2
-    loss
-end
-
-function only_charge_loss(β, ds, qi_ref)
-    loss = 0.0
-    for (i,ddict) in enumerate(ds)
-        qis_hat = atomic_charges(ddict["cld"],β,ddict["qtot"]/ddict["num_atoms"])
+        qis_hat = atomic_charges(ddict["cld"],ζ,ddict["qtot"]/ddict["num_atoms"])
         loss += sum(.^(qis_hat .- qi_ref[i],2))
     end
-    #loss += sqrt(0.01)*norm(β)
-    loss += 0.01*norm(β)^2
+    #loss += sqrt(0.01)*norm(ζ)
+    loss += 0.01*norm(ζ)^2
     loss
 end
 
 
 function get_nonlinear_energies(ds,cbp,ps, all_qi_ref, all_e_ref)
     basis_size = length(cbp.basis)
-    β = ps[1:basis_size]
-    γ = ps[basis_size+1:end]
+    ζ = ps[1:basis_size]
+    α = ps[basis_size+1:2*basis_size]
+    κ = ps[2*basis_size+1:end]
 
     pred_energies = Float64[]
     pred_charges =  Vector{Float64}[]
@@ -421,10 +327,10 @@ function get_nonlinear_energies(ds,cbp,ps, all_qi_ref, all_e_ref)
         outer_ld_cld = config_dict["outer_ld_cld"]
         qtot_per_atom = config_dict["qtot"]/config_dict["num_atoms"]
         
-        charges = atomic_charges(cld,β,qtot_per_atom)
+        charges = atomic_charges(cld,ζ,qtot_per_atom)
         push!(pred_charges,charges)
 
-        pe = potential_energy9(gd,outer_ld_cld,cbp,β,γ,qtot_per_atom)
+        pe = potential_energy(gd,outer_ld_cld,cbp,ps,qtot_per_atom)
         push!(pred_energies,pe)
         
     end

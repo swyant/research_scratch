@@ -58,3 +58,6 @@ obj_fun = p -> loss(p,ds, cbp0, qi_ref, ecentered_ref; we=30.0, λ=0.01)
 
 g_rad! = (out,x) -> out .= only(Zygote.gradient(obj_fun, x))
 g_a!   = (out,x) -> out .= ∇loss(x,ds,cbp0,qi_ref,ecentered_ref)
+
+#res = optimize(obj_fun, g_a!, ps0, LBFGS(;linesearch=LineSearches.BackTracking()), Optim.Options(iterations=5000, show_trace=true,show_every=100))
+#get_nonlinear_energies(ds,cbp0,res.minimizer,all_ref_charges,ecentered_ref)

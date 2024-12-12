@@ -151,6 +151,101 @@ function potential_energy( gd::Vector{Float64},
     pe   
 end
 
+# only l=2 (not l=1)
+function potential_energy_simple2(A::AtomsBase.AbstractSystem, cbp::ChargedBasisPotential, ps, Qtot::Float64=0.0)
+    ζ = ps[1:basis_size]
+    α = ps[basis_size+1:2*basis_size]
+    κ = ps[2*basis_size+1:end]
+   
+    ld  = compute_local_descriptors(A,cbp.basis)
+    gd = sum(ld)
+    cld = compute_centered_descriptors(A,cbp.basis)
+
+    per_atom_Qtot = Qtot/length(A)
+
+    qi  = atomic_charges(cld, ζ, per_atom_Qtot; with_units=false)
+    
+    pe = α'*gd + κ'*sum( ld .* qi.^2)
+    pe
+end 
+
+
+function potential_energy_alt2(ld,cld,cbp::ChargedBasisPotential, ps, per_atom_Qtot::Float64=0.0)
+    ζ = ps[1:basis_size]
+    α = ps[basis_size+1:2*basis_size]
+    κ = ps[2*basis_size+1:end]
+   
+    gd = sum(ld)
+
+    qi  = atomic_charges(cld, ζ, per_atom_Qtot; with_units=false)
+    
+    pe = α'*gd + κ'*sum( ld .* qi.^2)
+    pe
+end 
+
+
+
+# only l=2 (not l=1)
+function potential_energy2(A::AtomsBase.AbstractSystem, cbp::ChargedBasisPotential, ps::Vector{Float64}, Qtot::Float64=0.0)
+    basis_size = length(cbp.basis)
+    num_atoms = length(A)::Int64
+    per_atom_Qtot = Qtot/length(A)
+
+    ζ = ps[1:basis_size]
+    α = ps[basis_size+1:2*basis_size]
+    κ = ps[2*basis_size+1:end]
+
+    ld = compute_local_descriptors(A,cbp.basis)
+    gd = sum(ld)
+    #cld = stack(compute_centered_descriptors(A,cbp.basis))'
+    cld = compute_centered_descriptors(A,cbp.basis)
+
+    outer_ld_cld  = zeros((basis_size,basis_size))
+    outer_ld_cld2 = zeros((basis_size,basis_size,basis_size))
+    for i in 1:num_atoms
+        outer_ld_cld_tmp = ld[i] .* reshape(cld[i],1,:)
+        outer_ld_cld += outer_ld_cld_tmp
+        outer_ld_cld2 += outer_ld_cld_tmp .* reshape(cld[i],1,1,:)
+    end
+
+    #outer_ld_cld = dropdims(sum(stack(ld[i]*cld[i,:]' for i in 1:num_atoms);dims=3),dims=3) #This should not be a one-liner
+
+    pe = α'*gd + 2*per_atom_Qtot*sum(κ*ζ' .* outer_ld_cld) + sum(κ.*reshape(ζ,1,:).*reshape(ζ,1,1,:) .*outer_ld_cld2) + per_atom_Qtot^2*κ'*gd
+    pe   
+end
+
+function ∇potential_energy_2(ld,cld, cbp::ChargedBasisPotential, ps, per_atom_Qtot::Float64=0.0)
+    basis_size = length(cbp.basis)
+    num_atoms = length(ld)
+    ζ = ps[1:basis_size]
+    α = ps[basis_size+1:2*basis_size]
+    κ = ps[2*basis_size+1:end]
+    
+    #@time begin
+    deriv = zero(ps)
+    
+    gd = sum(ld)
+    qi  = atomic_charges(cld, ζ, per_atom_Qtot; with_units=false)
+    #end    
+    #@time begin
+    deriv[basis_size+1:2*basis_size] += gd
+    deriv[2*basis_size+1:end] += sum(ld .* qi.^2)
+    #end
+
+    #for k in 1:basis_size
+    #    ∇ζ = 0.0
+    #    for i in 1:num_atoms
+    #       cld_term = cld[i][k]
+    #       ∇ζ += 2*κ'*(cld_term * qi[i] * ld[i])
+    #    end
+    #    deriv[k] += ∇ζ
+    #end
+    deriv[1:basis_size] = 2*stack(cld)*(stack(qi .*ld)'*κ)
+
+    deriv
+
+end
+
 
 #ld is vector of vector 
 #cld is matrix. 

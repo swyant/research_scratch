@@ -127,7 +127,8 @@ function get_all_atomic_charges(configs::Vector{<:AtomsBase.FlexibleSystem}; str
     return reduce(vcat,all_atomic_charges)
 end
 
-function get_all_atomic_charges(configs::Vector{<:AtomsBase.FlexibleSystem}, lbp::LBasisPotential; strip_units=true)
+# LBP should be LBasisChargeModel
+function get_all_atomic_charges(configs::Vector{<:AtomsBase.FlexibleSystem}, lbp; strip_units=true)
     if strip_units
         all_atomic_charges = [atomic_charges(config,lbp,ustrip(get_total_charge(config)); with_units=false) for config in configs]
     else

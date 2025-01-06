@@ -2,7 +2,7 @@ using Optim
 using Statistics: mean 
 import Zygote
 using LineSearches
-include("../utils/utils.jl")
+includet("../utils/utils.jl")
 includet("../utils/linear_charge_model.jl")
 
 #param_file = "../files/4body_CH_param.pod"
@@ -18,7 +18,7 @@ includet("../utils/linear_charge_model.jl")
 #elem_list =[:Au, :Al, :Mg, :O]
 #target_Qtot = 0.0
 #e_lambda = 0.01
-#
+
 #param_file = "../files/4body_Ag_param.pod"
 #data_fname = "../behler_charge_datasets/Ag_cluster/input.data"
 #elem_list = [:Ag,]
@@ -68,9 +68,9 @@ println("ENERGY\nmae: $(1000*energy_mae) meV per atom\nrmse: $(1000*energy_rmse)
 
 check_lcb = LinearChargeBasis(lmp_pod,lbp_charge,3,target_Qtot,elem_list)
 
-@time params = learn_charge_energy_model(configs_train, check_lcb, ecentered_ref; λ=e_lambda)
-new_lbp = LBasisPotential(params, [0.0,], check_lcb);
-all_pred_energies2 = get_all_energies(configs_train, new_lbp) .+ (length.(configs_train) .* mean(epa_ref))
-
-energy_mae2,energy_rmse2,energy_mape2 = calc_mae_rmse_mape(all_pred_energies2 ./ length.(configs_train), e_ref ./ length.(configs_train))
-println("ENERGY\nmae: $(1000*energy_mae2) meV per atom\nrmse: $(1000*energy_rmse2) meV per atom\nmape: $(100*energy_mape2) %\n")
+#params = learn_charge_energy_model(configs_train, check_lcb, ecentered_ref; λ=e_lambda)
+#new_lbp = LBasisPotential(params, [0.0,], check_lcb);
+#all_pred_energies2 = get_all_energies(configs_train, new_lbp) .+ (length.(configs_train) .* mean(epa_ref))
+#
+#energy_mae2,energy_rmse2,energy_mape2 = calc_mae_rmse_mape(all_pred_energies2 ./ length.(configs_train), e_ref ./ length.(configs_train))
+#println("ENERGY\nmae: $(1000*energy_mae2) meV per atom\nrmse: $(1000*energy_rmse2) meV per atom\nmape: $(100*energy_mape2) %\n")

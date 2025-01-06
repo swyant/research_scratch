@@ -23,7 +23,9 @@ end
 
 function Base.length(lcb::LinearChargeBasis)
     base_length = length(lcb.base_basis)
-    kappa_length = lcb.l_order*length(lcb.type_map)*base_length
+    #kappa_length = lcb.l_order*length(lcb.type_map)*base_length # with redundant zeros
+    perelem_ld_length = base_length ÷ length(lcb.type_map) # to ensure it's integer
+    kappa_length = lcb.l_order*length(lcb.type_map)*perelem_ld_length 
     total_length = base_length + kappa_length
 end
 
@@ -139,6 +141,8 @@ function compute_local_descriptors(A::AbstractSystem, lcb::LinearChargeBasis)
     @assert lcb.charge_model.basis == lcb.base_basis #probably a flag in the struct to indicate this?
     cld = compute_centered_descriptors(A, lcb.base_basis; ld=base_ld)
 
+    perelem_base_ld = hcat(ones(num_atoms),InteratomicPotentials.compute_perelem_local_descriptors(A,lcb.base_basis))
+
     qis = atomic_charges(cld, lcb.charge_model.ξ, Qtot/num_atoms)
     charge_descrs = compute_charge_descriptors(lcb.l_order, qis)
 
@@ -157,13 +161,23 @@ function compute_local_descriptors(A::AbstractSystem, lcb::LinearChargeBasis)
         #gamma_end   = gamma_start + num_elems -1 
         #gamma_term[gamma_start:gamma_end] .= electrostatic_descrs[i]
 
-        #kappa terms
-        kappa_term = zeros(Float64,num_elems*base_ld_size*lcb.l_order)
-        mixed_descriptor_mat = base_ld[i]' .* charge_descrs[i,:]
+        #kappa terms (with redundant zeros)
+        #kappa_term = zeros(Float64,num_elems*base_ld_size*lcb.l_order)
+        #mixed_descriptor_mat = base_ld[i]' .* charge_descrs[i,:]
+        #
+        #kappa_start = (type_idx-1)*lcb.l_order*base_ld_size+1
+        #kappa_end   = kappa_start + lcb.l_order*base_ld_size -1
+        #kappa_term[kappa_start:kappa_end] .= reshape(mixed_descriptor_mat',:)        
+
+        #new kappa terms
+        perelem_ld_size = size(perelem_base_ld,2)
+        kappa_term = zeros(Float64,num_elems*perelem_ld_size*lcb.l_order)
+        mixed_descriptor_mat = perelem_base_ld[i,:]' .* charge_descrs[i,:]
         
-        kappa_start = (type_idx-1)*lcb.l_order*base_ld_size+1
-        kappa_end   = kappa_start + lcb.l_order*base_ld_size -1
+        kappa_start = (type_idx-1)*lcb.l_order*perelem_ld_size+1
+        kappa_end   = kappa_start + lcb.l_order*perelem_ld_size -1
         kappa_term[kappa_start:kappa_end] .= reshape(mixed_descriptor_mat',:)        
+
 
         #push!(ld, [alpha_term;gamma_term;kappa_term])
         push!(ld, [alpha_term;kappa_term])

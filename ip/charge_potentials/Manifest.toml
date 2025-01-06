@@ -2,7 +2,7 @@
 
 julia_version = "1.11.2"
 manifest_format = "2.0"
-project_hash = "91c107e8f42645a443f894cf0879feaf0dce6537"
+project_hash = "03dc707d44b30f3f7cc3fc4b65868b077ee17aab"
 
 [[deps.ACE1]]
 deps = ["ACEbase", "BenchmarkTools", "Combinatorics", "ForwardDiff", "InteractiveUtils", "Interpolations", "JuLIP", "LinearAlgebra", "NeighbourLists", "Parameters", "Pkg", "Printf", "QuadGK", "Random", "Reexport", "Roots", "SparseArrays", "StaticArrays", "Test"]
@@ -993,7 +993,7 @@ version = "1.11.0"
 
 [[deps.InteratomicPotentials]]
 deps = ["ACE1", "AtomsBase", "DelimitedFiles", "Distances", "Flux", "JuLIP", "LAMMPS", "LinearAlgebra", "NearestNeighbors", "Printf", "StaticArrays", "Unitful", "UnitfulAtomic", "Zygote"]
-git-tree-sha1 = "cab0b5352613e584883862c643fac8dd8eb888a2"
+path = "/Users/swyant/cesmix/dev/InteratomicPotentials.jl/"
 uuid = "a9efe35a-c65d-452d-b8a8-82646cd5cb04"
 version = "0.3.1"
 

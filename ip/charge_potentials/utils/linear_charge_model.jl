@@ -3,6 +3,7 @@ import InteratomicPotentials: BasisSystem, compute_local_descriptors, potential_
 using Unitful, UnitfulAtomic
 using ProgressBars
 using LinearAlgebra: Diagonal, cond, norm
+# using SIMD 
 
 #Probably should be parameterically typed
 struct LBasisChargeModel
@@ -140,7 +141,8 @@ function compute_local_descriptors(A::AbstractSystem, lcb::LinearChargeBasis)
     #TODO if chargemodel and lcb don't share same basis, should not pass ld!
     @assert lcb.charge_model.basis == lcb.base_basis #probably a flag in the struct to indicate this?
     cld = compute_centered_descriptors(A, lcb.base_basis; ld=base_ld)
-
+    
+    # the initial one represents the beta term in Cuong's notation
     perelem_base_ld = hcat(ones(num_atoms),InteratomicPotentials.compute_perelem_local_descriptors(A,lcb.base_basis))
 
     qis = atomic_charges(cld, lcb.charge_model.ξ, Qtot/num_atoms)
@@ -198,8 +200,125 @@ function compute_charge_descriptors(l_order::Int64, qis::Vector{Float64})
 end
 
 
+# output array (length # of atoms) of arrays, where each inner array is length number of atoms
 function compute_electrostatic_descriptors(A,type_map,qis)
+    num_elems = length(type_map)
+    num_atoms = length(A)
 
+    rijs = compute_rij(A)
+    species = atomic_symbol(A)
+    
+    electro_descrs = [zeros(num_elems) for _ in 1:num_atoms]
+    for i in 1:num_atoms
+        qii = qis[i]
+        for j in 1:num_atoms
+            rij = rijs[i,j] # or r[j,i] whatever, symmetric
+            tj = type_map[species[j]]
+            electro_descrs[i][tj] += _fc(rij)*qii*qis[j]/rij
+        end
+    end
+    electro_descrs
+end
+
+# Type stable?
+#function compute_rij_mic(A)
+#    cry_to_cart = Matrix(reduce(hcat, ustrip.(bounding_box(test_sys)) )')
+#    cart_to_cry = inv(cry_to_cart)
+#
+#    cart_pos    =  reduce(hcat, ustrip.(position(A)))'
+#    cry_pos     =  mapslices(x-> cart_to_cry*x, cart_pos, dims=2)
+#
+#    for 
+#
+#end
+
+#function _compute_rij(a::Matrix{Float64})
+#    n = size(a,1)
+#    rij_mat = Matrix{Float64}(undef,n,n)
+#    @inbounds for i in 1:n
+#        rij_mat[i,i] =0.0
+#        ai = view(a,i,:)
+#        for j in (i+1):n
+#            #rij_mat[i,j] = norm(_mic_adjust.(a[i,:] - a[j,:]))
+#            rij_mat[i,j] = norm(a[i,:] - a[j,:])
+#            rij_mat[j,i] = rij_mat[i,j]
+#        end
+#    end
+#    rij_mat
+#end
+
+function _compute_rij(a::Matrix{Float64})
+    a = permutedims(a,(2,1))
+    n = size(a,2)
+    rij_mat = Matrix{Float64}(undef,n,n)
+    @inbounds for i in 1:n
+        rij_mat[i,i] =0.0
+        ai = view(a,:,i)
+        for j in (i+1):n
+            #rij_mat[i,j] = norm(_mic_adjust.(a[i,:] - a[j,:]))
+            
+            #rij_mat[i,j] = _my_eval(ai,view(a,:,j))
+            
+            #rij_mat[i,j] = norm(ai - view(a,:,j))
+            
+            #aj = view(a,:,j)
+            #s = 0.0 
+            #@inbounds for I in eachindex(ai,aj)
+            #    aiI = ai[I]
+            #    ajI = aj[I]
+            #    s = s + abs2(aiI - ajI)
+            #end
+            #rij_mat[i,j] = sqrt(s)
+            
+            #aj = view(a,:,j)
+            #rij_mat[i,j] = sqrt(sum(abs2.(ai .- aj)))
+                      
+            aj = view(a,:,j)
+            rij_mat[i,j] = sqrt(sum(k -> abs2(ai[k] - aj[k]), eachindex(ai,aj)))           
+            
+            
+            
+            
+
+
+            rij_mat[j,i] = rij_mat[i,j]
+        end
+    end
+    rij_mat
+end
+
+function _my_eval(a,b)
+    @inbounds begin 
+    s = 0.0 #eval start
+    for I in eachindex(a,b)
+        aI = a[I]
+        bI = b[I]
+        s = _my_eval_reduce(s,_my_eval_op(aI,bI))
+    end
+    end
+    return _my_eval_end(s)
+end
+
+function _my_eval_reduce(s,op_res)
+    s + op_res
+end
+
+function _my_eval_op(a,b)
+    s1 = abs(a-b)
+    abs2(s1)
+end
+
+function _my_eval_end(s)
+    sqrt(s)
+end
+
+
+function _mic_adjust(x)
+    x > 0.5 ? x - 1.0 : (x < -0.5 ? x + 1.0 : x)
+end
+
+function _fc(rij)
+    return 1.0
 end
 
 
@@ -228,11 +347,11 @@ function learn_charge_energy_model(configs::Vector{<:AtomsBase.FlexibleSystem}, 
         if total_charge != basis.total_charge
             error("This system doesn't have the appropriate total charge!")
         end
-
+        
         global_descrs = reshape(sum(compute_local_descriptors(config,basis)),:,1)'
         A = [global_descrs;]
         b = [ref_energy;]
-
+        
         AtA .+= A'*A
         Atb .+= A'*b
     end 

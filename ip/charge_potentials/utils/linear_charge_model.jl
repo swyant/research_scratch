@@ -2,7 +2,7 @@ using AtomsBase
 import InteratomicPotentials: BasisSystem, compute_local_descriptors, potential_energy
 using Unitful, UnitfulAtomic
 using ProgressBars
-using LinearAlgebra: Diagonal, cond, norm
+using LinearAlgebra: Diagonal, cond, norm, mul!
 # using SIMD 
 
 #Probably should be parameterically typed
@@ -251,6 +251,10 @@ function _compute_rij(a::Matrix{Float64})
     a = permutedims(a,(2,1))
     n = size(a,2)
     rij_mat = Matrix{Float64}(undef,n,n)
+
+    cry_delta_vec = zeros(3)
+    cart_delta_vec = zeros(3)
+     
     @inbounds for i in 1:n
         rij_mat[i,i] =0.0
         ai = view(a,:,i)
@@ -273,14 +277,29 @@ function _compute_rij(a::Matrix{Float64})
             #aj = view(a,:,j)
             #rij_mat[i,j] = sqrt(sum(abs2.(ai .- aj)))
                       
+            #aj = view(a,:,j)
+            #rij_mat[i,j] = sqrt(sum(k -> abs2(ai[k] - aj[k]), eachindex(ai,aj)))           
+            
+            #aj = view(a,:,j)
+            #tmp = [abs2(ai[k] - aj[k]) for k in eachindex(ai,aj)]
+            #rij_mat[i,j] = sqrt(sum(tmp))           
+
+            #aj = view(a,:,j)
+            #for k in eachindex(ai,aj,cry_delta_vec)
+            #    cry_delta_vec[k] = abs2(ai[k] - aj[k])
+            #end
+            #rij_mat[i,j] = sqrt(sum(cry_delta_vec))           
+           
             aj = view(a,:,j)
-            rij_mat[i,j] = sqrt(sum(k -> abs2(ai[k] - aj[k]), eachindex(ai,aj)))           
-            
-            
-            
-            
+            for k in eachindex(ai,aj,cry_delta_vec)
+                cry_delta_vec[k] = abs2(_mic_adjust(ai[k] - aj[k]))
+            end
 
-
+            mul!(cart_delta_vec, cry_to_cart, cry_delta_vec) #unfortunately kills performance
+            #cart_delta_vec = cry_to_cart*cry_delta_vec # But this is for sure worse
+            rij_mat[i,j] = sqrt(sum(cart_delta_vec))           
+            #rij_mat[i,j] = sqrt(sum(cry_delta_vec))           
+          
             rij_mat[j,i] = rij_mat[i,j]
         end
     end

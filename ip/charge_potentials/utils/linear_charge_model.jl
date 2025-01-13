@@ -19,6 +19,7 @@ struct LinearChargeBasis <:BasisSystem
     l_order::Int64
     total_charge::Float64 #TODO make all charge references integers
     type_map::Dict{Symbol,Int64}
+    rcut::Float64
     # should I pre-compute and store size of basis?
 end
 
@@ -27,20 +28,22 @@ function Base.length(lcb::LinearChargeBasis)
     #kappa_length = lcb.l_order*length(lcb.type_map)*base_length # with redundant zeros
     perelem_ld_length = base_length ÷ length(lcb.type_map) # to ensure it's integer
     kappa_length = lcb.l_order*length(lcb.type_map)*perelem_ld_length 
-    total_length = base_length + kappa_length
+    gamma_length = length(lcb.type_map)^2
+    total_length = base_length + kappa_length + gamma_length
 end
 
 function LinearChargeBasis(base_basis::BasisSystem,
                            charge_model::LBasisChargeModel,
                            l_order::Int64,
                            total_charge::Float64,
-                           species_list::Vector{Symbol})
+                           species_list::Vector{Symbol},
+                           rcut::Float64)
     type_map = Dict{Symbol, Int64}()
     for (i,species) in enumerate(species_list)
         type_map[species] = i
     end
 
-    return LinearChargeBasis(base_basis, charge_model, l_order, total_charge, type_map)
+    return LinearChargeBasis(base_basis, charge_model, l_order, total_charge, type_map, rcut)
 end
 
 # -> Vector (size N) of Vectors (size K)
@@ -148,7 +151,7 @@ function compute_local_descriptors(A::AbstractSystem, lcb::LinearChargeBasis)
     qis = atomic_charges(cld, lcb.charge_model.ξ, Qtot/num_atoms)
     charge_descrs = compute_charge_descriptors(lcb.l_order, qis)
 
-    #electrostatic_descrs = compute_electrostatic_descriptors(A,lcb.type_map; qis=qis)
+    electrostatic_descrs = compute_electrostatic_descriptors(A,lcb.type_map,qis,lcb.rcut)
 
     ld = Vector{Vector{Float64}}()
     species = atomic_symbol(A)
@@ -163,13 +166,7 @@ function compute_local_descriptors(A::AbstractSystem, lcb::LinearChargeBasis)
         #gamma_end   = gamma_start + num_elems -1 
         #gamma_term[gamma_start:gamma_end] .= electrostatic_descrs[i]
 
-        #kappa terms (with redundant zeros)
-        #kappa_term = zeros(Float64,num_elems*base_ld_size*lcb.l_order)
-        #mixed_descriptor_mat = base_ld[i]' .* charge_descrs[i,:]
-        #
-        #kappa_start = (type_idx-1)*lcb.l_order*base_ld_size+1
-        #kappa_end   = kappa_start + lcb.l_order*base_ld_size -1
-        #kappa_term[kappa_start:kappa_end] .= reshape(mixed_descriptor_mat',:)        
+        gamma_term = electrostatic_descrs[i]
 
         #new kappa terms
         perelem_ld_size = size(perelem_base_ld,2)
@@ -181,8 +178,8 @@ function compute_local_descriptors(A::AbstractSystem, lcb::LinearChargeBasis)
         kappa_term[kappa_start:kappa_end] .= reshape(mixed_descriptor_mat',:)        
 
 
-        #push!(ld, [alpha_term;gamma_term;kappa_term])
-        push!(ld, [alpha_term;kappa_term])
+        push!(ld, [alpha_term;gamma_term;kappa_term])
+        #push!(ld, [alpha_term;kappa_term])
     end
 
     ld
@@ -201,104 +198,72 @@ end
 
 
 # output array (length # of atoms) of arrays, where each inner array is length number of atoms
-function compute_electrostatic_descriptors(A,type_map,qis)
+function compute_electrostatic_descriptors(A,type_map,qis,rcut)
     num_elems = length(type_map)
     num_atoms = length(A)
 
-    rijs = compute_rij(A)
+    rijs = compute_rij_mic(A)
     species = atomic_symbol(A)
+
+    list_by_elem = [findall(==(sym), species) for sym in first.(sort(collect(type_map), by=last))]
     
-    electro_descrs = [zeros(num_elems) for _ in 1:num_atoms]
+    electro_descrs = [zeros(num_elems^2) for _ in 1:num_atoms]
     for i in 1:num_atoms
         qii = qis[i]
-        for j in 1:num_atoms
-            rij = rijs[i,j] # or r[j,i] whatever, symmetric
-            tj = type_map[species[j]]
-            electro_descrs[i][tj] += _fc(rij)*qii*qis[j]/rij
+        ti = type_map[species[i]]
+        # it's small so doesn't really matter, but allocating this array is not actually necessary
+        perelem_electro_ld = zeros(num_elems) # nonzero components of full local descriptor for atom i 
+        for eidx in 1:num_elems
+            val = 0.0
+            for j in list_by_elem[eidx]
+                rij = rijs[i,j]
+                if rij <= rcut && i != j# this is inefficient of course, would be better if this was already taken care of
+                    val += qii*qis[j]*fc(rij,rcut)/rij
+                end
+            end
+            perelem_electro_ld[eidx] = val
         end
+        
+        idx_start = (ti-1)*num_elems+1
+        idx_end = idx_start + num_elems -1 
+
+        electro_descrs[i][idx_start:idx_end] .= perelem_electro_ld
     end
     electro_descrs
 end
 
-# Type stable?
-#function compute_rij_mic(A)
-#    cry_to_cart = Matrix(reduce(hcat, ustrip.(bounding_box(test_sys)) )')
-#    cart_to_cry = inv(cry_to_cart)
-#
-#    cart_pos    =  reduce(hcat, ustrip.(position(A)))'
-#    cry_pos     =  mapslices(x-> cart_to_cry*x, cart_pos, dims=2)
-#
-#    for 
-#
-#end
+# Type stable?, non-efficient due to cart -> crystal -> cart
+# this won't be type stable, but the most expensive stuff is in theinner function which should be type stable
+function compute_rij_mic(A::AtomsBase.AbstractSystem)
+    cry_to_cart = Matrix(reduce(hcat, ustrip.(bounding_box(A)) )')
+    cart_to_cry = inv(cry_to_cart)
 
-#function _compute_rij(a::Matrix{Float64})
-#    n = size(a,1)
-#    rij_mat = Matrix{Float64}(undef,n,n)
-#    @inbounds for i in 1:n
-#        rij_mat[i,i] =0.0
-#        ai = view(a,i,:)
-#        for j in (i+1):n
-#            #rij_mat[i,j] = norm(_mic_adjust.(a[i,:] - a[j,:]))
-#            rij_mat[i,j] = norm(a[i,:] - a[j,:])
-#            rij_mat[j,i] = rij_mat[i,j]
-#        end
-#    end
-#    rij_mat
-#end
+    cart_pos    =  reduce(hcat, ustrip.(position(A)))'
+    cry_pos     =  mapslices(x-> cart_to_cry*x, cart_pos, dims=2)
 
-function _compute_rij(a::Matrix{Float64})
-    a = permutedims(a,(2,1))
-    n = size(a,2)
+    rij_mat = _compute_rij_mic(cry_pos,cry_to_cart)
+    rij_mat
+end
+
+function _compute_rij_mic(cry_pos, cry_to_cart::Matrix{Float64})
+    cry_pos = permutedims(cry_pos,(2,1))
+    n = size(cry_pos,2)
     rij_mat = Matrix{Float64}(undef,n,n)
 
     cry_delta_vec = zeros(3)
     cart_delta_vec = zeros(3)
      
     @inbounds for i in 1:n
-        rij_mat[i,i] =0.0
-        ai = view(a,:,i)
-        for j in (i+1):n
-            #rij_mat[i,j] = norm(_mic_adjust.(a[i,:] - a[j,:]))
-            
-            #rij_mat[i,j] = _my_eval(ai,view(a,:,j))
-            
-            #rij_mat[i,j] = norm(ai - view(a,:,j))
-            
-            #aj = view(a,:,j)
-            #s = 0.0 
-            #@inbounds for I in eachindex(ai,aj)
-            #    aiI = ai[I]
-            #    ajI = aj[I]
-            #    s = s + abs2(aiI - ajI)
-            #end
-            #rij_mat[i,j] = sqrt(s)
-            
-            #aj = view(a,:,j)
-            #rij_mat[i,j] = sqrt(sum(abs2.(ai .- aj)))
-                      
-            #aj = view(a,:,j)
-            #rij_mat[i,j] = sqrt(sum(k -> abs2(ai[k] - aj[k]), eachindex(ai,aj)))           
-            
-            #aj = view(a,:,j)
-            #tmp = [abs2(ai[k] - aj[k]) for k in eachindex(ai,aj)]
-            #rij_mat[i,j] = sqrt(sum(tmp))           
-
-            #aj = view(a,:,j)
-            #for k in eachindex(ai,aj,cry_delta_vec)
-            #    cry_delta_vec[k] = abs2(ai[k] - aj[k])
-            #end
-            #rij_mat[i,j] = sqrt(sum(cry_delta_vec))           
-           
-            aj = view(a,:,j)
+        rij_mat[i,i] = 0.0
+        ai = view(cry_pos,:,i)
+        for j in (i+1):n           
+            aj = view(cry_pos,:,j)
             for k in eachindex(ai,aj,cry_delta_vec)
-                cry_delta_vec[k] = abs2(_mic_adjust(ai[k] - aj[k]))
+                cry_delta_vec[k] = _mic_adjust(ai[k] - aj[k])
             end
 
-            mul!(cart_delta_vec, cry_to_cart, cry_delta_vec) #unfortunately kills performance
-            #cart_delta_vec = cry_to_cart*cry_delta_vec # But this is for sure worse
-            rij_mat[i,j] = sqrt(sum(cart_delta_vec))           
-            #rij_mat[i,j] = sqrt(sum(cry_delta_vec))           
+            mul!(cart_delta_vec, cry_to_cart, cry_delta_vec) #unfortunately kills performance 
+            rij_mat[i,j] = sqrt(sum(x-> abs2(x), cart_delta_vec))           
           
             rij_mat[j,i] = rij_mat[i,j]
         end
@@ -306,37 +271,33 @@ function _compute_rij(a::Matrix{Float64})
     rij_mat
 end
 
-function _my_eval(a,b)
-    @inbounds begin 
-    s = 0.0 #eval start
-    for I in eachindex(a,b)
-        aI = a[I]
-        bI = b[I]
-        s = _my_eval_reduce(s,_my_eval_op(aI,bI))
-    end
-    end
-    return _my_eval_end(s)
-end
-
-function _my_eval_reduce(s,op_res)
-    s + op_res
-end
-
-function _my_eval_op(a,b)
-    s1 = abs(a-b)
-    abs2(s1)
-end
-
-function _my_eval_end(s)
-    sqrt(s)
-end
-
-
 function _mic_adjust(x)
     x > 0.5 ? x - 1.0 : (x < -0.5 ? x + 1.0 : x)
 end
 
-function _fc(rij)
+function fc(rij, rcut)
+    y = rij/rcut
+    y2 = y^2
+
+    y3 = 1.0 - y2*y;
+    y4 = y3*y3 + 1e-6;
+    y5 = sqrt(y4);
+    y6 = exp(-1.0/y5);
+
+    fcut = y6/exp(-1.0)
+    fcut
+end
+
+function dfc(rij, rcut)
+    y = rij/rcut
+    y2 = y^2
+    y3 = 1.0 - y2*y;
+    y4 = y3*y3 + 1e-6;
+    y5 = sqrt(y4);
+    y6 = exp(-1.0/y5);
+    y7 = y4*sqrt(y4)
+
+    dfcut = ((3.0/(rcut*exp(-1.0)))*(y2)*y6*(y*y2 - 1.0))/y7;
     return 1.0
 end
 

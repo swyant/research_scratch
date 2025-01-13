@@ -17,6 +17,7 @@ data_fname = "../behler_charge_datasets/AuMgO/input.data"
 elem_list =[:Au, :Al, :Mg, :O]
 target_Qtot = 0.0
 e_lambda = 0.01
+rcut = 4.5
 #
 #param_file = "../files/4body_Ag_param.pod"
 #data_fname = "../behler_charge_datasets/Ag_cluster/input.data"

@@ -1,0 +1,9 @@
+[deps]
+AtomisticQoIs = "895e25ce-6034-4689-a3ba-4ac45d83446c"
+AtomsCalculators = "a3e0e189-c65a-42c1-833c-339540406eb1"
+Cairn = "f102e12b-bead-4d20-9368-b11e50e649cd"
+CairoMakie = "13f3f980-e62b-5c42-98c6-ff1f3baf88f0"
+Molly = "aa0f7f06-fcc0-5ec4-a7f3-a573f33f9c4c"
+PotentialLearning = "82b0a93c-c2e3-44bc-a418-f0f89b0ae5c2"
+SpecialPolynomials = "a25cea48-d430-424a-8ee7-0d3ad3742e9e"
+StatsBase = "2913bbd2-ae8a-5f71-8c99-4fb6c76f3a91"

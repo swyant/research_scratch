@@ -9,8 +9,8 @@ includet("../utils/linear_charge_model.jl")
 ##param_file = "../files/6body_CH_param.pod"
 #data_fname = "../behler_charge_datasets/Carbon_chain/input.data"
 #elem_list = [:C, :H]
-#target_Qtot = 0.0
-##target_Qtot = 1.0
+##target_Qtot = 0.0
+#target_Qtot = 1.0
 #e_lambda = 0.01
 #rcut = 10.0
 
@@ -21,20 +21,20 @@ includet("../utils/linear_charge_model.jl")
 #e_lambda = 0.01
 #rcut = 4.5
 #
-param_file = "../files/4body_Ag_param.pod"
-data_fname = "../behler_charge_datasets/Ag_cluster/input.data"
-elem_list = [:Ag,]
-target_Qtot = -1.0
-#target Qtot = 1.0
-e_lambda = 0.01 
-rcut = 10.0
-
-#param_file = "../files/4body_NaCl_param.pod"
-#data_fname = "../behler_charge_datasets/NaCl/input.data"
-#elem_list = [:Na, :Cl]
+#param_file = "../files/4body_Ag_param.pod"
+#data_fname = "../behler_charge_datasets/Ag_cluster/input.data"
+#elem_list = [:Ag,]
+##target_Qtot = -1.0
 #target_Qtot = 1.0
-#e_lambda=1e-7
+#e_lambda = 0.01 
 #rcut = 10.0
+
+param_file = "../files/4body_NaCl_param.pod"
+data_fname = "../behler_charge_datasets/NaCl/input.data"
+elem_list = [:Na, :Cl]
+target_Qtot = 1.0
+e_lambda=1e-7
+rcut = 10.0
 #
 
 lmp_pod    = LAMMPS_POD(param_file, elem_list)

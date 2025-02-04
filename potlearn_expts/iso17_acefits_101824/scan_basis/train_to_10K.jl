@@ -102,4 +102,4 @@ for spec in ace_specs
     GC.gc()
 end
 
-save("summary_of_ace_basis_scan_iso17_fit-to-10K.jld2", Dict("ddict" => ddict))
+#save("summary_of_ace_basis_scan_iso17_fit-to-10K.jld2", Dict("ddict" => ddict))

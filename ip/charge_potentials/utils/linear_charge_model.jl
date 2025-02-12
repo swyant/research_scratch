@@ -355,4 +355,29 @@ function learn_charge_energy_model(configs::Vector{<:AtomsBase.FlexibleSystem}, 
 end
 
 
-#function compute_electrostatic_descriptors(A::AbstractSystem
+############### Derivatives ##############  
+
+
+#=
+TODO How expensive is it to compute_force_descriptors and compute_peratom_force_descriptors?
+could sum the latter to get the former, saves a call to POD library. Probably worth it
+=#
+function compute_charge_derivative_descriptors(config, lcb)
+    num_atoms = length(config)::Int64
+    global_force_descrs = compute_force_descriptors(config, lcb.basis)
+    peratom_force_descrs = InteratomicPotentials.compute_peratom_force_descriptors(config, lcb.basis)
+
+    # This is actually a bit faster than below, despice the repeated mapslices
+    global_fd_mat = reduce(hcat, reduce(vcat, global_force_descrs)) # get rid of annoying vector{vector{vector}} format
+    G = dropdims(mapslices(x-> lcb.ξ'*x,global_fd_mat, dims=1),dims=1)
+    charge_derivs = dropdims(mapslices(x->lcb.ξ'*x,peratom_force_descrs,dims=3),dims=3)
+    charge_derivs = mapslices(x-> x - G/num_atoms, charge_derivs, dims=1)
+
+    #global_fd_mat = reduce(hcat, reduce(vcat, global_force_descrs))' # get rid of annoying vector{vector{vector}} format
+    #centered_peratom_force_descrs = mapslices(x -> x- global_fd_mat ./ num_atoms, 
+    #                                          peratom_force_descrs, 
+    #                                          dims = (1,3))
+    #charge_derivs = dropdims(mapslices(x->lcb.ξ'*x,centered_peratom_force_descrs,dims=3),dims=3)
+
+    charge_derivs
+end

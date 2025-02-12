@@ -219,3 +219,117 @@ function learn_only_energy(
     println("condition number of AtA: $(cond(AtA))")
     return β
 end
+
+
+# not sure why I'm getting zeros for all x components?
+# make another auxiliary function takes in sys, outputs displaced sys
+
+function make_displaced_structure(config::AtomsBase.AbstractSystem, i,alpha, ϵ; sys_dict=nothing)
+    
+    if isnothing(sys_dict)
+        bbox      = bounding_box(config)
+        bcs       = boundary_conditions(config)
+        atom_syms = atomic_symbol(config)
+        num_atoms = length(config)::Int64
+    else
+        bbox      = sys_dict["bbox"]
+        bcs       = sys_dict["bcs"]
+        atom_syms = sys_dict["atom_syms"]
+        num_atoms = sys_dict["num_atoms"]
+    end
+   
+    united_pos = position(config)
+    length_unit = unit(eltype(united_pos[1])) # should be same unit for all positions
+    disp_pos = ustrip.(united_pos)
+
+    disp_pos[i] = setindex(disp_pos[i], disp_pos[i][alpha] + ϵ, alpha)
+    disp_atoms = [AtomsBase.Atom(atom_syms[i], disp_pos[i]*length_unit) for i in 1:num_atoms]
+    sys = AtomsBase.FlexibleSystem(disp_atoms,bbox, bcs) 
+
+    sys
+end
+
+# -> 3N x N matrix of where each row is the derivative with respect to r_i_alpha
+function finite_difference_charges(config::AtomsBase.FlexibleSystem, lbcm; ϵ = 0.001)
+    
+    total_charge = ustrip(get_total_charge(config))
+
+    sys_dict = Dict{String,Any}()
+
+    sys_dict["num_atoms"] = num_atoms = length(config)::Int64
+    sys_dict["bbox"] = bounding_box(config)
+    sys_dict["bcs"]  = boundary_conditions(config)
+    sys_dict["atom_syms"] = atomic_symbol(config)
+   
+    
+    charge_derivatives = Matrix{Float64}(undef, 3*num_atoms, num_atoms)
+
+    for i in 1:num_atoms
+        for alpha in 1:3
+            forward_sys = make_displaced_structure(config,i,alpha, ϵ/2; sys_dict=sys_dict)
+            forward_charges = atomic_charges(forward_sys, lbcm, total_charge; with_units=false)
+
+            back_sys = make_displaced_structure(config,i,alpha, -ϵ/2; sys_dict=sys_dict)
+            back_charges = atomic_charges(back_sys, lbcm, total_charge; with_units=false)
+
+            charge_deriv = (forward_charges .- back_charges) ./ ϵ
+
+            row_idx = 3*(i-1) + alpha
+            charge_derivatives[row_idx,:]  .= charge_deriv
+        end
+   end
+
+   charge_derivatives
+end
+
+# -> 3N x N matrix of where each row is the derivative with respect to r_i_alpha
+function finite_difference_charges_old(config::AtomsBase.FlexibleSystem, lbcm; ϵ = 0.001)
+    
+    total_charge = ustrip(get_total_charge(config))
+
+    num_atoms = length(config)::Int64
+    bbox = bounding_box(config)
+    bcs  = boundary_conditions(config)
+    
+    united_pos = position(config)
+    length_unit = unit(eltype(united_pos[1])) # should be same unit for all positions
+
+    base_pos = ustrip.(united_pos)
+    atom_syms = atomic_symbol(config)
+    
+    charge_derivatives = Matrix{Float64}(undef, 3*num_atoms, num_atoms)
+
+    for i in 1:num_atoms
+        for alpha in 1:3
+            disp_pos_forward = deepcopy(base_pos) # vector of SVector{3, Float64}
+            disp_pos_forward[i] = setindex(disp_pos_forward[i], disp_pos_forward[i][alpha] + ϵ/2, alpha)
+            forward_disp_atoms = [AtomsBase.Atom(atom_syms[i], disp_pos_forward[i]*length_unit) for i in 1:num_atoms]
+            forward_sys = AtomsBase.FlexibleSystem(forward_disp_atoms,bbox, bcs) 
+            forward_charges = atomic_charges(forward_sys, lbcm, total_charge; with_units=false)
+
+            disp_pos_back = deepcopy(base_pos) # vector of SVector{3, Float64}
+            disp_pos_back[i] = setindex(disp_pos_back[i], disp_pos_back[i][alpha] - ϵ/2, alpha)
+            back_disp_atoms = [AtomsBase.Atom(atom_syms[i], disp_pos_back[i]*length_unit) for i in 1:num_atoms]
+            back_sys = AtomsBase.FlexibleSystem(back_disp_atoms,bbox, bcs) 
+            back_charges = atomic_charges(back_sys, lbcm, total_charge; with_units=false)
+
+            #if i==1 && alpha==1
+            #    println("disp_pos_forward:")
+            #    display(disp_pos_forward)
+            #    println("forward_charges:")
+            #    display(forward_charges)
+            #    println("disp_pos_back:")
+            #    display(disp_pos_back)
+            #    println("back_charges:")
+            #    display(back_charges)
+            #end
+
+            charge_deriv = (forward_charges .- back_charges) ./ ϵ
+
+            row_idx = 3*(i-1) + alpha
+            charge_derivatives[row_idx,:]  .= charge_deriv
+        end
+   end
+
+   charge_derivatives
+end

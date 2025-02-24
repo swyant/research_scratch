@@ -1668,7 +1668,7 @@ version = "0.2.4"
 deps = ["AtomsBase", "Clustering", "DataFrames", "Determinantal", "Distributions", "Flux", "Hyperopt", "InteratomicPotentials", "IterTools", "LinearAlgebra", "Optimization", "OptimizationOptimisers", "OrderedCollections", "Printf", "ProgressBars", "Random", "StaticArrays", "Statistics", "Unitful", "UnitfulAtomic", "YAML", "Zygote"]
 path = "/home/swyant/cesmix/dev/PotentialLearning.jl/"
 uuid = "82b0a93c-c2e3-44bc-a418-f0f89b0ae5c2"
-version = "0.2.6"
+version = "0.2.7"
 
 [[deps.PrecompileTools]]
 deps = ["Preferences"]

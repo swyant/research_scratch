@@ -333,3 +333,40 @@ function finite_difference_charges_old(config::AtomsBase.FlexibleSystem, lbcm; �
 
    charge_derivatives
 end
+
+
+function finite_difference_forces(config::AtomsBase.FlexibleSystem, lbp; ϵ = 0.001)
+    
+    total_charge = ustrip(get_total_charge(config))
+
+    sys_dict = Dict{String,Any}()
+
+    sys_dict["num_atoms"] = num_atoms = length(config)::Int64
+    sys_dict["bbox"] = bounding_box(config)
+    sys_dict["bcs"]  = boundary_conditions(config)
+    sys_dict["atom_syms"] = atomic_symbol(config)
+   
+    
+    force_components = Vector{Float64}(undef, 3*num_atoms)
+
+    for i in 1:num_atoms
+        for alpha in 1:3
+            forward_sys = make_displaced_structure(config,i,alpha, ϵ/2; sys_dict=sys_dict)
+            forward_energy = potential_energy(forward_sys,lbp)
+
+            back_sys = make_displaced_structure(config,i,alpha, -ϵ/2; sys_dict=sys_dict)
+            back_energy = potential_energy(back_sys,lbp)
+
+            force_component  = (forward_energy .- back_energy) ./ ϵ
+
+            row_idx = 3*(i-1) + alpha
+            force_components[row_idx] = force_component 
+        end
+   end
+
+  force_components = reshape(-1.0*force_components,3,:)'
+  final_forces = [copy(row) for row in eachrow(force_components)]
+ 
+  final_forces
+end
+

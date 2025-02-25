@@ -6,7 +6,7 @@ using LinearAlgebra: Diagonal, cond, norm, mul!
 # using SIMD 
 
 #Probably should be parameterically typed
-# Also probably should include total charge here too?
+# Also probably should include total charge here too? or only here actually
 struct LBasisChargeModel
     basis::BasisSystem
     ξ::Vector{Float64}
@@ -29,15 +29,6 @@ struct LinearChargeBasis <:BasisSystem
     gamma::Bool
     # should I pre-compute and store size of basis?
 end
-
-#function Base.length(lcb::LinearChargeBasis)
-#    base_length = length(lcb.base_basis)
-#    #kappa_length = lcb.l_order*length(lcb.type_map)*base_length # with redundant zeros
-#    perelem_ld_length = base_length ÷ length(lcb.type_map) # to ensure it's integer
-#    kappa_length = lcb.l_order*length(lcb.type_map)*perelem_ld_length 
-#    gamma_length = length(lcb.type_map)^2
-#    total_length = base_length + kappa_length + gamma_length
-#end
 
 function Base.length(lcb::LinearChargeBasis)
     total_length = 0
@@ -163,59 +154,6 @@ function atomic_charges(cld, ξ, per_atom_Qtot::Float64=0.0; with_units=false)
     end
 end
 
-#function compute_local_descriptors(A::AbstractSystem, lcb::LinearChargeBasis)
-#    Qtot = lcb.total_charge
-#    num_atoms = length(A)::Int64
-#    num_elems = length(lcb.type_map) 
-#    
-#    #TODO compute perelem ld instead of full ld vector, so no always-zero terms when computing kappa terms
-#    base_ld = compute_local_descriptors(A, lcb.base_basis) # Vector{Float64}
-#    base_ld_size = length(base_ld[1])
-#
-#    #TODO if chargemodel and lcb don't share same basis, should not pass ld!
-#    @assert lcb.charge_model.basis == lcb.base_basis #probably a flag in the struct to indicate this?
-#    cld = compute_centered_descriptors(A, lcb.base_basis; ld=base_ld)
-#    
-#    # the initial one represents the beta term in Cuong's notation
-#    perelem_base_ld = hcat(ones(num_atoms),InteratomicPotentials.compute_perelem_local_descriptors(A,lcb.base_basis))
-#
-#    qis = atomic_charges(cld, lcb.charge_model.ξ, Qtot/num_atoms)
-#    charge_descrs = compute_charge_descriptors(lcb.l_order, qis)
-#
-#    electrostatic_descrs = compute_electrostatic_descriptors(A,lcb.type_map,qis,lcb.rcut)
-#
-#    ld = Vector{Vector{Float64}}()
-#    species = atomic_symbol(A)
-#    for i in 1:num_atoms
-#        type_idx = lcb.type_map[species[i]]
-#
-#        alpha_term = base_ld[i]
-#
-#        ##gamma terms
-#        #gamma_term  = zeros(num_elems^2)
-#        #gamma_start = (type_idx-1)*num_elems+1
-#        #gamma_end   = gamma_start + num_elems -1 
-#        #gamma_term[gamma_start:gamma_end] .= electrostatic_descrs[i]
-#
-#        gamma_term = electrostatic_descrs[i]
-#
-#        #new kappa terms
-#        perelem_ld_size = size(perelem_base_ld,2)
-#        kappa_term = zeros(Float64,num_elems*perelem_ld_size*lcb.l_order)
-#        mixed_descriptor_mat = perelem_base_ld[i,:]' .* charge_descrs[i,:]
-#        
-#        kappa_start = (type_idx-1)*lcb.l_order*perelem_ld_size+1
-#        kappa_end   = kappa_start + lcb.l_order*perelem_ld_size -1
-#        kappa_term[kappa_start:kappa_end] .= reshape(mixed_descriptor_mat',:)        
-#
-#
-#        push!(ld, [alpha_term;gamma_term;kappa_term])
-#        #push!(ld, [alpha_term;kappa_term])
-#    end
-#
-#    ld
-#end
-
 function compute_local_descriptors(A::AbstractSystem, lcb::LinearChargeBasis)
     Qtot = lcb.total_charge
     num_atoms = length(A)::Int64
@@ -312,10 +250,7 @@ function compute_electrostatic_descriptors(A,type_map,qis,rcut)
             for j in list_by_elem[eidx]
                 rij = rijs[i,j]
                 if rij <= rcut && i != j# this is inefficient of course, would be better if this was already taken care of
-                    val += qii*qis[j]*fc(rij,rcut)/rij # TODO don't forget to uncomment this
-                    #val += fc(rij,rcut)/rij
-                    #val += qii*qis[j]
-                    #val  += qii
+                    val += qii*qis[j]*fc(rij,rcut)/rij 
                 end
             end
             perelem_electro_ld[eidx] = val
@@ -467,6 +402,156 @@ function learn_charge_energy_model(configs::Vector{<:AtomsBase.FlexibleSystem}, 
     ps
 end
 
+# The only substantive difference between this and ooc_learn! is checking the charge (and it takes vector of configs, and the centered energies)
+function learn_charge_energyforce_model(configs::Vector{<:AtomsBase.FlexibleSystem}, 
+                                        basis::BasisSystem,
+                                        ref_energies::Vector{Float64},
+                                        ref_forces::Vector{Vector{Float64}};
+                                        λ=0.01,
+                                        ws = [30.0, 1.0],
+                                        reg_style::Symbol=:default,
+                                        pbar=true,
+                                        eweight_normalized = :squared  # :squared, :standard or nothing
+                                        )
+
+    basis_size = length(basis)
+    
+    AtWA = zeros(basis_size,basis_size)
+    AtWb = zeros(basis_size)
+
+    if pbar
+        iter = ProgressBar(configs)
+    else
+        iter = configs
+    end
+
+    for (i,config) in enumerate(iter)
+        ref_energy = ref_energies[i]
+        ref_force_comps = ref_forces[i]
+
+        num_atoms = length(config)::Int64
+        total_charge = ustrip(get_total_charge(config))
+        if total_charge != basis.total_charge
+            error("This system doesn't have the appropriate total charge!")
+        end
+        
+        global_descrs = reshape(sum(compute_local_descriptors(config,basis)),:,1)'
+        force_descrs  = stack(reduce(vcat,compute_force_descriptors(config,basis)))'
+
+        A = [global_descrs; force_descrs]
+        b = [ref_energy; ref_force_comps]
+        
+
+        if isnothing(eweight_normalized)
+            we_norm = 1.0
+        elseif eweight_normalized == :standard
+            we_norm = 1/num_atoms
+        elseif eweight_normalized == :squared
+            we_norm = 1/num_atoms^2
+        else
+            error("eweight_normalized can only be nothing, :standard, or :squared")
+        end
+
+        W = Diagonal( [we_norm*ws[1];
+                       ws[2]*ones(length(ref_force_comps))] )
+
+
+        AtWA .+= A'*W*A
+        AtWb .+= A'*W*b
+    end 
+
+    if reg_style == :default
+        reg_matrix = λ*Diagonal(ones(size(AtWA)[1]))
+        AtWA += reg_matrix
+    elseif reg_style == :scale
+        for i in 1:size(AtWA,1)
+           reg_elem = AtWA[i,i]*(1+λ)
+           reg_elem = max(λ,reg_elem)
+           AtWA[i,i] = reg_elem        
+        end
+    end
+
+    println("condition number of AtWA: $(cond(AtWA))")
+
+    ps = AtWA \ AtWb
+
+    ps
+end
+
+
+# The only substantive difference between this and ooc_learn! is checking the charge (and it takes vector of configs, and the centered energies)
+function learn_energyforce_model(configs::Vector{<:AtomsBase.FlexibleSystem}, 
+                                        basis::BasisSystem,
+                                        ref_energies::Vector{Float64},
+                                        ref_forces::Vector{Vector{Float64}};
+                                        λ=0.01,
+                                        ws = [30.0, 1.0],
+                                        reg_style::Symbol=:default,
+                                        pbar=true,
+                                        eweight_normalized = :squared  # :squared, :standard or nothing
+                                        )
+
+    basis_size = length(basis)
+    
+    AtWA = zeros(basis_size,basis_size)
+    AtWb = zeros(basis_size)
+
+    if pbar
+        iter = ProgressBar(configs)
+    else
+        iter = configs
+    end
+
+    for (i,config) in enumerate(iter)
+        ref_energy = ref_energies[i]
+        ref_force_comps = ref_forces[i]
+
+        num_atoms = length(config)::Int64
+        total_charge = ustrip(get_total_charge(config))
+        
+        global_descrs = reshape(sum(compute_local_descriptors(config,basis)),:,1)'
+        force_descrs  = stack(reduce(vcat,compute_force_descriptors(config,basis)))'
+
+        A = [global_descrs; force_descrs]
+        b = [ref_energy; ref_force_comps]
+        
+
+        if isnothing(eweight_normalized)
+            we_norm = 1.0
+        elseif eweight_normalized == :standard
+            we_norm = 1/num_atoms
+        elseif eweight_normalized == :squared
+            we_norm = 1/num_atoms^2
+        else
+            error("eweight_normalized can only be nothing, :standard, or :squared")
+        end
+
+        W = Diagonal( [we_norm*ws[1];
+                       ws[2]*ones(length(ref_force_comps))] )
+
+
+        AtWA .+= A'*W*A
+        AtWb .+= A'*W*b
+    end 
+
+    if reg_style == :default
+        reg_matrix = λ*Diagonal(ones(size(AtWA)[1]))
+        AtWA += reg_matrix
+    elseif reg_style == :scale
+        for i in 1:size(AtWA,1)
+           reg_elem = AtWA[i,i]*(1+λ)
+           reg_elem = max(λ,reg_elem)
+           AtWA[i,i] = reg_elem        
+        end
+    end
+
+    println("condition number of AtWA: $(cond(AtWA))")
+
+    ps = AtWA \ AtWb
+
+    ps
+end
+
 
 ############### Derivatives ##############  
 
@@ -498,263 +583,38 @@ function compute_atomic_charge_derivatives(config, lcb)
 end
 
 #= assuming that lcb.base_basis == lcb.charge_model.basis
-- technically, only need to call compute_peratom_force_descriptors
-- compute_force_desriptors can be called once here
-- tbh, I think I really just need to compute_peratom_force_descriptors_withindices, and reconstruct the global force descrs
-- as long as the charge model.basis and base basis are the same, that is the only time that call needs to happen...
 OK so yes, this is very non-optimized. 
 The biggest saving will be the above described compute_peratom_force_descriptors --> global force descriptors --> used to compute base_global_force_descrs, atomic_charge_derivs, and peratom_fd. 
-The second biggest saving is fixing up the highly nested for loop. 
-Basically, at the level of each row index (i.e each Fjalpha), rather than iterating over l_order and num_atoms, there should be a simpler loop over element types. 
-For each element type, need a version of peratom_fd that only contains atoms corresponding to that element, and gets rid of the guaranteed-zero components in the descriptor dimension (i.e. descriptors corresonding to different central atoms elements) that exist in peratom_fd. Then you outer product this with charge_descrs, and maybe permute dims so that you have a k x l_order x num_atoms_for_elem. You then sum along the num_atoms direction. A similar thing needs to be performed for the second term d*l*(Q)^l-1*dQi/rjalpha. Here it'll be useful to have an augmented charge_descr matrix where the first column is just 1's (so that you can do the multiplication by Q^l-1). After doing the same reduction operation, you do the .- subtraction of each kx3 matrix, reshape into a flat array of l_order=1,2,3, and assign it to the appropriate element block of kappa_force_descrs for that row_idx. 
---> After doing this, still only saved like 15%. Maybe row vs. column iteration idk.
 =#
 function compute_force_descriptors(A::AbstractSystem, lcb::LinearChargeBasis)
     num_atoms = length(A)::Int64
     num_elems = length(lcb.type_map)
-    
-    #### alpha term
-    #base_global_force_descrs = compute_force_descriptors(A,lcb.base_basis)
-    #base_global_force_descrs
-    
-    #### kappa term
-    #peratom_fd, peratom_fd_indices = InteratomicPotentials.compute_peratom_force_descriptors_withindices(A,lcb.base_basis) 
-    #perelem_base_ld = hcat(ones(num_atoms), InteratomicPotentials.compute_perelem_local_descriptors(A, lcb.base_basis))
-    #perelem_ld_size = length(peratom_fd_indices[1]) 
-    #@assert perelem_ld_size == size(perelem_base_ld)[2]
-    #
-    base_ld = compute_local_descriptors(A, lcb.base_basis)
-    @assert lcb.charge_model.basis == lcb.base_basis
-    cld = compute_centered_descriptors(A, lcb.base_basis; ld=base_ld)
-    qis = atomic_charges(cld, lcb.charge_model.ξ, lcb.total_charge/num_atoms)
-    #charge_descrs = compute_charge_descriptors(lcb.l_order, qis)    
-    atomic_charge_derivs = compute_atomic_charge_derivatives(A,lcb.charge_model)
-    #
-    ## Conforming to the dumb vec{vec{vec{Float64}}} convention that needs to change
-    ## I'm sure this could be optimized, but I'm not too concerned
     species = atomic_symbol(A)::Vector{Symbol}
-    #all_atoms_force_descrs = Vector{Vector{Float64}}[]
-    ##for j in 1:num_atoms
-    ##    atom_j_force_descrs = Vector{Float64}[]
-    ##    for alpha in 1:3 
-    ##        row_idx = (j-1)*3 + alpha
-    ##        kappa_force_descrs = zeros(perelem_ld_size*lcb.l_order*num_elems)
-    ##        for l_order in 1:lcb.l_order
-    ##            for i in 1:num_atoms 
-    ##                type_idx = lcb.type_map[species[i]]
-    ##                # note for force descriptors, I have to explicitly iterate of l_order, so slightly different indices
-    ##                kappa_start = (type_idx-1)*lcb.l_order*perelem_ld_size+ (l_order-1)*perelem_ld_size + 1
-    ##                kappa_end = kappa_start + perelem_ld_size -1
-    ##                
-    ##                atm_i_peratom_fd =  peratom_fd[row_idx,i,peratom_fd_indices[i]]
-    ##                # this term has the negative built in from peratom_fd (accessing LAMMPS POD force descriptors)
-    ##                kappa_force_descrs[kappa_start:kappa_end] += atm_i_peratom_fd .* charge_descrs[i,l_order]
-    ##                # this term does not have the negative built in, hence it is subtracted
-    ##                kappa_force_descrs[kappa_start:kappa_end] -= perelem_base_ld[i,:] .* (l_order * (l_order-1 ==0 ? 1 : charge_descrs[i,l_order-1]) * atomic_charge_derivs[row_idx,i] ) 
-    ##            end
-    ##        end
-    ##        push!(atom_j_force_descrs, kappa_force_descrs)
-    ##        #push!(atom_j_force_descrs, [kappa_force_descrs[3],])
-    ##     end
-    ##     push!(all_atoms_force_descrs, atom_j_force_descrs)
-    ##end
-    #
-    ## This is a bit faster
+  
+    force_descrs =[ [Float64[] for alpha in 1:3] for _ in 1:num_atoms] 
+
+    if lcb.kappa || lcb.gamma
+        base_ld = compute_local_descriptors(A, lcb.base_basis)
+        @assert lcb.charge_model.basis == lcb.base_basis
+        cld = compute_centered_descriptors(A, lcb.base_basis; ld=base_ld)
+        qis = atomic_charges(cld, lcb.charge_model.ξ, lcb.total_charge/num_atoms)
+        atomic_charge_derivs = compute_atomic_charge_derivatives(A,lcb.charge_model)
+    end
+
+    if lcb.kappa
+        peratom_fd, peratom_fd_indices = InteratomicPotentials.compute_peratom_force_descriptors_withindices(A,lcb.base_basis) 
+        perelem_base_ld = hcat(ones(num_atoms), InteratomicPotentials.compute_perelem_local_descriptors(A, lcb.base_basis))
+        perelem_ld_size = length(peratom_fd_indices[1]) 
+        @assert perelem_ld_size == size(perelem_base_ld)[2]
+        charge_descrs = compute_charge_descriptors(lcb.l_order, qis)    
+
+        reshaped_charge_descrs = reshape(charge_descrs,num_atoms,1,lcb.l_order)
+        aug_charge_descrs = reshape(cat(ones(num_atoms), charge_descrs, dims=2)[:,1:end-1], num_atoms, 1, lcb.l_order)
+        reshaped_perelem_base_ld = reshape(perelem_base_ld, num_atoms, perelem_ld_size,1) 
+        all_lorders = reshape([i for i in 1:lcb.l_order],1,1,lcb.l_order)
+    end
+
     atom_types = [lcb.type_map[spec] for spec in species]
-    #peratom_fd_byelem = Dict{Int64, Array{Float64,3}}()
-    elem_indices = Dict{Int64,Vector{Int64}}()
-    num_atoms_byelem = Dict{Int64,Int64}()
-    for eidx in 1:num_elems
-        elem_atoms = findall(x-> x==eidx, atom_types)
-        elem_indices[eidx] = elem_atoms
-        num_atoms_byelem[eidx] = length(elem_atoms)
-        # if kappa, do this next one
-        #peratom_fd_byelem[eidx] = view(peratom_fd,:,elem_atoms,peratom_fd_indices[elem_atoms[1]]) # all atoms of the same type will have the same peratom_fd_indices, so just grab the first one
-    end 
-    #reshaped_charge_descrs = reshape(charge_descrs,num_atoms,1,lcb.l_order)
-    #aug_charge_descrs = reshape(cat(ones(num_atoms), charge_descrs, dims=2)[:,1:end-1], num_atoms, 1, lcb.l_order)
-    #reshaped_perelem_base_ld = reshape(perelem_base_ld, num_atoms, perelem_ld_size,1) 
-    #all_lorders = reshape([i for i in 1:lcb.l_order],1,1,lcb.l_order)
-    #  
-    #@inbounds for j in 1:num_atoms
-    #    atom_j_force_descrs = Vector{Float64}[]
-    #    for alpha in 1:3 
-    #        row_idx = (j-1)*3 + alpha
-    #        kappa_force_descrs = zeros(perelem_ld_size*lcb.l_order*num_elems)
-    #        for eidx in 1:num_elems 
-    #            kappa_start = (eidx-1)*lcb.l_order*perelem_ld_size + 1 
-    #            kappa_end = kappa_start + lcb.l_order*perelem_ld_size -1
-
-    #            term1 = reshape(view(peratom_fd_byelem[eidx],row_idx,:,:),num_atoms_byelem[eidx],perelem_ld_size,1) .* view(reshaped_charge_descrs,elem_indices[eidx],:,:)
-    #            term1 = dropdims(sum(term1,dims=1),dims=1) 
-
-    #            term2 = view(reshaped_perelem_base_ld,elem_indices[eidx],:,:) .* all_lorders .* view(aug_charge_descrs,elem_indices[eidx],:,:) .* reshape(view(atomic_charge_derivs,row_idx,elem_indices[eidx]),num_atoms_byelem[eidx],1,1)
-    #            term2 = dropdims(sum(term2,dims=1),dims=1)
-
-    #            kappa_force_descrs[kappa_start:kappa_end] .= reshape(term1 .- term2, :)
-    #         end
-    #        push!(atom_j_force_descrs, kappa_force_descrs)
-    #        #push!(atom_j_force_descrs, [kappa_force_descrs[3],])
-    #     end
-    #     push!(all_atoms_force_descrs, atom_j_force_descrs)
-    #end
-    
-    #all_atoms_force_descrs
-
-    #Gamma term 
-    disp_vecs, riks =  compute_rij_and_dispvec_mic(A)
-    rcut = lcb.rcut
-    gamma_force_descrs = Vector{Vector{Float64}}[]
-    for j in 1:num_atoms
-        atom_j_force_descrs = Vector{Float64}[]
-        for alpha in 1:3 
-            row_idx = (j-1)*3 + alpha
-            per_row_gamma_fd = zeros(num_elems^2)
-            for eidx1 in 1:num_elems
-                gamma_e1 = zeros(num_elems)
-                for i in elem_indices[eidx1]
-                    dqi_dr = atomic_charge_derivs[row_idx, i]
-                    qi = qis[i]
-                    for eidx2 in 1:num_elems
-                        for k in elem_indices[eidx2]
-                            rik = riks[i,k]
-                            if rik <= rcut && i != k
-                                dqk_dr = atomic_charge_derivs[row_idx,k]
-                                qk = qis[k]
-                                gamma_e1[eidx2] += (fc(rik,rcut)/rik)*(dqi_dr*qk + qi*dqk_dr)
-                                #gamma_e1[eidx2] += (dqi_dr*qk + qi*dqk_dr)
-                                #gamma_e1[eidx2] += dqi_dr
-
-                                if j == i
-                                    disp_vec_comp = disp_vecs[i,k,alpha]
-                                    gamma_e1[eidx2] += qi*qk*disp_vec_comp * (rik*dfc(rik,rcut) - fc(rik,rcut))/rik^3
-                                elseif j == k
-                                    disp_vec_comp = disp_vecs[i,k,alpha]
-                                    gamma_e1[eidx2] -= qi*qk*disp_vec_comp * (rik*dfc(rik,rcut) - fc(rik,rcut))/rik^3
-                                end
-                                #if j == i
-                                #    disp_vec_comp = disp_vecs[i,k,alpha]
-                                #    gamma_e1[eidx2] += disp_vec_comp * (rik*dfc(rik,rcut) - fc(rik,rcut))/rik^3
-                                #elseif j == k
-                                #    disp_vec_comp = disp_vecs[i,k,alpha]
-                                #    gamma_e1[eidx2] -= disp_vec_comp * (rik*dfc(rik,rcut) - fc(rik,rcut))/rik^3
-                                #end
-
-                            end
-                        end
-                    end
-                end
-                idx_start = (eidx1-1)*num_elems + 1 
-                idx_end = idx_start + num_elems -1
-                per_row_gamma_fd[idx_start:idx_end] .= -1.0*gamma_e1 #no POD force descriptors here, have to manually account for -1
-             end
-             push!(atom_j_force_descrs, per_row_gamma_fd)
-        end
-        push!(gamma_force_descrs, atom_j_force_descrs)
-   end
-   gamma_force_descrs
-end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-function for_timing(A,lcb,peratom_fd, peratom_fd_indices, perelem_base_ld, charge_descrs, atomic_charge_derivs)
-    num_atoms = length(A)::Int64
-    num_elems = length(lcb.type_map)
-
-    perelem_ld_size = length(peratom_fd_indices[1]) 
-        
-    # Conforming to the dumb vec{vec{vec{Float64}}} convention that needs to change
-    # I'm sure this could be optimized, but I'm not too concerned
-    species = atomic_symbol(A)::Vector{Symbol}
-    all_atoms_force_descrs = Vector{Vector{Float64}}[]
-    #for j in 1:num_atoms
-    #    atom_j_force_descrs = Vector{Float64}[]
-    #    for alpha in 1:3 
-    #        row_idx = (j-1)*3 + alpha
-    #        kappa_force_descrs = zeros(perelem_ld_size*lcb.l_order*num_elems)
-    #        for l_order in 1:lcb.l_order
-    #            for i in 1:num_atoms 
-    #                type_idx = lcb.type_map[species[i]]
-    #                # note for force descriptors, I have to explicitly iterate of l_order, so slightly different indices
-    #                kappa_start = (type_idx-1)*lcb.l_order*perelem_ld_size+ (l_order-1)*perelem_ld_size + 1
-    #                kappa_end = kappa_start + perelem_ld_size -1
-    #                
-    #                atm_i_peratom_fd =  peratom_fd[row_idx,i,peratom_fd_indices[i]]
-    #                # this term has the negative built in from peratom_fd (accessing LAMMPS POD force descriptors)
-    #                kappa_force_descrs[kappa_start:kappa_end] += atm_i_peratom_fd .* charge_descrs[i,l_order]
-    #                # this term does not have the negative built in, hence it is subtracted
-    #                kappa_force_descrs[kappa_start:kappa_end] -= perelem_base_ld[i,:] .* (l_order * (l_order-1 ==0 ? 1 : charge_descrs[i,l_order-1]) * atomic_charge_derivs[row_idx,i] ) 
-    #            end
-    #        end
-    #        push!(atom_j_force_descrs, kappa_force_descrs)
-    #        #push!(atom_j_force_descrs, [kappa_force_descrs[3],])
-    #     end
-    #     push!(all_atoms_force_descrs, atom_j_force_descrs)
-    #end
-    
-    atom_types = [lcb.type_map[spec] for spec in species]::Vector{Int64}
     peratom_fd_byelem = Dict{Int64, Array{Float64,3}}()
     elem_indices = Dict{Int64,Vector{Int64}}()
     num_atoms_byelem = Dict{Int64,Int64}()
@@ -762,59 +622,94 @@ function for_timing(A,lcb,peratom_fd, peratom_fd_indices, perelem_base_ld, charg
         elem_atoms = findall(x-> x==eidx, atom_types)
         elem_indices[eidx] = elem_atoms
         num_atoms_byelem[eidx] = length(elem_atoms)
-        peratom_fd_byelem[eidx] = view(peratom_fd,:,elem_atoms,peratom_fd_indices[eidx])
+        if lcb.kappa && length(elem_atoms) > 0
+            peratom_fd_byelem[eidx] = view(peratom_fd,:,elem_atoms,peratom_fd_indices[elem_atoms[1]]) # all atoms of the same type will have the same peratom_fd_indices, so just grab the first one
+        end
     end 
-    reshaped_charge_descrs = reshape(charge_descrs,num_atoms,1,lcb.l_order)
-    aug_charge_descrs = reshape(cat(ones(num_atoms), charge_descrs, dims=2)[:,1:end-1], num_atoms, 1, lcb.l_order)
-    reshaped_perelem_base_ld = reshape(perelem_base_ld, num_atoms, perelem_ld_size,1) 
-    all_lorders = reshape([i for i in 1:lcb.l_order],1,1,lcb.l_order)
 
-    #for j in 1:num_atoms
-    #    atom_j_force_descrs = Vector{Float64}[]
-    #    for alpha in 1:3 
-    #        row_idx = (j-1)*3 + alpha
-    #        kappa_force_descrs = zeros(perelem_ld_size*lcb.l_order*num_elems)
-    #        for eidx in 1:num_elems 
-    #            kappa_start = (eidx-1)*lcb.l_order*perelem_ld_size + 1 
-    #            kappa_end = kappa_start + lcb.l_order*perelem_ld_size -1
 
-    #            term1 = reshape(peratom_fd_byelem[eidx][row_idx,:,:],num_atoms_byelem[eidx],perelem_ld_size,1) .* reshaped_charge_descrs[elem_indices[eidx],:,:]
-    #            term1 = dropdims(sum(term1,dims=1),dims=1) 
+    #### Alpha term
+    if lcb.alpha 
+        base_global_fd = compute_force_descriptors(A,lcb.base_basis)
 
-    #            term2 = reshaped_perelem_base_ld[elem_indices[eidx],:,:] .* all_lorders .* aug_charge_descrs[elem_indices[eidx],:,:] .* reshape(atomic_charge_derivs[row_idx,elem_indices[eidx]],num_atoms_byelem[eidx],1,1)
-    #            term2 = dropdims(sum(term2,dims=1),dims=1)
-
-    #            kappa_force_descrs[kappa_start:kappa_end] += reshape(term1 .- term2, :)
-    #         end
-    #        push!(atom_j_force_descrs, kappa_force_descrs)
-    #        #push!(atom_j_force_descrs, [kappa_force_descrs[3],])
-    #     end
-    #     push!(all_atoms_force_descrs, atom_j_force_descrs)
-    #end
-       
-    @inbounds for j in 1:num_atoms
-        atom_j_force_descrs = Vector{Float64}[]
-        for alpha in 1:3 
-            row_idx = (j-1)*3 + alpha
-            kappa_force_descrs = zeros(perelem_ld_size*lcb.l_order*num_elems)
-            for eidx in 1:num_elems 
-                kappa_start = (eidx-1)*lcb.l_order*perelem_ld_size + 1 
-                kappa_end = kappa_start + lcb.l_order*perelem_ld_size -1
-
-                term1 = reshape(view(peratom_fd_byelem[eidx],row_idx,:,:),num_atoms_byelem[eidx],perelem_ld_size,1) .* view(reshaped_charge_descrs,elem_indices[eidx],:,:)
-                term1 = dropdims(sum(term1,dims=1),dims=1) 
-
-                term2 = view(reshaped_perelem_base_ld,elem_indices[eidx],:,:) .* all_lorders .* view(aug_charge_descrs,elem_indices[eidx],:,:) .* reshape(view(atomic_charge_derivs,row_idx,elem_indices[eidx]),num_atoms_byelem[eidx],1,1)
-                term2 = dropdims(sum(term2,dims=1),dims=1)
-
-                kappa_force_descrs[kappa_start:kappa_end] .= reshape(term1 .- term2, :)
-             end
-            push!(atom_j_force_descrs, kappa_force_descrs)
-            #push!(atom_j_force_descrs, [kappa_force_descrs[3],])
-         end
-         push!(all_atoms_force_descrs, atom_j_force_descrs)
+        for j in 1:num_atoms
+            for alpha in 1:3 
+                force_descrs[j][alpha] = vcat(force_descrs[j][alpha],base_global_fd[j][alpha])
+            end
+        end
     end
-   
-    all_atoms_force_descrs
 
+
+    #### Gamma term 
+    # This will need to be cleaned up eventually, need to precompute element indices by pairs, prefilter outer i == k, rik <=rcut
+    # if you have the relevant indices, can do outer product (i.e., i, k) than sum over all the terms (i.e., sum over i and k)
+    # then for every row_idx with atom j, can add in the fcut derivative selectively to relevant elem sets. 
+    if lcb.gamma
+        disp_vecs, riks =  compute_rij_and_dispvec_mic(A)
+        rcut = lcb.rcut
+        for j in 1:num_atoms
+            for alpha in 1:3 
+                row_idx = (j-1)*3 + alpha
+                gamma_force_descrs = zeros(num_elems^2)
+                for eidx1 in 1:num_elems
+                    gamma_e1 = zeros(num_elems)
+                    for i in elem_indices[eidx1]
+                        dqi_dr = atomic_charge_derivs[row_idx, i]
+                        qi = qis[i]
+                        for eidx2 in 1:num_elems
+                            for k in elem_indices[eidx2]
+                                rik = riks[i,k]
+                                if rik <= rcut && i != k
+                                    dqk_dr = atomic_charge_derivs[row_idx,k]
+                                    qk = qis[k]
+                                    gamma_e1[eidx2] += (fc(rik,rcut)/rik)*(dqi_dr*qk + qi*dqk_dr)
+                                    if j == i
+                                        disp_vec_comp = disp_vecs[i,k,alpha]
+                                        gamma_e1[eidx2] += qi*qk*disp_vec_comp * (rik*dfc(rik,rcut) - fc(rik,rcut))/rik^3
+                                    elseif j == k
+                                        disp_vec_comp = disp_vecs[i,k,alpha]
+                                        gamma_e1[eidx2] -= qi*qk*disp_vec_comp * (rik*dfc(rik,rcut) - fc(rik,rcut))/rik^3
+                                    end
+                                end
+                            end
+                        end
+                    end
+                    idx_start = (eidx1-1)*num_elems + 1 
+                    idx_end = idx_start + num_elems -1
+                    gamma_force_descrs[idx_start:idx_end] .= -1.0*gamma_e1 #no POD force descriptors here, have to manually account for -1
+                 end
+                force_descrs[j][alpha] = vcat(force_descrs[j][alpha], gamma_force_descrs)
+            end
+        end
+    end
+
+    
+    ##### Kappa term  
+    if lcb.kappa
+        @inbounds for j in 1:num_atoms
+            for alpha in 1:3 
+                row_idx = (j-1)*3 + alpha
+                kappa_force_descrs = zeros(perelem_ld_size*lcb.l_order*num_elems)
+                for eidx in 1:num_elems 
+                    if num_atoms_byelem[eidx] == 0 
+                        continue
+                    end
+                    kappa_start = (eidx-1)*lcb.l_order*perelem_ld_size + 1 
+                    kappa_end = kappa_start + lcb.l_order*perelem_ld_size -1
+
+                    term1 = reshape(view(peratom_fd_byelem[eidx],row_idx,:,:),num_atoms_byelem[eidx],perelem_ld_size,1) .* view(reshaped_charge_descrs,elem_indices[eidx],:,:)
+                    term1 = dropdims(sum(term1,dims=1),dims=1) 
+
+                    term2 = view(reshaped_perelem_base_ld,elem_indices[eidx],:,:) .* all_lorders .* view(aug_charge_descrs,elem_indices[eidx],:,:) .* reshape(view(atomic_charge_derivs,row_idx,elem_indices[eidx]),num_atoms_byelem[eidx],1,1)
+                    term2 = dropdims(sum(term2,dims=1),dims=1)
+
+                    kappa_force_descrs[kappa_start:kappa_end] .= reshape(term1 .- term2, :)
+                end
+                force_descrs[j][alpha] = vcat(force_descrs[j][alpha], kappa_force_descrs)
+             end
+        end
+    end 
+
+    force_descrs
 end
+

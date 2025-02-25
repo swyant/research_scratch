@@ -57,9 +57,13 @@ all_pred_charges = get_all_atomic_charges(configs_train,lbp_charge)
 charge_mae,charge_rmse,charge_mape = calc_mae_rmse_mape(all_pred_charges,all_ref_charges)
 println("CHARGE\nmae: $(1000*charge_mae) me\nrmse: $(1000*charge_rmse) me\nmape: $(100*charge_mape) %\n")
 
+#check_lcb = LinearChargeBasis(lmp_pod,lbp_charge,3,target_Qtot,elem_list,rcut, kappa=false,gamma=false)
 #check_lcb = LinearChargeBasis(lmp_pod,lbp_charge,3,target_Qtot,elem_list,rcut, alpha=false,gamma=false)
-#check_lcb = LinearChargeBasis(lmp_pod,lbp_charge,1,target_Qtot,elem_list,rcut, alpha=false,gamma=false)
-check_lcb = LinearChargeBasis(lmp_pod,lbp_charge,3,target_Qtot,elem_list,rcut, alpha=false,kappa=false)
+#check_lcb = LinearChargeBasis(lmp_pod,lbp_charge,3,target_Qtot,elem_list,rcut, alpha=false,kappa=false)
+#check_lcb = LinearChargeBasis(lmp_pod,lbp_charge,3,target_Qtot,elem_list,rcut,gamma=false)
+#check_lcb = LinearChargeBasis(lmp_pod,lbp_charge,3,target_Qtot,elem_list,rcut,kappa=false)
+#check_lcb = LinearChargeBasis(lmp_pod,lbp_charge,3,target_Qtot,elem_list,rcut,alpha=false)
+check_lcb = LinearChargeBasis(lmp_pod,lbp_charge,3,target_Qtot,elem_list,rcut)
 
 e_ref  = [ustrip(get_energy(config)) for config in configs_train]
 epa_ref = [e_ref[i]/length(configs_train[i]) for i in 1:length(configs_train)]
@@ -73,17 +77,18 @@ energy_mae2,energy_rmse2,energy_mape2 = calc_mae_rmse_mape(all_pred_energies2 ./
 println("ENERGY\nmae: $(1000*energy_mae2) meV per atom\nrmse: $(1000*energy_rmse2) meV per atom\nmape: $(100*energy_mape2) %\n")
 
 test_sys = configs_train[1]
-ref_forces = finite_difference_forces(test_sys,new_lbp)
-#forces = force(test_sys,new_lbp)
+#ref_forces = finite_difference_forces(test_sys,new_lbp)
+ref_forces = finite_difference_forces(test_sys,new_lbp; ϵ=0.0001)
+check_forces = force(test_sys,new_lbp)
 
 
-begin 
-    num_atoms = length(test_sys)
-    my_peratom_fd, my_peratom_fd_indices = InteratomicPotentials.compute_peratom_force_descriptors_withindices(test_sys,check_lcb.base_basis)
-    my_perelem_base_ld = hcat(ones(num_atoms), InteratomicPotentials.compute_perelem_local_descriptors(test_sys, check_lcb.base_basis))
-    my_base_ld = compute_local_descriptors(test_sys, check_lcb.base_basis)
-    my_cld = compute_centered_descriptors(test_sys, check_lcb.base_basis; ld=my_base_ld)
-    my_qis = atomic_charges(my_cld, check_lcb.charge_model.ξ, check_lcb.total_charge/num_atoms)
-    my_charge_descrs = compute_charge_descriptors(check_lcb.l_order, my_qis)
-    my_atomic_charge_derivs = compute_atomic_charge_derivatives(test_sys,check_lcb.charge_model)
-end
+#begin 
+#    num_atoms = length(test_sys)
+#    my_peratom_fd, my_peratom_fd_indices = InteratomicPotentials.compute_peratom_force_descriptors_withindices(test_sys,check_lcb.base_basis)
+#    my_perelem_base_ld = hcat(ones(num_atoms), InteratomicPotentials.compute_perelem_local_descriptors(test_sys, check_lcb.base_basis))
+#    my_base_ld = compute_local_descriptors(test_sys, check_lcb.base_basis)
+#    my_cld = compute_centered_descriptors(test_sys, check_lcb.base_basis; ld=my_base_ld)
+#    my_qis = atomic_charges(my_cld, check_lcb.charge_model.ξ, check_lcb.total_charge/num_atoms)
+#    my_charge_descrs = compute_charge_descriptors(check_lcb.l_order, my_qis)
+#    my_atomic_charge_derivs = compute_atomic_charge_derivatives(test_sys,check_lcb.charge_model)
+#end

@@ -117,6 +117,27 @@ function get_all_energies(configs::Vector{<:AtomsBase.FlexibleSystem}, lbp::LBas
 end
 
 
+function get_all_forces(configs::Vector{<:AtomsBase.FlexibleSystem}; strip_units=true)
+    all_force_comps = Vector{Float64}[]
+    for config in configs
+        forces = get_forces(config)
+
+        if strip_units 
+            forces = [ustrip.(force_vec) for force_vec in forces]
+        end
+
+        force_comps = reduce(vcat, forces)
+        push!(all_force_comps, force_comps)
+    end
+    all_force_comps       
+end
+
+function get_all_forces(configs::Vector{<:AtomsBase.FlexibleSystem}, lbp::LBasisPotential)
+    all_forces = reduce(vcat,[reduce(vcat,force(config,lbp)) for config in configs])
+    return all_forces
+end
+
+
 function get_all_atomic_charges(configs::Vector{<:AtomsBase.FlexibleSystem}; strip_units=true)
     if strip_units
         all_atomic_charges = [ustrip.(get_atomic_charges(config)) for config in configs]

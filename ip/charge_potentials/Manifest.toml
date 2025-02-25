@@ -2,7 +2,7 @@
 
 julia_version = "1.11.2"
 manifest_format = "2.0"
-project_hash = "e897421fbb08000e3395e3dc74118f0fca4065c2"
+project_hash = "d8fc28ca5e4c4324b1ed1b2b99338652152100d2"
 
 [[deps.ACE1]]
 deps = ["ACEbase", "BenchmarkTools", "Combinatorics", "ForwardDiff", "InteractiveUtils", "Interpolations", "JuLIP", "LinearAlgebra", "NeighbourLists", "Parameters", "Pkg", "Printf", "QuadGK", "Random", "Reexport", "Roots", "SparseArrays", "StaticArrays", "Test"]
@@ -1090,6 +1090,12 @@ version = "1.10.0"
 git-tree-sha1 = "a3f24677c21f5bbe9d2a714f95dcd58337fb2856"
 uuid = "82899510-4779-5014-852e-03e436cf321d"
 version = "1.0.0"
+
+[[deps.JLD2]]
+deps = ["FileIO", "MacroTools", "Mmap", "OrderedCollections", "PrecompileTools", "Requires", "TranscodingStreams"]
+git-tree-sha1 = "91d501cb908df6f134352ad73cde5efc50138279"
+uuid = "033835bb-8acc-5ee8-8aae-3f567f8a3819"
+version = "0.5.11"
 
 [[deps.JLFzf]]
 deps = ["Pipe", "REPL", "Random", "fzf_jll"]

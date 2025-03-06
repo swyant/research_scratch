@@ -59,7 +59,7 @@ ws = [30.0, 1.0]
 # It is slow because it's currently not multi-threaded.
 _AtWA, _AtWb = PotentialLearning.ooc_learn!(lb, base_ds_train;ws=ws,symmetrize=false, λ=0.01)
 
-
+#= This is just scratch to have a way of computing the error without pre-computing all of the descriptors, demo'ing to Rabab
 # Computing the test error
 abs_energy_error = 0.0
 abs_force_error = 0.0
@@ -82,6 +82,14 @@ mae = abs_energy_error/count
 
 
 ds_test = DataSet(ds_test .+ edescr_test .+ fdescr_test)
+=#
+
+println("computing test descriptors")
+@time begin
+edescr_test = compute_local_descriptors(ds_test, ace)
+fdescr_test = compute_force_descriptors(ds_test, ace)
+ds_test = DataSet(ds_test .+ edescr_test .+ fdescr_test)
+end
 
 coeff_norm = norm(lb.β)
 @show coeff_norm

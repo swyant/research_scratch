@@ -1,0 +1,25 @@
+**************** Begin of Error Analysis for the Training Data Set ****************
+----------------------------------------------------------------------------------------------------------------------------------------
+                           File                           | # configs |  # atoms  | MAE energy  | RMSE energy | MAE force  | RMSE force
+----------------------------------------------------------------------------------------------------------------------------------------
+Hf2_mp103_EOS_1D_form_sorted.xyz                                 93         186     0.209286      0.331318      0.000004      0.000006  
+HfO2_mp352_EOS_1D_form_sorted.xyz                               200        2400     0.049621      0.062790      0.729969      2.394265  
+HfO2_mp550893_EOS_1D_form_sorted.xyz                            129         387     0.125859      0.193967      0.000009      0.000048  
+Hf_mp100_primitive_EOS_1D_form_sorted.xyz                        67          67     0.167963      0.248165      0.000000      0.000000  
+below_5p5cutoff_Hf2_gas_form_extrapolated.xyz                   339         678     0.061926      0.071330      0.133123      0.410727  
+below_5p5cutoff_HfO_gas_form_extrapolated.xyz                   337         674     0.040864      0.055465      0.158183      1.523976  
+below_5p5cutoff_O2_gas_form_extrapolated.xyz                    344         688     0.224817      0.353737      1.170506      8.541436  
+small_Hf128_MC_rattled_mp100_form_sorted.xyz                    204       26112     0.013291      0.015004      0.164967      0.215382  
+small_Hf128_MC_rattled_mp103_form_sorted.xyz                     35        4480     0.016956      0.017585      0.212142      0.267063  
+small_Hf128_MC_rattled_random_form_sorted.xyz                   244       31232     0.010852      0.013784      0.475628      0.658092  
+small_HfO2_MC_rattled_random_form_sorted_selected.xyz           261       25056     0.027673      0.035359      1.122758      2.398708  
+small_HfOx_amorphous_SQS_MC_rattled_form_sorted.xyz             466       44637     0.025131      0.031765      0.825489      3.589424  
+small_Hf_MC_rattled_mp100_form_sorted.xyz                       175       22400     0.010272      0.012419      0.252627      0.326457  
+small_Hf_MC_rattled_mp103_form_sorted.xyz                       160       20480     0.012953      0.014811      0.242995      0.310344  
+small_Hf_Ox_hcp_octa_tetra_MC_rattled_form_sorted.xyz           124       12404     0.017639      0.022922      0.556490      0.804723  
+small_Hf_Ox_hcp_octahedral_MC_rattled_form_sorted.xyz           542       67234     0.010168      0.012620      0.326116      0.426714  
+small_Hf_Ox_hcp_tetrahedral_MC_rattled_form_sorted.xyz          244       19460     0.018863      0.026662      0.328769      0.447797  
+----------------------------------------------------------------------------------------------------------------------------------------
+All files                                                      3964      278575     0.052986      0.130076      0.479972      1.724541  
+----------------------------------------------------------------------------------------------------------------------------------------
+**************** End of Error Analysis for the Training Data Set ****************

@@ -1,0 +1,34 @@
+# user-set variables 
+variable TEMP equal 300
+
+# necessary preliminaries
+units metal 
+atom_style atomic
+dimension 3 
+boundary p p p 
+
+read_data orthog_Hf_7_4_4_Hfint_alt_DATA 
+
+# neighbor parameters
+neighbor 2.0 bin 
+neigh_modify every 1 delay 0 check no
+
+# interatomic potential parameters
+pair_style     pod
+pair_coeff * * Hf_param.pod Hf_coefficients.pod Hf
+
+thermo 100 
+thermo_style custom step temp etotal pe ke press vol
+
+# dump output
+dump 1 all custom 100 ${TEMP}K_nvt.lammpstrj id type x y z 
+dump_modify 1 sort id
+
+dump dforces all custom 250 dump_forces.custom id element x y z fx fy fz 
+dump_modify dforces sort id element Hf format line "%3d %2s %13.8f %13.8f %13.8f %13.8f %13.8f %13.8f"
+
+velocity all create ${TEMP} 9928459 rot yes mom yes dist gaussian
+fix 1 all nvt temp ${TEMP} ${TEMP} 0.1 
+
+# run 
+run 100000

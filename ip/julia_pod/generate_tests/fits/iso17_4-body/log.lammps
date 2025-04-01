@@ -1,0 +1,111 @@
+LAMMPS (27 Jun 2024)
+fitpod sample_4body_iso17_param.pod data.pod
+**************** Begin of POD Potentials ****************
+species: C O H 
+periodic boundary conditions: 1 1 1
+number of environment clusters: 1
+number of principal compoments: 1
+inner cut-off radius: 1
+outer cut-off radius: 5.5
+cut-off function type: 1
+gaussian_exponents: 
+polynomial_degrees: 
+bessel polynomial degree: 4
+inverse polynomial degree: 8
+one-body potential: 1
+two-body radial basis functions: 8
+three-body radial basis functions: 6
+three-body angular degree: 4
+four-body radial basis functions: 4
+four-body angular degree: 2
+five-body radial basis functions: 0
+five-body angular degree: 0
+six-body radial basis functions: 0
+six-body angular degree: 0
+seven-body radial basis functions: 0
+seven-body angular degree: 0
+number of local descriptors per element for one-body potential: 1
+number of local descriptors per element for two-body potential: 24
+number of local descriptors per element for three-body potential: 180
+number of local descriptors per element for four-body potential: 160
+number of local descriptors per element for five-body potential: 0
+number of local descriptors per element for six-body potential: 0
+number of local descriptors per element for seven-body potential: 0
+number of local descriptors per element for all potentials: 365
+number of global descriptors: 1095
+**************** End of POD Potentials ****************
+
+**************** Begin of Data File ****************
+file format: extxyz
+file extension: xyz
+path to training data set: ../../files/iso17_training/
+path to test data set: 
+path to environment configuration set: 
+basename for output files: ref_1K_train_iso17
+training fraction: 1
+test fraction: 1
+randomize training data set: 0
+randomize test data set: 0
+error analysis for training data set: 1
+error analysis for test data set: 0
+energy/force calculation for training data set: 0
+energy/force calculation for test data set: 0
+fitting weight for energy: 100
+fitting weight for force: 2
+fitting weight for stress: 0
+group_weights: global
+save pod descriptors: 0
+compute pod descriptors: 0
+**************** End of Data File ****************
+**************** Begin of Training Data Set ****************
+-----------------------------------------------------------------------
+         data file         | number of configurations | number of atoms
+-----------------------------------------------------------------------
+ iso17_train_1K_subset.xyz |              1000        |       19000
+-----------------------------------------------------------------------
+number of files: 1
+number of configurations in all files: 1000
+number of atoms in all files: 19000
+minimum number of atoms: 19
+maximum number of atoms: 19
+**************** End of Training Data Set ****************
+**************** Begin of Memory Allocation ****************
+maximum number of atoms in periodic domain: 19
+maximum number of atoms in extended domain: 513
+maximum number of neighbors in extended domain: 9747
+size of double memory: 1123470
+size of descriptor matrix: 1095 x 1095
+**************** End of Memory Allocation ****************
+**************** Begin of Least-Squares Fitting ****************
+Configuration: # 1
+Configuration: # 101
+Configuration: # 201
+Configuration: # 301
+Configuration: # 401
+Configuration: # 501
+Configuration: # 601
+Configuration: # 701
+Configuration: # 801
+Configuration: # 901
+**************** Begin of Error Calculation ****************
+Configuration: # 1
+Configuration: # 101
+Configuration: # 201
+Configuration: # 301
+Configuration: # 401
+Configuration: # 501
+Configuration: # 601
+Configuration: # 701
+Configuration: # 801
+Configuration: # 901
+**************** End of Error Calculation ****************
+**************** Begin of Error Analysis for the Training Data Set ****************
+-----------------------------------------------------------------------------------------------------------
+            File             | # configs |  # atoms  | MAE energy  | RMSE energy | MAE force  | RMSE force
+-----------------------------------------------------------------------------------------------------------
+iso17_train_1K_subset.xyz         1000       19000     0.005542      0.007038      0.220018      0.329747  
+-----------------------------------------------------------------------------------------------------------
+All files                         1000       19000     0.005542      0.007038      0.220018      0.329747  
+-----------------------------------------------------------------------------------------------------------
+**************** End of Error Analysis for the Training Data Set ****************
+Total wall time: 0:00:05

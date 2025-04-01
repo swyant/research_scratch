@@ -1,0 +1,24 @@
+# NVT run
+variable Tseed    equal  1232145
+
+units          metal 
+boundary       p p p 
+atom_style     atomic
+
+read_data      ../../../files/small_Hf_equib_DATA
+
+neighbor       0.5 bin 
+neigh_modify   every 1 delay 0 check yes
+
+pair_style     pod
+pair_coeff     * * sample_4body_hf_param.pod ref_vsmall_lammps_compat_Hf_coefficients.pod Hf 
+
+thermo       1
+thermo_style custom step temp pe ke etotal press
+
+fix eprint all print 100 "$(step) $(pe)" file rerun_pe.dat
+
+dump           forces all custom 100 rerun_dump_forces.custom id element x y z fx fy fz
+dump_modify    forces element Hf sort id format line "%4d %2s %22.17f %22.17f %22.17f %22.17f %22.17f %22.17f"
+
+rerun dump_small_Hf.atom dump x y z

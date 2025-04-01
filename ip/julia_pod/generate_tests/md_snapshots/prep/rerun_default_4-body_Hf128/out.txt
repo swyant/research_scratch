@@ -1,0 +1,87 @@
+LAMMPS (27 Jun 2024)
+Reading data file ...
+  orthogonal box = (0 0 0) to (14.212109 14.212109 14.212109)
+  1 by 1 by 1 MPI processor grid
+  reading atoms ...
+  128 atoms
+  read_data CPU = 0.003 seconds
+**************** Begin of POD Potentials ****************
+species: Hf 
+periodic boundary conditions: 1 1 1
+number of environment clusters: 1
+number of principal compoments: 1
+inner cut-off radius: 1
+outer cut-off radius: 5.5
+cut-off function type: 1
+gaussian_exponents: 
+polynomial_degrees: 
+bessel polynomial degree: 4
+inverse polynomial degree: 8
+one-body potential: 1
+two-body radial basis functions: 8
+three-body radial basis functions: 6
+three-body angular degree: 4
+four-body radial basis functions: 4
+four-body angular degree: 2
+five-body radial basis functions: 0
+five-body angular degree: 0
+six-body radial basis functions: 0
+six-body angular degree: 0
+seven-body radial basis functions: 0
+seven-body angular degree: 0
+number of local descriptors per element for one-body potential: 1
+number of local descriptors per element for two-body potential: 8
+number of local descriptors per element for three-body potential: 30
+number of local descriptors per element for four-body potential: 16
+number of local descriptors per element for five-body potential: 0
+number of local descriptors per element for six-body potential: 0
+number of local descriptors per element for seven-body potential: 0
+number of local descriptors per element for all potentials: 55
+number of global descriptors: 55
+**************** End of POD Potentials ****************
+
+**************** Begin of Model Coefficients ****************
+total number of coefficients for POD potential: 55
+total number of elements for PCA projection matrix: 0
+total number of elements for PCA centroids: 0
+**************** End of Model Coefficients ****************
+
+
+CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE
+
+Your simulation uses code contributions which should be cited:
+- Type Label Framework: https://doi.org/10.1021/acs.jpcb.3c08419
+The log file lists these citations in BibTeX format.
+
+CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE
+
+WARNING: No fixes with time integration, atoms won't move (src/verlet.cpp:60)
+Neighbor list info ...
+  update: every = 1 steps, delay = 0 steps, check = yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 6
+  ghost atom cutoff = 6
+  binsize = 3, bins = 5 5 5
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair pod, perpetual
+      attributes: full, newton on
+      pair build: full/bin/atomonly
+      stencil: full/bin/3d
+      bin: standard
+0 -910.41318573482271859
+Per MPI rank memory allocation (min/avg/max) = 2.954 | 2.954 | 2.954 Mbytes
+   Step          Temp          PotEng         KinEng         TotEng         Press     
+         0   0             -910.41319      0             -910.41319      4644.419     
+100 -909.66318550651260466
+       100   0             -909.66319      0             -909.66319      8295.2221    
+200 -910.91241184221212279
+       200   0             -910.91241      0             -910.91241      15394.454    
+300 -911.64611579182474088
+       300   0             -911.64612      0             -911.64612      16630.965    
+400 -914.52177887448601723
+       400   0             -914.52178      0             -914.52178      12136.773    
+500 -915.02452187243579829
+       500   0             -915.02452      0             -915.02452      10633.152    
+Loop time of 0.0280268 on 1 procs for 6 steps with 128 atoms
+
+Total wall time: 0:00:00

@@ -1,0 +1,205 @@
+LAMMPS (27 Jun 2024)
+# NVT run
+variable Tseed    equal  1232145
+
+units          metal
+boundary       p p p
+atom_style     atomic
+
+read_data      ../../../files/sample_iso17_firstmolecule_DATA
+Reading data file ...
+  orthogonal box = (0 0 0) to (30 30 30)
+  1 by 1 by 1 MPI processor grid
+  reading atoms ...
+  19 atoms
+  read_data CPU = 0.003 seconds
+
+neighbor       0.5 bin
+neigh_modify   every 1 delay 0 check yes
+
+pair_style     pod
+pair_coeff     * * sample_4body_iso17_param.pod ref_1K_train_iso17_coefficients.pod C O H
+**************** Begin of POD Potentials ****************
+species: C O H 
+periodic boundary conditions: 1 1 1
+number of environment clusters: 1
+number of principal compoments: 1
+inner cut-off radius: 1
+outer cut-off radius: 5.5
+cut-off function type: 1
+gaussian_exponents: 
+polynomial_degrees: 
+bessel polynomial degree: 4
+inverse polynomial degree: 8
+one-body potential: 1
+two-body radial basis functions: 8
+three-body radial basis functions: 6
+three-body angular degree: 4
+four-body radial basis functions: 4
+four-body angular degree: 2
+five-body radial basis functions: 0
+five-body angular degree: 0
+six-body radial basis functions: 0
+six-body angular degree: 0
+seven-body radial basis functions: 0
+seven-body angular degree: 0
+number of local descriptors per element for one-body potential: 1
+number of local descriptors per element for two-body potential: 24
+number of local descriptors per element for three-body potential: 180
+number of local descriptors per element for four-body potential: 160
+number of local descriptors per element for five-body potential: 0
+number of local descriptors per element for six-body potential: 0
+number of local descriptors per element for seven-body potential: 0
+number of local descriptors per element for all potentials: 365
+number of global descriptors: 1095
+**************** End of POD Potentials ****************
+
+**************** Begin of Model Coefficients ****************
+total number of coefficients for POD potential: 1095
+total number of elements for PCA projection matrix: 0
+total number of elements for PCA centroids: 0
+**************** End of Model Coefficients ****************
+
+
+variable T        equal  500
+variable Tdamp    equal  0.1
+
+velocity     all create $T ${Tseed} mom yes rot yes dist gaussian
+velocity     all create 500 ${Tseed} mom yes rot yes dist gaussian
+velocity     all create 500 1232145 mom yes rot yes dist gaussian
+
+thermo       10
+thermo_style custom step temp pe ke etotal press
+
+fix eprint all print 100 "$(step) $(pe)" file ref_pe.dat
+
+dump           forces all custom 100 ref_dump_forces.custom id type x y z fx fy fz
+dump_modify    forces sort id format line "%4d %1d %22.17f %22.17f %22.17f %22.17f %22.17f %22.17f"
+
+dump        full_dump all atom 100 dump_ISO17_mol1.atom
+dump_modify full_dump sort id format line "%d %d %21.16g %21.16g %21.16g"
+
+fix          nvt all nvt temp $T $T ${Tdamp}
+fix          nvt all nvt temp 500 $T ${Tdamp}
+fix          nvt all nvt temp 500 500 ${Tdamp}
+fix          nvt all nvt temp 500 500 0.1
+run 500
+
+CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE
+
+Your simulation uses code contributions which should be cited:
+
+- Type Label Framework: https://doi.org/10.1021/acs.jpcb.3c08419
+
+@Article{Gissinger24,
+ author = {Jacob R. Gissinger, Ilia Nikiforov, Yaser Afshar, Brendon Waters, Moon-ki Choi, Daniel S. Karls, Alexander Stukowski, Wonpil Im, Hendrik Heinz, Axel Kohlmeyer, and Ellad B. Tadmor},
+ title = {Type Label Framework for Bonded Force Fields in LAMMPS},
+ journal = {J. Phys. Chem. B},
+ year =    2024,
+ volume =  128,
+ number =  13,
+ pages =   {3282–-3297}
+}
+
+CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE
+
+Neighbor list info ...
+  update: every = 1 steps, delay = 0 steps, check = yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 6
+  ghost atom cutoff = 6
+  binsize = 3, bins = 10 10 10
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair pod, perpetual
+      attributes: full, newton on
+      pair build: full/bin/atomonly
+      stencil: full/bin/3d
+      bin: standard
+0 -11504.252904585975557
+Per MPI rank memory allocation (min/avg/max) = 3.08 | 3.08 | 3.08 Mbytes
+   Step          Temp          PotEng         KinEng         TotEng         Press     
+         0   500           -11504.253      1.1633413     -11503.09      -100.41972    
+        10   253.0732      -11503.671      0.58882102    -11503.082     -76.105718    
+        20   466.98161     -11504.167      1.086518      -11503.08       82.89056     
+        30   431.15002     -11504.073      1.0031493     -11503.07       224.45335    
+        40   374.72199     -11503.921      0.87185915    -11503.05      -17.376964    
+        50   371.83336     -11503.898      0.86513822    -11503.033     -196.83172    
+        60   480.45679     -11504.139      1.1178705     -11503.021     -3.5404043    
+        70   400.23784     -11503.921      0.93122642    -11502.99       241.22684    
+        80   649.80632     -11504.463      1.5118931     -11502.951      93.849271    
+        90   491.43202     -11504.065      1.1434063     -11502.921     -136.69058    
+100 -11504.09517174145185
+       100   517.42108     -11504.095      1.2038746     -11502.891     -84.810446    
+       110   594.90976     -11504.234      1.3841662     -11502.849      33.291272    
+       120   580.17723     -11504.151      1.3498883     -11502.801     -29.374613    
+       130   589.26865     -11504.145      1.3710411     -11502.773     -44.488885    
+       140   597.92294     -11504.14       1.3911769     -11502.749     -192.58704    
+       150   724.24517     -11504.406      1.6850887     -11502.721      58.365601    
+       160   674.18139     -11504.263      1.5686061     -11502.695      242.21918    
+       170   528.75791     -11503.907      1.2302518     -11502.677     -30.996634    
+       180   676.74146     -11504.253      1.5745626     -11502.678     -181.60464    
+       190   630.43789     -11504.16       1.4668289     -11502.694     -39.044576    
+200 -11504.362245216310839
+       200   708.08878     -11504.362      1.6474979     -11502.715      109.91322    
+       210   669.3154      -11504.299      1.5572845     -11502.741      103.20033    
+       220   531.07894     -11504.027      1.2356521     -11502.791     -89.39319     
+       230   615.93198     -11504.283      1.4330782     -11502.85      -111.31955    
+       240   485.46191     -11504.053      1.1295158     -11502.924     -7.9377731    
+       250   600.55675     -11504.407      1.397305      -11503.009     -19.659376    
+       260   448.56876     -11504.141      1.0436771     -11503.097      17.255635    
+       270   697.85202     -11504.823      1.6236801     -11503.199      44.085476    
+       280   458.42544     -11504.343      1.0666105     -11503.276      88.364271    
+       290   479.09264     -11504.473      1.1146965     -11503.359     -58.468158    
+300 -11504.56858909886796
+       300   493.91676     -11504.569      1.1491875     -11503.419     -21.809189    
+       310   407.0845      -11504.418      0.94715644    -11503.471      65.912752    
+       320   497.44967     -11504.681      1.1574075     -11503.523      13.424567    
+       330   490.46182     -11504.703      1.141149      -11503.562     -162.17331    
+       340   420.44885     -11504.562      0.97825103    -11503.584      7.4958905    
+       350   397.95445     -11504.528      0.92591369    -11503.603      172.6304     
+       360   346.63594     -11504.43       0.80651182    -11503.624      35.486326    
+       370   444.21829     -11504.662      1.033555      -11503.629     -152.32633    
+       380   386.89009     -11504.532      0.90017045    -11503.632     -113.12717    
+       390   433.73853     -11504.643      1.0091719     -11503.634      22.371955    
+400 -11504.501928856036102
+       400   370.90194     -11504.502      0.86297109    -11503.639      63.367245    
+       410   351.43326     -11504.451      0.81767366    -11503.634      92.479624    
+       420   429.32648     -11504.625      0.99890645    -11503.626      40.28778     
+       430   403.84031     -11504.55       0.93960822    -11503.611     -65.231663    
+       440   429.71085     -11504.59       0.99980077    -11503.59       45.63802     
+       450   403.29238     -11504.506      0.93833337    -11503.567      0.76118009   
+       460   428.851       -11504.543      0.99780017    -11503.545     -138.03205    
+       470   462.01289     -11504.602      1.0749574     -11503.527     -46.265067    
+       480   419.82        -11504.468      0.97678789    -11503.491      122.58929    
+       490   489.82865     -11504.591      1.1396758     -11503.451      85.976493    
+500 -11504.498371340725498
+       500   467.87713     -11504.498      1.0886016     -11503.41      -158.09935    
+Loop time of 0.284772 on 1 procs for 500 steps with 19 atoms
+
+Performance: 151.700 ns/day, 0.158 hours/ns, 1755.793 timesteps/s, 33.360 katom-step/s
+99.6% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.28263    | 0.28263    | 0.28263    |   0.0 | 99.25
+Neigh   | 0.00053975 | 0.00053975 | 0.00053975 |   0.0 |  0.19
+Comm    | 0.00030607 | 0.00030607 | 0.00030607 |   0.0 |  0.11
+Output  | 0.00080404 | 0.00080404 | 0.00080404 |   0.0 |  0.28
+Modify  | 0.00038247 | 0.00038247 | 0.00038247 |   0.0 |  0.13
+Other   |            | 0.0001135  |            |       |  0.04
+
+Nlocal:             19 ave          19 max          19 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:            133 ave         133 max         133 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:              0 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:          340 ave         340 max         340 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 340
+Ave neighs/atom = 17.894737
+Neighbor list builds = 91
+Dangerous builds = 0
+Total wall time: 0:00:00

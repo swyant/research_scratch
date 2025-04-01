@@ -1,0 +1,95 @@
+LAMMPS (27 Jun 2024)
+fitpod simple_2body_Hf_param.pod data.pod
+**************** Begin of POD Potentials ****************
+species: Hf 
+periodic boundary conditions: 1 1 1
+number of environment clusters: 1
+number of principal compoments: 1
+inner cut-off radius: 1
+outer cut-off radius: 5.5
+cut-off function type: 1
+gaussian_exponents: 
+polynomial_degrees: 
+bessel polynomial degree: 4
+inverse polynomial degree: 8
+one-body potential: 1
+two-body radial basis functions: 8
+three-body radial basis functions: 0
+three-body angular degree: 0
+four-body radial basis functions: 0
+four-body angular degree: 0
+five-body radial basis functions: 0
+five-body angular degree: 0
+six-body radial basis functions: 0
+six-body angular degree: 0
+seven-body radial basis functions: 0
+seven-body angular degree: 0
+number of local descriptors per element for one-body potential: 1
+number of local descriptors per element for two-body potential: 8
+number of local descriptors per element for three-body potential: 0
+number of local descriptors per element for four-body potential: 0
+number of local descriptors per element for five-body potential: 0
+number of local descriptors per element for six-body potential: 0
+number of local descriptors per element for seven-body potential: 0
+number of local descriptors per element for all potentials: 9
+number of global descriptors: 9
+**************** End of POD Potentials ****************
+
+**************** Begin of Data File ****************
+file format: extxyz
+file extension: xyz
+path to training data set: ../../files/Hf_training/
+path to test data set: 
+path to environment configuration set: 
+basename for output files: ref_vsmall_lammps_compat_Hf
+training fraction: 1
+test fraction: 1
+randomize training data set: 0
+randomize test data set: 0
+error analysis for training data set: 1
+error analysis for test data set: 0
+energy/force calculation for training data set: 0
+energy/force calculation for test data set: 0
+fitting weight for energy: 100
+fitting weight for force: 2
+fitting weight for stress: 0
+group_weights: global
+save pod descriptors: 0
+compute pod descriptors: 0
+**************** End of Data File ****************
+**************** Begin of Training Data Set ****************
+-----------------------------------------------------------------
+      data file      | number of configurations | number of atoms
+-----------------------------------------------------------------
+ Hf_training-set.xyz |               171        |       15030
+-----------------------------------------------------------------
+number of files: 1
+number of configurations in all files: 171
+number of atoms in all files: 15030
+minimum number of atoms: 1
+maximum number of atoms: 128
+**************** End of Training Data Set ****************
+**************** Begin of Memory Allocation ****************
+maximum number of atoms in periodic domain: 128
+maximum number of atoms in extended domain: 3456
+maximum number of neighbors in extended domain: 442368
+size of double memory: 101628
+size of descriptor matrix: 9 x 9
+**************** End of Memory Allocation ****************
+**************** Begin of Least-Squares Fitting ****************
+Configuration: # 1
+Configuration: # 101
+**************** Begin of Error Calculation ****************
+Configuration: # 1
+Configuration: # 101
+**************** End of Error Calculation ****************
+**************** Begin of Error Analysis for the Training Data Set ****************
+-----------------------------------------------------------------------------------------------------
+         File          | # configs |  # atoms  | MAE energy  | RMSE energy | MAE force  | RMSE force
+-----------------------------------------------------------------------------------------------------
+Hf_training-set.xyz          171       15030     0.136235      0.192067      1.017759      2.679122  
+-----------------------------------------------------------------------------------------------------
+All files                    171       15030     0.136235      0.192067      1.017759      2.679122  
+-----------------------------------------------------------------------------------------------------
+**************** End of Error Analysis for the Training Data Set ****************
+Total wall time: 0:00:00

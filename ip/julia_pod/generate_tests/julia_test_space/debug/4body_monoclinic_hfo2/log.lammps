@@ -1,0 +1,108 @@
+LAMMPS (27 Jun 2024)
+units          metal
+boundary       p p p
+atom_style     atomic
+
+read_data      ../../../files/sample_monoclinic_HfO2_DATA
+Reading data file ...
+  triclinic box = (0 0 0) to (5.1364755 5.1934133 5.2461598) with tilt (0 -0.88344297 0)
+  1 by 1 by 1 MPI processor grid
+  reading atoms ...
+  12 atoms
+  read_data CPU = 0.003 seconds
+
+neighbor       0.5 bin
+neigh_modify   every 1 delay 0 check yes
+
+pair_style     pod
+pair_coeff     * * simple_4body_hfo2_param.pod simple_4body_HfO2_coefficients.pod Hf O
+**************** Begin of POD Potentials ****************
+species: Hf O 
+periodic boundary conditions: 1 1 1
+number of environment clusters: 1
+number of principal compoments: 1
+inner cut-off radius: 1
+outer cut-off radius: 5.5
+cut-off function type: 1
+gaussian_exponents: 
+polynomial_degrees: 
+bessel polynomial degree: 4
+inverse polynomial degree: 8
+one-body potential: 1
+two-body radial basis functions: 8
+three-body radial basis functions: 6
+three-body angular degree: 4
+four-body radial basis functions: 4
+four-body angular degree: 2
+five-body radial basis functions: 0
+five-body angular degree: 0
+six-body radial basis functions: 0
+six-body angular degree: 0
+seven-body radial basis functions: 0
+seven-body angular degree: 0
+number of local descriptors per element for one-body potential: 1
+number of local descriptors per element for two-body potential: 16
+number of local descriptors per element for three-body potential: 90
+number of local descriptors per element for four-body potential: 64
+number of local descriptors per element for five-body potential: 0
+number of local descriptors per element for six-body potential: 0
+number of local descriptors per element for seven-body potential: 0
+number of local descriptors per element for all potentials: 171
+number of global descriptors: 342
+**************** End of POD Potentials ****************
+
+**************** Begin of Model Coefficients ****************
+total number of coefficients for POD potential: 342
+total number of elements for PCA projection matrix: 0
+total number of elements for PCA centroids: 0
+**************** End of Model Coefficients ****************
+
+
+thermo       1
+thermo_style custom step temp pe ke etotal press
+
+fix eprint all print 100 "$(step) $(pe)" file rerun_pe.dat
+
+dump           forces all custom 100 rerun_dump_forces.custom id element x y z fx fy fz
+dump_modify    forces element Hf O sort id format line "%4d %2s %22.17f %22.17f %22.17f %22.17f %22.17f %22.17f"
+
+rerun dump_monoclinic_hfo2_firstimage.atom dump x y z
+
+CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE
+
+Your simulation uses code contributions which should be cited:
+
+- Type Label Framework: https://doi.org/10.1021/acs.jpcb.3c08419
+
+@Article{Gissinger24,
+ author = {Jacob R. Gissinger, Ilia Nikiforov, Yaser Afshar, Brendon Waters, Moon-ki Choi, Daniel S. Karls, Alexander Stukowski, Wonpil Im, Hendrik Heinz, Axel Kohlmeyer, and Ellad B. Tadmor},
+ title = {Type Label Framework for Bonded Force Fields in LAMMPS},
+ journal = {J. Phys. Chem. B},
+ year =    2024,
+ volume =  128,
+ number =  13,
+ pages =   {3282–-3297}
+}
+
+CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE
+
+WARNING: No fixes with time integration, atoms won't move (src/verlet.cpp:60)
+Neighbor list info ...
+  update: every = 1 steps, delay = 0 steps, check = yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 6
+  ghost atom cutoff = 6
+  binsize = 3, bins = 3 2 2
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair pod, perpetual
+      attributes: full, newton on
+      pair build: full/bin/atomonly
+      stencil: full/bin/3d
+      bin: standard
+0 -111.32148880965283411
+Per MPI rank memory allocation (min/avg/max) = 2.96 | 2.96 | 2.96 Mbytes
+   Step          Temp          PotEng         KinEng         TotEng         Press     
+         0   0             -111.32149      0             -111.32149      8800.1539    
+Loop time of 0.403681 on 1 procs for 1 steps with 12 atoms
+
+Total wall time: 0:00:00

@@ -68,10 +68,70 @@ Neighbor list info ...
       pair build: full/bin/atomonly
       stencil: full/bin/3d
       bin: standard
+n: 0 im:  0 jm: 280 nm: 0 fij[0+nm]: 2.12865e-16
+n: 1 im:  0 jm: 252 nm: 3 fij[0+nm]: -0.000624042
+n: 2 im:  0 jm: 263 nm: 6 fij[0+nm]: 0.00817185
+n: 3 im:  0 jm: 256 nm: 9 fij[0+nm]: -0.0785211
+n: 4 im:  0 jm: 105 nm: 12 fij[0+nm]: -0.285003
+n: 0 im:  1 jm: 253 nm: 0 fij[0+nm]: -0.000624042
+n: 1 im:  1 jm: 256 nm: 3 fij[0+nm]: 0.0325416
+n: 2 im:  1 jm: 81 nm: 6 fij[0+nm]: 0
+n: 3 im:  1 jm: 25 nm: 9 fij[0+nm]: 0.0401047
+n: 4 im:  1 jm: 34 nm: 12 fij[0+nm]: 0.216195
+n: 0 im:  2 jm: 333 nm: 0 fij[0+nm]: 0.0403884
+n: 1 im:  2 jm: 336 nm: 3 fij[0+nm]: 0.0427105
+n: 2 im:  2 jm: 252 nm: 6 fij[0+nm]: -0.146956
+n: 3 im:  2 jm: 263 nm: 9 fij[0+nm]: 0.16503
+n: 4 im:  2 jm: 286 nm: 12 fij[0+nm]: 0.0689629
+n: 0 im:  3 jm: 357 nm: 0 fij[0+nm]: -0.0446485
+n: 1 im:  3 jm: 360 nm: 3 fij[0+nm]: 0.179916
+n: 2 im:  3 jm: 363 nm: 6 fij[0+nm]: 2.12847e-16
+n: 3 im:  3 jm: 332 nm: 9 fij[0+nm]: 0.0403884
+n: 4 im:  3 jm: 343 nm: 12 fij[0+nm]: 0.0116643
+n: 0 im:  4 jm: 256 nm: 0 fij[0+nm]: -0.00186852
+n: 1 im:  4 jm: 105 nm: 3 fij[0+nm]: 5.34707e-114
+n: 2 im:  4 jm: 84 nm: 6 fij[0+nm]: 0
+n: 3 im:  4 jm: 81 nm: 9 fij[0+nm]: -0.0726429
+n: 4 im:  4 jm: 25 nm: 12 fij[0+nm]: 0.116239
+n: 0 im:  5 jm: 357 nm: 0 fij[0+nm]: 2.12974e-16
+n: 1 im:  5 jm: 333 nm: 3 fij[0+nm]: -0.0785238
+n: 2 im:  5 jm: 336 nm: 6 fij[0+nm]: -0.00707499
+n: 3 im:  5 jm: 252 nm: 9 fij[0+nm]: 0.0325449
+n: 4 im:  5 jm: 263 nm: 12 fij[0+nm]: -0.237249
+n: 0 im:  6 jm: 357 nm: 0 fij[0+nm]: 0.17994
+n: 1 im:  6 jm: 332 nm: 3 fij[0+nm]: 0.042721
+n: 2 im:  6 jm: 366 nm: 6 fij[0+nm]: 0.100739
+n: 3 im:  6 jm: 333 nm: 9 fij[0+nm]: 0.181915
+n: 4 im:  6 jm: 336 nm: 12 fij[0+nm]: -0.0745262
+n: 0 im:  7 jm: 277 nm: 0 fij[0+nm]: 0.0646871
+n: 1 im:  7 jm: 280 nm: 3 fij[0+nm]: 0.000368211
+n: 2 im:  7 jm: 252 nm: 6 fij[0+nm]: 0.0107235
+n: 3 im:  7 jm: 263 nm: 9 fij[0+nm]: 0.0878207
+n: 4 im:  7 jm: 286 nm: 12 fij[0+nm]: 0.135001
+n: 0 im:  8 jm: 357 nm: 0 fij[0+nm]: 0.0121317
+n: 1 im:  8 jm: 360 nm: 3 fij[0+nm]: 0.100739
+n: 2 im:  8 jm: 366 nm: 6 fij[0+nm]: 0.00659488
+n: 3 im:  8 jm: 333 nm: 9 fij[0+nm]: -0.0159614
+n: 4 im:  8 jm: 336 nm: 12 fij[0+nm]: 0.173655
+n: 0 im:  9 jm: 333 nm: 0 fij[0+nm]: 0.0116729
+n: 1 im:  9 jm: 252 nm: 3 fij[0+nm]: 0.165024
+n: 2 im:  9 jm: 286 nm: 6 fij[0+nm]: 1.38106e-09
+n: 3 im:  9 jm: 253 nm: 9 fij[0+nm]: -0.125607
+n: 4 im:  9 jm: 254 nm: 12 fij[0+nm]: 0.00817568
+n: 0 im:  10 jm: 253 nm: 0 fij[0+nm]: 0.00817568
+n: 1 im:  10 jm: 256 nm: 3 fij[0+nm]: -0.237249
+n: 2 im:  10 jm: 262 nm: 6 fij[0+nm]: -0.00186852
+n: 3 im:  10 jm: 268 nm: 9 fij[0+nm]: -0.254498
+n: 4 im:  10 jm: 275 nm: 12 fij[0+nm]: -0.0478462
+n: 0 im:  11 jm: 263 nm: 0 fij[0+nm]: -0.00186852
+n: 1 im:  11 jm: 104 nm: 3 fij[0+nm]: 6.55167e-13
+n: 2 im:  11 jm: 105 nm: 6 fij[0+nm]: -0.303601
+n: 3 im:  11 jm: 106 nm: 9 fij[0+nm]: 0.0529708
+n: 4 im:  11 jm: 108 nm: 12 fij[0+nm]: -0.412933
 0 -108.7989640787386918
 Per MPI rank memory allocation (min/avg/max) = 2.96 | 2.96 | 2.96 Mbytes
    Step          Temp          PotEng         KinEng         TotEng         Press     
          0   0             -108.79896      0             -108.79896     -118478.55    
-Loop time of 0.00237454 on 1 procs for 1 steps with 12 atoms
+Loop time of 0.0693027 on 1 procs for 1 steps with 12 atoms
 
 Total wall time: 0:00:00

@@ -1,21 +1,10 @@
 LAMMPS (27 Jun 2024)
-units          metal
-boundary       p p p
-atom_style     atomic
-
-read_data      ../../../files/sample_monoclinic_HfO2_DATA
 Reading data file ...
   triclinic box = (0 0 0) to (5.1364755 5.1934133 5.2461598) with tilt (0 -0.88344297 0)
   1 by 1 by 1 MPI processor grid
   reading atoms ...
   12 atoms
   read_data CPU = 0.002 seconds
-
-neighbor       0.5 bin
-neigh_modify   every 1 delay 0 check yes
-
-pair_style     pod
-pair_coeff     * * simple_2body_HfO2_param.pod simple_2body_HfO2_coefficients.pod Hf O
 **************** Begin of POD Potentials ****************
 species: Hf O 
 periodic boundary conditions: 1 1 1
@@ -58,31 +47,11 @@ total number of elements for PCA centroids: 0
 **************** End of Model Coefficients ****************
 
 
-thermo       1
-thermo_style custom step temp pe ke etotal press
-
-fix eprint all print 100 "$(step) $(pe)" file rerun_pe.dat
-
-dump           forces all custom 100 rerun_dump_forces.custom id element x y z fx fy fz
-dump_modify    forces element Hf O sort id format line "%4d %2s %22.17f %22.17f %22.17f %22.17f %22.17f %22.17f"
-
-rerun dump_monoclinic_hfo2_firstimage.atom dump x y z
-
 CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE
 
 Your simulation uses code contributions which should be cited:
-
 - Type Label Framework: https://doi.org/10.1021/acs.jpcb.3c08419
-
-@Article{Gissinger24,
- author = {Jacob R. Gissinger, Ilia Nikiforov, Yaser Afshar, Brendon Waters, Moon-ki Choi, Daniel S. Karls, Alexander Stukowski, Wonpil Im, Hendrik Heinz, Axel Kohlmeyer, and Ellad B. Tadmor},
- title = {Type Label Framework for Bonded Force Fields in LAMMPS},
- journal = {J. Phys. Chem. B},
- year =    2024,
- volume =  128,
- number =  13,
- pages =   {3282–-3297}
-}
+The log file lists these citations in BibTeX format.
 
 CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE
 
@@ -103,6 +72,6 @@ Neighbor list info ...
 Per MPI rank memory allocation (min/avg/max) = 2.96 | 2.96 | 2.96 Mbytes
    Step          Temp          PotEng         KinEng         TotEng         Press     
          0   0             -108.79896      0             -108.79896     -118478.55    
-Loop time of 0.0693027 on 1 procs for 1 steps with 12 atoms
+Loop time of 0.0768333 on 1 procs for 1 steps with 12 atoms
 
 Total wall time: 0:00:00

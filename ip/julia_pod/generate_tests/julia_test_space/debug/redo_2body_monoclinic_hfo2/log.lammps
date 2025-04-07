@@ -103,6 +103,6 @@ Neighbor list info ...
 Per MPI rank memory allocation (min/avg/max) = 2.96 | 2.96 | 2.96 Mbytes
    Step          Temp          PotEng         KinEng         TotEng         Press     
          0   0             -108.79896      0             -108.79896     -118478.55    
-Loop time of 0.0693027 on 1 procs for 1 steps with 12 atoms
+Loop time of 0.0768333 on 1 procs for 1 steps with 12 atoms
 
 Total wall time: 0:00:00

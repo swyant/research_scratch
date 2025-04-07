@@ -1,0 +1,21 @@
+units          metal 
+boundary       p p p 
+atom_style     atomic
+
+read_data      ../../../files/sample_monoclinic_HfO2_DATA
+
+neighbor       0.5 bin 
+neigh_modify   delay 50
+
+pair_style     pod
+pair_coeff     * * simple_2body_HfO2_param.pod simple_2body_HfO2_coefficients.pod Hf O
+
+thermo       1
+thermo_style custom step temp pe ke etotal press
+
+fix eprint all print 100 "$(step) $(pe)" file rerun_pe.dat
+
+dump           forces all custom 100 rerun_dump_forces.custom id element x y z fx fy fz
+dump_modify    forces element Hf O sort id format line "%4d %2s %22.17f %22.17f %22.17f %22.17f %22.17f %22.17f"
+
+rerun dump_repeat.atom dump x y z

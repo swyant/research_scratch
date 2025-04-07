@@ -73,7 +73,7 @@ def main(dump_file, pe_file, output_extxyz, output_xyz):
 if __name__ == "__main__":
     import sys
     if len(sys.argv) != 5:
-        print("Usage: python script.py <dump_file> <pe_file> <output_file>")
+        #print("Usage: python script.py <dump_file> <pe_file> <output_file>")
         sys.exit(1)
     dump_file = sys.argv[1]
     pe_file = sys.argv[2]

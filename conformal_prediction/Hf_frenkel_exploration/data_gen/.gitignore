@@ -1,2 +1,4 @@
 *.lammpstrj
-dump_forces.custom
+dump_forces*.custom
+*xyz
+log.lammps

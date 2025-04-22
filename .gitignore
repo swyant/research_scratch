@@ -13,3 +13,4 @@ lammps_related/lammps_jl_tests/md_loops/doc_bugs_for_clean_al/initial_fits/*.yac
 random_tasks/reorder_dio_xyz_020524/*.xyz
 random_tasks/reorder_dio_xyz_020524/*.dump
 *.mp4
+.DS_Store

@@ -1,6 +1,6 @@
 #!/bin/bash 
 
-for i in {1..10}; do
+for i in {11..15}; do
   mkdir -p "run_$i"
 
   cp nvt.in "run_$i/"

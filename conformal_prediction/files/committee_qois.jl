@@ -35,6 +35,61 @@ struct CmteEnergyCov <: AbstractCommitteeQoI
     strip_units::Bool
 end
 
+struct CmteAtomicEnergies <: AbstractCommitteeQoI
+    cmte_reduce::Union{Nothing,Function}
+    strip_units::Bool
+
+    function CmteAtomicEnergies(reduce_function::Union{Nothing,Function}, strip_units::Bool)
+        if !isnothing(reduce_function)
+            if !_check_reduction_fn(reduce_function)
+                error("Reduction function invalid. Must reduce to single Float, Integer, or Boolean")
+
+            end
+        end
+        return new(reduce_function,strip_units)
+    end
+end
+
+# Quickly hacking this up
+function compute(qoi::CmteAtomicEnergies,config::PotentialLearning.Configuration,cmte_pot::CommitteePotential; cache_field=nothing)
+
+    all_atomic_energies = compute_all_atomic_energies(config,cmte_pot)
+
+    if qoi.strip_units
+        if eltype(all_atomic_energies) <: Unitful.Quantity # may be unnecessary once AC interface firmly enforced?
+            all_atomic_energies = ustrip.(all_atomic_energies)
+        end
+    end
+
+    if !isnothing(qoi.cmte_reduce)
+        all_atomic_energies = stack(all_atomic_energies) # num_atoms x num_members
+        reduced_atomic_energies = qoi.cmte_reduce(all_atomic_energies,dims=2) # hard-coding which dimension to reduce over
+        return reduced_atomic_energies
+    else
+        return all_atomic_energies
+    end
+end
+
+
+# Quickly hacking this up
+function compute(qoi::CmteAtomicEnergies,config::PotentialLearning.Configuration,cmte_pot::CommitteePotential; cache_field=nothing)
+
+    all_atomic_energies = compute_all_atomic_energies(config,cmte_pot)
+
+    if qoi.strip_units
+        if eltype(all_energies) <: Unitful.Quantity # may be unnecessary once AC interface firmly enforced?
+            all_energies = ustrip.(all_energies)
+        end
+    end
+
+    if !isnothing(qoi.cmte_reduce)
+        reduced_energies = qoi.cmte_reduce(all_energies)
+        return reduced_energies
+    else
+        return all_energies
+    end
+end
+
 
 function compute(qoi::CmteEnergy,sys::AbstractSystem,cmte_pot::CommitteePotential; cache_field=nothing)
 

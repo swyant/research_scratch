@@ -185,3 +185,12 @@ function generate_predicted_alphas(calib_scores, test_uq, test_abs_residuals)
 end
 #qhat_scores = q_hat*test_feature_distances[test_idxs_wrt_test]
 #coverage = sum(test_abs_residuals .> qhat_scores) / num_test
+
+
+# from subsampling_dpp.jl in PL.jl examples
+function concat_dataset(confs::Vector{DataSet})
+    N = length(confs)
+    confs_vec = [[confs[i][j] for j = 1:length(confs[i])] for i = 1:N]
+    confs_all = reduce(vcat, confs_vec)
+    return DataSet(confs_all)
+end

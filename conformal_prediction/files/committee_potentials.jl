@@ -152,6 +152,23 @@ function compute_all_energies(config::PotentialLearning.Configuration, cmte_pot:
 end
 
 
+function compute_all_atomic_energies(config::PotentialLearning.Configuration, cmte_pot::CommitteePotential)
+  shared_basis = cmte_pot.members[1].basis
+  sys = get_system(config)
+    
+  # try/catch is probably too much overhead
+  lds = Vector{Vector{Float64}}()
+  try 
+    lds = get_values(get_local_descriptors(config))
+  catch KeyError
+    lds = compute_local_descriptors(sys,shared_basis)
+  end
+
+  all_atomic_energies = [[pot.β'*ld for ld in lds] for pot in cmte_pot.members]
+  all_atomic_energies
+end
+
+
 function compute_all_forces(sys::AbstractSystem, cmte_pot::CommitteePotential)
   # This manual type stuff is only needed so long as IP.jl doesn't satistfy the AtomsCalculators interface
 

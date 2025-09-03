@@ -1,0 +1,33 @@
+# user-set variables 
+variable TEMP    equal 300
+variable run_idx equal 5
+variable rng     equal 94569
+variable dump_freq equal 1000
+
+# necessary preliminaries
+units metal 
+atom_style atomic
+dimension 3 
+boundary p p p 
+
+read_data ../../files/large_Hf_pristine_DATA
+
+# neighbor parameters
+neighbor 2.0 bin 
+neigh_modify every 1 delay 0 check no
+
+# interatomic potential parameters
+pair_style     pod
+pair_coeff * * ../../files/Hf_param.pod ../../files/Hf_coefficients.pod Hf
+
+thermo 100 
+thermo_style custom step temp etotal pe ke press vol
+
+dump dforces all custom ${dump_freq} dump_forces_${run_idx}.custom id element x y z fx fy fz 
+dump_modify dforces sort id element Hf format line "%3d %2s %13.8f %13.8f %13.8f %13.8f %13.8f %13.8f"
+
+velocity all create ${TEMP} ${rng} rot yes mom yes dist gaussian
+fix 1 all nvt temp ${TEMP} ${TEMP} 0.1 
+
+# run 
+run 200000

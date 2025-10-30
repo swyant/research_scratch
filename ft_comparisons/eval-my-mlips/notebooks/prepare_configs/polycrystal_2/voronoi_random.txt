@@ -1,0 +1,4 @@
+# Random Voronoi polycrystal of Hf
+# Units: Angstrom
+box 90 90 90
+random 4

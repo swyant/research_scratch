@@ -1,0 +1,32 @@
+[project]
+name = "eval-my-mlips"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Spencer Wyant", email = "17836774+swyant@users.noreply.github.com" }
+]
+requires-python = ">=3.13"
+dependencies = [
+    "ase>=3.26.0",
+    "mace-torch>=0.3.14",
+    "matplotlib>=3.10.6",
+    "pandas>=2.3.2",
+    "pymatgen>=2025.10.7",
+    "pymatgen-analysis-defects>=2025.9.26",
+    "wandb>=0.22.1",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[dependency-groups]
+dev = [
+    "eval-my-mlips",
+    "ipykernel>=6.30.1",
+]
+
+[tool.uv.sources]
+eval-my-mlips = { workspace = true }
+mace-torch = { path = "../../../../dev/other/mace", editable = true }

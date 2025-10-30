@@ -1,0 +1,10 @@
+*.model
+.venv
+*.pt 
+*.xyz
+*.xsf 
+*.lammpstrj
+*_DATA
+*.lmp
+.vscode
+__pycache__

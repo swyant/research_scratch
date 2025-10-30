@@ -1,0 +1,45 @@
+using PotentialLearning
+using InteratomicPotentials 
+using Unitful
+
+param_file = "./small_HfOx_param.pod"
+datapath = "/Users/swyant/cesmix/datasets/HfO2_cesmix/april_2025_data_mv/for_pod_split_high-force_rm/all/trainval/"
+
+# from subsampling_dpp.jl in PL.jl examples
+function readext(path::String, ext::String)
+    dir = readdir(path)
+    substr = [split(f, ".") for f in dir]
+    id = findall(x -> x[end] == ext, substr)
+    return dir[id]
+end
+
+# from subsampling_dpp.jl in PL.jl examples
+function concat_dataset(confs::Vector{DataSet})
+    N = length(confs)
+    confs_vec = [[confs[i][j] for j = 1:length(confs[i])] for i = 1:N]
+    confs_all = reduce(vcat, confs_vec)
+    return DataSet(confs_all)
+end
+
+file_arr = readext(datapath, "xyz")
+confs_arr = [load_data(datapath*"/"*file, ExtXYZ(u"eV", u"Å")) for file in file_arr]
+
+ds = concat_dataset(confs_arr) 
+
+#lmp_pod = LAMMPS_POD(param_file, [:Hf, :O])
+#@show length(lmp_pod)
+
+ace = ACE(;species           = [:Hf,:O],
+          body_order        = 4,
+          polynomial_degree = 8,
+          wL                = 1.5,
+          csp               = 1.0,
+          r0                = 2.15,
+          rcutoff           = 5.2)
+@show length(ace)
+
+e_descrs = compute_local_descriptors(ds,ace)
+confs_kDPP = DataSet(ds .+ e_descrs)
+dataset_selector = kDPP(confs_kDPP, GlobalMean(), DotProduct(), batch_size=361)
+inds = get_random_subset(dataset_selector)
+

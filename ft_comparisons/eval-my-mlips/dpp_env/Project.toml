@@ -1,0 +1,9 @@
+[deps]
+Determinantal = "2673d5e8-682c-11e9-2dfd-471b09c6c819"
+InteratomicPotentials = "a9efe35a-c65d-452d-b8a8-82646cd5cb04"
+LAMMPS = "ee2e13b9-eee9-4449-aafa-cfa6a2dbe14d"
+PotentialLearning = "82b0a93c-c2e3-44bc-a418-f0f89b0ae5c2"
+Unitful = "1986cc42-f94f-5a68-af5c-568840ba703d"
+
+[extras]
+LAMMPS_jll = "5b3ab26d-9607-527c-88ea-8fe5ba57cafe"

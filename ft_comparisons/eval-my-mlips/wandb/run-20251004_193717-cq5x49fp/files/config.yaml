@@ -1,0 +1,61 @@
+_wandb:
+    value:
+        cli_version: 0.22.1
+        e:
+            3sf47onsh9s356wy1pva6l74y8x5w5w7:
+                apple:
+                    ecpuCores: 4
+                    gpuCores: 8
+                    memoryGb: 16
+                    name: Apple M1
+                    pcpuCores: 4
+                    ramTotalBytes: "17179869184"
+                    swapTotalBytes: "9663676416"
+                args:
+                    - --config
+                    - notebooks/fits/single_config_over_fit-19/single_cfg_fit.yml
+                    - --plot
+                    - "true"
+                    - --plot_frequency
+                    - "10"
+                codePath: ft_comparisons/eval-my-mlips/.venv/bin/mace_run_train
+                codePathLocal: .venv/bin/mace_run_train
+                cpu_count: 8
+                cpu_count_logical: 8
+                disk:
+                    /:
+                        total: "994662584320"
+                        used: "935964463104"
+                email: spencerwyant@gmail.com
+                executable: /Users/swyant/cesmix/exploratory/new_public/ft_comparisons/eval-my-mlips/.venv/bin/python3
+                git:
+                    commit: 5d8930b433e772f96ce6b488d314423b81961212
+                    remote: git@github.com:swyant/research_scratch.git
+                host: Spencers-MacBook-Air.local
+                memory:
+                    total: "17179869184"
+                os: macOS-14.7.8-arm64-arm-64bit-Mach-O
+                program: /Users/swyant/cesmix/exploratory/new_public/ft_comparisons/eval-my-mlips/.venv/bin/mace_run_train
+                python: CPython 3.13.3
+                root: /Users/swyant/cesmix/exploratory/new_public/ft_comparisons/eval-my-mlips
+                startedAt: "2025-10-04T23:37:17.634138Z"
+                writerId: 3sf47onsh9s356wy1pva6l74y8x5w5w7
+        m: []
+        python_version: 3.13.3
+        t:
+            "1":
+                - 1
+                - 105
+            "2":
+                - 1
+                - 105
+            "3":
+                - 13
+                - 16
+                - 62
+            "4": 3.13.3
+            "5": 0.22.1
+            "12": 0.22.1
+            "13": darwin-arm64
+lr:
+    value: 0.01

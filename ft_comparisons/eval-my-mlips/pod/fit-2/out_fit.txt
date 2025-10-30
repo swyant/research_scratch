@@ -1,0 +1,197 @@
+LAMMPS (27 Jun 2024)
+**************** Begin of POD Potentials ****************
+species: Hf O 
+periodic boundary conditions: 1 1 1
+number of environment clusters: 6
+number of principal compoments: 1
+inner cut-off radius: 1
+outer cut-off radius: 5.2
+cut-off function type: 1
+gaussian_exponents: 
+polynomial_degrees: 
+bessel polynomial degree: 2
+inverse polynomial degree: 12
+one-body potential: 1
+two-body radial basis functions: 8
+three-body radial basis functions: 8
+three-body angular degree: 4
+four-body radial basis functions: 7
+four-body angular degree: 3
+five-body radial basis functions: 0
+five-body angular degree: 0
+six-body radial basis functions: 0
+six-body angular degree: 0
+seven-body radial basis functions: 0
+seven-body angular degree: 0
+number of local descriptors per element for one-body potential: 1
+number of local descriptors per element for two-body potential: 16
+number of local descriptors per element for three-body potential: 120
+number of local descriptors per element for four-body potential: 196
+number of local descriptors per element for five-body potential: 0
+number of local descriptors per element for six-body potential: 0
+number of local descriptors per element for seven-body potential: 0
+number of local descriptors per element for all potentials: 333
+number of global descriptors: 3986
+**************** End of POD Potentials ****************
+
+**************** Begin of Data File ****************
+file format: extxyz
+file extension: xyz
+path to training data set: /Users/swyant/cesmix/datasets/HfO2_cesmix/april_2025_data_mv/for_pod_nothing_above_5/all/trainval
+path to test data set: /Users/swyant/cesmix/datasets/HfO2_cesmix/april_2025_data_mv/for_pod_nothing_above_5/all/test
+path to environment configuration set: /Users/swyant/cesmix/datasets/HfO2_cesmix/april_2025_data_mv/for_pod_nothing_above_5/all/trainval
+basename for output files: HfOx
+training fraction: 1
+test fraction: 1
+randomize training data set: 0
+randomize test data set: 0
+error analysis for training data set: 1
+error analysis for test data set: 1
+energy/force calculation for training data set: 0
+energy/force calculation for test data set: 0
+fitting weight for energy: 1000
+fitting weight for force: 2
+fitting weight for stress: 0
+group_weights: global
+save pod descriptors: 0
+compute pod descriptors: 0
+**************** End of Data File ****************
+**************** Begin of Training Data Set ****************
+----------------------------------------------------------
+  data file   | number of configurations | number of atoms
+----------------------------------------------------------
+ trainval.xyz |              2127        |      198006
+----------------------------------------------------------
+number of files: 1
+number of configurations in all files: 2127
+number of atoms in all files: 198006
+minimum number of atoms: 54
+maximum number of atoms: 188
+**************** End of Training Data Set ****************
+**************** Begin of Environment Configuration Set ****************
+----------------------------------------------------------
+  data file   | number of configurations | number of atoms
+----------------------------------------------------------
+ trainval.xyz |              2127        |      198006
+----------------------------------------------------------
+number of files: 1
+number of configurations in all files: 2127
+number of atoms in all files: 198006
+minimum number of atoms: 54
+maximum number of atoms: 188
+**************** End of Environment Configuration Set ****************
+**************** Begin of Test Data Set ****************
+------------------------------------------------------
+ data file | number of configurations | number of atoms
+------------------------------------------------------
+ test.xyz |               389        |       36130
+------------------------------------------------------
+number of files: 1
+number of configurations in all files: 389
+number of atoms in all files: 36130
+minimum number of atoms: 52
+maximum number of atoms: 174
+**************** End of Test Data Set ****************
+**************** Begin of Memory Allocation ****************
+maximum number of atoms in periodic domain: 188
+maximum number of atoms in extended domain: 5076
+maximum number of neighbors in extended domain: 954288
+size of double memory: 106402284
+size of descriptor matrix: 3986 x 3986
+**************** End of Memory Allocation ****************
+**************** Begin Calculating Environment Descriptor Matrix ****************
+Configuration: # 1
+Configuration: # 101
+Configuration: # 201
+Configuration: # 301
+Configuration: # 401
+Configuration: # 501
+Configuration: # 601
+Configuration: # 701
+Configuration: # 801
+Configuration: # 901
+Configuration: # 1001
+Configuration: # 1101
+Configuration: # 1201
+Configuration: # 1301
+Configuration: # 1401
+Configuration: # 1501
+Configuration: # 1601
+Configuration: # 1701
+Configuration: # 1801
+Configuration: # 1901
+Configuration: # 2001
+Configuration: # 2101
+**************** End Calculating Environment Descriptor Matrix ****************
+**************** Begin of Least-Squares Fitting ****************
+Configuration: # 1
+Configuration: # 101
+Configuration: # 201
+Configuration: # 301
+Configuration: # 401
+Configuration: # 501
+Configuration: # 601
+Configuration: # 701
+Configuration: # 801
+Configuration: # 901
+Configuration: # 1001
+Configuration: # 1101
+Configuration: # 1201
+Configuration: # 1301
+Configuration: # 1401
+Configuration: # 1501
+Configuration: # 1601
+Configuration: # 1701
+Configuration: # 1801
+Configuration: # 1901
+Configuration: # 2001
+Configuration: # 2101
+**************** Begin of Error Calculation ****************
+Configuration: # 1
+Configuration: # 101
+Configuration: # 201
+Configuration: # 301
+Configuration: # 401
+Configuration: # 501
+Configuration: # 601
+Configuration: # 701
+Configuration: # 801
+Configuration: # 901
+Configuration: # 1001
+Configuration: # 1101
+Configuration: # 1201
+Configuration: # 1301
+Configuration: # 1401
+Configuration: # 1501
+Configuration: # 1601
+Configuration: # 1701
+Configuration: # 1801
+Configuration: # 1901
+Configuration: # 2001
+Configuration: # 2101
+**************** End of Error Calculation ****************
+**************** Begin of Error Analysis for the Training Data Set ****************
+----------------------------------------------------------------------------------------------
+      File      | # configs |  # atoms  | MAE energy  | RMSE energy | MAE force  | RMSE force
+----------------------------------------------------------------------------------------------
+trainval.xyz         2127      198006     0.000703      0.001494      0.089880      0.163598  
+----------------------------------------------------------------------------------------------
+All files            2127      198006     0.000703      0.001494      0.089880      0.163598  
+----------------------------------------------------------------------------------------------
+**************** End of Error Analysis for the Training Data Set ****************
+**************** Begin of Error Calculation ****************
+Configuration: # 1
+Configuration: # 101
+Configuration: # 201
+Configuration: # 301
+**************** End of Error Calculation ****************
+**************** Begin of Error Analysis for the Test Data Set ****************
+--------------------------------------------------------------------------------------------
+     File     | # configs |  # atoms  | MAE energy  | RMSE energy | MAE force  | RMSE force
+--------------------------------------------------------------------------------------------
+test.xyz            389       36130     0.002828      0.028240      0.093975      0.172246  
+--------------------------------------------------------------------------------------------
+All files           389       36130     0.002828      0.028240      0.093975      0.172246  
+--------------------------------------------------------------------------------------------
+**************** End of Error Analysis for the Test Data Set ****************
+Total wall time: 0:02:52

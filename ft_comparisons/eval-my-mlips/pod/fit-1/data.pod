@@ -1,0 +1,21 @@
+file_format extxyz
+file_extension xyz
+
+path_to_training_data_set "/Users/swyant/cesmix/datasets/HfO2_cesmix/april_2025_data_mv/pod/trainval_1"
+path_to_test_data_set "/Users/swyant/cesmix/datasets/HfO2_cesmix/april_2025_data_mv/pod/test_1"
+path_to_environment_configuration_set "/Users/swyant/cesmix/datasets/HfO2_cesmix/april_2025_data_mv/pod/trainval_1"
+
+fitting_weight_energy 1000.0
+fitting_weight_force 2.0
+fitting_regularization_parameter 1e-12
+
+error_analysis_for_training_data_set 1
+error_analysis_for_test_data_set 0
+
+fraction_training_data_set 1
+randomize_training_data_set 0
+
+fraction_test_data_set 1
+randomize_test_data_set 0
+
+basename_for_output_files HfOx

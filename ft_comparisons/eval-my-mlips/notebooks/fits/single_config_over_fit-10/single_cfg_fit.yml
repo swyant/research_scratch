@@ -1,0 +1,26 @@
+model: 'MACE'
+foundation_model: 'small'
+multiheads_finetuning: False
+train_file: "/Users/swyant/cesmix/datasets/HfO2_cesmix/april_2025_data_mv/processed_and_split/debug/debug.xyz"
+valid_file: "/Users/swyant/cesmix/datasets/HfO2_cesmix/april_2025_data_mv/processed_and_split/debug/debug.xyz"
+test_file: "/Users/swyant/cesmix/datasets/HfO2_cesmix/april_2025_data_mv/processed_and_split/debug/debug.xyz"
+energy_key: "REF_energy"
+forces_key: "REF_forces"
+E0s: {8: -443.8224565134432, 72: -1529.4984727695407}
+name: "single_cfg"
+model_dir: "/Users/swyant/cesmix/exploratory/new_public/ft_comparisons/eval-my-mlips/notebooks/fits/single_config_over_fit-10"
+log_dir: "/Users/swyant/cesmix/exploratory/new_public/ft_comparisons/eval-my-mlips/notebooks/fits/single_config_over_fit-10"
+results_dir: "/Users/swyant/cesmix/exploratory/new_public/ft_comparisons/eval-my-mlips/notebooks/fits/single_config_over_fit-10"
+checkpoints_dir: "/Users/swyant/cesmix/exploratory/new_public/ft_comparisons/eval-my-mlips/notebooks/fits/single_config_over_fit-10"
+device: cpu
+batch_size: 1
+max_num_epochs: 1000
+lr: 0.001
+ema: true
+ema_decay: 0.99 
+optimizer: adamw
+swa: True
+seed: 123
+stress_weight: 0.0
+forces_weight: 100.0
+energy_weight: 1.0

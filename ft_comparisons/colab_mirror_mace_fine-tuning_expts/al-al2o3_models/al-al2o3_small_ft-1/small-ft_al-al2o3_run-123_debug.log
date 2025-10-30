@@ -1,0 +1,1583 @@
+2025-10-12 17:17:39.774 INFO: ===========VERIFYING SETTINGS===========
+2025-10-12 17:17:39.786 INFO: MACE version: 0.3.14
+2025-10-12 17:17:39.787 DEBUG: Configuration: Namespace(config='configs/al-al2o3_configs_small-ft-1', name='small-ft_al-al2o3', seed=123, work_dir='.', log_dir='al-al2o3_models/al-al2o3_small_ft-1', model_dir='al-al2o3_models/al-al2o3_small_ft-1', checkpoints_dir='al-al2o3_models/al-al2o3_small_ft-1', results_dir='al-al2o3_models/al-al2o3_small_ft-1', downloads_dir='./downloads', device='cuda', default_dtype='float64', distributed=False, launcher='slurm', log_level='INFO', plot=True, plot_frequency=10, plot_interaction_e=False, error_table='PerAtomRMSE', model='MACE', r_max=5.0, radial_type='bessel', num_radial_basis=8, num_cutoff_basis=5, pair_repulsion=False, distance_transform='None', apply_cutoff=True, use_last_readout_only=False, use_embedding_readout=False, interaction='RealAgnosticResidualInteractionBlock', interaction_first='RealAgnosticResidualInteractionBlock', max_ell=3, correlation=3, use_reduced_cg=False, use_so3=False, use_agnostic_product=False, num_interactions=2, MLP_irreps='16x0e', radial_MLP='[64, 64, 64]', hidden_irreps='128x0e + 128x1o', edge_irreps=None, num_channels=128, max_L=1, gate='silu', scaling='rms_forces_scaling', avg_num_neighbors=1, compute_avg_num_neighbors=True, compute_stress=False, compute_forces=True, compute_polarizability=<function str2bool at 0x7f6d94906160>, compute_atomic_dipole=<function str2bool at 0x7f6d94906160>, train_file='al-al2o3_data/400_dpp_trainval_no-rd.xyz', valid_file=None, valid_fraction=0.15, test_file='al-al2o3_data/mace_test.xyz', test_dir=None, multi_processed_test=False, num_workers=0, pin_memory=True, atomic_numbers=None, mean=None, std=None, statistics_file=None, les_arguments=None, E0s='{8: -0.20523646, 13: -0.01543451}', pseudolabel_replay=False, foundation_filter_elements=True, heads=None, multiheads_finetuning=False, foundation_head=None, weight_pt_head=1.0, real_pt_data_ratio_threshold=0.1, num_samples_pt=10000, force_mh_ft_lr=False, subselect_pt='random', filter_type_pt='none', allow_random_padding_pt=True, pt_train_file=None, pt_valid_file=None, foundation_model_elements=False, keep_isolated_atoms=False, energy_key='REF_energy', forces_key='REF_forces', virials_key='REF_virials', stress_key='REF_stress', dipole_key='dipole', polarizability_key='polarizability', head_key='head', charges_key='REF_charges', elec_temp_key='elec_temp', total_spin_key='total_spin', total_charge_key='total_charge', embedding_specs=None, skip_evaluate_heads='pt_head', loss='weighted', forces_weight=100.0, swa_forces_weight=100.0, energy_weight=1.0, swa_energy_weight=1000.0, virials_weight=1.0, swa_virials_weight=10.0, stress_weight=0.0, swa_stress_weight=10.0, dipole_weight=1.0, swa_dipole_weight=1.0, swa_polarizability_weight=1.0, polarizability_weight=1.0, config_type_weights='{"Default":1.0}', huber_delta=0.01, optimizer='adamw', beta=0.9, batch_size=15, valid_batch_size=10, lr=0.01, swa_lr=0.001, weight_decay=5e-07, amsgrad=True, scheduler='ReduceLROnPlateau', lr_factor=0.8, scheduler_patience=50, lr_scheduler_gamma=0.9993, swa=True, start_swa=186, lbfgs=False, ema=True, ema_decay=0.99, max_num_epochs=250, patience=2048, foundation_model='small', foundation_model_readout=True, eval_interval=1, keep_checkpoints=False, save_all_checkpoints=False, restart_latest=False, save_cpu=False, clip_grad=10.0, dry_run=False, enable_cueq=True, only_cueq=False, enable_oeq=False, wandb=True, wandb_dir=None, wandb_project='MACE_Al-Al2O3', wandb_entity='', wandb_name='small_ft_lr0.01_wd5e-7_100f1e_400dpp_bs15_plateau-1', wandb_log_hypers=['lr', 'lr_factor', 'lr_scheduler_gamma', 'scheduler', 'swa', 'swa_lr', 'start_swa', 'scheduler_patience', 'swa_energy_weight', 'swa_forces_weight', 'energy_weight', 'forces_weight', 'ema', 'ema_decay', 'weight_decay', 'huber_delta', 'optimizer', 'amsgrad', 'beta', 'batch_size', 'max_num_epochs', 'seed', 'hidden_irreps', 'max_ell', 'max_L', 'correlation', 'r_max', 'radial_MLP', 'scaling', 'num_channels'], key_specification=KeySpecification(info_keys={'energy': 'REF_energy', 'stress': 'REF_stress', 'virials': 'REF_virials', 'dipole': 'dipole', 'head': 'head', 'elec_temp': 'elec_temp', 'total_charge': 'total_charge', 'polarizability': 'polarizability', 'total_spin': 'total_spin'}, arrays_keys={'forces': 'REF_forces', 'charges': 'REF_charges'}))
+2025-10-12 17:17:39.867 INFO: CUDA version: 12.6, CUDA device: 0
+2025-10-12 17:17:39.868 DEBUG: sys.platform='linux', git_executable='git'
+2025-10-12 17:17:39.872 DEBUG: Error accessing Git repository: /content/drive/My Drive/colab_temp/mace_fine-tuning_expts
+2025-10-12 17:17:39.872 INFO: Using foundation model mace-mp-0 small as initial checkpoint.
+2025-10-12 17:17:45.241 INFO: CUDA version: 12.6, CUDA device: 0
+2025-10-12 17:17:45.250 INFO: ===========LOADING INPUT DATA===========
+2025-10-12 17:17:45.250 INFO: Using heads: ['Default']
+2025-10-12 17:17:45.251 INFO: Using the key specifications to parse data:
+2025-10-12 17:17:45.252 INFO: Default: KeySpecification(info_keys={'energy': 'REF_energy', 'stress': 'REF_stress', 'virials': 'REF_virials', 'dipole': 'dipole', 'head': 'head', 'elec_temp': 'elec_temp', 'total_charge': 'total_charge', 'polarizability': 'polarizability', 'total_spin': 'total_spin'}, arrays_keys={'forces': 'REF_forces', 'charges': 'REF_charges'})
+2025-10-12 17:17:45.253 INFO: =============    Processing head Default     ===========
+2025-10-12 17:17:45.254 DEBUG: Loading training file: al-al2o3_data/400_dpp_trainval_no-rd.xyz
+2025-10-12 17:17:48.340 INFO: Training set 1/1 [energy: 400, stress: 400, virials: 0, dipole components: 0, head: 400, elec_temp: 0, total_charge: 0, polarizability: 0, total_spin: 0, forces: 400, charges: 0]
+2025-10-12 17:17:48.343 INFO: Total Training set [energy: 400, stress: 400, virials: 0, dipole components: 0, head: 400, elec_temp: 0, total_charge: 0, polarizability: 0, total_spin: 0, forces: 400, charges: 0]
+2025-10-12 17:17:48.344 INFO: No validation set provided, splitting training data instead.
+2025-10-12 17:17:49.226 INFO: Using random 15% of training set for validation with indices saved in: ./valid_indices_123.txt
+2025-10-12 17:17:49.230 INFO: Random Split Training set [energy: 340, stress: 340, virials: 0, dipole components: 0, head: 340, elec_temp: 0, total_charge: 0, polarizability: 0, total_spin: 0, forces: 340, charges: 0]
+2025-10-12 17:17:49.231 INFO: Random Split Validation set [energy: 60, stress: 60, virials: 0, dipole components: 0, head: 60, elec_temp: 0, total_charge: 0, polarizability: 0, total_spin: 0, forces: 60, charges: 0]
+2025-10-12 17:17:52.651 INFO: Test set 1/1 [energy: 674, stress: 674, virials: 0, dipole components: 0, head: 674, elec_temp: 0, total_charge: 0, polarizability: 0, total_spin: 0, forces: 674, charges: 0]
+2025-10-12 17:17:52.656 INFO: Total Test set [energy: 674, stress: 674, virials: 0, dipole components: 0, head: 674, elec_temp: 0, total_charge: 0, polarizability: 0, total_spin: 0, forces: 674, charges: 0]
+2025-10-12 17:17:52.657 INFO: Total number of configurations: train=340, valid=60, tests=[Default_Default: 674],
+2025-10-12 17:17:52.674 INFO: Atomic Numbers used: [8, 13]
+2025-10-12 17:17:52.675 INFO: Isolated Atomic Energies (E0s) not in training file, using command line argument
+2025-10-12 17:17:52.676 INFO: Atomic Energies used (z: eV) for head Default: {8: -0.20523646, 13: -0.01543451}
+2025-10-12 17:17:52.677 INFO: Processing datasets for head 'Default'
+2025-10-12 17:17:58.583 DEBUG: Successfully loaded dataset from ASE files: ['al-al2o3_data/400_dpp_trainval_no-rd.xyz']
+2025-10-12 17:17:58.584 INFO: Combining 1 list datasets for head 'Default'
+2025-10-12 17:17:59.641 INFO: Head 'Default' training dataset size: 340
+2025-10-12 17:17:59.642 INFO: Computing average number of neighbors
+2025-10-12 17:18:00.005 INFO: Average number of neighbors: 88.58788553015191
+2025-10-12 17:18:00.006 INFO: During training the following quantities will be reported: energy, forces
+2025-10-12 17:18:00.007 INFO: ===========MODEL DETAILS===========
+2025-10-12 17:18:00.246 INFO: Loading FOUNDATION model
+2025-10-12 17:18:00.248 INFO: Using filtered elements: [8, 13]
+2025-10-12 17:18:00.249 INFO: Model configuration extracted from foundation model
+2025-10-12 17:18:00.250 INFO: Using weighted loss function for fine-tuning
+2025-10-12 17:18:00.251 INFO: Message passing with hidden irreps 128x0e)
+2025-10-12 17:18:00.252 INFO: 2 layers, each with correlation order: 3 (body order: 4) and spherical harmonics up to: l=3
+2025-10-12 17:18:00.253 INFO: Radial cutoff: 6.0 A (total receptive field for each atom: 12.0 A)
+2025-10-12 17:18:00.253 INFO: Distance transform for radial basis functions: None
+2025-10-12 17:18:01.522 DEBUG: ScaleShiftMACE(
+  (node_embedding): LinearNodeEmbeddingBlock(
+    (linear): Linear(2x0e -> 128x0e | 256 weights)
+  )
+  (radial_embedding): RadialEmbeddingBlock(
+    (bessel_fn): BesselBasis(r_max=6.0, num_basis=10, trainable=True)
+    (cutoff_fn): PolynomialCutoff(p=5, r_max=6.0)
+  )
+  (spherical_harmonics): SphericalHarmonics()
+  (atomic_energies_fn): AtomicEnergiesBlock(energies=[[-0.2052, -0.0154]])
+  (interactions): ModuleList(
+    (0-1): 2 x RealAgnosticResidualInteractionBlock(
+      (linear_up): Linear(128x0e -> 128x0e | 16384 weights)
+      (conv_tp): TensorProduct(128x0e x 1x0e+1x1o+1x2e+1x3o -> 128x0e+128x1o+128x2e+128x3o | 512 paths | 512 weights)
+      (conv_tp_weights): FullyConnectedNet[10, 64, 64, 64, 512]
+      (linear): Linear(128x0e+128x1o+128x2e+128x3o -> 128x0e+128x1o+128x2e+128x3o | 65536 weights)
+      (skip_tp): FullyConnectedTensorProduct(128x0e x 2x0e -> 128x0e | 32768 paths | 32768 weights)
+      (reshape): reshape_irreps()
+    )
+  )
+  (products): ModuleList(
+    (0-1): 2 x EquivariantProductBasisBlock(
+      (symmetric_contractions): SymmetricContraction(
+        (contractions): ModuleList(
+          (0): Contraction(
+            (contractions_weighting): ModuleList(
+              (0-1): 2 x GraphModule()
+            )
+            (contractions_features): ModuleList(
+              (0-1): 2 x GraphModule()
+            )
+            (weights): ParameterList(
+                (0): Parameter containing: [torch.float64 of size 2x4x128 (cuda:0)]
+                (1): Parameter containing: [torch.float64 of size 2x1x128 (cuda:0)]
+            )
+            (graph_opt_main): GraphModule()
+          )
+        )
+      )
+      (linear): Linear(128x0e -> 128x0e | 16384 weights)
+    )
+  )
+  (readouts): ModuleList(
+    (0): LinearReadoutBlock(
+      (linear): Linear(128x0e -> 1x0e | 128 weights)
+    )
+    (1): NonLinearReadoutBlock(
+      (linear_1): Linear(128x0e -> 16x0e | 2048 weights)
+      (non_linearity): Activation [x] (16x0e -> 16x0e)
+      (linear_2): Linear(16x0e -> 1x0e | 16 weights)
+    )
+  )
+  (scale_shift): ScaleShiftBlock(scale=0.8042, shift=0.1641)
+)
+2025-10-12 17:18:01.524 INFO: Total number of parameters: 362138
+2025-10-12 17:18:01.525 INFO: 
+2025-10-12 17:18:01.526 INFO: ===========OPTIMIZER INFORMATION===========
+2025-10-12 17:18:01.527 INFO: Using ADAMW as parameter optimizer
+2025-10-12 17:18:01.528 INFO: Batch size: 15
+2025-10-12 17:18:01.529 INFO: Using Exponential Moving Average with decay: 0.99
+2025-10-12 17:18:01.530 INFO: Number of gradient updates: 5666
+2025-10-12 17:18:01.531 INFO: Learning rate: 0.01, weight decay: 5e-07
+2025-10-12 17:18:01.531 INFO: WeightedEnergyForcesLoss(energy_weight=1.000, forces_weight=100.000)
+2025-10-12 17:18:01.532 INFO: Converting model to CUEQ for accelerated training
+2025-10-12 17:18:01.615 INFO: Creating new model with cuequivariance settings
+2025-10-12 17:18:01.617 DEBUG: Normalized paths for operand 2 in uv,iu,iv operands=[(2, 128)],[(1, 2)],[(1, 128)] paths=[op0[0]*op1[0]*op2[0]*1.]: got uv,iu,iv operands=[(2, 128)],[(1, 2)],[(1, 128)] paths=[op0[0]*op1[0]*op2[0]*0.71]
+2025-10-12 17:18:01.637 DEBUG: Normalized paths for operand 2 in uv,iu,iv operands=[(128, 128)],[(1, 128)],[(1, 128)] paths=[op0[0]*op1[0]*op2[0]*1.]: got uv,iu,iv operands=[(128, 128)],[(1, 128)],[(1, 128)] paths=[op0[0]*op1[0]*op2[0]*0.09]
+2025-10-12 17:18:01.652 DEBUG: Normalized paths for operand 3 in uv,iu,jv,kuv+ijk sizes=512,128,16,2048 num_segments=4,1,4,4 num_paths=4 i=1 j={1, 3, 5, 7} k={1, 3, 5, 7} u=128 v=1: got uv,iu,jv,kuv+ijk sizes=512,128,16,2048 num_segments=4,1,4,4 num_paths=4 i=1 j={1, 3, 5, 7} k={1, 3, 5, 7} u=128 v=1
+2025-10-12 17:18:01.654 DEBUG: Flattened ijk in uv,iu,jv,kuv+ijk sizes=512,128,16,2048 num_segments=4,1,4,4 num_paths=4 i=1 j={1, 3, 5, 7} k={1, 3, 5, 7} u=128 v=1: got uv,u,v,uv sizes=512,128,16,2048 num_segments=4,1,16,16 num_paths=16 u=128 v=1
+2025-10-12 17:18:01.655 DEBUG: Squeezed uv,u,v,uv sizes=512,128,16,2048 num_segments=4,1,16,16 num_paths=16 u=128 v=1 to u,u,,u sizes=512,128,16,2048 num_segments=4,1,16,16 num_paths=16 u=128
+2025-10-12 17:18:01.657 DEBUG: Flattened ijk in uv,iu,jv,kuv+ijk sizes=512,128,16,2048 num_segments=4,1,4,4 num_paths=4 i=1 j={1, 3, 5, 7} k={1, 3, 5, 7} u=128 v=1: got uv,u,v,uv sizes=512,128,16,2048 num_segments=4,1,16,16 num_paths=16 u=128 v=1
+2025-10-12 17:18:01.658 DEBUG: Squeezed uv,u,v,uv sizes=512,128,16,2048 num_segments=4,1,16,16 num_paths=16 u=128 v=1 to u,u,,u sizes=512,128,16,2048 num_segments=4,1,16,16 num_paths=16 u=128
+2025-10-12 17:18:01.693 DEBUG: Normalized paths for operand 2 in uv,iu,iv sizes=65536,2048,2048 num_segments=4,4,4 num_paths=4 i={1, 3, 5, 7} u=128 v=128: got uv,iu,iv sizes=65536,2048,2048 num_segments=4,4,4 num_paths=4 i={1, 3, 5, 7} u=128 v=128
+2025-10-12 17:18:01.727 DEBUG: Normalized paths for operand 3 in uvw,iu,jv,kw+ijk operands=[(128, 2, 128)],[(1, 128)],[(1, 2)],[(1, 128)] paths=[op0[0]*op1[0]*op2[0]*op3[0]*[[[1.]]]]: got uvw,iu,jv,kw+ijk operands=[(128, 2, 128)],[(1, 128)],[(1, 2)],[(1, 128)] paths=[op0[0]*op1[0]*op2[0]*op3[0]*[[[0.06]]]]
+2025-10-12 17:18:04.745 DEBUG: Flattened abciu in u,a,b,c,i+abcui operands=[(23,)],[(16,)],[(16,)],[(16,)],[(1,)] paths=[op0[0]*op1[0]*op2[0]*op3[0]*op4[0]*c c.shape=(16, 16, 16, 23, 1) c.nnz=276]: got ,,,, sizes=23,16,16,16,1 num_segments=23,16,16,16,1 num_paths=276
+2025-10-12 17:18:04.751 DEBUG: Flattened abiu in u,a,b,i+abui operands=[(4,)],[(16,)],[(16,)],[(1,)] paths=[op0[0]*op1[0]*op2[0]*op3[0]*c c.shape=(16, 16, 4, 1) c.nnz=16]: got ,,, sizes=4,16,16,1 num_segments=4,16,16,1 num_paths=16
+2025-10-12 17:18:04.753 DEBUG: Flattened aiu in u,a,i+aui operands=[(1,)],[(16,)],[(1,)] paths=[op0[0]*op1[0]*op2[0]*c c.shape=(16, 1, 1) c.nnz=1]: got ,, sizes=1,16,1 num_segments=1,16,1 num_paths=1
+2025-10-12 17:18:04.790 DEBUG: _reduced_tensor_product_basis (0e+1o+2e+3o,), frozenset({(1, (0,))}), keep_ir=frozenset({0e})
+2025-10-12 17:18:04.792 DEBUG: Normalized paths for operand 2 in w,a,i+aiw operands=[(1,)],[(16,)],[(1,)] paths=[op0[0]*op1[0]*op2[0]*c c.shape=(16, 1, 1) c.nnz=1]: got w,a,i+aiw operands=[(1,)],[(16,)],[(1,)] paths=[op0[0]*op1[0]*op2[0]*c c.shape=(16, 1, 1) c.nnz=1]
+2025-10-12 17:18:04.793 DEBUG: Flattened aiw in w,a,i+aiw operands=[(1,)],[(16,)],[(1,)] paths=[op0[0]*op1[0]*op2[0]*c c.shape=(16, 1, 1) c.nnz=1]: got ,, sizes=1,16,1 num_segments=1,16,1 num_paths=1
+2025-10-12 17:18:04.794 DEBUG: _reduced_tensor_product_basis (0e+1o+2e+3o, 0e+1o+2e+3o), frozenset({(1, (0, 1)), (1, (1, 0))}), keep_ir=frozenset({0e}), use _optimized_reduced_symmetric_tensor_product_basis
+2025-10-12 17:18:04.794 DEBUG: _reduced_tensor_product_basis (0e,), frozenset({(1, (0,))}), keep_ir=frozenset({0e, 1o, 3o, 2e})
+2025-10-12 17:18:04.794 DEBUG: _reduced_tensor_product_basis (0e, 0e), frozenset({(1, (0, 1)), (1, (1, 0))}), keep_ir=frozenset({0e})
+2025-10-12 17:18:04.805 DEBUG: _reduced_tensor_product_basis (1o,), frozenset({(1, (0,))}), keep_ir=frozenset({0e, 1o, 3o, 2e})
+2025-10-12 17:18:04.805 DEBUG: _reduced_tensor_product_basis (1o, 1o), frozenset({(1, (0, 1)), (1, (1, 0))}), keep_ir=frozenset({0e})
+2025-10-12 17:18:04.808 DEBUG: _reduced_tensor_product_basis (2e,), frozenset({(1, (0,))}), keep_ir=frozenset({0e, 1o, 3o, 2e})
+2025-10-12 17:18:04.808 DEBUG: _reduced_tensor_product_basis (2e, 2e), frozenset({(1, (0, 1)), (1, (1, 0))}), keep_ir=frozenset({0e})
+2025-10-12 17:18:04.811 DEBUG: _reduced_tensor_product_basis (3o,), frozenset({(1, (0,))}), keep_ir=frozenset({0e, 1o, 3o, 2e})
+2025-10-12 17:18:04.811 DEBUG: _reduced_tensor_product_basis (3o, 3o), frozenset({(1, (0, 1)), (1, (1, 0))}), keep_ir=frozenset({0e})
+2025-10-12 17:18:04.819 DEBUG: Normalized paths for operand 3 in w,a,b,i+abiw operands=[(4,)],[(16,)],[(16,)],[(1,)] paths=[op0[0]*op1[0]*op2[0]*op3[0]*c c.shape=(16, 16, 1, 4) c.nnz=16]: got w,a,b,i+abiw operands=[(4,)],[(16,)],[(16,)],[(1,)] paths=[op0[0]*op1[0]*op2[0]*op3[0]*c c.shape=(16, 16, 1, 4) c.nnz=16]
+2025-10-12 17:18:04.820 DEBUG: Flattened abiw in w,a,b,i+abiw operands=[(4,)],[(16,)],[(16,)],[(1,)] paths=[op0[0]*op1[0]*op2[0]*op3[0]*c c.shape=(16, 16, 1, 4) c.nnz=16]: got ,,, sizes=4,16,16,1 num_segments=4,16,16,1 num_paths=16
+2025-10-12 17:18:04.821 DEBUG: _reduced_tensor_product_basis (0e+1o+2e+3o, 0e+1o+2e+3o, 0e+1o+2e+3o), frozenset({(1, (0, 1, 2)), (1, (1, 0, 2)), (1, (2, 0, 1)), (1, (1, 2, 0)), (1, (0, 2, 1)), (1, (2, 1, 0))}), keep_ir=frozenset({0e}), use _optimized_reduced_symmetric_tensor_product_basis
+2025-10-12 17:18:04.822 DEBUG: _reduced_tensor_product_basis (0e,), frozenset({(1, (0,))}), keep_ir=frozenset({0e, 2o, 3o, 2e, 3e, 5o, 6e, 1e, 1o, 5e, 4o, 4e})
+2025-10-12 17:18:04.822 DEBUG: _reduced_tensor_product_basis (0e, 0e), frozenset({(1, (0, 1)), (1, (1, 0))}), keep_ir=frozenset({0e, 1o, 3o, 2e})
+2025-10-12 17:18:04.824 DEBUG: _reduced_tensor_product_basis (0e, 0e, 0e), frozenset({(1, (0, 1, 2)), (1, (1, 0, 2)), (1, (2, 0, 1)), (1, (1, 2, 0)), (1, (0, 2, 1)), (1, (2, 1, 0))}), keep_ir=frozenset({0e})
+2025-10-12 17:18:04.826 DEBUG: _reduced_tensor_product_basis (1o,), frozenset({(1, (0,))}), keep_ir=frozenset({0e, 2o, 3o, 2e, 3e, 5o, 6e, 1e, 1o, 5e, 4o, 4e})
+2025-10-12 17:18:04.826 DEBUG: _reduced_tensor_product_basis (1o, 1o), frozenset({(1, (0, 1)), (1, (1, 0))}), keep_ir=frozenset({0e, 1o, 3o, 2e})
+2025-10-12 17:18:04.828 DEBUG: _reduced_tensor_product_basis (1o, 1o, 1o), frozenset({(1, (0, 1, 2)), (1, (1, 0, 2)), (1, (2, 0, 1)), (1, (1, 2, 0)), (1, (0, 2, 1)), (1, (2, 1, 0))}), keep_ir=frozenset({0e})
+2025-10-12 17:18:04.828 DEBUG: _reduced_tensor_product_basis (1o, 1o), frozenset({(1, (0, 1)), (1, (1, 0))}), keep_ir=frozenset({1o})
+2025-10-12 17:18:04.830 DEBUG: _reduced_tensor_product_basis (2e,), frozenset({(1, (0,))}), keep_ir=frozenset({0e, 2o, 3o, 2e, 3e, 5o, 6e, 1e, 1o, 5e, 4o, 4e})
+2025-10-12 17:18:04.831 DEBUG: _reduced_tensor_product_basis (2e, 2e), frozenset({(1, (0, 1)), (1, (1, 0))}), keep_ir=frozenset({0e, 1o, 3o, 2e})
+2025-10-12 17:18:04.833 DEBUG: _reduced_tensor_product_basis (2e, 2e, 2e), frozenset({(1, (0, 1, 2)), (1, (1, 0, 2)), (1, (2, 0, 1)), (1, (1, 2, 0)), (1, (0, 2, 1)), (1, (2, 1, 0))}), keep_ir=frozenset({0e})
+2025-10-12 17:18:04.834 DEBUG: _reduced_tensor_product_basis (2e, 2e), frozenset({(1, (0, 1)), (1, (1, 0))}), keep_ir=frozenset({2e})
+2025-10-12 17:18:04.838 DEBUG: _reduced_tensor_product_basis (3o,), frozenset({(1, (0,))}), keep_ir=frozenset({0e, 2o, 3o, 2e, 3e, 5o, 6e, 1e, 1o, 5e, 4o, 4e})
+2025-10-12 17:18:04.839 DEBUG: _reduced_tensor_product_basis (3o, 3o), frozenset({(1, (0, 1)), (1, (1, 0))}), keep_ir=frozenset({0e, 1o, 3o, 2e})
+2025-10-12 17:18:04.842 DEBUG: _reduced_tensor_product_basis (3o, 3o, 3o), frozenset({(1, (0, 1, 2)), (1, (1, 0, 2)), (1, (2, 0, 1)), (1, (1, 2, 0)), (1, (0, 2, 1)), (1, (2, 1, 0))}), keep_ir=frozenset({0e})
+2025-10-12 17:18:04.842 DEBUG: _reduced_tensor_product_basis (3o, 3o), frozenset({(1, (0, 1)), (1, (1, 0))}), keep_ir=frozenset({3o})
+2025-10-12 17:18:04.879 DEBUG: Normalized paths for operand 4 in w,a,b,c,i+abciw operands=[(8,)],[(16,)],[(16,)],[(16,)],[(1,)] paths=[op0[0]*op1[0]*op2[0]*op3[0]*op4[0]*c c.shape=(16, 16, 16, 1, 8) c.nnz=353]: got w,a,b,c,i+abciw operands=[(8,)],[(16,)],[(16,)],[(16,)],[(1,)] paths=[op0[0]*op1[0]*op2[0]*op3[0]*op4[0]*c c.shape=(16, 16, 16, 1, 8) c.nnz=353]
+2025-10-12 17:18:04.893 DEBUG: Flattened abciw in w,a,b,c,i+abciw operands=[(8,)],[(16,)],[(16,)],[(16,)],[(1,)] paths=[op0[0]*op1[0]*op2[0]*op3[0]*op4[0]*c c.shape=(16, 16, 16, 1, 8) c.nnz=353]: got ,,,, sizes=8,16,16,16,1 num_segments=8,16,16,16,1 num_paths=353
+2025-10-12 17:18:05.027 DEBUG: Normalized paths for operand 2 in uv,iu,iv operands=[(128, 128)],[(1, 128)],[(1, 128)] paths=[op0[0]*op1[0]*op2[0]*1.]: got uv,iu,iv operands=[(128, 128)],[(1, 128)],[(1, 128)] paths=[op0[0]*op1[0]*op2[0]*0.09]
+2025-10-12 17:18:05.041 DEBUG: Normalized paths for operand 2 in uv,iu,iv operands=[(128, 1)],[(1, 128)],[(1, 1)] paths=[op0[0]*op1[0]*op2[0]*1.]: got uv,iu,iv operands=[(128, 1)],[(1, 128)],[(1, 1)] paths=[op0[0]*op1[0]*op2[0]*0.09]
+2025-10-12 17:18:05.053 DEBUG: Normalized paths for operand 2 in uv,iu,iv operands=[(128, 128)],[(1, 128)],[(1, 128)] paths=[op0[0]*op1[0]*op2[0]*1.]: got uv,iu,iv operands=[(128, 128)],[(1, 128)],[(1, 128)] paths=[op0[0]*op1[0]*op2[0]*0.09]
+2025-10-12 17:18:05.068 DEBUG: Normalized paths for operand 3 in uv,iu,jv,kuv+ijk sizes=512,128,16,2048 num_segments=4,1,4,4 num_paths=4 i=1 j={1, 3, 5, 7} k={1, 3, 5, 7} u=128 v=1: got uv,iu,jv,kuv+ijk sizes=512,128,16,2048 num_segments=4,1,4,4 num_paths=4 i=1 j={1, 3, 5, 7} k={1, 3, 5, 7} u=128 v=1
+2025-10-12 17:18:05.070 DEBUG: Flattened ijk in uv,iu,jv,kuv+ijk sizes=512,128,16,2048 num_segments=4,1,4,4 num_paths=4 i=1 j={1, 3, 5, 7} k={1, 3, 5, 7} u=128 v=1: got uv,u,v,uv sizes=512,128,16,2048 num_segments=4,1,16,16 num_paths=16 u=128 v=1
+2025-10-12 17:18:05.071 DEBUG: Squeezed uv,u,v,uv sizes=512,128,16,2048 num_segments=4,1,16,16 num_paths=16 u=128 v=1 to u,u,,u sizes=512,128,16,2048 num_segments=4,1,16,16 num_paths=16 u=128
+2025-10-12 17:18:05.073 DEBUG: Flattened ijk in uv,iu,jv,kuv+ijk sizes=512,128,16,2048 num_segments=4,1,4,4 num_paths=4 i=1 j={1, 3, 5, 7} k={1, 3, 5, 7} u=128 v=1: got uv,u,v,uv sizes=512,128,16,2048 num_segments=4,1,16,16 num_paths=16 u=128 v=1
+2025-10-12 17:18:05.074 DEBUG: Squeezed uv,u,v,uv sizes=512,128,16,2048 num_segments=4,1,16,16 num_paths=16 u=128 v=1 to u,u,,u sizes=512,128,16,2048 num_segments=4,1,16,16 num_paths=16 u=128
+2025-10-12 17:18:05.111 DEBUG: Normalized paths for operand 2 in uv,iu,iv sizes=65536,2048,2048 num_segments=4,4,4 num_paths=4 i={1, 3, 5, 7} u=128 v=128: got uv,iu,iv sizes=65536,2048,2048 num_segments=4,4,4 num_paths=4 i={1, 3, 5, 7} u=128 v=128
+2025-10-12 17:18:05.145 DEBUG: Normalized paths for operand 3 in uvw,iu,jv,kw+ijk operands=[(128, 2, 128)],[(1, 128)],[(1, 2)],[(1, 128)] paths=[op0[0]*op1[0]*op2[0]*op3[0]*[[[1.]]]]: got uvw,iu,jv,kw+ijk operands=[(128, 2, 128)],[(1, 128)],[(1, 2)],[(1, 128)] paths=[op0[0]*op1[0]*op2[0]*op3[0]*[[[0.06]]]]
+2025-10-12 17:18:05.168 DEBUG: Normalized paths for operand 2 in uv,iu,iv operands=[(128, 128)],[(1, 128)],[(1, 128)] paths=[op0[0]*op1[0]*op2[0]*1.]: got uv,iu,iv operands=[(128, 128)],[(1, 128)],[(1, 128)] paths=[op0[0]*op1[0]*op2[0]*0.09]
+2025-10-12 17:18:05.181 DEBUG: Normalized paths for operand 2 in uv,iu,iv operands=[(128, 16)],[(1, 128)],[(1, 16)] paths=[op0[0]*op1[0]*op2[0]*1.]: got uv,iu,iv operands=[(128, 16)],[(1, 128)],[(1, 16)] paths=[op0[0]*op1[0]*op2[0]*0.09]
+2025-10-12 17:18:05.225 DEBUG: Normalized paths for operand 2 in uv,iu,iv operands=[(16, 1)],[(1, 16)],[(1, 1)] paths=[op0[0]*op1[0]*op2[0]*1.]: got uv,iu,iv operands=[(16, 1)],[(1, 16)],[(1, 1)] paths=[op0[0]*op1[0]*op2[0]*0.25]
+2025-10-12 17:18:05.255 DEBUG: Transferring key interactions.1.linear_up.weight after adapting shape (16384,) → (1, 16384) -> torch.Size([1, 16384])
+2025-10-12 17:18:05.256 DEBUG: Transferring additional key: interactions.1.conv_tp_weights.layer2.weight
+2025-10-12 17:18:05.256 DEBUG: Transferring key node_embedding.linear.weight after adapting shape (256,) → (1, 256) -> torch.Size([1, 256])
+2025-10-12 17:18:05.256 DEBUG: Transferring key interactions.0.skip_tp.weight after adapting shape (32768,) → (1, 32768) -> torch.Size([1, 32768])
+2025-10-12 17:18:05.256 DEBUG: Transferring additional key: interactions.0.conv_tp_weights.layer3.weight
+2025-10-12 17:18:05.256 DEBUG: Transferring additional key: radial_embedding.cutoff_fn.r_max
+2025-10-12 17:18:05.256 DEBUG: Transferring additional key: interactions.1.conv_tp_weights.layer3.weight
+2025-10-12 17:18:05.256 DEBUG: Transferring additional key: interactions.1.conv_tp_weights.layer0.weight
+2025-10-12 17:18:05.257 DEBUG: Transferring key interactions.1.linear.weight after adapting shape (65536,) → (1, 65536) -> torch.Size([1, 65536])
+2025-10-12 17:18:05.257 DEBUG: Transferring key interactions.1.skip_tp.weight after adapting shape (32768,) → (1, 32768) -> torch.Size([1, 32768])
+2025-10-12 17:18:05.257 DEBUG: Transferring key readouts.1.linear_2.weight after adapting shape (16,) → (1, 16) -> torch.Size([1, 16])
+2025-10-12 17:18:05.257 DEBUG: Transferring additional key: interactions.1.conv_tp_weights.layer1.weight
+2025-10-12 17:18:05.257 DEBUG: Transferring additional key: num_interactions
+2025-10-12 17:18:05.257 DEBUG: Transferring key readouts.1.linear_1.weight after adapting shape (2048,) → (1, 2048) -> torch.Size([1, 2048])
+2025-10-12 17:18:05.257 DEBUG: Transferring additional key: r_max
+2025-10-12 17:18:05.257 DEBUG: Transferring additional key: radial_embedding.bessel_fn.bessel_weights
+2025-10-12 17:18:05.257 DEBUG: Transferring key interactions.0.linear_up.weight after adapting shape (16384,) → (1, 16384) -> torch.Size([1, 16384])
+2025-10-12 17:18:05.257 DEBUG: Transferring additional key: radial_embedding.cutoff_fn.p
+2025-10-12 17:18:05.257 DEBUG: Transferring additional key: radial_embedding.bessel_fn.r_max
+2025-10-12 17:18:05.257 DEBUG: Transferring key products.1.linear.weight after adapting shape (16384,) → (1, 16384) -> torch.Size([1, 16384])
+2025-10-12 17:18:05.258 DEBUG: Transferring key products.0.linear.weight after adapting shape (16384,) → (1, 16384) -> torch.Size([1, 16384])
+2025-10-12 17:18:05.258 DEBUG: Transferring additional key: atomic_numbers
+2025-10-12 17:18:05.258 DEBUG: Transferring key readouts.0.linear.weight after adapting shape (128,) → (1, 128) -> torch.Size([1, 128])
+2025-10-12 17:18:05.258 DEBUG: Transferring additional key: interactions.0.conv_tp_weights.layer2.weight
+2025-10-12 17:18:05.258 DEBUG: Transferring additional key: atomic_energies_fn.atomic_energies
+2025-10-12 17:18:05.258 DEBUG: Transferring additional key: scale_shift.scale
+2025-10-12 17:18:05.258 DEBUG: Transferring additional key: radial_embedding.bessel_fn.prefactor
+2025-10-12 17:18:05.258 DEBUG: Transferring additional key: interactions.0.conv_tp_weights.layer0.weight
+2025-10-12 17:18:05.258 DEBUG: Transferring additional key: interactions.0.conv_tp_weights.layer1.weight
+2025-10-12 17:18:05.258 DEBUG: Transferring additional key: scale_shift.shift
+2025-10-12 17:18:05.258 DEBUG: Transferring key interactions.0.linear.weight after adapting shape (65536,) → (1, 65536) -> torch.Size([1, 65536])
+2025-10-12 17:18:05.265 INFO: Stage Two (after 186 epochs) with loss function: WeightedEnergyForcesLoss(energy_weight=1000.000, forces_weight=100.000), with energy weight : 1000.0, forces weight : 100.0 and learning rate : 0.001
+2025-10-12 17:18:05.322 INFO: Using Weights and Biases for logging
+2025-10-12 17:18:06.171 DEBUG: sys.platform='linux', git_executable='git'
+2025-10-12 17:18:07.382 INFO: Using gradient clipping with tolerance=10.000
+2025-10-12 17:18:07.383 INFO: 
+2025-10-12 17:18:07.384 INFO: ===========TRAINING===========
+2025-10-12 17:18:07.385 INFO: Started training, reporting errors on validation set
+2025-10-12 17:18:07.386 INFO: Loss metrics on validation set
+2025-10-12 17:18:30.256 INFO: Initial: head: Default, loss=25.40442882, RMSE_E_per_atom= 5823.98 meV, RMSE_F= 1480.84 meV / A
+2025-10-12 17:23:37.002 INFO: ===========VERIFYING SETTINGS===========
+2025-10-12 17:23:38.338 INFO: MACE version: 0.3.14
+2025-10-12 17:23:38.339 DEBUG: Configuration: Namespace(config='configs/al-al2o3_configs_small-ft-1', name='small-ft_al-al2o3', seed=123, work_dir='.', log_dir='al-al2o3_models/al-al2o3_small_ft-1', model_dir='al-al2o3_models/al-al2o3_small_ft-1', checkpoints_dir='al-al2o3_models/al-al2o3_small_ft-1', results_dir='al-al2o3_models/al-al2o3_small_ft-1', downloads_dir='./downloads', device='cuda', default_dtype='float64', distributed=False, launcher='slurm', log_level='INFO', plot=True, plot_frequency=10, plot_interaction_e=False, error_table='PerAtomRMSE', model='MACE', r_max=5.0, radial_type='bessel', num_radial_basis=8, num_cutoff_basis=5, pair_repulsion=False, distance_transform='None', apply_cutoff=True, use_last_readout_only=False, use_embedding_readout=False, interaction='RealAgnosticResidualInteractionBlock', interaction_first='RealAgnosticResidualInteractionBlock', max_ell=3, correlation=3, use_reduced_cg=False, use_so3=False, use_agnostic_product=False, num_interactions=2, MLP_irreps='16x0e', radial_MLP='[64, 64, 64]', hidden_irreps='128x0e + 128x1o', edge_irreps=None, num_channels=128, max_L=1, gate='silu', scaling='rms_forces_scaling', avg_num_neighbors=1, compute_avg_num_neighbors=True, compute_stress=False, compute_forces=True, compute_polarizability=<function str2bool at 0x7ded896d9e40>, compute_atomic_dipole=<function str2bool at 0x7ded896d9e40>, train_file='al-al2o3_data/400_dpp_trainval_no-rd.xyz', valid_file=None, valid_fraction=0.15, test_file='al-al2o3_data/mace_test.xyz', test_dir=None, multi_processed_test=False, num_workers=0, pin_memory=True, atomic_numbers=None, mean=None, std=None, statistics_file=None, les_arguments=None, E0s='{8: -0.20523646, 13: -0.01543451}', pseudolabel_replay=False, foundation_filter_elements=True, heads=None, multiheads_finetuning=False, foundation_head=None, weight_pt_head=1.0, real_pt_data_ratio_threshold=0.1, num_samples_pt=10000, force_mh_ft_lr=False, subselect_pt='random', filter_type_pt='none', allow_random_padding_pt=True, pt_train_file=None, pt_valid_file=None, foundation_model_elements=False, keep_isolated_atoms=False, energy_key='REF_energy', forces_key='REF_forces', virials_key='REF_virials', stress_key='REF_stress', dipole_key='dipole', polarizability_key='polarizability', head_key='head', charges_key='REF_charges', elec_temp_key='elec_temp', total_spin_key='total_spin', total_charge_key='total_charge', embedding_specs=None, skip_evaluate_heads='pt_head', loss='weighted', forces_weight=100.0, swa_forces_weight=100.0, energy_weight=1.0, swa_energy_weight=1000.0, virials_weight=1.0, swa_virials_weight=10.0, stress_weight=0.0, swa_stress_weight=10.0, dipole_weight=1.0, swa_dipole_weight=1.0, swa_polarizability_weight=1.0, polarizability_weight=1.0, config_type_weights='{"Default":1.0}', huber_delta=0.01, optimizer='adamw', beta=0.9, batch_size=5, valid_batch_size=10, lr=0.01, swa_lr=0.001, weight_decay=5e-07, amsgrad=True, scheduler='ReduceLROnPlateau', lr_factor=0.8, scheduler_patience=50, lr_scheduler_gamma=0.9993, swa=True, start_swa=186, lbfgs=False, ema=True, ema_decay=0.99, max_num_epochs=250, patience=2048, foundation_model='small', foundation_model_readout=True, eval_interval=1, keep_checkpoints=False, save_all_checkpoints=False, restart_latest=False, save_cpu=False, clip_grad=10.0, dry_run=False, enable_cueq=True, only_cueq=False, enable_oeq=False, wandb=True, wandb_dir=None, wandb_project='MACE_Al-Al2O3', wandb_entity='', wandb_name='small_ft_lr0.01_wd5e-7_100f1e_400dpp_bs15_plateau-1', wandb_log_hypers=['lr', 'lr_factor', 'lr_scheduler_gamma', 'scheduler', 'swa', 'swa_lr', 'start_swa', 'scheduler_patience', 'swa_energy_weight', 'swa_forces_weight', 'energy_weight', 'forces_weight', 'ema', 'ema_decay', 'weight_decay', 'huber_delta', 'optimizer', 'amsgrad', 'beta', 'batch_size', 'max_num_epochs', 'seed', 'hidden_irreps', 'max_ell', 'max_L', 'correlation', 'r_max', 'radial_MLP', 'scaling', 'num_channels'], key_specification=KeySpecification(info_keys={'energy': 'REF_energy', 'stress': 'REF_stress', 'virials': 'REF_virials', 'dipole': 'dipole', 'head': 'head', 'elec_temp': 'elec_temp', 'total_charge': 'total_charge', 'polarizability': 'polarizability', 'total_spin': 'total_spin'}, arrays_keys={'forces': 'REF_forces', 'charges': 'REF_charges'}))
+2025-10-12 17:23:38.437 INFO: CUDA version: 12.6, CUDA device: 0
+2025-10-12 17:23:38.438 DEBUG: sys.platform='linux', git_executable='git'
+2025-10-12 17:23:38.441 DEBUG: Error accessing Git repository: /content/drive/MyDrive/colab_temp/mace_fine-tuning_expts
+2025-10-12 17:23:38.441 INFO: Using foundation model mace-mp-0 small as initial checkpoint.
+2025-10-12 17:23:40.181 INFO: CUDA version: 12.6, CUDA device: 0
+2025-10-12 17:23:40.191 INFO: ===========LOADING INPUT DATA===========
+2025-10-12 17:23:40.191 INFO: Using heads: ['Default']
+2025-10-12 17:23:40.192 INFO: Using the key specifications to parse data:
+2025-10-12 17:23:40.193 INFO: Default: KeySpecification(info_keys={'energy': 'REF_energy', 'stress': 'REF_stress', 'virials': 'REF_virials', 'dipole': 'dipole', 'head': 'head', 'elec_temp': 'elec_temp', 'total_charge': 'total_charge', 'polarizability': 'polarizability', 'total_spin': 'total_spin'}, arrays_keys={'forces': 'REF_forces', 'charges': 'REF_charges'})
+2025-10-12 17:23:40.194 INFO: =============    Processing head Default     ===========
+2025-10-12 17:23:40.195 DEBUG: Loading training file: al-al2o3_data/400_dpp_trainval_no-rd.xyz
+2025-10-12 17:23:42.420 INFO: Training set 1/1 [energy: 400, stress: 400, virials: 0, dipole components: 0, head: 400, elec_temp: 0, total_charge: 0, polarizability: 0, total_spin: 0, forces: 400, charges: 0]
+2025-10-12 17:23:42.424 INFO: Total Training set [energy: 400, stress: 400, virials: 0, dipole components: 0, head: 400, elec_temp: 0, total_charge: 0, polarizability: 0, total_spin: 0, forces: 400, charges: 0]
+2025-10-12 17:23:42.425 INFO: No validation set provided, splitting training data instead.
+2025-10-12 17:23:43.224 INFO: Using random 15% of training set for validation with indices saved in: ./valid_indices_123.txt
+2025-10-12 17:23:43.227 INFO: Random Split Training set [energy: 340, stress: 340, virials: 0, dipole components: 0, head: 340, elec_temp: 0, total_charge: 0, polarizability: 0, total_spin: 0, forces: 340, charges: 0]
+2025-10-12 17:23:43.229 INFO: Random Split Validation set [energy: 60, stress: 60, virials: 0, dipole components: 0, head: 60, elec_temp: 0, total_charge: 0, polarizability: 0, total_spin: 0, forces: 60, charges: 0]
+2025-10-12 17:23:45.606 INFO: Test set 1/1 [energy: 674, stress: 674, virials: 0, dipole components: 0, head: 674, elec_temp: 0, total_charge: 0, polarizability: 0, total_spin: 0, forces: 674, charges: 0]
+2025-10-12 17:23:45.611 INFO: Total Test set [energy: 674, stress: 674, virials: 0, dipole components: 0, head: 674, elec_temp: 0, total_charge: 0, polarizability: 0, total_spin: 0, forces: 674, charges: 0]
+2025-10-12 17:23:45.612 INFO: Total number of configurations: train=340, valid=60, tests=[Default_Default: 674],
+2025-10-12 17:23:45.629 INFO: Atomic Numbers used: [8, 13]
+2025-10-12 17:23:45.630 INFO: Isolated Atomic Energies (E0s) not in training file, using command line argument
+2025-10-12 17:23:45.630 INFO: Atomic Energies used (z: eV) for head Default: {8: -0.20523646, 13: -0.01543451}
+2025-10-12 17:23:45.631 INFO: Processing datasets for head 'Default'
+2025-10-12 17:23:51.519 DEBUG: Successfully loaded dataset from ASE files: ['al-al2o3_data/400_dpp_trainval_no-rd.xyz']
+2025-10-12 17:23:51.519 INFO: Combining 1 list datasets for head 'Default'
+2025-10-12 17:23:52.573 INFO: Head 'Default' training dataset size: 340
+2025-10-12 17:23:52.575 INFO: Computing average number of neighbors
+2025-10-12 17:23:52.982 INFO: Average number of neighbors: 88.57448317038585
+2025-10-12 17:23:52.983 INFO: During training the following quantities will be reported: energy, forces
+2025-10-12 17:23:52.984 INFO: ===========MODEL DETAILS===========
+2025-10-12 17:23:53.283 INFO: Loading FOUNDATION model
+2025-10-12 17:23:53.285 INFO: Using filtered elements: [8, 13]
+2025-10-12 17:23:53.286 INFO: Model configuration extracted from foundation model
+2025-10-12 17:23:53.287 INFO: Using weighted loss function for fine-tuning
+2025-10-12 17:23:53.288 INFO: Message passing with hidden irreps 128x0e)
+2025-10-12 17:23:53.289 INFO: 2 layers, each with correlation order: 3 (body order: 4) and spherical harmonics up to: l=3
+2025-10-12 17:23:53.290 INFO: Radial cutoff: 6.0 A (total receptive field for each atom: 12.0 A)
+2025-10-12 17:23:53.291 INFO: Distance transform for radial basis functions: None
+2025-10-12 17:23:54.565 DEBUG: ScaleShiftMACE(
+  (node_embedding): LinearNodeEmbeddingBlock(
+    (linear): Linear(2x0e -> 128x0e | 256 weights)
+  )
+  (radial_embedding): RadialEmbeddingBlock(
+    (bessel_fn): BesselBasis(r_max=6.0, num_basis=10, trainable=True)
+    (cutoff_fn): PolynomialCutoff(p=5, r_max=6.0)
+  )
+  (spherical_harmonics): SphericalHarmonics()
+  (atomic_energies_fn): AtomicEnergiesBlock(energies=[[-0.2052, -0.0154]])
+  (interactions): ModuleList(
+    (0-1): 2 x RealAgnosticResidualInteractionBlock(
+      (linear_up): Linear(128x0e -> 128x0e | 16384 weights)
+      (conv_tp): TensorProduct(128x0e x 1x0e+1x1o+1x2e+1x3o -> 128x0e+128x1o+128x2e+128x3o | 512 paths | 512 weights)
+      (conv_tp_weights): FullyConnectedNet[10, 64, 64, 64, 512]
+      (linear): Linear(128x0e+128x1o+128x2e+128x3o -> 128x0e+128x1o+128x2e+128x3o | 65536 weights)
+      (skip_tp): FullyConnectedTensorProduct(128x0e x 2x0e -> 128x0e | 32768 paths | 32768 weights)
+      (reshape): reshape_irreps()
+    )
+  )
+  (products): ModuleList(
+    (0-1): 2 x EquivariantProductBasisBlock(
+      (symmetric_contractions): SymmetricContraction(
+        (contractions): ModuleList(
+          (0): Contraction(
+            (contractions_weighting): ModuleList(
+              (0-1): 2 x GraphModule()
+            )
+            (contractions_features): ModuleList(
+              (0-1): 2 x GraphModule()
+            )
+            (weights): ParameterList(
+                (0): Parameter containing: [torch.float64 of size 2x4x128 (cuda:0)]
+                (1): Parameter containing: [torch.float64 of size 2x1x128 (cuda:0)]
+            )
+            (graph_opt_main): GraphModule()
+          )
+        )
+      )
+      (linear): Linear(128x0e -> 128x0e | 16384 weights)
+    )
+  )
+  (readouts): ModuleList(
+    (0): LinearReadoutBlock(
+      (linear): Linear(128x0e -> 1x0e | 128 weights)
+    )
+    (1): NonLinearReadoutBlock(
+      (linear_1): Linear(128x0e -> 16x0e | 2048 weights)
+      (non_linearity): Activation [x] (16x0e -> 16x0e)
+      (linear_2): Linear(16x0e -> 1x0e | 16 weights)
+    )
+  )
+  (scale_shift): ScaleShiftBlock(scale=0.8042, shift=0.1641)
+)
+2025-10-12 17:23:54.567 INFO: Total number of parameters: 362138
+2025-10-12 17:23:54.568 INFO: 
+2025-10-12 17:23:54.569 INFO: ===========OPTIMIZER INFORMATION===========
+2025-10-12 17:23:54.570 INFO: Using ADAMW as parameter optimizer
+2025-10-12 17:23:54.571 INFO: Batch size: 5
+2025-10-12 17:23:54.572 INFO: Using Exponential Moving Average with decay: 0.99
+2025-10-12 17:23:54.573 INFO: Number of gradient updates: 17000
+2025-10-12 17:23:54.574 INFO: Learning rate: 0.01, weight decay: 5e-07
+2025-10-12 17:23:54.574 INFO: WeightedEnergyForcesLoss(energy_weight=1.000, forces_weight=100.000)
+2025-10-12 17:23:54.575 INFO: Converting model to CUEQ for accelerated training
+2025-10-12 17:23:54.656 INFO: Creating new model with cuequivariance settings
+2025-10-12 17:23:54.659 DEBUG: Normalized paths for operand 2 in uv,iu,iv operands=[(2, 128)],[(1, 2)],[(1, 128)] paths=[op0[0]*op1[0]*op2[0]*1.]: got uv,iu,iv operands=[(2, 128)],[(1, 2)],[(1, 128)] paths=[op0[0]*op1[0]*op2[0]*0.71]
+2025-10-12 17:23:54.678 DEBUG: Normalized paths for operand 2 in uv,iu,iv operands=[(128, 128)],[(1, 128)],[(1, 128)] paths=[op0[0]*op1[0]*op2[0]*1.]: got uv,iu,iv operands=[(128, 128)],[(1, 128)],[(1, 128)] paths=[op0[0]*op1[0]*op2[0]*0.09]
+2025-10-12 17:23:54.692 DEBUG: Normalized paths for operand 3 in uv,iu,jv,kuv+ijk sizes=512,128,16,2048 num_segments=4,1,4,4 num_paths=4 i=1 j={1, 3, 5, 7} k={1, 3, 5, 7} u=128 v=1: got uv,iu,jv,kuv+ijk sizes=512,128,16,2048 num_segments=4,1,4,4 num_paths=4 i=1 j={1, 3, 5, 7} k={1, 3, 5, 7} u=128 v=1
+2025-10-12 17:23:54.694 DEBUG: Flattened ijk in uv,iu,jv,kuv+ijk sizes=512,128,16,2048 num_segments=4,1,4,4 num_paths=4 i=1 j={1, 3, 5, 7} k={1, 3, 5, 7} u=128 v=1: got uv,u,v,uv sizes=512,128,16,2048 num_segments=4,1,16,16 num_paths=16 u=128 v=1
+2025-10-12 17:23:54.695 DEBUG: Squeezed uv,u,v,uv sizes=512,128,16,2048 num_segments=4,1,16,16 num_paths=16 u=128 v=1 to u,u,,u sizes=512,128,16,2048 num_segments=4,1,16,16 num_paths=16 u=128
+2025-10-12 17:23:54.697 DEBUG: Flattened ijk in uv,iu,jv,kuv+ijk sizes=512,128,16,2048 num_segments=4,1,4,4 num_paths=4 i=1 j={1, 3, 5, 7} k={1, 3, 5, 7} u=128 v=1: got uv,u,v,uv sizes=512,128,16,2048 num_segments=4,1,16,16 num_paths=16 u=128 v=1
+2025-10-12 17:23:54.698 DEBUG: Squeezed uv,u,v,uv sizes=512,128,16,2048 num_segments=4,1,16,16 num_paths=16 u=128 v=1 to u,u,,u sizes=512,128,16,2048 num_segments=4,1,16,16 num_paths=16 u=128
+2025-10-12 17:23:54.732 DEBUG: Normalized paths for operand 2 in uv,iu,iv sizes=65536,2048,2048 num_segments=4,4,4 num_paths=4 i={1, 3, 5, 7} u=128 v=128: got uv,iu,iv sizes=65536,2048,2048 num_segments=4,4,4 num_paths=4 i={1, 3, 5, 7} u=128 v=128
+2025-10-12 17:23:54.763 DEBUG: Normalized paths for operand 3 in uvw,iu,jv,kw+ijk operands=[(128, 2, 128)],[(1, 128)],[(1, 2)],[(1, 128)] paths=[op0[0]*op1[0]*op2[0]*op3[0]*[[[1.]]]]: got uvw,iu,jv,kw+ijk operands=[(128, 2, 128)],[(1, 128)],[(1, 2)],[(1, 128)] paths=[op0[0]*op1[0]*op2[0]*op3[0]*[[[0.06]]]]
+2025-10-12 17:23:57.732 DEBUG: Flattened abciu in u,a,b,c,i+abcui operands=[(23,)],[(16,)],[(16,)],[(16,)],[(1,)] paths=[op0[0]*op1[0]*op2[0]*op3[0]*op4[0]*c c.shape=(16, 16, 16, 23, 1) c.nnz=276]: got ,,,, sizes=23,16,16,16,1 num_segments=23,16,16,16,1 num_paths=276
+2025-10-12 17:23:57.738 DEBUG: Flattened abiu in u,a,b,i+abui operands=[(4,)],[(16,)],[(16,)],[(1,)] paths=[op0[0]*op1[0]*op2[0]*op3[0]*c c.shape=(16, 16, 4, 1) c.nnz=16]: got ,,, sizes=4,16,16,1 num_segments=4,16,16,1 num_paths=16
+2025-10-12 17:23:57.740 DEBUG: Flattened aiu in u,a,i+aui operands=[(1,)],[(16,)],[(1,)] paths=[op0[0]*op1[0]*op2[0]*c c.shape=(16, 1, 1) c.nnz=1]: got ,, sizes=1,16,1 num_segments=1,16,1 num_paths=1
+2025-10-12 17:23:57.777 DEBUG: _reduced_tensor_product_basis (0e+1o+2e+3o,), frozenset({(1, (0,))}), keep_ir=frozenset({0e})
+2025-10-12 17:23:57.779 DEBUG: Normalized paths for operand 2 in w,a,i+aiw operands=[(1,)],[(16,)],[(1,)] paths=[op0[0]*op1[0]*op2[0]*c c.shape=(16, 1, 1) c.nnz=1]: got w,a,i+aiw operands=[(1,)],[(16,)],[(1,)] paths=[op0[0]*op1[0]*op2[0]*c c.shape=(16, 1, 1) c.nnz=1]
+2025-10-12 17:23:57.780 DEBUG: Flattened aiw in w,a,i+aiw operands=[(1,)],[(16,)],[(1,)] paths=[op0[0]*op1[0]*op2[0]*c c.shape=(16, 1, 1) c.nnz=1]: got ,, sizes=1,16,1 num_segments=1,16,1 num_paths=1
+2025-10-12 17:23:57.781 DEBUG: _reduced_tensor_product_basis (0e+1o+2e+3o, 0e+1o+2e+3o), frozenset({(1, (0, 1)), (1, (1, 0))}), keep_ir=frozenset({0e}), use _optimized_reduced_symmetric_tensor_product_basis
+2025-10-12 17:23:57.781 DEBUG: _reduced_tensor_product_basis (0e,), frozenset({(1, (0,))}), keep_ir=frozenset({0e, 1o, 3o, 2e})
+2025-10-12 17:23:57.781 DEBUG: _reduced_tensor_product_basis (0e, 0e), frozenset({(1, (0, 1)), (1, (1, 0))}), keep_ir=frozenset({0e})
+2025-10-12 17:23:57.792 DEBUG: _reduced_tensor_product_basis (1o,), frozenset({(1, (0,))}), keep_ir=frozenset({0e, 1o, 3o, 2e})
+2025-10-12 17:23:57.793 DEBUG: _reduced_tensor_product_basis (1o, 1o), frozenset({(1, (0, 1)), (1, (1, 0))}), keep_ir=frozenset({0e})
+2025-10-12 17:23:57.795 DEBUG: _reduced_tensor_product_basis (2e,), frozenset({(1, (0,))}), keep_ir=frozenset({0e, 1o, 3o, 2e})
+2025-10-12 17:23:57.795 DEBUG: _reduced_tensor_product_basis (2e, 2e), frozenset({(1, (0, 1)), (1, (1, 0))}), keep_ir=frozenset({0e})
+2025-10-12 17:23:57.798 DEBUG: _reduced_tensor_product_basis (3o,), frozenset({(1, (0,))}), keep_ir=frozenset({0e, 1o, 3o, 2e})
+2025-10-12 17:23:57.798 DEBUG: _reduced_tensor_product_basis (3o, 3o), frozenset({(1, (0, 1)), (1, (1, 0))}), keep_ir=frozenset({0e})
+2025-10-12 17:23:57.805 DEBUG: Normalized paths for operand 3 in w,a,b,i+abiw operands=[(4,)],[(16,)],[(16,)],[(1,)] paths=[op0[0]*op1[0]*op2[0]*op3[0]*c c.shape=(16, 16, 1, 4) c.nnz=16]: got w,a,b,i+abiw operands=[(4,)],[(16,)],[(16,)],[(1,)] paths=[op0[0]*op1[0]*op2[0]*op3[0]*c c.shape=(16, 16, 1, 4) c.nnz=16]
+2025-10-12 17:23:57.807 DEBUG: Flattened abiw in w,a,b,i+abiw operands=[(4,)],[(16,)],[(16,)],[(1,)] paths=[op0[0]*op1[0]*op2[0]*op3[0]*c c.shape=(16, 16, 1, 4) c.nnz=16]: got ,,, sizes=4,16,16,1 num_segments=4,16,16,1 num_paths=16
+2025-10-12 17:23:57.809 DEBUG: _reduced_tensor_product_basis (0e+1o+2e+3o, 0e+1o+2e+3o, 0e+1o+2e+3o), frozenset({(1, (0, 1, 2)), (1, (1, 0, 2)), (1, (2, 0, 1)), (1, (1, 2, 0)), (1, (0, 2, 1)), (1, (2, 1, 0))}), keep_ir=frozenset({0e}), use _optimized_reduced_symmetric_tensor_product_basis
+2025-10-12 17:23:57.809 DEBUG: _reduced_tensor_product_basis (0e,), frozenset({(1, (0,))}), keep_ir=frozenset({0e, 2o, 3o, 2e, 3e, 5o, 6e, 1e, 1o, 5e, 4o, 4e})
+2025-10-12 17:23:57.809 DEBUG: _reduced_tensor_product_basis (0e, 0e), frozenset({(1, (0, 1)), (1, (1, 0))}), keep_ir=frozenset({0e, 1o, 3o, 2e})
+2025-10-12 17:23:57.811 DEBUG: _reduced_tensor_product_basis (0e, 0e, 0e), frozenset({(1, (0, 1, 2)), (1, (1, 0, 2)), (1, (2, 0, 1)), (1, (1, 2, 0)), (1, (0, 2, 1)), (1, (2, 1, 0))}), keep_ir=frozenset({0e})
+2025-10-12 17:23:57.813 DEBUG: _reduced_tensor_product_basis (1o,), frozenset({(1, (0,))}), keep_ir=frozenset({0e, 2o, 3o, 2e, 3e, 5o, 6e, 1e, 1o, 5e, 4o, 4e})
+2025-10-12 17:23:57.813 DEBUG: _reduced_tensor_product_basis (1o, 1o), frozenset({(1, (0, 1)), (1, (1, 0))}), keep_ir=frozenset({0e, 1o, 3o, 2e})
+2025-10-12 17:23:57.816 DEBUG: _reduced_tensor_product_basis (1o, 1o, 1o), frozenset({(1, (0, 1, 2)), (1, (1, 0, 2)), (1, (2, 0, 1)), (1, (1, 2, 0)), (1, (0, 2, 1)), (1, (2, 1, 0))}), keep_ir=frozenset({0e})
+2025-10-12 17:23:57.816 DEBUG: _reduced_tensor_product_basis (1o, 1o), frozenset({(1, (0, 1)), (1, (1, 0))}), keep_ir=frozenset({1o})
+2025-10-12 17:23:57.818 DEBUG: _reduced_tensor_product_basis (2e,), frozenset({(1, (0,))}), keep_ir=frozenset({0e, 2o, 3o, 2e, 3e, 5o, 6e, 1e, 1o, 5e, 4o, 4e})
+2025-10-12 17:23:57.818 DEBUG: _reduced_tensor_product_basis (2e, 2e), frozenset({(1, (0, 1)), (1, (1, 0))}), keep_ir=frozenset({0e, 1o, 3o, 2e})
+2025-10-12 17:23:57.821 DEBUG: _reduced_tensor_product_basis (2e, 2e, 2e), frozenset({(1, (0, 1, 2)), (1, (1, 0, 2)), (1, (2, 0, 1)), (1, (1, 2, 0)), (1, (0, 2, 1)), (1, (2, 1, 0))}), keep_ir=frozenset({0e})
+2025-10-12 17:23:57.821 DEBUG: _reduced_tensor_product_basis (2e, 2e), frozenset({(1, (0, 1)), (1, (1, 0))}), keep_ir=frozenset({2e})
+2025-10-12 17:23:57.826 DEBUG: _reduced_tensor_product_basis (3o,), frozenset({(1, (0,))}), keep_ir=frozenset({0e, 2o, 3o, 2e, 3e, 5o, 6e, 1e, 1o, 5e, 4o, 4e})
+2025-10-12 17:23:57.826 DEBUG: _reduced_tensor_product_basis (3o, 3o), frozenset({(1, (0, 1)), (1, (1, 0))}), keep_ir=frozenset({0e, 1o, 3o, 2e})
+2025-10-12 17:23:57.829 DEBUG: _reduced_tensor_product_basis (3o, 3o, 3o), frozenset({(1, (0, 1, 2)), (1, (1, 0, 2)), (1, (2, 0, 1)), (1, (1, 2, 0)), (1, (0, 2, 1)), (1, (2, 1, 0))}), keep_ir=frozenset({0e})
+2025-10-12 17:23:57.829 DEBUG: _reduced_tensor_product_basis (3o, 3o), frozenset({(1, (0, 1)), (1, (1, 0))}), keep_ir=frozenset({3o})
+2025-10-12 17:23:57.865 DEBUG: Normalized paths for operand 4 in w,a,b,c,i+abciw operands=[(8,)],[(16,)],[(16,)],[(16,)],[(1,)] paths=[op0[0]*op1[0]*op2[0]*op3[0]*op4[0]*c c.shape=(16, 16, 16, 1, 8) c.nnz=353]: got w,a,b,c,i+abciw operands=[(8,)],[(16,)],[(16,)],[(16,)],[(1,)] paths=[op0[0]*op1[0]*op2[0]*op3[0]*op4[0]*c c.shape=(16, 16, 16, 1, 8) c.nnz=353]
+2025-10-12 17:23:57.879 DEBUG: Flattened abciw in w,a,b,c,i+abciw operands=[(8,)],[(16,)],[(16,)],[(16,)],[(1,)] paths=[op0[0]*op1[0]*op2[0]*op3[0]*op4[0]*c c.shape=(16, 16, 16, 1, 8) c.nnz=353]: got ,,,, sizes=8,16,16,16,1 num_segments=8,16,16,16,1 num_paths=353
+2025-10-12 17:23:58.008 DEBUG: Normalized paths for operand 2 in uv,iu,iv operands=[(128, 128)],[(1, 128)],[(1, 128)] paths=[op0[0]*op1[0]*op2[0]*1.]: got uv,iu,iv operands=[(128, 128)],[(1, 128)],[(1, 128)] paths=[op0[0]*op1[0]*op2[0]*0.09]
+2025-10-12 17:23:58.021 DEBUG: Normalized paths for operand 2 in uv,iu,iv operands=[(128, 1)],[(1, 128)],[(1, 1)] paths=[op0[0]*op1[0]*op2[0]*1.]: got uv,iu,iv operands=[(128, 1)],[(1, 128)],[(1, 1)] paths=[op0[0]*op1[0]*op2[0]*0.09]
+2025-10-12 17:23:58.033 DEBUG: Normalized paths for operand 2 in uv,iu,iv operands=[(128, 128)],[(1, 128)],[(1, 128)] paths=[op0[0]*op1[0]*op2[0]*1.]: got uv,iu,iv operands=[(128, 128)],[(1, 128)],[(1, 128)] paths=[op0[0]*op1[0]*op2[0]*0.09]
+2025-10-12 17:23:58.047 DEBUG: Normalized paths for operand 3 in uv,iu,jv,kuv+ijk sizes=512,128,16,2048 num_segments=4,1,4,4 num_paths=4 i=1 j={1, 3, 5, 7} k={1, 3, 5, 7} u=128 v=1: got uv,iu,jv,kuv+ijk sizes=512,128,16,2048 num_segments=4,1,4,4 num_paths=4 i=1 j={1, 3, 5, 7} k={1, 3, 5, 7} u=128 v=1
+2025-10-12 17:23:58.048 DEBUG: Flattened ijk in uv,iu,jv,kuv+ijk sizes=512,128,16,2048 num_segments=4,1,4,4 num_paths=4 i=1 j={1, 3, 5, 7} k={1, 3, 5, 7} u=128 v=1: got uv,u,v,uv sizes=512,128,16,2048 num_segments=4,1,16,16 num_paths=16 u=128 v=1
+2025-10-12 17:23:58.050 DEBUG: Squeezed uv,u,v,uv sizes=512,128,16,2048 num_segments=4,1,16,16 num_paths=16 u=128 v=1 to u,u,,u sizes=512,128,16,2048 num_segments=4,1,16,16 num_paths=16 u=128
+2025-10-12 17:23:58.052 DEBUG: Flattened ijk in uv,iu,jv,kuv+ijk sizes=512,128,16,2048 num_segments=4,1,4,4 num_paths=4 i=1 j={1, 3, 5, 7} k={1, 3, 5, 7} u=128 v=1: got uv,u,v,uv sizes=512,128,16,2048 num_segments=4,1,16,16 num_paths=16 u=128 v=1
+2025-10-12 17:23:58.053 DEBUG: Squeezed uv,u,v,uv sizes=512,128,16,2048 num_segments=4,1,16,16 num_paths=16 u=128 v=1 to u,u,,u sizes=512,128,16,2048 num_segments=4,1,16,16 num_paths=16 u=128
+2025-10-12 17:23:58.090 DEBUG: Normalized paths for operand 2 in uv,iu,iv sizes=65536,2048,2048 num_segments=4,4,4 num_paths=4 i={1, 3, 5, 7} u=128 v=128: got uv,iu,iv sizes=65536,2048,2048 num_segments=4,4,4 num_paths=4 i={1, 3, 5, 7} u=128 v=128
+2025-10-12 17:23:58.122 DEBUG: Normalized paths for operand 3 in uvw,iu,jv,kw+ijk operands=[(128, 2, 128)],[(1, 128)],[(1, 2)],[(1, 128)] paths=[op0[0]*op1[0]*op2[0]*op3[0]*[[[1.]]]]: got uvw,iu,jv,kw+ijk operands=[(128, 2, 128)],[(1, 128)],[(1, 2)],[(1, 128)] paths=[op0[0]*op1[0]*op2[0]*op3[0]*[[[0.06]]]]
+2025-10-12 17:23:58.144 DEBUG: Normalized paths for operand 2 in uv,iu,iv operands=[(128, 128)],[(1, 128)],[(1, 128)] paths=[op0[0]*op1[0]*op2[0]*1.]: got uv,iu,iv operands=[(128, 128)],[(1, 128)],[(1, 128)] paths=[op0[0]*op1[0]*op2[0]*0.09]
+2025-10-12 17:23:58.157 DEBUG: Normalized paths for operand 2 in uv,iu,iv operands=[(128, 16)],[(1, 128)],[(1, 16)] paths=[op0[0]*op1[0]*op2[0]*1.]: got uv,iu,iv operands=[(128, 16)],[(1, 128)],[(1, 16)] paths=[op0[0]*op1[0]*op2[0]*0.09]
+2025-10-12 17:23:58.200 DEBUG: Normalized paths for operand 2 in uv,iu,iv operands=[(16, 1)],[(1, 16)],[(1, 1)] paths=[op0[0]*op1[0]*op2[0]*1.]: got uv,iu,iv operands=[(16, 1)],[(1, 16)],[(1, 1)] paths=[op0[0]*op1[0]*op2[0]*0.25]
+2025-10-12 17:23:58.238 DEBUG: Transferring additional key: interactions.1.conv_tp_weights.layer1.weight
+2025-10-12 17:23:58.238 DEBUG: Transferring additional key: radial_embedding.bessel_fn.r_max
+2025-10-12 17:23:58.239 DEBUG: Transferring additional key: interactions.1.conv_tp_weights.layer3.weight
+2025-10-12 17:23:58.239 DEBUG: Transferring key readouts.1.linear_1.weight after adapting shape (2048,) → (1, 2048) -> torch.Size([1, 2048])
+2025-10-12 17:23:58.239 DEBUG: Transferring additional key: atomic_energies_fn.atomic_energies
+2025-10-12 17:23:58.239 DEBUG: Transferring key readouts.0.linear.weight after adapting shape (128,) → (1, 128) -> torch.Size([1, 128])
+2025-10-12 17:23:58.239 DEBUG: Transferring additional key: interactions.0.conv_tp_weights.layer3.weight
+2025-10-12 17:23:58.239 DEBUG: Transferring key products.1.linear.weight after adapting shape (16384,) → (1, 16384) -> torch.Size([1, 16384])
+2025-10-12 17:23:58.239 DEBUG: Transferring additional key: scale_shift.shift
+2025-10-12 17:23:58.239 DEBUG: Transferring additional key: r_max
+2025-10-12 17:23:58.239 DEBUG: Transferring additional key: interactions.0.conv_tp_weights.layer1.weight
+2025-10-12 17:23:58.240 DEBUG: Transferring key interactions.0.skip_tp.weight after adapting shape (32768,) → (1, 32768) -> torch.Size([1, 32768])
+2025-10-12 17:23:58.240 DEBUG: Transferring additional key: radial_embedding.bessel_fn.prefactor
+2025-10-12 17:23:58.240 DEBUG: Transferring additional key: radial_embedding.cutoff_fn.r_max
+2025-10-12 17:23:58.240 DEBUG: Transferring key interactions.1.skip_tp.weight after adapting shape (32768,) → (1, 32768) -> torch.Size([1, 32768])
+2025-10-12 17:23:58.240 DEBUG: Transferring additional key: radial_embedding.cutoff_fn.p
+2025-10-12 17:23:58.240 DEBUG: Transferring additional key: interactions.0.conv_tp_weights.layer0.weight
+2025-10-12 17:23:58.240 DEBUG: Transferring key interactions.1.linear.weight after adapting shape (65536,) → (1, 65536) -> torch.Size([1, 65536])
+2025-10-12 17:23:58.240 DEBUG: Transferring key interactions.0.linear_up.weight after adapting shape (16384,) → (1, 16384) -> torch.Size([1, 16384])
+2025-10-12 17:23:58.240 DEBUG: Transferring additional key: interactions.0.conv_tp_weights.layer2.weight
+2025-10-12 17:23:58.240 DEBUG: Transferring additional key: scale_shift.scale
+2025-10-12 17:23:58.240 DEBUG: Transferring key products.0.linear.weight after adapting shape (16384,) → (1, 16384) -> torch.Size([1, 16384])
+2025-10-12 17:23:58.240 DEBUG: Transferring additional key: atomic_numbers
+2025-10-12 17:23:58.241 DEBUG: Transferring key interactions.1.linear_up.weight after adapting shape (16384,) → (1, 16384) -> torch.Size([1, 16384])
+2025-10-12 17:23:58.241 DEBUG: Transferring additional key: interactions.1.conv_tp_weights.layer0.weight
+2025-10-12 17:23:58.241 DEBUG: Transferring additional key: num_interactions
+2025-10-12 17:23:58.241 DEBUG: Transferring key interactions.0.linear.weight after adapting shape (65536,) → (1, 65536) -> torch.Size([1, 65536])
+2025-10-12 17:23:58.241 DEBUG: Transferring additional key: radial_embedding.bessel_fn.bessel_weights
+2025-10-12 17:23:58.241 DEBUG: Transferring additional key: interactions.1.conv_tp_weights.layer2.weight
+2025-10-12 17:23:58.241 DEBUG: Transferring key readouts.1.linear_2.weight after adapting shape (16,) → (1, 16) -> torch.Size([1, 16])
+2025-10-12 17:23:58.241 DEBUG: Transferring key node_embedding.linear.weight after adapting shape (256,) → (1, 256) -> torch.Size([1, 256])
+2025-10-12 17:23:58.247 INFO: Stage Two (after 186 epochs) with loss function: WeightedEnergyForcesLoss(energy_weight=1000.000, forces_weight=100.000), with energy weight : 1000.0, forces weight : 100.0 and learning rate : 0.001
+2025-10-12 17:23:58.305 INFO: Using Weights and Biases for logging
+2025-10-12 17:23:58.929 DEBUG: sys.platform='linux', git_executable='git'
+2025-10-12 17:23:59.967 INFO: Using gradient clipping with tolerance=10.000
+2025-10-12 17:23:59.968 INFO: 
+2025-10-12 17:23:59.969 INFO: ===========TRAINING===========
+2025-10-12 17:23:59.970 INFO: Started training, reporting errors on validation set
+2025-10-12 17:23:59.971 INFO: Loss metrics on validation set
+2025-10-12 17:24:23.771 INFO: Initial: head: Default, loss=25.40442882, RMSE_E_per_atom= 5823.98 meV, RMSE_F= 1480.84 meV / A
+2025-10-12 17:25:09.514 INFO: Epoch 0: head: Default, loss=3.28934582, RMSE_E_per_atom= 2023.98 meV, RMSE_F=  537.16 meV / A
+2025-10-12 17:25:09.516 DEBUG: Running inference on train_Default dataset
+2025-10-12 17:25:09.578 DEBUG: Plotting failed: too many indices for tensor of dimension 1
+2025-10-12 17:25:09.581 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-0.pt
+2025-10-12 17:25:32.929 INFO: Epoch 1: head: Default, loss=11.03870387, RMSE_E_per_atom= 2034.54 meV, RMSE_F= 1030.12 meV / A
+2025-10-12 17:25:41.786 INFO: Epoch 2: head: Default, loss=1.32153237, RMSE_E_per_atom=  551.88 meV, RMSE_F=  359.54 meV / A
+2025-10-12 17:25:41.791 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-0.pt
+2025-10-12 17:25:41.793 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-2.pt
+2025-10-12 17:25:50.721 INFO: Epoch 3: head: Default, loss=1.09662636, RMSE_E_per_atom=  335.14 meV, RMSE_F=  329.73 meV / A
+2025-10-12 17:25:50.725 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-2.pt
+2025-10-12 17:25:50.727 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-3.pt
+2025-10-12 17:25:59.598 INFO: Epoch 4: head: Default, loss=1.22229668, RMSE_E_per_atom=  348.22 meV, RMSE_F=  347.95 meV / A
+2025-10-12 17:26:08.458 INFO: Epoch 5: head: Default, loss=0.39809262, RMSE_E_per_atom=  260.30 meV, RMSE_F=  197.74 meV / A
+2025-10-12 17:26:08.463 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-3.pt
+2025-10-12 17:26:08.465 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-5.pt
+2025-10-12 17:26:17.339 INFO: Epoch 6: head: Default, loss=0.79243191, RMSE_E_per_atom=   74.77 meV, RMSE_F=  281.53 meV / A
+2025-10-12 17:26:26.175 INFO: Epoch 7: head: Default, loss=0.48854467, RMSE_E_per_atom=  101.59 meV, RMSE_F=  220.72 meV / A
+2025-10-12 17:26:35.000 INFO: Epoch 8: head: Default, loss=0.35137036, RMSE_E_per_atom=   63.29 meV, RMSE_F=  187.35 meV / A
+2025-10-12 17:26:35.004 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-5.pt
+2025-10-12 17:26:35.007 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-8.pt
+2025-10-12 17:26:43.862 INFO: Epoch 9: head: Default, loss=0.26632756, RMSE_E_per_atom=   74.41 meV, RMSE_F=  162.90 meV / A
+2025-10-12 17:26:43.866 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-8.pt
+2025-10-12 17:26:43.868 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-9.pt
+2025-10-12 17:26:52.777 INFO: Epoch 10: head: Default, loss=0.22827137, RMSE_E_per_atom=   40.15 meV, RMSE_F=  151.00 meV / A
+2025-10-12 17:26:52.780 DEBUG: Running inference on train_Default dataset
+2025-10-12 17:26:52.830 DEBUG: Plotting failed: too many indices for tensor of dimension 1
+2025-10-12 17:26:52.833 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-9.pt
+2025-10-12 17:26:52.836 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-10.pt
+2025-10-12 17:27:01.267 INFO: Epoch 11: head: Default, loss=1.14261953, RMSE_E_per_atom=  101.77 meV, RMSE_F=  338.12 meV / A
+2025-10-12 17:27:10.118 INFO: Epoch 12: head: Default, loss=0.54638792, RMSE_E_per_atom=   34.81 meV, RMSE_F=  233.77 meV / A
+2025-10-12 17:27:18.909 INFO: Epoch 13: head: Default, loss=0.26427569, RMSE_E_per_atom=   32.93 meV, RMSE_F=  162.50 meV / A
+2025-10-12 17:27:27.698 INFO: Epoch 14: head: Default, loss=0.54435899, RMSE_E_per_atom=   38.31 meV, RMSE_F=  233.36 meV / A
+2025-10-12 17:27:36.527 INFO: Epoch 15: head: Default, loss=0.27088842, RMSE_E_per_atom=   47.47 meV, RMSE_F=  164.38 meV / A
+2025-10-12 17:27:45.375 INFO: Epoch 16: head: Default, loss=0.37473129, RMSE_E_per_atom=   32.68 meV, RMSE_F=  193.65 meV / A
+2025-10-12 17:27:54.199 INFO: Epoch 17: head: Default, loss=0.37790456, RMSE_E_per_atom=   33.14 meV, RMSE_F=  194.43 meV / A
+2025-10-12 17:28:03.036 INFO: Epoch 18: head: Default, loss=0.24605919, RMSE_E_per_atom=   33.39 meV, RMSE_F=  156.64 meV / A
+2025-10-12 17:28:11.854 INFO: Epoch 19: head: Default, loss=0.36948703, RMSE_E_per_atom=   31.45 meV, RMSE_F=  192.17 meV / A
+2025-10-12 17:28:20.686 INFO: Epoch 20: head: Default, loss=0.23353705, RMSE_E_per_atom=   30.76 meV, RMSE_F=  152.69 meV / A
+2025-10-12 17:28:20.688 DEBUG: Running inference on train_Default dataset
+2025-10-12 17:28:20.741 DEBUG: Plotting failed: too many indices for tensor of dimension 1
+2025-10-12 17:28:29.098 INFO: Epoch 21: head: Default, loss=1.11834133, RMSE_E_per_atom=   83.55 meV, RMSE_F=  334.32 meV / A
+2025-10-12 17:28:37.972 INFO: Epoch 22: head: Default, loss=0.56620422, RMSE_E_per_atom=   61.79 meV, RMSE_F=  237.90 meV / A
+2025-10-12 17:28:46.834 INFO: Epoch 23: head: Default, loss=0.37798248, RMSE_E_per_atom=   46.04 meV, RMSE_F=  194.42 meV / A
+2025-10-12 17:28:55.698 INFO: Epoch 24: head: Default, loss=0.27259695, RMSE_E_per_atom=   27.72 meV, RMSE_F=  165.24 meV / A
+2025-10-12 17:29:04.582 INFO: Epoch 25: head: Default, loss=0.33355546, RMSE_E_per_atom=   45.23 meV, RMSE_F=  182.74 meV / A
+2025-10-12 17:29:13.401 INFO: Epoch 26: head: Default, loss=0.33557615, RMSE_E_per_atom=   38.24 meV, RMSE_F=  183.32 meV / A
+2025-10-12 17:29:22.242 INFO: Epoch 27: head: Default, loss=0.28681298, RMSE_E_per_atom=   41.66 meV, RMSE_F=  169.46 meV / A
+2025-10-12 17:29:31.103 INFO: Epoch 28: head: Default, loss=0.21092698, RMSE_E_per_atom=   29.84 meV, RMSE_F=  145.21 meV / A
+2025-10-12 17:29:31.107 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-10.pt
+2025-10-12 17:29:31.109 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-28.pt
+2025-10-12 17:29:40.054 INFO: Epoch 29: head: Default, loss=0.19667657, RMSE_E_per_atom=   31.48 meV, RMSE_F=  140.24 meV / A
+2025-10-12 17:29:40.059 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-28.pt
+2025-10-12 17:29:40.061 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-29.pt
+2025-10-12 17:29:48.933 INFO: Epoch 30: head: Default, loss=0.17554740, RMSE_E_per_atom=   35.23 meV, RMSE_F=  132.43 meV / A
+2025-10-12 17:29:48.935 DEBUG: Running inference on train_Default dataset
+2025-10-12 17:29:48.988 DEBUG: Plotting failed: too many indices for tensor of dimension 1
+2025-10-12 17:29:48.991 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-29.pt
+2025-10-12 17:29:48.993 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-30.pt
+2025-10-12 17:29:57.396 INFO: Epoch 31: head: Default, loss=0.37333095, RMSE_E_per_atom=   98.30 meV, RMSE_F=  193.15 meV / A
+2025-10-12 17:30:06.195 INFO: Epoch 32: head: Default, loss=0.25904357, RMSE_E_per_atom=   54.33 meV, RMSE_F=  160.99 meV / A
+2025-10-12 17:30:14.977 INFO: Epoch 33: head: Default, loss=0.34056900, RMSE_E_per_atom=   53.25 meV, RMSE_F=  184.69 meV / A
+2025-10-12 17:30:23.815 INFO: Epoch 34: head: Default, loss=0.33662740, RMSE_E_per_atom=   30.89 meV, RMSE_F=  183.64 meV / A
+2025-10-12 17:30:32.658 INFO: Epoch 35: head: Default, loss=0.20804069, RMSE_E_per_atom=   38.89 meV, RMSE_F=  144.32 meV / A
+2025-10-12 17:30:41.512 INFO: Epoch 36: head: Default, loss=0.16308746, RMSE_E_per_atom=   37.07 meV, RMSE_F=  127.71 meV / A
+2025-10-12 17:30:41.517 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-30.pt
+2025-10-12 17:30:41.518 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-36.pt
+2025-10-12 17:30:50.384 INFO: Epoch 37: head: Default, loss=0.19055641, RMSE_E_per_atom=   37.28 meV, RMSE_F=  138.06 meV / A
+2025-10-12 17:30:59.205 INFO: Epoch 38: head: Default, loss=0.18287384, RMSE_E_per_atom=   33.56 meV, RMSE_F=  135.26 meV / A
+2025-10-12 17:31:08.029 INFO: Epoch 39: head: Default, loss=0.23806797, RMSE_E_per_atom=   32.50 meV, RMSE_F=  154.39 meV / A
+2025-10-12 17:31:16.844 INFO: Epoch 40: head: Default, loss=0.15301140, RMSE_E_per_atom=   31.52 meV, RMSE_F=  123.69 meV / A
+2025-10-12 17:31:16.846 DEBUG: Running inference on train_Default dataset
+2025-10-12 17:31:16.895 DEBUG: Plotting failed: too many indices for tensor of dimension 1
+2025-10-12 17:31:16.898 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-36.pt
+2025-10-12 17:31:16.900 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-40.pt
+2025-10-12 17:31:25.331 INFO: Epoch 41: head: Default, loss=0.21158995, RMSE_E_per_atom=   65.69 meV, RMSE_F=  145.43 meV / A
+2025-10-12 17:31:34.170 INFO: Epoch 42: head: Default, loss=0.14987240, RMSE_E_per_atom=   39.27 meV, RMSE_F=  122.38 meV / A
+2025-10-12 17:31:34.174 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-40.pt
+2025-10-12 17:31:34.176 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-42.pt
+2025-10-12 17:31:43.081 INFO: Epoch 43: head: Default, loss=0.19696965, RMSE_E_per_atom=   30.73 meV, RMSE_F=  140.39 meV / A
+2025-10-12 17:31:52.263 INFO: Epoch 44: head: Default, loss=0.14710106, RMSE_E_per_atom=   31.82 meV, RMSE_F=  121.26 meV / A
+2025-10-12 17:31:52.267 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-42.pt
+2025-10-12 17:31:52.270 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-44.pt
+2025-10-12 17:32:01.203 INFO: Epoch 45: head: Default, loss=0.14902615, RMSE_E_per_atom=   32.48 meV, RMSE_F=  122.06 meV / A
+2025-10-12 17:32:10.110 INFO: Epoch 46: head: Default, loss=0.18278598, RMSE_E_per_atom=   39.12 meV, RMSE_F=  135.20 meV / A
+2025-10-12 17:32:18.947 INFO: Epoch 47: head: Default, loss=0.22017719, RMSE_E_per_atom=   34.62 meV, RMSE_F=  148.45 meV / A
+2025-10-12 17:32:27.878 INFO: Epoch 48: head: Default, loss=0.16355127, RMSE_E_per_atom=   36.25 meV, RMSE_F=  127.85 meV / A
+2025-10-12 17:32:36.760 INFO: Epoch 49: head: Default, loss=0.15844176, RMSE_E_per_atom=   36.91 meV, RMSE_F=  125.85 meV / A
+2025-10-12 17:32:45.653 INFO: Epoch 50: head: Default, loss=0.15797937, RMSE_E_per_atom=   36.10 meV, RMSE_F=  125.65 meV / A
+2025-10-12 17:32:45.655 DEBUG: Running inference on train_Default dataset
+2025-10-12 17:32:45.707 DEBUG: Plotting failed: too many indices for tensor of dimension 1
+2025-10-12 17:32:54.095 INFO: Epoch 51: head: Default, loss=0.18276042, RMSE_E_per_atom=   48.39 meV, RMSE_F=  135.10 meV / A
+2025-10-12 17:33:02.981 INFO: Epoch 52: head: Default, loss=0.16411395, RMSE_E_per_atom=   41.50 meV, RMSE_F=  128.09 meV / A
+2025-10-12 17:33:11.891 INFO: Epoch 53: head: Default, loss=0.14861801, RMSE_E_per_atom=   34.11 meV, RMSE_F=  121.91 meV / A
+2025-10-12 17:33:20.752 INFO: Epoch 54: head: Default, loss=0.13456630, RMSE_E_per_atom=   35.17 meV, RMSE_F=  116.01 meV / A
+2025-10-12 17:33:20.756 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-44.pt
+2025-10-12 17:33:20.759 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-54.pt
+2025-10-12 17:33:29.668 INFO: Epoch 55: head: Default, loss=0.14100371, RMSE_E_per_atom=   38.41 meV, RMSE_F=  118.69 meV / A
+2025-10-12 17:33:38.529 INFO: Epoch 56: head: Default, loss=0.13567273, RMSE_E_per_atom=   35.44 meV, RMSE_F=  116.45 meV / A
+2025-10-12 17:33:47.428 INFO: Epoch 57: head: Default, loss=0.14640510, RMSE_E_per_atom=   34.38 meV, RMSE_F=  120.99 meV / A
+2025-10-12 17:33:56.279 INFO: Epoch 58: head: Default, loss=0.14814868, RMSE_E_per_atom=   75.66 meV, RMSE_F=  121.49 meV / A
+2025-10-12 17:34:05.133 INFO: Epoch 59: head: Default, loss=0.21412510, RMSE_E_per_atom=   60.30 meV, RMSE_F=  146.36 meV / A
+2025-10-12 17:34:14.012 INFO: Epoch 60: head: Default, loss=0.14691176, RMSE_E_per_atom=   43.97 meV, RMSE_F=  121.24 meV / A
+2025-10-12 17:34:14.015 DEBUG: Running inference on train_Default dataset
+2025-10-12 17:34:14.064 DEBUG: Plotting failed: too many indices for tensor of dimension 1
+2025-10-12 17:34:22.438 INFO: Epoch 61: head: Default, loss=0.30648081, RMSE_E_per_atom=   59.77 meV, RMSE_F=  174.90 meV / A
+2025-10-12 17:34:31.281 INFO: Epoch 62: head: Default, loss=0.17170091, RMSE_E_per_atom=   43.72 meV, RMSE_F=  130.89 meV / A
+2025-10-12 17:34:40.137 INFO: Epoch 63: head: Default, loss=0.14307389, RMSE_E_per_atom=   36.44 meV, RMSE_F=  119.56 meV / A
+2025-10-12 17:34:48.989 INFO: Epoch 64: head: Default, loss=0.19102023, RMSE_E_per_atom=   35.18 meV, RMSE_F=  138.19 meV / A
+2025-10-12 17:34:57.836 INFO: Epoch 65: head: Default, loss=0.20329435, RMSE_E_per_atom=   43.31 meV, RMSE_F=  142.63 meV / A
+2025-10-12 17:35:06.701 INFO: Epoch 66: head: Default, loss=0.14985798, RMSE_E_per_atom=   40.61 meV, RMSE_F=  122.41 meV / A
+2025-10-12 17:35:15.575 INFO: Epoch 67: head: Default, loss=0.14775268, RMSE_E_per_atom=   39.29 meV, RMSE_F=  121.55 meV / A
+2025-10-12 17:35:24.425 INFO: Epoch 68: head: Default, loss=0.12385113, RMSE_E_per_atom=   38.54 meV, RMSE_F=  111.26 meV / A
+2025-10-12 17:35:24.430 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-54.pt
+2025-10-12 17:35:24.432 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-68.pt
+2025-10-12 17:35:33.354 INFO: Epoch 69: head: Default, loss=0.12227232, RMSE_E_per_atom=   38.72 meV, RMSE_F=  110.53 meV / A
+2025-10-12 17:35:33.359 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-68.pt
+2025-10-12 17:35:33.362 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-69.pt
+2025-10-12 17:35:42.303 INFO: Epoch 70: head: Default, loss=0.12941138, RMSE_E_per_atom=   38.13 meV, RMSE_F=  113.74 meV / A
+2025-10-12 17:35:42.305 DEBUG: Running inference on train_Default dataset
+2025-10-12 17:35:42.358 DEBUG: Plotting failed: too many indices for tensor of dimension 1
+2025-10-12 17:35:50.754 INFO: Epoch 71: head: Default, loss=0.34589506, RMSE_E_per_atom=  136.14 meV, RMSE_F=  185.79 meV / A
+2025-10-12 17:35:59.641 INFO: Epoch 72: head: Default, loss=0.17795225, RMSE_E_per_atom=   83.08 meV, RMSE_F=  133.29 meV / A
+2025-10-12 17:36:08.532 INFO: Epoch 73: head: Default, loss=0.14326519, RMSE_E_per_atom=   51.94 meV, RMSE_F=  119.66 meV / A
+2025-10-12 17:36:17.401 INFO: Epoch 74: head: Default, loss=0.14307543, RMSE_E_per_atom=   40.37 meV, RMSE_F=  119.62 meV / A
+2025-10-12 17:36:26.256 INFO: Epoch 75: head: Default, loss=0.17639995, RMSE_E_per_atom=   37.33 meV, RMSE_F=  132.86 meV / A
+2025-10-12 17:36:35.147 INFO: Epoch 76: head: Default, loss=0.13819384, RMSE_E_per_atom=   37.97 meV, RMSE_F=  117.54 meV / A
+2025-10-12 17:36:44.021 INFO: Epoch 77: head: Default, loss=0.12250265, RMSE_E_per_atom=   53.40 meV, RMSE_F=  110.59 meV / A
+2025-10-12 17:36:52.884 INFO: Epoch 78: head: Default, loss=0.12539763, RMSE_E_per_atom=   39.49 meV, RMSE_F=  111.95 meV / A
+2025-10-12 17:37:01.762 INFO: Epoch 79: head: Default, loss=0.13580104, RMSE_E_per_atom=   41.02 meV, RMSE_F=  116.51 meV / A
+2025-10-12 17:37:10.658 INFO: Epoch 80: head: Default, loss=0.13321937, RMSE_E_per_atom=   38.08 meV, RMSE_F=  115.40 meV / A
+2025-10-12 17:37:10.660 DEBUG: Running inference on train_Default dataset
+2025-10-12 17:37:10.713 DEBUG: Plotting failed: too many indices for tensor of dimension 1
+2025-10-12 17:37:19.107 INFO: Epoch 81: head: Default, loss=0.17712489, RMSE_E_per_atom=   54.91 meV, RMSE_F=  133.01 meV / A
+2025-10-12 17:37:27.985 INFO: Epoch 82: head: Default, loss=0.13763608, RMSE_E_per_atom=   41.43 meV, RMSE_F=  117.27 meV / A
+2025-10-12 17:37:36.868 INFO: Epoch 83: head: Default, loss=0.13039120, RMSE_E_per_atom=   39.60 meV, RMSE_F=  114.16 meV / A
+2025-10-12 17:37:45.722 INFO: Epoch 84: head: Default, loss=0.12276384, RMSE_E_per_atom=   40.51 meV, RMSE_F=  110.76 meV / A
+2025-10-12 17:37:54.595 INFO: Epoch 85: head: Default, loss=0.12500682, RMSE_E_per_atom=   37.69 meV, RMSE_F=  111.80 meV / A
+2025-10-12 17:38:03.526 INFO: Epoch 86: head: Default, loss=0.13200105, RMSE_E_per_atom=   37.19 meV, RMSE_F=  114.92 meV / A
+2025-10-12 17:38:12.430 INFO: Epoch 87: head: Default, loss=0.10842365, RMSE_E_per_atom=   38.53 meV, RMSE_F=  104.09 meV / A
+2025-10-12 17:38:12.434 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-69.pt
+2025-10-12 17:38:12.437 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-87.pt
+2025-10-12 17:38:21.387 INFO: Epoch 88: head: Default, loss=0.13946355, RMSE_E_per_atom=   39.38 meV, RMSE_F=  118.11 meV / A
+2025-10-12 17:38:30.334 INFO: Epoch 89: head: Default, loss=0.10846180, RMSE_E_per_atom=   39.21 meV, RMSE_F=  104.10 meV / A
+2025-10-12 17:38:39.301 INFO: Epoch 90: head: Default, loss=0.12660410, RMSE_E_per_atom=   39.12 meV, RMSE_F=  112.52 meV / A
+2025-10-12 17:38:39.303 DEBUG: Running inference on train_Default dataset
+2025-10-12 17:38:39.355 DEBUG: Plotting failed: too many indices for tensor of dimension 1
+2025-10-12 17:38:47.736 INFO: Epoch 91: head: Default, loss=0.24729979, RMSE_E_per_atom=   37.31 meV, RMSE_F=  157.35 meV / A
+2025-10-12 17:38:56.645 INFO: Epoch 92: head: Default, loss=0.16839443, RMSE_E_per_atom=   38.16 meV, RMSE_F=  129.80 meV / A
+2025-10-12 17:39:05.553 INFO: Epoch 93: head: Default, loss=0.13872965, RMSE_E_per_atom=   40.23 meV, RMSE_F=  117.79 meV / A
+2025-10-12 17:39:14.363 INFO: Epoch 94: head: Default, loss=0.21953702, RMSE_E_per_atom=   40.24 meV, RMSE_F=  148.28 meV / A
+2025-10-12 17:39:23.271 INFO: Epoch 95: head: Default, loss=0.10386102, RMSE_E_per_atom=   40.58 meV, RMSE_F=  101.86 meV / A
+2025-10-12 17:39:23.275 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-87.pt
+2025-10-12 17:39:23.278 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-95.pt
+2025-10-12 17:39:32.195 INFO: Epoch 96: head: Default, loss=0.12144933, RMSE_E_per_atom=   41.27 meV, RMSE_F=  110.18 meV / A
+2025-10-12 17:39:41.037 INFO: Epoch 97: head: Default, loss=0.10905332, RMSE_E_per_atom=   47.57 meV, RMSE_F=  104.33 meV / A
+2025-10-12 17:39:49.943 INFO: Epoch 98: head: Default, loss=0.10354315, RMSE_E_per_atom=   39.20 meV, RMSE_F=  101.71 meV / A
+2025-10-12 17:39:49.947 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-95.pt
+2025-10-12 17:39:49.958 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-98.pt
+2025-10-12 17:39:58.904 INFO: Epoch 99: head: Default, loss=0.10031775, RMSE_E_per_atom=   42.22 meV, RMSE_F=  100.10 meV / A
+2025-10-12 17:39:58.908 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-98.pt
+2025-10-12 17:39:58.910 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-99.pt
+2025-10-12 17:40:07.824 INFO: Epoch 100: head: Default, loss=0.11112158, RMSE_E_per_atom=   39.49 meV, RMSE_F=  105.38 meV / A
+2025-10-12 17:40:07.826 DEBUG: Running inference on train_Default dataset
+2025-10-12 17:40:07.879 DEBUG: Plotting failed: too many indices for tensor of dimension 1
+2025-10-12 17:40:16.234 INFO: Epoch 101: head: Default, loss=0.15934364, RMSE_E_per_atom=   41.57 meV, RMSE_F=  126.20 meV / A
+2025-10-12 17:40:25.151 INFO: Epoch 102: head: Default, loss=0.14282617, RMSE_E_per_atom=   42.72 meV, RMSE_F=  119.48 meV / A
+2025-10-12 17:40:34.060 INFO: Epoch 103: head: Default, loss=0.10705795, RMSE_E_per_atom=   42.56 meV, RMSE_F=  103.41 meV / A
+2025-10-12 17:40:42.962 INFO: Epoch 104: head: Default, loss=0.14214124, RMSE_E_per_atom=   37.52 meV, RMSE_F=  119.24 meV / A
+2025-10-12 17:40:51.867 INFO: Epoch 105: head: Default, loss=0.15322485, RMSE_E_per_atom=   37.65 meV, RMSE_F=  123.83 meV / A
+2025-10-12 17:41:00.730 INFO: Epoch 106: head: Default, loss=0.10648882, RMSE_E_per_atom=   37.26 meV, RMSE_F=  103.16 meV / A
+2025-10-12 17:41:09.649 INFO: Epoch 107: head: Default, loss=0.11223379, RMSE_E_per_atom=   37.91 meV, RMSE_F=  105.91 meV / A
+2025-10-12 17:41:18.567 INFO: Epoch 108: head: Default, loss=0.11169898, RMSE_E_per_atom=   40.67 meV, RMSE_F=  105.65 meV / A
+2025-10-12 17:41:27.447 INFO: Epoch 109: head: Default, loss=0.10896291, RMSE_E_per_atom=   40.62 meV, RMSE_F=  104.32 meV / A
+2025-10-12 17:41:36.355 INFO: Epoch 110: head: Default, loss=0.12001628, RMSE_E_per_atom=   41.30 meV, RMSE_F=  109.51 meV / A
+2025-10-12 17:41:36.357 DEBUG: Running inference on train_Default dataset
+2025-10-12 17:41:36.406 DEBUG: Plotting failed: too many indices for tensor of dimension 1
+2025-10-12 17:41:44.781 INFO: Epoch 111: head: Default, loss=1.06442424, RMSE_E_per_atom=   74.06 meV, RMSE_F=  326.48 meV / A
+2025-10-12 17:41:53.632 INFO: Epoch 112: head: Default, loss=0.26997062, RMSE_E_per_atom=   79.41 meV, RMSE_F=  164.14 meV / A
+2025-10-12 17:42:02.503 INFO: Epoch 113: head: Default, loss=0.16036193, RMSE_E_per_atom=   47.94 meV, RMSE_F=  126.50 meV / A
+2025-10-12 17:42:11.407 INFO: Epoch 114: head: Default, loss=0.10409318, RMSE_E_per_atom=   42.03 meV, RMSE_F=  101.95 meV / A
+2025-10-12 17:42:20.290 INFO: Epoch 115: head: Default, loss=0.10834522, RMSE_E_per_atom=   39.94 meV, RMSE_F=  104.03 meV / A
+2025-10-12 17:42:29.168 INFO: Epoch 116: head: Default, loss=0.11599322, RMSE_E_per_atom=   40.31 meV, RMSE_F=  107.69 meV / A
+2025-10-12 17:42:38.067 INFO: Epoch 117: head: Default, loss=0.09952401, RMSE_E_per_atom=   38.90 meV, RMSE_F=   99.71 meV / A
+2025-10-12 17:42:38.071 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-99.pt
+2025-10-12 17:42:38.074 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-117.pt
+2025-10-12 17:42:46.982 INFO: Epoch 118: head: Default, loss=0.13543206, RMSE_E_per_atom=   41.15 meV, RMSE_F=  116.37 meV / A
+2025-10-12 17:42:55.837 INFO: Epoch 119: head: Default, loss=0.18988956, RMSE_E_per_atom=   38.93 meV, RMSE_F=  137.88 meV / A
+2025-10-12 17:43:04.697 INFO: Epoch 120: head: Default, loss=0.10226631, RMSE_E_per_atom=   39.56 meV, RMSE_F=  101.08 meV / A
+2025-10-12 17:43:04.698 DEBUG: Running inference on train_Default dataset
+2025-10-12 17:43:04.751 DEBUG: Plotting failed: too many indices for tensor of dimension 1
+2025-10-12 17:43:13.120 INFO: Epoch 121: head: Default, loss=0.19676868, RMSE_E_per_atom=   46.31 meV, RMSE_F=  140.31 meV / A
+2025-10-12 17:43:22.032 INFO: Epoch 122: head: Default, loss=0.15242841, RMSE_E_per_atom=   51.32 meV, RMSE_F=  123.43 meV / A
+2025-10-12 17:43:30.967 INFO: Epoch 123: head: Default, loss=0.10423220, RMSE_E_per_atom=   44.00 meV, RMSE_F=  102.01 meV / A
+2025-10-12 17:43:39.868 INFO: Epoch 124: head: Default, loss=0.15671894, RMSE_E_per_atom=   40.45 meV, RMSE_F=  125.22 meV / A
+2025-10-12 17:43:48.742 INFO: Epoch 125: head: Default, loss=0.11239345, RMSE_E_per_atom=   40.99 meV, RMSE_F=  105.96 meV / A
+2025-10-12 17:43:57.631 INFO: Epoch 126: head: Default, loss=0.20968418, RMSE_E_per_atom=   40.14 meV, RMSE_F=  144.90 meV / A
+2025-10-12 17:44:06.501 INFO: Epoch 127: head: Default, loss=0.13895976, RMSE_E_per_atom=   43.07 meV, RMSE_F=  117.86 meV / A
+2025-10-12 17:44:15.373 INFO: Epoch 128: head: Default, loss=0.18343260, RMSE_E_per_atom=   39.43 meV, RMSE_F=  135.46 meV / A
+2025-10-12 17:44:24.243 INFO: Epoch 129: head: Default, loss=0.11324920, RMSE_E_per_atom=   39.23 meV, RMSE_F=  106.37 meV / A
+2025-10-12 17:44:33.119 INFO: Epoch 130: head: Default, loss=0.10716953, RMSE_E_per_atom=   39.01 meV, RMSE_F=  103.49 meV / A
+2025-10-12 17:44:33.121 DEBUG: Running inference on train_Default dataset
+2025-10-12 17:44:33.175 DEBUG: Plotting failed: too many indices for tensor of dimension 1
+2025-10-12 17:44:41.561 INFO: Epoch 131: head: Default, loss=0.10656600, RMSE_E_per_atom=   39.47 meV, RMSE_F=  103.17 meV / A
+2025-10-12 17:44:50.433 INFO: Epoch 132: head: Default, loss=0.12445728, RMSE_E_per_atom=   39.11 meV, RMSE_F=  111.55 meV / A
+2025-10-12 17:44:59.392 INFO: Epoch 133: head: Default, loss=0.18408097, RMSE_E_per_atom=   40.01 meV, RMSE_F=  135.77 meV / A
+2025-10-12 17:45:08.268 INFO: Epoch 134: head: Default, loss=0.09293536, RMSE_E_per_atom=   39.60 meV, RMSE_F=   96.34 meV / A
+2025-10-12 17:45:08.272 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-117.pt
+2025-10-12 17:45:08.274 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-134.pt
+2025-10-12 17:45:17.198 INFO: Epoch 135: head: Default, loss=0.10296668, RMSE_E_per_atom=   39.36 meV, RMSE_F=  101.43 meV / A
+2025-10-12 17:45:26.089 INFO: Epoch 136: head: Default, loss=0.10372046, RMSE_E_per_atom=   39.64 meV, RMSE_F=  101.78 meV / A
+2025-10-12 17:45:35.000 INFO: Epoch 137: head: Default, loss=0.15190208, RMSE_E_per_atom=   39.59 meV, RMSE_F=  123.26 meV / A
+2025-10-12 17:45:43.908 INFO: Epoch 138: head: Default, loss=0.14606225, RMSE_E_per_atom=   39.80 meV, RMSE_F=  120.89 meV / A
+2025-10-12 17:45:52.840 INFO: Epoch 139: head: Default, loss=0.11774167, RMSE_E_per_atom=   42.15 meV, RMSE_F=  108.50 meV / A
+2025-10-12 17:46:01.730 INFO: Epoch 140: head: Default, loss=0.09518975, RMSE_E_per_atom=   43.85 meV, RMSE_F=   97.51 meV / A
+2025-10-12 17:46:01.732 DEBUG: Running inference on train_Default dataset
+2025-10-12 17:46:01.787 DEBUG: Plotting failed: too many indices for tensor of dimension 1
+2025-10-12 17:46:10.163 INFO: Epoch 141: head: Default, loss=0.21001500, RMSE_E_per_atom=   40.79 meV, RMSE_F=  145.04 meV / A
+2025-10-12 17:46:19.006 INFO: Epoch 142: head: Default, loss=0.35498183, RMSE_E_per_atom=   38.80 meV, RMSE_F=  188.65 meV / A
+2025-10-12 17:46:27.908 INFO: Epoch 143: head: Default, loss=0.20298953, RMSE_E_per_atom=   39.21 meV, RMSE_F=  142.59 meV / A
+2025-10-12 17:46:36.820 INFO: Epoch 144: head: Default, loss=0.13747300, RMSE_E_per_atom=   40.58 meV, RMSE_F=  117.28 meV / A
+2025-10-12 17:46:45.755 INFO: Epoch 145: head: Default, loss=0.09703955, RMSE_E_per_atom=   40.38 meV, RMSE_F=   98.47 meV / A
+2025-10-12 17:46:54.704 INFO: Epoch 146: head: Default, loss=0.11743614, RMSE_E_per_atom=   41.04 meV, RMSE_F=  108.39 meV / A
+2025-10-12 17:47:03.615 INFO: Epoch 147: head: Default, loss=0.11039258, RMSE_E_per_atom=   41.36 meV, RMSE_F=  105.08 meV / A
+2025-10-12 17:47:12.515 INFO: Epoch 148: head: Default, loss=0.11695143, RMSE_E_per_atom=   40.14 meV, RMSE_F=  108.17 meV / A
+2025-10-12 17:47:21.406 INFO: Epoch 149: head: Default, loss=0.15301961, RMSE_E_per_atom=   41.69 meV, RMSE_F=  123.76 meV / A
+2025-10-12 17:47:30.308 INFO: Epoch 150: head: Default, loss=0.15999643, RMSE_E_per_atom=   40.73 meV, RMSE_F=  126.55 meV / A
+2025-10-12 17:47:30.310 DEBUG: Running inference on train_Default dataset
+2025-10-12 17:47:30.363 DEBUG: Plotting failed: too many indices for tensor of dimension 1
+2025-10-12 17:47:38.724 INFO: Epoch 151: head: Default, loss=0.21371987, RMSE_E_per_atom=   44.23 meV, RMSE_F=  146.21 meV / A
+2025-10-12 17:47:47.634 INFO: Epoch 152: head: Default, loss=0.16097522, RMSE_E_per_atom=   42.13 meV, RMSE_F=  126.90 meV / A
+2025-10-12 17:47:56.491 INFO: Epoch 153: head: Default, loss=0.14511220, RMSE_E_per_atom=   42.72 meV, RMSE_F=  120.50 meV / A
+2025-10-12 17:48:05.382 INFO: Epoch 154: head: Default, loss=0.10950715, RMSE_E_per_atom=   39.98 meV, RMSE_F=  104.65 meV / A
+2025-10-12 17:48:14.284 INFO: Epoch 155: head: Default, loss=0.11146656, RMSE_E_per_atom=   40.62 meV, RMSE_F=  105.60 meV / A
+2025-10-12 17:48:23.169 INFO: Epoch 156: head: Default, loss=0.10777147, RMSE_E_per_atom=   41.31 meV, RMSE_F=  103.84 meV / A
+2025-10-12 17:48:32.042 INFO: Epoch 157: head: Default, loss=0.09177323, RMSE_E_per_atom=   42.13 meV, RMSE_F=   95.78 meV / A
+2025-10-12 17:48:32.047 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-134.pt
+2025-10-12 17:48:32.050 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-157.pt
+2025-10-12 17:48:41.044 INFO: Epoch 158: head: Default, loss=0.10704526, RMSE_E_per_atom=   42.26 meV, RMSE_F=  103.47 meV / A
+2025-10-12 17:48:49.945 INFO: Epoch 159: head: Default, loss=0.10100202, RMSE_E_per_atom=   44.30 meV, RMSE_F=  100.50 meV / A
+2025-10-12 17:48:58.753 INFO: Epoch 160: head: Default, loss=0.17665170, RMSE_E_per_atom=   41.67 meV, RMSE_F=  133.02 meV / A
+2025-10-12 17:48:58.755 DEBUG: Running inference on train_Default dataset
+2025-10-12 17:48:58.809 DEBUG: Plotting failed: too many indices for tensor of dimension 1
+2025-10-12 17:49:07.560 INFO: Epoch 161: head: Default, loss=0.30381093, RMSE_E_per_atom=   77.85 meV, RMSE_F=  174.36 meV / A
+2025-10-12 17:49:16.444 INFO: Epoch 162: head: Default, loss=0.15142178, RMSE_E_per_atom=   52.14 meV, RMSE_F=  123.07 meV / A
+2025-10-12 17:49:25.265 INFO: Epoch 163: head: Default, loss=0.09491719, RMSE_E_per_atom=   45.06 meV, RMSE_F=   97.41 meV / A
+2025-10-12 17:49:34.127 INFO: Epoch 164: head: Default, loss=0.09451659, RMSE_E_per_atom=   41.07 meV, RMSE_F=   97.22 meV / A
+2025-10-12 17:49:42.992 INFO: Epoch 165: head: Default, loss=0.08916183, RMSE_E_per_atom=   41.54 meV, RMSE_F=   94.41 meV / A
+2025-10-12 17:49:42.996 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-157.pt
+2025-10-12 17:49:42.999 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-165.pt
+2025-10-12 17:49:51.968 INFO: Epoch 166: head: Default, loss=0.09338906, RMSE_E_per_atom=   43.28 meV, RMSE_F=   96.61 meV / A
+2025-10-12 17:50:00.833 INFO: Epoch 167: head: Default, loss=0.09362973, RMSE_E_per_atom=   41.86 meV, RMSE_F=   96.74 meV / A
+2025-10-12 17:50:09.756 INFO: Epoch 168: head: Default, loss=0.09835266, RMSE_E_per_atom=   41.86 meV, RMSE_F=   99.13 meV / A
+2025-10-12 17:50:18.693 INFO: Epoch 169: head: Default, loss=0.08864599, RMSE_E_per_atom=   43.39 meV, RMSE_F=   94.10 meV / A
+2025-10-12 17:50:18.698 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-165.pt
+2025-10-12 17:50:18.699 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-169.pt
+2025-10-12 17:50:27.612 INFO: Epoch 170: head: Default, loss=0.08881387, RMSE_E_per_atom=   41.97 meV, RMSE_F=   94.22 meV / A
+2025-10-12 17:50:27.614 DEBUG: Running inference on train_Default dataset
+2025-10-12 17:50:27.666 DEBUG: Plotting failed: too many indices for tensor of dimension 1
+2025-10-12 17:50:36.100 INFO: Epoch 171: head: Default, loss=0.14274358, RMSE_E_per_atom=   43.80 meV, RMSE_F=  119.47 meV / A
+2025-10-12 17:50:45.003 INFO: Epoch 172: head: Default, loss=0.10521429, RMSE_E_per_atom=   42.52 meV, RMSE_F=  102.54 meV / A
+2025-10-12 17:50:53.858 INFO: Epoch 173: head: Default, loss=0.09684834, RMSE_E_per_atom=   41.51 meV, RMSE_F=   98.40 meV / A
+2025-10-12 17:51:02.740 INFO: Epoch 174: head: Default, loss=0.10257417, RMSE_E_per_atom=   42.22 meV, RMSE_F=  101.28 meV / A
+2025-10-12 17:51:11.612 INFO: Epoch 175: head: Default, loss=0.10611273, RMSE_E_per_atom=   41.67 meV, RMSE_F=  103.03 meV / A
+2025-10-12 17:51:20.518 INFO: Epoch 176: head: Default, loss=0.11209795, RMSE_E_per_atom=   41.98 meV, RMSE_F=  105.91 meV / A
+2025-10-12 17:51:29.365 INFO: Epoch 177: head: Default, loss=0.11621426, RMSE_E_per_atom=   41.77 meV, RMSE_F=  107.85 meV / A
+2025-10-12 17:51:38.290 INFO: Epoch 178: head: Default, loss=0.07919409, RMSE_E_per_atom=   43.24 meV, RMSE_F=   88.96 meV / A
+2025-10-12 17:51:38.295 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-169.pt
+2025-10-12 17:51:38.304 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-178.pt
+2025-10-12 17:51:47.247 INFO: Epoch 179: head: Default, loss=0.08487861, RMSE_E_per_atom=   42.68 meV, RMSE_F=   92.12 meV / A
+2025-10-12 17:51:56.183 INFO: Epoch 180: head: Default, loss=0.07883228, RMSE_E_per_atom=   43.89 meV, RMSE_F=   88.75 meV / A
+2025-10-12 17:51:56.185 DEBUG: Running inference on train_Default dataset
+2025-10-12 17:51:56.240 DEBUG: Plotting failed: too many indices for tensor of dimension 1
+2025-10-12 17:51:56.243 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-178.pt
+2025-10-12 17:51:56.246 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-180.pt
+2025-10-12 17:52:04.683 INFO: Epoch 181: head: Default, loss=0.23021175, RMSE_E_per_atom=   55.72 meV, RMSE_F=  151.89 meV / A
+2025-10-12 17:52:13.604 INFO: Epoch 182: head: Default, loss=0.11097420, RMSE_E_per_atom=   47.91 meV, RMSE_F=  105.38 meV / A
+2025-10-12 17:52:22.511 INFO: Epoch 183: head: Default, loss=0.09780942, RMSE_E_per_atom=   44.89 meV, RMSE_F=   98.95 meV / A
+2025-10-12 17:52:31.413 INFO: Epoch 184: head: Default, loss=0.09343234, RMSE_E_per_atom=   42.98 meV, RMSE_F=   96.70 meV / A
+2025-10-12 17:52:40.338 INFO: Epoch 185: head: Default, loss=0.09766293, RMSE_E_per_atom=   41.45 meV, RMSE_F=   98.83 meV / A
+2025-10-12 17:52:40.341 INFO: Changing loss based on Stage Two Weights
+2025-10-12 17:52:49.204 INFO: Epoch 186: head: Default, loss=0.29491051, RMSE_E_per_atom=   38.97 meV, RMSE_F=  119.76 meV / A
+2025-10-12 17:52:49.209 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-186_swa.pt
+2025-10-12 17:52:58.130 INFO: Epoch 187: head: Default, loss=0.29183224, RMSE_E_per_atom=   35.95 meV, RMSE_F=  127.68 meV / A
+2025-10-12 17:52:58.134 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-186_swa.pt
+2025-10-12 17:52:58.137 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-187_swa.pt
+2025-10-12 17:53:07.102 INFO: Epoch 188: head: Default, loss=0.26019748, RMSE_E_per_atom=   32.20 meV, RMSE_F=  125.24 meV / A
+2025-10-12 17:53:07.106 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-187_swa.pt
+2025-10-12 17:53:07.108 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-188_swa.pt
+2025-10-12 17:53:16.058 INFO: Epoch 189: head: Default, loss=0.23544699, RMSE_E_per_atom=   29.42 meV, RMSE_F=  122.16 meV / A
+2025-10-12 17:53:16.062 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-188_swa.pt
+2025-10-12 17:53:16.065 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-189_swa.pt
+2025-10-12 17:53:25.041 INFO: Epoch 190: head: Default, loss=0.21371841, RMSE_E_per_atom=   27.35 meV, RMSE_F=  118.00 meV / A
+2025-10-12 17:53:25.043 DEBUG: Running inference on train_Default dataset
+2025-10-12 17:53:25.096 DEBUG: Plotting failed: too many indices for tensor of dimension 1
+2025-10-12 17:53:25.099 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-189_swa.pt
+2025-10-12 17:53:25.101 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-190_swa.pt
+2025-10-12 17:53:33.509 INFO: Epoch 191: head: Default, loss=0.29698494, RMSE_E_per_atom=   40.41 meV, RMSE_F=  115.75 meV / A
+2025-10-12 17:53:42.369 INFO: Epoch 192: head: Default, loss=0.21560164, RMSE_E_per_atom=   29.83 meV, RMSE_F=  112.64 meV / A
+2025-10-12 17:53:51.259 INFO: Epoch 193: head: Default, loss=0.17997685, RMSE_E_per_atom=   26.48 meV, RMSE_F=  104.93 meV / A
+2025-10-12 17:53:51.263 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-190_swa.pt
+2025-10-12 17:53:51.266 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-193_swa.pt
+2025-10-12 17:54:00.139 INFO: Epoch 194: head: Default, loss=0.16175063, RMSE_E_per_atom=   24.03 meV, RMSE_F=  102.08 meV / A
+2025-10-12 17:54:00.144 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-193_swa.pt
+2025-10-12 17:54:00.146 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-194_swa.pt
+2025-10-12 17:54:09.072 INFO: Epoch 195: head: Default, loss=0.15159566, RMSE_E_per_atom=   23.20 meV, RMSE_F=   98.97 meV / A
+2025-10-12 17:54:09.076 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-194_swa.pt
+2025-10-12 17:54:09.078 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-195_swa.pt
+2025-10-12 17:54:17.998 INFO: Epoch 196: head: Default, loss=0.14222677, RMSE_E_per_atom=   22.08 meV, RMSE_F=   96.78 meV / A
+2025-10-12 17:54:18.002 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-195_swa.pt
+2025-10-12 17:54:18.005 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-196_swa.pt
+2025-10-12 17:54:26.972 INFO: Epoch 197: head: Default, loss=0.13722754, RMSE_E_per_atom=   21.10 meV, RMSE_F=   96.38 meV / A
+2025-10-12 17:54:26.976 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-196_swa.pt
+2025-10-12 17:54:26.979 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-197_swa.pt
+2025-10-12 17:54:35.954 INFO: Epoch 198: head: Default, loss=0.13375217, RMSE_E_per_atom=   20.36 meV, RMSE_F=   96.17 meV / A
+2025-10-12 17:54:35.958 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-197_swa.pt
+2025-10-12 17:54:35.961 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-198_swa.pt
+2025-10-12 17:54:44.875 INFO: Epoch 199: head: Default, loss=0.12999846, RMSE_E_per_atom=   19.58 meV, RMSE_F=   95.82 meV / A
+2025-10-12 17:54:44.880 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-198_swa.pt
+2025-10-12 17:54:44.882 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-199_swa.pt
+2025-10-12 17:54:53.856 INFO: Epoch 200: head: Default, loss=0.12711819, RMSE_E_per_atom=   18.97 meV, RMSE_F=   95.54 meV / A
+2025-10-12 17:54:53.858 DEBUG: Running inference on train_Default dataset
+2025-10-12 17:54:53.912 DEBUG: Plotting failed: too many indices for tensor of dimension 1
+2025-10-12 17:54:53.915 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-199_swa.pt
+2025-10-12 17:54:53.918 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-200_swa.pt
+2025-10-12 17:55:02.318 INFO: Epoch 201: head: Default, loss=0.15531473, RMSE_E_per_atom=   25.41 meV, RMSE_F=   95.35 meV / A
+2025-10-12 17:55:11.213 INFO: Epoch 202: head: Default, loss=0.12791072, RMSE_E_per_atom=   19.32 meV, RMSE_F=   95.26 meV / A
+2025-10-12 17:55:20.091 INFO: Epoch 203: head: Default, loss=0.12263681, RMSE_E_per_atom=   17.96 meV, RMSE_F=   95.15 meV / A
+2025-10-12 17:55:20.095 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-200_swa.pt
+2025-10-12 17:55:20.098 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-203_swa.pt
+2025-10-12 17:55:28.993 INFO: Epoch 204: head: Default, loss=0.11930556, RMSE_E_per_atom=   17.03 meV, RMSE_F=   95.10 meV / A
+2025-10-12 17:55:28.997 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-203_swa.pt
+2025-10-12 17:55:28.999 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-204_swa.pt
+2025-10-12 17:55:37.901 INFO: Epoch 205: head: Default, loss=0.11682070, RMSE_E_per_atom=   16.60 meV, RMSE_F=   94.57 meV / A
+2025-10-12 17:55:37.905 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-204_swa.pt
+2025-10-12 17:55:37.908 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-205_swa.pt
+2025-10-12 17:55:46.849 INFO: Epoch 206: head: Default, loss=0.11470117, RMSE_E_per_atom=   16.04 meV, RMSE_F=   94.41 meV / A
+2025-10-12 17:55:46.854 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-205_swa.pt
+2025-10-12 17:55:46.856 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-206_swa.pt
+2025-10-12 17:55:55.835 INFO: Epoch 207: head: Default, loss=0.11328503, RMSE_E_per_atom=   15.40 meV, RMSE_F=   94.73 meV / A
+2025-10-12 17:55:55.840 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-206_swa.pt
+2025-10-12 17:55:55.842 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-207_swa.pt
+2025-10-12 17:56:04.752 INFO: Epoch 208: head: Default, loss=0.11178524, RMSE_E_per_atom=   14.60 meV, RMSE_F=   95.20 meV / A
+2025-10-12 17:56:04.757 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-207_swa.pt
+2025-10-12 17:56:04.767 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-208_swa.pt
+2025-10-12 17:56:13.701 INFO: Epoch 209: head: Default, loss=0.11023086, RMSE_E_per_atom=   14.11 meV, RMSE_F=   95.12 meV / A
+2025-10-12 17:56:13.705 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-208_swa.pt
+2025-10-12 17:56:13.708 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-209_swa.pt
+2025-10-12 17:56:22.651 INFO: Epoch 210: head: Default, loss=0.10905299, RMSE_E_per_atom=   13.68 meV, RMSE_F=   95.14 meV / A
+2025-10-12 17:56:22.653 DEBUG: Running inference on train_Default dataset
+2025-10-12 17:56:22.705 DEBUG: Plotting failed: too many indices for tensor of dimension 1
+2025-10-12 17:56:22.708 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-209_swa.pt
+2025-10-12 17:56:22.711 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-210_swa.pt
+2025-10-12 17:56:31.125 INFO: Epoch 211: head: Default, loss=0.10949274, RMSE_E_per_atom=   14.17 meV, RMSE_F=   94.64 meV / A
+2025-10-12 17:56:39.978 INFO: Epoch 212: head: Default, loss=0.10648242, RMSE_E_per_atom=   13.46 meV, RMSE_F=   94.09 meV / A
+2025-10-12 17:56:39.983 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-210_swa.pt
+2025-10-12 17:56:39.985 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-212_swa.pt
+2025-10-12 17:56:48.899 INFO: Epoch 213: head: Default, loss=0.10537718, RMSE_E_per_atom=   12.88 meV, RMSE_F=   94.32 meV / A
+2025-10-12 17:56:48.904 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-212_swa.pt
+2025-10-12 17:56:48.906 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-213_swa.pt
+2025-10-12 17:56:57.799 INFO: Epoch 214: head: Default, loss=0.10444264, RMSE_E_per_atom=   12.60 meV, RMSE_F=   94.20 meV / A
+2025-10-12 17:56:57.804 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-213_swa.pt
+2025-10-12 17:56:57.806 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-214_swa.pt
+2025-10-12 17:57:06.733 INFO: Epoch 215: head: Default, loss=0.10373491, RMSE_E_per_atom=   12.36 meV, RMSE_F=   94.14 meV / A
+2025-10-12 17:57:06.737 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-214_swa.pt
+2025-10-12 17:57:06.740 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-215_swa.pt
+2025-10-12 17:57:15.691 INFO: Epoch 216: head: Default, loss=0.10280993, RMSE_E_per_atom=   11.96 meV, RMSE_F=   94.17 meV / A
+2025-10-12 17:57:15.695 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-215_swa.pt
+2025-10-12 17:57:15.698 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-216_swa.pt
+2025-10-12 17:57:24.680 INFO: Epoch 217: head: Default, loss=0.10205416, RMSE_E_per_atom=   11.77 meV, RMSE_F=   94.01 meV / A
+2025-10-12 17:57:24.685 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-216_swa.pt
+2025-10-12 17:57:24.687 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-217_swa.pt
+2025-10-12 17:57:33.632 INFO: Epoch 218: head: Default, loss=0.10060685, RMSE_E_per_atom=   11.48 meV, RMSE_F=   93.59 meV / A
+2025-10-12 17:57:33.637 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-217_swa.pt
+2025-10-12 17:57:33.639 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-218_swa.pt
+2025-10-12 17:57:42.563 INFO: Epoch 219: head: Default, loss=0.09957534, RMSE_E_per_atom=   11.14 meV, RMSE_F=   93.45 meV / A
+2025-10-12 17:57:42.567 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-218_swa.pt
+2025-10-12 17:57:42.569 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-219_swa.pt
+2025-10-12 17:57:51.524 INFO: Epoch 220: head: Default, loss=0.09853328, RMSE_E_per_atom=   10.75 meV, RMSE_F=   93.35 meV / A
+2025-10-12 17:57:51.526 DEBUG: Running inference on train_Default dataset
+2025-10-12 17:57:51.579 DEBUG: Plotting failed: too many indices for tensor of dimension 1
+2025-10-12 17:57:51.582 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-219_swa.pt
+2025-10-12 17:57:51.585 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-220_swa.pt
+2025-10-12 17:58:00.007 INFO: Epoch 221: head: Default, loss=0.11974413, RMSE_E_per_atom=   17.38 meV, RMSE_F=   94.72 meV / A
+2025-10-12 17:58:08.874 INFO: Epoch 222: head: Default, loss=0.10370839, RMSE_E_per_atom=   12.50 meV, RMSE_F=   93.95 meV / A
+2025-10-12 17:58:17.803 INFO: Epoch 223: head: Default, loss=0.09836343, RMSE_E_per_atom=   10.87 meV, RMSE_F=   93.12 meV / A
+2025-10-12 17:58:17.808 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-220_swa.pt
+2025-10-12 17:58:17.810 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-223_swa.pt
+2025-10-12 17:58:26.811 INFO: Epoch 224: head: Default, loss=0.09616180, RMSE_E_per_atom=   10.17 meV, RMSE_F=   92.73 meV / A
+2025-10-12 17:58:26.815 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-223_swa.pt
+2025-10-12 17:58:26.817 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-224_swa.pt
+2025-10-12 17:58:35.809 INFO: Epoch 225: head: Default, loss=0.09485716, RMSE_E_per_atom=    9.70 meV, RMSE_F=   92.53 meV / A
+2025-10-12 17:58:35.813 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-224_swa.pt
+2025-10-12 17:58:35.815 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-225_swa.pt
+2025-10-12 17:58:44.777 INFO: Epoch 226: head: Default, loss=0.09437238, RMSE_E_per_atom=    9.40 meV, RMSE_F=   92.57 meV / A
+2025-10-12 17:58:44.782 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-225_swa.pt
+2025-10-12 17:58:44.784 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-226_swa.pt
+2025-10-12 17:58:53.734 INFO: Epoch 227: head: Default, loss=0.09307751, RMSE_E_per_atom=    9.18 meV, RMSE_F=   92.10 meV / A
+2025-10-12 17:58:53.738 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-226_swa.pt
+2025-10-12 17:58:53.740 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-227_swa.pt
+2025-10-12 17:59:02.700 INFO: Epoch 228: head: Default, loss=0.09256421, RMSE_E_per_atom=    8.91 meV, RMSE_F=   92.08 meV / A
+2025-10-12 17:59:02.705 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-227_swa.pt
+2025-10-12 17:59:02.707 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-228_swa.pt
+2025-10-12 17:59:11.657 INFO: Epoch 229: head: Default, loss=0.09213487, RMSE_E_per_atom=    8.80 meV, RMSE_F=   91.95 meV / A
+2025-10-12 17:59:11.661 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-228_swa.pt
+2025-10-12 17:59:11.663 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-229_swa.pt
+2025-10-12 17:59:20.610 INFO: Epoch 230: head: Default, loss=0.09179932, RMSE_E_per_atom=    8.70 meV, RMSE_F=   91.87 meV / A
+2025-10-12 17:59:20.613 DEBUG: Running inference on train_Default dataset
+2025-10-12 17:59:20.668 DEBUG: Plotting failed: too many indices for tensor of dimension 1
+2025-10-12 17:59:20.672 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-229_swa.pt
+2025-10-12 17:59:20.674 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-230_swa.pt
+2025-10-12 17:59:29.135 INFO: Epoch 231: head: Default, loss=0.09076130, RMSE_E_per_atom=    9.15 meV, RMSE_F=   90.85 meV / A
+2025-10-12 17:59:29.139 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-230_swa.pt
+2025-10-12 17:59:29.141 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-231_swa.pt
+2025-10-12 17:59:38.084 INFO: Epoch 232: head: Default, loss=0.08870833, RMSE_E_per_atom=    8.58 meV, RMSE_F=   90.27 meV / A
+2025-10-12 17:59:38.088 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-231_swa.pt
+2025-10-12 17:59:38.091 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-232_swa.pt
+2025-10-12 17:59:47.038 INFO: Epoch 233: head: Default, loss=0.08845178, RMSE_E_per_atom=    8.19 meV, RMSE_F=   90.50 meV / A
+2025-10-12 17:59:47.042 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-232_swa.pt
+2025-10-12 17:59:47.045 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-233_swa.pt
+2025-10-12 17:59:55.991 INFO: Epoch 234: head: Default, loss=0.08793277, RMSE_E_per_atom=    7.94 meV, RMSE_F=   90.43 meV / A
+2025-10-12 17:59:55.996 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-233_swa.pt
+2025-10-12 17:59:55.998 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-234_swa.pt
+2025-10-12 18:00:04.955 INFO: Epoch 235: head: Default, loss=0.08714566, RMSE_E_per_atom=    7.71 meV, RMSE_F=   90.20 meV / A
+2025-10-12 18:00:04.960 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-234_swa.pt
+2025-10-12 18:00:04.962 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-235_swa.pt
+2025-10-12 18:00:13.932 INFO: Epoch 236: head: Default, loss=0.08680548, RMSE_E_per_atom=    7.55 meV, RMSE_F=   90.15 meV / A
+2025-10-12 18:00:13.937 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-235_swa.pt
+2025-10-12 18:00:13.939 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-236_swa.pt
+2025-10-12 18:00:22.862 INFO: Epoch 237: head: Default, loss=0.08681552, RMSE_E_per_atom=    7.48 meV, RMSE_F=   90.22 meV / A
+2025-10-12 18:00:31.779 INFO: Epoch 238: head: Default, loss=0.08735740, RMSE_E_per_atom=    7.66 meV, RMSE_F=   90.36 meV / A
+2025-10-12 18:00:40.747 INFO: Epoch 239: head: Default, loss=0.08709312, RMSE_E_per_atom=    7.38 meV, RMSE_F=   90.45 meV / A
+2025-10-12 18:00:49.680 INFO: Epoch 240: head: Default, loss=0.08733073, RMSE_E_per_atom=    7.01 meV, RMSE_F=   90.88 meV / A
+2025-10-12 18:00:49.682 DEBUG: Running inference on train_Default dataset
+2025-10-12 18:00:49.736 DEBUG: Plotting failed: too many indices for tensor of dimension 1
+2025-10-12 18:00:58.123 INFO: Epoch 241: head: Default, loss=0.08867754, RMSE_E_per_atom=    7.33 meV, RMSE_F=   91.37 meV / A
+2025-10-12 18:01:07.008 INFO: Epoch 242: head: Default, loss=0.08720510, RMSE_E_per_atom=    7.11 meV, RMSE_F=   90.73 meV / A
+2025-10-12 18:01:15.870 INFO: Epoch 243: head: Default, loss=0.08665283, RMSE_E_per_atom=    6.95 meV, RMSE_F=   90.56 meV / A
+2025-10-12 18:01:15.874 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-236_swa.pt
+2025-10-12 18:01:15.877 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-243_swa.pt
+2025-10-12 18:01:24.871 INFO: Epoch 244: head: Default, loss=0.08532884, RMSE_E_per_atom=    6.67 meV, RMSE_F=   90.03 meV / A
+2025-10-12 18:01:24.876 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-243_swa.pt
+2025-10-12 18:01:24.878 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-244_swa.pt
+2025-10-12 18:01:33.863 INFO: Epoch 245: head: Default, loss=0.08460804, RMSE_E_per_atom=    6.47 meV, RMSE_F=   89.77 meV / A
+2025-10-12 18:01:33.867 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-244_swa.pt
+2025-10-12 18:01:33.869 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-245_swa.pt
+2025-10-12 18:01:42.777 INFO: Epoch 246: head: Default, loss=0.08348644, RMSE_E_per_atom=    6.30 meV, RMSE_F=   89.26 meV / A
+2025-10-12 18:01:42.781 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-245_swa.pt
+2025-10-12 18:01:42.784 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-246_swa.pt
+2025-10-12 18:01:51.700 INFO: Epoch 247: head: Default, loss=0.08379173, RMSE_E_per_atom=    6.21 meV, RMSE_F=   89.50 meV / A
+2025-10-12 18:02:00.605 INFO: Epoch 248: head: Default, loss=0.08305726, RMSE_E_per_atom=    6.14 meV, RMSE_F=   89.14 meV / A
+2025-10-12 18:02:00.609 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-246_swa.pt
+2025-10-12 18:02:00.611 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-248_swa.pt
+2025-10-12 18:02:09.590 INFO: Epoch 249: head: Default, loss=0.08255973, RMSE_E_per_atom=    6.00 meV, RMSE_F=   88.95 meV / A
+2025-10-12 18:02:09.595 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-248_swa.pt
+2025-10-12 18:02:09.597 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-249_swa.pt
+2025-10-12 18:02:09.643 INFO: Training complete
+2025-10-12 18:02:09.645 INFO: 
+2025-10-12 18:02:09.646 INFO: ===========RESULTS===========
+2025-10-12 18:02:19.571 INFO: Loading checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-180.pt
+2025-10-12 18:02:19.617 INFO: Loaded Stage one model from epoch 180 for evaluation
+2025-10-12 18:02:19.618 INFO: Saving model to al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123.model
+2025-10-12 18:02:19.690 INFO: RUNING CUEQ TO E3NN
+2025-10-12 18:02:19.744 INFO: Creating new model without CuEq settings
+2025-10-12 18:02:21.236 DEBUG: Transferring additional key: interactions.1.conv_tp_weights.layer1.weight
+2025-10-12 18:02:21.237 DEBUG: Transferring additional key: radial_embedding.bessel_fn.r_max
+2025-10-12 18:02:21.237 DEBUG: Transferring additional key: interactions.1.conv_tp_weights.layer3.weight
+2025-10-12 18:02:21.237 DEBUG: Transferring key readouts.1.linear_1.weight after adapting shape (1, 2048) → (2048,)
+2025-10-12 18:02:21.237 DEBUG: Transferring key readouts.0.linear.weight after adapting shape (1, 128) → (128,)
+2025-10-12 18:02:21.237 DEBUG: Transferring additional key: atomic_energies_fn.atomic_energies
+2025-10-12 18:02:21.237 DEBUG: Transferring additional key: interactions.0.conv_tp_weights.layer3.weight
+2025-10-12 18:02:21.237 DEBUG: Transferring key products.1.linear.weight after adapting shape (1, 16384) → (16384,)
+2025-10-12 18:02:21.237 DEBUG: Transferring additional key: scale_shift.shift
+2025-10-12 18:02:21.237 DEBUG: Transferring additional key: r_max
+2025-10-12 18:02:21.238 DEBUG: Transferring additional key: interactions.0.conv_tp_weights.layer1.weight
+2025-10-12 18:02:21.238 DEBUG: Transferring key interactions.0.skip_tp.weight after adapting shape (1, 32768) → (32768,)
+2025-10-12 18:02:21.238 DEBUG: Transferring additional key: radial_embedding.bessel_fn.prefactor
+2025-10-12 18:02:21.238 DEBUG: Transferring additional key: radial_embedding.cutoff_fn.r_max
+2025-10-12 18:02:21.238 DEBUG: Transferring key interactions.1.skip_tp.weight after adapting shape (1, 32768) → (32768,)
+2025-10-12 18:02:21.238 DEBUG: Transferring additional key: radial_embedding.cutoff_fn.p
+2025-10-12 18:02:21.238 DEBUG: Transferring additional key: interactions.0.conv_tp_weights.layer0.weight
+2025-10-12 18:02:21.238 DEBUG: Transferring key interactions.0.linear_up.weight after adapting shape (1, 16384) → (16384,)
+2025-10-12 18:02:21.238 DEBUG: Transferring key interactions.1.linear.weight after adapting shape (1, 65536) → (65536,)
+2025-10-12 18:02:21.238 DEBUG: Transferring additional key: interactions.0.conv_tp_weights.layer2.weight
+2025-10-12 18:02:21.238 DEBUG: Transferring additional key: scale_shift.scale
+2025-10-12 18:02:21.238 DEBUG: Transferring key products.0.linear.weight after adapting shape (1, 16384) → (16384,)
+2025-10-12 18:02:21.238 DEBUG: Transferring additional key: atomic_numbers
+2025-10-12 18:02:21.239 DEBUG: Transferring key interactions.1.linear_up.weight after adapting shape (1, 16384) → (16384,)
+2025-10-12 18:02:21.239 DEBUG: Transferring additional key: interactions.1.conv_tp_weights.layer0.weight
+2025-10-12 18:02:21.239 DEBUG: Transferring additional key: num_interactions
+2025-10-12 18:02:21.239 DEBUG: Transferring key interactions.0.linear.weight after adapting shape (1, 65536) → (65536,)
+2025-10-12 18:02:21.239 DEBUG: Transferring additional key: radial_embedding.bessel_fn.bessel_weights
+2025-10-12 18:02:21.239 DEBUG: Transferring additional key: interactions.1.conv_tp_weights.layer2.weight
+2025-10-12 18:02:21.239 DEBUG: Transferring key readouts.1.linear_2.weight after adapting shape (1, 16) → (16,)
+2025-10-12 18:02:21.239 DEBUG: Transferring key node_embedding.linear.weight after adapting shape (1, 256) → (256,)
+2025-10-12 18:02:21.339 INFO: Compiling model, saving metadata to al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_compiled.model
+2025-10-12 18:02:22.037 INFO: Computing metrics for training, validation, and test sets
+2025-10-12 18:02:22.039 INFO: Skipping evaluation for heads: ['pt_head']
+2025-10-12 18:02:22.041 INFO: Evaluating train_Default ...
+2025-10-12 18:02:25.915 INFO: Evaluating valid_Default ...
+2025-10-12 18:02:26.500 INFO: Error-table on TRAIN and VALID:
++---------------+---------------------+------------------+-------------------+
+|  config_type  | RMSE E / meV / atom | RMSE F / meV / A | relative F RMSE % |
++---------------+---------------------+------------------+-------------------+
+| train_Default |           43.8      |         99.3     |          1.97     |
+| valid_Default |           43.9      |         88.8     |          1.84     |
++---------------+---------------------+------------------+-------------------+
+2025-10-12 18:02:26.502 INFO: Evaluating Default_Default ...
+2025-10-12 18:02:32.023 INFO: Error-table on TEST:
++-----------------+---------------------+------------------+-------------------+
+|   config_type   | RMSE E / meV / atom | RMSE F / meV / A | relative F RMSE % |
++-----------------+---------------------+------------------+-------------------+
+| Default_Default |           57.3      |         62.0     |          3.96     |
++-----------------+---------------------+------------------+-------------------+
+2025-10-12 18:02:32.025 DEBUG: Running inference on train_Default dataset
+2025-10-12 18:02:32.077 DEBUG: Plotting failed: too many indices for tensor of dimension 1
+2025-10-12 18:02:32.080 INFO: Loading checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-249_swa.pt
+2025-10-12 18:02:32.148 INFO: Loaded Stage two model from epoch 249 for evaluation
+2025-10-12 18:02:32.150 INFO: Saving model to al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_stagetwo.model
+2025-10-12 18:02:32.205 INFO: RUNING CUEQ TO E3NN
+2025-10-12 18:02:32.259 INFO: Creating new model without CuEq settings
+2025-10-12 18:02:33.350 DEBUG: Transferring additional key: interactions.1.conv_tp_weights.layer1.weight
+2025-10-12 18:02:33.351 DEBUG: Transferring additional key: radial_embedding.bessel_fn.r_max
+2025-10-12 18:02:33.351 DEBUG: Transferring additional key: interactions.1.conv_tp_weights.layer3.weight
+2025-10-12 18:02:33.351 DEBUG: Transferring key readouts.1.linear_1.weight after adapting shape (1, 2048) → (2048,)
+2025-10-12 18:02:33.351 DEBUG: Transferring key readouts.0.linear.weight after adapting shape (1, 128) → (128,)
+2025-10-12 18:02:33.351 DEBUG: Transferring additional key: atomic_energies_fn.atomic_energies
+2025-10-12 18:02:33.351 DEBUG: Transferring additional key: interactions.0.conv_tp_weights.layer3.weight
+2025-10-12 18:02:33.351 DEBUG: Transferring key products.1.linear.weight after adapting shape (1, 16384) → (16384,)
+2025-10-12 18:02:33.351 DEBUG: Transferring additional key: scale_shift.shift
+2025-10-12 18:02:33.351 DEBUG: Transferring additional key: r_max
+2025-10-12 18:02:33.352 DEBUG: Transferring additional key: interactions.0.conv_tp_weights.layer1.weight
+2025-10-12 18:02:33.352 DEBUG: Transferring key interactions.0.skip_tp.weight after adapting shape (1, 32768) → (32768,)
+2025-10-12 18:02:33.352 DEBUG: Transferring additional key: radial_embedding.bessel_fn.prefactor
+2025-10-12 18:02:33.352 DEBUG: Transferring additional key: radial_embedding.cutoff_fn.r_max
+2025-10-12 18:02:33.352 DEBUG: Transferring key interactions.1.skip_tp.weight after adapting shape (1, 32768) → (32768,)
+2025-10-12 18:02:33.352 DEBUG: Transferring additional key: radial_embedding.cutoff_fn.p
+2025-10-12 18:02:33.352 DEBUG: Transferring additional key: interactions.0.conv_tp_weights.layer0.weight
+2025-10-12 18:02:33.352 DEBUG: Transferring key interactions.0.linear_up.weight after adapting shape (1, 16384) → (16384,)
+2025-10-12 18:02:33.352 DEBUG: Transferring key interactions.1.linear.weight after adapting shape (1, 65536) → (65536,)
+2025-10-12 18:02:33.352 DEBUG: Transferring additional key: interactions.0.conv_tp_weights.layer2.weight
+2025-10-12 18:02:33.353 DEBUG: Transferring additional key: scale_shift.scale
+2025-10-12 18:02:33.353 DEBUG: Transferring key products.0.linear.weight after adapting shape (1, 16384) → (16384,)
+2025-10-12 18:02:33.353 DEBUG: Transferring additional key: atomic_numbers
+2025-10-12 18:02:33.353 DEBUG: Transferring key interactions.1.linear_up.weight after adapting shape (1, 16384) → (16384,)
+2025-10-12 18:02:33.353 DEBUG: Transferring additional key: interactions.1.conv_tp_weights.layer0.weight
+2025-10-12 18:02:33.353 DEBUG: Transferring additional key: num_interactions
+2025-10-12 18:02:33.353 DEBUG: Transferring key interactions.0.linear.weight after adapting shape (1, 65536) → (65536,)
+2025-10-12 18:02:33.353 DEBUG: Transferring additional key: radial_embedding.bessel_fn.bessel_weights
+2025-10-12 18:02:33.353 DEBUG: Transferring additional key: interactions.1.conv_tp_weights.layer2.weight
+2025-10-12 18:02:33.353 DEBUG: Transferring key readouts.1.linear_2.weight after adapting shape (1, 16) → (16,)
+2025-10-12 18:02:33.354 DEBUG: Transferring key node_embedding.linear.weight after adapting shape (1, 256) → (256,)
+2025-10-12 18:02:33.452 INFO: Compiling model, saving metadata al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_stagetwo_compiled.model
+2025-10-12 18:02:34.106 INFO: Computing metrics for training, validation, and test sets
+2025-10-12 18:02:34.109 INFO: Skipping evaluation for heads: ['pt_head']
+2025-10-12 18:02:34.110 INFO: Evaluating train_Default ...
+2025-10-12 18:02:38.063 INFO: Evaluating valid_Default ...
+2025-10-12 18:02:38.658 INFO: Error-table on TRAIN and VALID:
++---------------+---------------------+------------------+-------------------+
+|  config_type  | RMSE E / meV / atom | RMSE F / meV / A | relative F RMSE % |
++---------------+---------------------+------------------+-------------------+
+| train_Default |            5.6      |         74.2     |          1.47     |
+| valid_Default |            6.0      |         88.9     |          1.85     |
++---------------+---------------------+------------------+-------------------+
+2025-10-12 18:02:38.659 INFO: Evaluating Default_Default ...
+2025-10-12 18:02:44.287 INFO: Error-table on TEST:
++-----------------+---------------------+------------------+-------------------+
+|   config_type   | RMSE E / meV / atom | RMSE F / meV / A | relative F RMSE % |
++-----------------+---------------------+------------------+-------------------+
+| Default_Default |            5.4      |         58.7     |          3.75     |
++-----------------+---------------------+------------------+-------------------+
+2025-10-12 18:02:44.289 DEBUG: Running inference on train_Default dataset
+2025-10-12 18:02:44.350 DEBUG: Plotting failed: too many indices for tensor of dimension 1
+2025-10-12 18:02:44.351 INFO: Done
+2025-10-12 18:04:31.685 INFO: ===========VERIFYING SETTINGS===========
+2025-10-12 18:04:31.688 INFO: MACE version: 0.3.14
+2025-10-12 18:04:31.689 DEBUG: Configuration: Namespace(config='al-al2o3_configs/al-al2o3_configs_small-ft-2', name='small-ft_al-al2o3', seed=123, work_dir='.', log_dir='al-al2o3_models/al-al2o3_small_ft-1', model_dir='al-al2o3_models/al-al2o3_small_ft-1', checkpoints_dir='al-al2o3_models/al-al2o3_small_ft-1', results_dir='al-al2o3_models/al-al2o3_small_ft-1', downloads_dir='./downloads', device='cuda', default_dtype='float64', distributed=False, launcher='slurm', log_level='INFO', plot=True, plot_frequency=10, plot_interaction_e=False, error_table='PerAtomRMSE', model='MACE', r_max=5.0, radial_type='bessel', num_radial_basis=8, num_cutoff_basis=5, pair_repulsion=False, distance_transform='None', apply_cutoff=True, use_last_readout_only=False, use_embedding_readout=False, interaction='RealAgnosticResidualInteractionBlock', interaction_first='RealAgnosticResidualInteractionBlock', max_ell=3, correlation=3, use_reduced_cg=False, use_so3=False, use_agnostic_product=False, num_interactions=2, MLP_irreps='16x0e', radial_MLP='[64, 64, 64]', hidden_irreps='128x0e + 128x1o', edge_irreps=None, num_channels=128, max_L=1, gate='silu', scaling='rms_forces_scaling', avg_num_neighbors=1, compute_avg_num_neighbors=True, compute_stress=False, compute_forces=True, compute_polarizability=<function str2bool at 0x7ded896d9e40>, compute_atomic_dipole=<function str2bool at 0x7ded896d9e40>, train_file='al-al2o3_data/400_dpp_trainval_no-rd.xyz', valid_file=None, valid_fraction=0.15, test_file='al-al2o3_data/mace_test.xyz', test_dir=None, multi_processed_test=False, num_workers=0, pin_memory=True, atomic_numbers=None, mean=None, std=None, statistics_file=None, les_arguments=None, E0s='{8: -0.20523646, 13: -0.01543451}', pseudolabel_replay=False, foundation_filter_elements=True, heads=None, multiheads_finetuning=False, foundation_head=None, weight_pt_head=1.0, real_pt_data_ratio_threshold=0.1, num_samples_pt=10000, force_mh_ft_lr=False, subselect_pt='random', filter_type_pt='none', allow_random_padding_pt=True, pt_train_file=None, pt_valid_file=None, foundation_model_elements=False, keep_isolated_atoms=False, energy_key='REF_energy', forces_key='REF_forces', virials_key='REF_virials', stress_key='REF_stress', dipole_key='dipole', polarizability_key='polarizability', head_key='head', charges_key='REF_charges', elec_temp_key='elec_temp', total_spin_key='total_spin', total_charge_key='total_charge', embedding_specs=None, skip_evaluate_heads='pt_head', loss='weighted', forces_weight=10.0, swa_forces_weight=100.0, energy_weight=1.0, swa_energy_weight=1000.0, virials_weight=1.0, swa_virials_weight=10.0, stress_weight=0.0, swa_stress_weight=10.0, dipole_weight=1.0, swa_dipole_weight=1.0, swa_polarizability_weight=1.0, polarizability_weight=1.0, config_type_weights='{"Default":1.0}', huber_delta=0.01, optimizer='adamw', beta=0.9, batch_size=10, valid_batch_size=10, lr=0.001, swa_lr=0.001, weight_decay=5e-07, amsgrad=True, scheduler='ReduceLROnPlateau', lr_factor=0.8, scheduler_patience=50, lr_scheduler_gamma=0.9993, swa=True, start_swa=150, lbfgs=False, ema=True, ema_decay=0.99, max_num_epochs=200, patience=2048, foundation_model='small', foundation_model_readout=True, eval_interval=1, keep_checkpoints=False, save_all_checkpoints=False, restart_latest=False, save_cpu=False, clip_grad=10.0, dry_run=False, enable_cueq=True, only_cueq=False, enable_oeq=False, wandb=True, wandb_dir=None, wandb_project='MACE_Al-Al2O3', wandb_entity='', wandb_name='small_ft_lr0.001_wd5e-7_10f1e_400dpp_bs10_plateau-1', wandb_log_hypers=['lr', 'lr_factor', 'lr_scheduler_gamma', 'scheduler', 'swa', 'swa_lr', 'start_swa', 'scheduler_patience', 'swa_energy_weight', 'swa_forces_weight', 'energy_weight', 'forces_weight', 'ema', 'ema_decay', 'weight_decay', 'huber_delta', 'optimizer', 'amsgrad', 'beta', 'batch_size', 'max_num_epochs', 'seed', 'hidden_irreps', 'max_ell', 'max_L', 'correlation', 'r_max', 'radial_MLP', 'scaling', 'num_channels'], key_specification=KeySpecification(info_keys={'energy': 'REF_energy', 'stress': 'REF_stress', 'virials': 'REF_virials', 'dipole': 'dipole', 'head': 'head', 'elec_temp': 'elec_temp', 'total_charge': 'total_charge', 'polarizability': 'polarizability', 'total_spin': 'total_spin'}, arrays_keys={'forces': 'REF_forces', 'charges': 'REF_charges'}))
+2025-10-12 18:04:31.689 INFO: CUDA version: 12.6, CUDA device: 0
+2025-10-12 18:04:31.691 DEBUG: sys.platform='linux', git_executable='git'
+2025-10-12 18:04:31.693 DEBUG: Error accessing Git repository: /content/drive/MyDrive/colab_temp/mace_fine-tuning_expts
+2025-10-12 18:04:31.693 INFO: Using foundation model mace-mp-0 small as initial checkpoint.
+2025-10-12 18:04:31.815 INFO: CUDA version: 12.6, CUDA device: 0
+2025-10-12 18:04:31.820 INFO: ===========LOADING INPUT DATA===========
+2025-10-12 18:04:31.821 INFO: Using heads: ['Default']
+2025-10-12 18:04:31.822 INFO: Using the key specifications to parse data:
+2025-10-12 18:04:31.823 INFO: Default: KeySpecification(info_keys={'energy': 'REF_energy', 'stress': 'REF_stress', 'virials': 'REF_virials', 'dipole': 'dipole', 'head': 'head', 'elec_temp': 'elec_temp', 'total_charge': 'total_charge', 'polarizability': 'polarizability', 'total_spin': 'total_spin'}, arrays_keys={'forces': 'REF_forces', 'charges': 'REF_charges'})
+2025-10-12 18:04:31.824 INFO: =============    Processing head Default     ===========
+2025-10-12 18:04:31.826 DEBUG: Loading training file: al-al2o3_data/400_dpp_trainval_no-rd.xyz
+2025-10-12 18:04:32.435 INFO: Training set 1/1 [energy: 400, stress: 400, virials: 0, dipole components: 0, head: 400, elec_temp: 0, total_charge: 0, polarizability: 0, total_spin: 0, forces: 400, charges: 0]
+2025-10-12 18:04:32.439 INFO: Total Training set [energy: 400, stress: 400, virials: 0, dipole components: 0, head: 400, elec_temp: 0, total_charge: 0, polarizability: 0, total_spin: 0, forces: 400, charges: 0]
+2025-10-12 18:04:32.440 INFO: No validation set provided, splitting training data instead.
+2025-10-12 18:04:32.457 INFO: Using random 15% of training set for validation with indices saved in: ./valid_indices_123.txt
+2025-10-12 18:04:32.460 INFO: Random Split Training set [energy: 340, stress: 340, virials: 0, dipole components: 0, head: 340, elec_temp: 0, total_charge: 0, polarizability: 0, total_spin: 0, forces: 340, charges: 0]
+2025-10-12 18:04:32.462 INFO: Random Split Validation set [energy: 60, stress: 60, virials: 0, dipole components: 0, head: 60, elec_temp: 0, total_charge: 0, polarizability: 0, total_spin: 0, forces: 60, charges: 0]
+2025-10-12 18:04:33.383 INFO: Test set 1/1 [energy: 674, stress: 674, virials: 0, dipole components: 0, head: 674, elec_temp: 0, total_charge: 0, polarizability: 0, total_spin: 0, forces: 674, charges: 0]
+2025-10-12 18:04:33.388 INFO: Total Test set [energy: 674, stress: 674, virials: 0, dipole components: 0, head: 674, elec_temp: 0, total_charge: 0, polarizability: 0, total_spin: 0, forces: 674, charges: 0]
+2025-10-12 18:04:33.389 INFO: Total number of configurations: train=340, valid=60, tests=[Default_Default: 674],
+2025-10-12 18:04:33.407 INFO: Atomic Numbers used: [8, 13]
+2025-10-12 18:04:33.408 INFO: Isolated Atomic Energies (E0s) not in training file, using command line argument
+2025-10-12 18:04:33.409 INFO: Atomic Energies used (z: eV) for head Default: {8: -0.20523646, 13: -0.01543451}
+2025-10-12 18:04:33.410 INFO: Processing datasets for head 'Default'
+2025-10-12 18:04:39.205 DEBUG: Successfully loaded dataset from ASE files: ['al-al2o3_data/400_dpp_trainval_no-rd.xyz']
+2025-10-12 18:04:39.206 INFO: Combining 1 list datasets for head 'Default'
+2025-10-12 18:04:40.233 INFO: Head 'Default' training dataset size: 340
+2025-10-12 18:04:40.235 INFO: Computing average number of neighbors
+2025-10-12 18:04:40.595 INFO: Average number of neighbors: 88.57448317038585
+2025-10-12 18:04:40.597 INFO: During training the following quantities will be reported: energy, forces
+2025-10-12 18:04:40.599 INFO: ===========MODEL DETAILS===========
+2025-10-12 18:04:40.845 INFO: Loading FOUNDATION model
+2025-10-12 18:04:40.847 INFO: Using filtered elements: [8, 13]
+2025-10-12 18:04:40.849 INFO: Model configuration extracted from foundation model
+2025-10-12 18:04:40.850 INFO: Using weighted loss function for fine-tuning
+2025-10-12 18:04:40.851 INFO: Message passing with hidden irreps 128x0e)
+2025-10-12 18:04:40.852 INFO: 2 layers, each with correlation order: 3 (body order: 4) and spherical harmonics up to: l=3
+2025-10-12 18:04:40.853 INFO: Radial cutoff: 6.0 A (total receptive field for each atom: 12.0 A)
+2025-10-12 18:04:40.854 INFO: Distance transform for radial basis functions: None
+2025-10-12 18:04:41.938 DEBUG: ScaleShiftMACE(
+  (node_embedding): LinearNodeEmbeddingBlock(
+    (linear): Linear(2x0e -> 128x0e | 256 weights)
+  )
+  (radial_embedding): RadialEmbeddingBlock(
+    (bessel_fn): BesselBasis(r_max=6.0, num_basis=10, trainable=True)
+    (cutoff_fn): PolynomialCutoff(p=5, r_max=6.0)
+  )
+  (spherical_harmonics): SphericalHarmonics()
+  (atomic_energies_fn): AtomicEnergiesBlock(energies=[[-0.2052, -0.0154]])
+  (interactions): ModuleList(
+    (0-1): 2 x RealAgnosticResidualInteractionBlock(
+      (linear_up): Linear(128x0e -> 128x0e | 16384 weights)
+      (conv_tp): TensorProduct(128x0e x 1x0e+1x1o+1x2e+1x3o -> 128x0e+128x1o+128x2e+128x3o | 512 paths | 512 weights)
+      (conv_tp_weights): FullyConnectedNet[10, 64, 64, 64, 512]
+      (linear): Linear(128x0e+128x1o+128x2e+128x3o -> 128x0e+128x1o+128x2e+128x3o | 65536 weights)
+      (skip_tp): FullyConnectedTensorProduct(128x0e x 2x0e -> 128x0e | 32768 paths | 32768 weights)
+      (reshape): reshape_irreps()
+    )
+  )
+  (products): ModuleList(
+    (0-1): 2 x EquivariantProductBasisBlock(
+      (symmetric_contractions): SymmetricContraction(
+        (contractions): ModuleList(
+          (0): Contraction(
+            (contractions_weighting): ModuleList(
+              (0-1): 2 x GraphModule()
+            )
+            (contractions_features): ModuleList(
+              (0-1): 2 x GraphModule()
+            )
+            (weights): ParameterList(
+                (0): Parameter containing: [torch.float64 of size 2x4x128 (cuda:0)]
+                (1): Parameter containing: [torch.float64 of size 2x1x128 (cuda:0)]
+            )
+            (graph_opt_main): GraphModule()
+          )
+        )
+      )
+      (linear): Linear(128x0e -> 128x0e | 16384 weights)
+    )
+  )
+  (readouts): ModuleList(
+    (0): LinearReadoutBlock(
+      (linear): Linear(128x0e -> 1x0e | 128 weights)
+    )
+    (1): NonLinearReadoutBlock(
+      (linear_1): Linear(128x0e -> 16x0e | 2048 weights)
+      (non_linearity): Activation [x] (16x0e -> 16x0e)
+      (linear_2): Linear(16x0e -> 1x0e | 16 weights)
+    )
+  )
+  (scale_shift): ScaleShiftBlock(scale=0.8042, shift=0.1641)
+)
+2025-10-12 18:04:41.940 INFO: Total number of parameters: 362138
+2025-10-12 18:04:41.941 INFO: 
+2025-10-12 18:04:41.943 INFO: ===========OPTIMIZER INFORMATION===========
+2025-10-12 18:04:41.944 INFO: Using ADAMW as parameter optimizer
+2025-10-12 18:04:41.945 INFO: Batch size: 10
+2025-10-12 18:04:41.947 INFO: Using Exponential Moving Average with decay: 0.99
+2025-10-12 18:04:41.948 INFO: Number of gradient updates: 6800
+2025-10-12 18:04:41.949 INFO: Learning rate: 0.001, weight decay: 5e-07
+2025-10-12 18:04:41.950 INFO: WeightedEnergyForcesLoss(energy_weight=1.000, forces_weight=10.000)
+2025-10-12 18:04:41.952 INFO: Converting model to CUEQ for accelerated training
+2025-10-12 18:04:42.038 INFO: Creating new model with cuequivariance settings
+2025-10-12 18:04:42.040 DEBUG: Normalized paths for operand 2 in uv,iu,iv operands=[(2, 128)],[(1, 2)],[(1, 128)] paths=[op0[0]*op1[0]*op2[0]*1.]: got uv,iu,iv operands=[(2, 128)],[(1, 2)],[(1, 128)] paths=[op0[0]*op1[0]*op2[0]*0.71]
+2025-10-12 18:04:42.060 DEBUG: Normalized paths for operand 2 in uv,iu,iv operands=[(128, 128)],[(1, 128)],[(1, 128)] paths=[op0[0]*op1[0]*op2[0]*1.]: got uv,iu,iv operands=[(128, 128)],[(1, 128)],[(1, 128)] paths=[op0[0]*op1[0]*op2[0]*0.09]
+2025-10-12 18:04:42.075 DEBUG: Normalized paths for operand 3 in uv,iu,jv,kuv+ijk sizes=512,128,16,2048 num_segments=4,1,4,4 num_paths=4 i=1 j={1, 3, 5, 7} k={1, 3, 5, 7} u=128 v=1: got uv,iu,jv,kuv+ijk sizes=512,128,16,2048 num_segments=4,1,4,4 num_paths=4 i=1 j={1, 3, 5, 7} k={1, 3, 5, 7} u=128 v=1
+2025-10-12 18:04:42.076 DEBUG: Flattened ijk in uv,iu,jv,kuv+ijk sizes=512,128,16,2048 num_segments=4,1,4,4 num_paths=4 i=1 j={1, 3, 5, 7} k={1, 3, 5, 7} u=128 v=1: got uv,u,v,uv sizes=512,128,16,2048 num_segments=4,1,16,16 num_paths=16 u=128 v=1
+2025-10-12 18:04:42.078 DEBUG: Squeezed uv,u,v,uv sizes=512,128,16,2048 num_segments=4,1,16,16 num_paths=16 u=128 v=1 to u,u,,u sizes=512,128,16,2048 num_segments=4,1,16,16 num_paths=16 u=128
+2025-10-12 18:04:42.080 DEBUG: Flattened ijk in uv,iu,jv,kuv+ijk sizes=512,128,16,2048 num_segments=4,1,4,4 num_paths=4 i=1 j={1, 3, 5, 7} k={1, 3, 5, 7} u=128 v=1: got uv,u,v,uv sizes=512,128,16,2048 num_segments=4,1,16,16 num_paths=16 u=128 v=1
+2025-10-12 18:04:42.081 DEBUG: Squeezed uv,u,v,uv sizes=512,128,16,2048 num_segments=4,1,16,16 num_paths=16 u=128 v=1 to u,u,,u sizes=512,128,16,2048 num_segments=4,1,16,16 num_paths=16 u=128
+2025-10-12 18:04:42.115 DEBUG: Normalized paths for operand 2 in uv,iu,iv sizes=65536,2048,2048 num_segments=4,4,4 num_paths=4 i={1, 3, 5, 7} u=128 v=128: got uv,iu,iv sizes=65536,2048,2048 num_segments=4,4,4 num_paths=4 i={1, 3, 5, 7} u=128 v=128
+2025-10-12 18:04:42.147 DEBUG: Normalized paths for operand 3 in uvw,iu,jv,kw+ijk operands=[(128, 2, 128)],[(1, 128)],[(1, 2)],[(1, 128)] paths=[op0[0]*op1[0]*op2[0]*op3[0]*[[[1.]]]]: got uvw,iu,jv,kw+ijk operands=[(128, 2, 128)],[(1, 128)],[(1, 2)],[(1, 128)] paths=[op0[0]*op1[0]*op2[0]*op3[0]*[[[0.06]]]]
+2025-10-12 18:04:42.171 DEBUG: Normalized paths for operand 2 in uv,iu,iv operands=[(128, 128)],[(1, 128)],[(1, 128)] paths=[op0[0]*op1[0]*op2[0]*1.]: got uv,iu,iv operands=[(128, 128)],[(1, 128)],[(1, 128)] paths=[op0[0]*op1[0]*op2[0]*0.09]
+2025-10-12 18:04:42.183 DEBUG: Normalized paths for operand 2 in uv,iu,iv operands=[(128, 1)],[(1, 128)],[(1, 1)] paths=[op0[0]*op1[0]*op2[0]*1.]: got uv,iu,iv operands=[(128, 1)],[(1, 128)],[(1, 1)] paths=[op0[0]*op1[0]*op2[0]*0.09]
+2025-10-12 18:04:42.194 DEBUG: Normalized paths for operand 2 in uv,iu,iv operands=[(128, 128)],[(1, 128)],[(1, 128)] paths=[op0[0]*op1[0]*op2[0]*1.]: got uv,iu,iv operands=[(128, 128)],[(1, 128)],[(1, 128)] paths=[op0[0]*op1[0]*op2[0]*0.09]
+2025-10-12 18:04:42.208 DEBUG: Normalized paths for operand 3 in uv,iu,jv,kuv+ijk sizes=512,128,16,2048 num_segments=4,1,4,4 num_paths=4 i=1 j={1, 3, 5, 7} k={1, 3, 5, 7} u=128 v=1: got uv,iu,jv,kuv+ijk sizes=512,128,16,2048 num_segments=4,1,4,4 num_paths=4 i=1 j={1, 3, 5, 7} k={1, 3, 5, 7} u=128 v=1
+2025-10-12 18:04:42.210 DEBUG: Flattened ijk in uv,iu,jv,kuv+ijk sizes=512,128,16,2048 num_segments=4,1,4,4 num_paths=4 i=1 j={1, 3, 5, 7} k={1, 3, 5, 7} u=128 v=1: got uv,u,v,uv sizes=512,128,16,2048 num_segments=4,1,16,16 num_paths=16 u=128 v=1
+2025-10-12 18:04:42.211 DEBUG: Squeezed uv,u,v,uv sizes=512,128,16,2048 num_segments=4,1,16,16 num_paths=16 u=128 v=1 to u,u,,u sizes=512,128,16,2048 num_segments=4,1,16,16 num_paths=16 u=128
+2025-10-12 18:04:42.213 DEBUG: Flattened ijk in uv,iu,jv,kuv+ijk sizes=512,128,16,2048 num_segments=4,1,4,4 num_paths=4 i=1 j={1, 3, 5, 7} k={1, 3, 5, 7} u=128 v=1: got uv,u,v,uv sizes=512,128,16,2048 num_segments=4,1,16,16 num_paths=16 u=128 v=1
+2025-10-12 18:04:42.214 DEBUG: Squeezed uv,u,v,uv sizes=512,128,16,2048 num_segments=4,1,16,16 num_paths=16 u=128 v=1 to u,u,,u sizes=512,128,16,2048 num_segments=4,1,16,16 num_paths=16 u=128
+2025-10-12 18:04:42.248 DEBUG: Normalized paths for operand 2 in uv,iu,iv sizes=65536,2048,2048 num_segments=4,4,4 num_paths=4 i={1, 3, 5, 7} u=128 v=128: got uv,iu,iv sizes=65536,2048,2048 num_segments=4,4,4 num_paths=4 i={1, 3, 5, 7} u=128 v=128
+2025-10-12 18:04:42.282 DEBUG: Normalized paths for operand 3 in uvw,iu,jv,kw+ijk operands=[(128, 2, 128)],[(1, 128)],[(1, 2)],[(1, 128)] paths=[op0[0]*op1[0]*op2[0]*op3[0]*[[[1.]]]]: got uvw,iu,jv,kw+ijk operands=[(128, 2, 128)],[(1, 128)],[(1, 2)],[(1, 128)] paths=[op0[0]*op1[0]*op2[0]*op3[0]*[[[0.06]]]]
+2025-10-12 18:04:42.304 DEBUG: Normalized paths for operand 2 in uv,iu,iv operands=[(128, 128)],[(1, 128)],[(1, 128)] paths=[op0[0]*op1[0]*op2[0]*1.]: got uv,iu,iv operands=[(128, 128)],[(1, 128)],[(1, 128)] paths=[op0[0]*op1[0]*op2[0]*0.09]
+2025-10-12 18:04:42.316 DEBUG: Normalized paths for operand 2 in uv,iu,iv operands=[(128, 16)],[(1, 128)],[(1, 16)] paths=[op0[0]*op1[0]*op2[0]*1.]: got uv,iu,iv operands=[(128, 16)],[(1, 128)],[(1, 16)] paths=[op0[0]*op1[0]*op2[0]*0.09]
+2025-10-12 18:04:42.359 DEBUG: Normalized paths for operand 2 in uv,iu,iv operands=[(16, 1)],[(1, 16)],[(1, 1)] paths=[op0[0]*op1[0]*op2[0]*1.]: got uv,iu,iv operands=[(16, 1)],[(1, 16)],[(1, 1)] paths=[op0[0]*op1[0]*op2[0]*0.25]
+2025-10-12 18:04:42.376 DEBUG: Transferring additional key: interactions.1.conv_tp_weights.layer1.weight
+2025-10-12 18:04:42.376 DEBUG: Transferring additional key: radial_embedding.bessel_fn.r_max
+2025-10-12 18:04:42.376 DEBUG: Transferring additional key: interactions.1.conv_tp_weights.layer3.weight
+2025-10-12 18:04:42.376 DEBUG: Transferring key readouts.1.linear_1.weight after adapting shape (2048,) → (1, 2048) -> torch.Size([1, 2048])
+2025-10-12 18:04:42.376 DEBUG: Transferring additional key: atomic_energies_fn.atomic_energies
+2025-10-12 18:04:42.376 DEBUG: Transferring key readouts.0.linear.weight after adapting shape (128,) → (1, 128) -> torch.Size([1, 128])
+2025-10-12 18:04:42.377 DEBUG: Transferring additional key: interactions.0.conv_tp_weights.layer3.weight
+2025-10-12 18:04:42.377 DEBUG: Transferring key products.1.linear.weight after adapting shape (16384,) → (1, 16384) -> torch.Size([1, 16384])
+2025-10-12 18:04:42.377 DEBUG: Transferring additional key: scale_shift.shift
+2025-10-12 18:04:42.377 DEBUG: Transferring additional key: r_max
+2025-10-12 18:04:42.377 DEBUG: Transferring additional key: interactions.0.conv_tp_weights.layer1.weight
+2025-10-12 18:04:42.377 DEBUG: Transferring key interactions.0.skip_tp.weight after adapting shape (32768,) → (1, 32768) -> torch.Size([1, 32768])
+2025-10-12 18:04:42.377 DEBUG: Transferring additional key: radial_embedding.bessel_fn.prefactor
+2025-10-12 18:04:42.377 DEBUG: Transferring additional key: radial_embedding.cutoff_fn.r_max
+2025-10-12 18:04:42.377 DEBUG: Transferring key interactions.1.skip_tp.weight after adapting shape (32768,) → (1, 32768) -> torch.Size([1, 32768])
+2025-10-12 18:04:42.377 DEBUG: Transferring additional key: radial_embedding.cutoff_fn.p
+2025-10-12 18:04:42.377 DEBUG: Transferring additional key: interactions.0.conv_tp_weights.layer0.weight
+2025-10-12 18:04:42.377 DEBUG: Transferring key interactions.1.linear.weight after adapting shape (65536,) → (1, 65536) -> torch.Size([1, 65536])
+2025-10-12 18:04:42.378 DEBUG: Transferring key interactions.0.linear_up.weight after adapting shape (16384,) → (1, 16384) -> torch.Size([1, 16384])
+2025-10-12 18:04:42.378 DEBUG: Transferring additional key: interactions.0.conv_tp_weights.layer2.weight
+2025-10-12 18:04:42.378 DEBUG: Transferring additional key: scale_shift.scale
+2025-10-12 18:04:42.378 DEBUG: Transferring key products.0.linear.weight after adapting shape (16384,) → (1, 16384) -> torch.Size([1, 16384])
+2025-10-12 18:04:42.378 DEBUG: Transferring additional key: atomic_numbers
+2025-10-12 18:04:42.378 DEBUG: Transferring key interactions.1.linear_up.weight after adapting shape (16384,) → (1, 16384) -> torch.Size([1, 16384])
+2025-10-12 18:04:42.378 DEBUG: Transferring additional key: interactions.1.conv_tp_weights.layer0.weight
+2025-10-12 18:04:42.378 DEBUG: Transferring additional key: num_interactions
+2025-10-12 18:04:42.378 DEBUG: Transferring key interactions.0.linear.weight after adapting shape (65536,) → (1, 65536) -> torch.Size([1, 65536])
+2025-10-12 18:04:42.378 DEBUG: Transferring additional key: radial_embedding.bessel_fn.bessel_weights
+2025-10-12 18:04:42.378 DEBUG: Transferring additional key: interactions.1.conv_tp_weights.layer2.weight
+2025-10-12 18:04:42.378 DEBUG: Transferring key readouts.1.linear_2.weight after adapting shape (16,) → (1, 16) -> torch.Size([1, 16])
+2025-10-12 18:04:42.378 DEBUG: Transferring key node_embedding.linear.weight after adapting shape (256,) → (1, 256) -> torch.Size([1, 256])
+2025-10-12 18:04:42.385 INFO: Stage Two (after 150 epochs) with loss function: WeightedEnergyForcesLoss(energy_weight=1000.000, forces_weight=100.000), with energy weight : 1000.0, forces weight : 100.0 and learning rate : 0.001
+2025-10-12 18:04:42.446 INFO: Using Weights and Biases for logging
+2025-10-12 18:04:43.685 DEBUG: sys.platform='linux', git_executable='git'
+2025-10-12 18:04:44.580 INFO: Using gradient clipping with tolerance=10.000
+2025-10-12 18:04:44.582 INFO: 
+2025-10-12 18:04:44.583 INFO: ===========TRAINING===========
+2025-10-12 18:04:44.584 INFO: Started training, reporting errors on validation set
+2025-10-12 18:04:44.585 INFO: Loss metrics on validation set
+2025-10-12 18:04:45.141 INFO: Initial: head: Default, loss=5.59312456, RMSE_E_per_atom= 5823.98 meV, RMSE_F= 1480.84 meV / A
+2025-10-12 18:04:53.778 INFO: Epoch 0: head: Default, loss=1.69802193, RMSE_E_per_atom= 3645.64 meV, RMSE_F=  608.26 meV / A
+2025-10-12 18:04:53.780 DEBUG: Running inference on train_Default dataset
+2025-10-12 18:04:53.866 DEBUG: Plotting failed: too many indices for tensor of dimension 1
+2025-10-12 18:04:53.870 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-0.pt
+2025-10-12 18:05:01.716 INFO: Epoch 1: head: Default, loss=1.44685534, RMSE_E_per_atom= 3305.32 meV, RMSE_F=  595.92 meV / A
+2025-10-12 18:05:01.720 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-0.pt
+2025-10-12 18:05:01.722 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-1.pt
+2025-10-12 18:05:09.571 INFO: Epoch 2: head: Default, loss=0.33454167, RMSE_E_per_atom=  722.50 meV, RMSE_F=  532.00 meV / A
+2025-10-12 18:05:09.576 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-1.pt
+2025-10-12 18:05:09.586 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-2.pt
+2025-10-12 18:05:17.436 INFO: Epoch 3: head: Default, loss=0.17865774, RMSE_E_per_atom=  246.53 meV, RMSE_F=  416.06 meV / A
+2025-10-12 18:05:17.440 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-2.pt
+2025-10-12 18:05:17.443 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-3.pt
+2025-10-12 18:05:25.338 INFO: Epoch 4: head: Default, loss=0.12004978, RMSE_E_per_atom=  156.79 meV, RMSE_F=  343.44 meV / A
+2025-10-12 18:05:25.342 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-3.pt
+2025-10-12 18:05:25.344 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-4.pt
+2025-10-12 18:05:33.754 INFO: Epoch 5: head: Default, loss=0.10825258, RMSE_E_per_atom=  118.69 meV, RMSE_F=  327.13 meV / A
+2025-10-12 18:05:33.758 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-4.pt
+2025-10-12 18:05:33.760 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-5.pt
+2025-10-12 18:05:41.637 INFO: Epoch 6: head: Default, loss=0.08108367, RMSE_E_per_atom=   87.36 meV, RMSE_F=  283.74 meV / A
+2025-10-12 18:05:41.641 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-5.pt
+2025-10-12 18:05:41.656 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-6.pt
+2025-10-12 18:05:49.570 INFO: Epoch 7: head: Default, loss=0.06258623, RMSE_E_per_atom=   73.85 meV, RMSE_F=  249.39 meV / A
+2025-10-12 18:05:49.574 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-6.pt
+2025-10-12 18:05:49.576 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-7.pt
+2025-10-12 18:05:57.431 INFO: Epoch 8: head: Default, loss=0.05770074, RMSE_E_per_atom=   62.68 meV, RMSE_F=  239.61 meV / A
+2025-10-12 18:05:57.435 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-7.pt
+2025-10-12 18:05:57.438 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-8.pt
+2025-10-12 18:06:05.312 INFO: Epoch 9: head: Default, loss=0.04138111, RMSE_E_per_atom=   54.62 meV, RMSE_F=  202.86 meV / A
+2025-10-12 18:06:05.317 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-8.pt
+2025-10-12 18:06:05.320 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-9.pt
+2025-10-12 18:06:13.200 INFO: Epoch 10: head: Default, loss=0.03639217, RMSE_E_per_atom=   47.83 meV, RMSE_F=  190.29 meV / A
+2025-10-12 18:06:13.202 DEBUG: Running inference on train_Default dataset
+2025-10-12 18:06:13.286 DEBUG: Plotting failed: too many indices for tensor of dimension 1
+2025-10-12 18:06:13.289 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-9.pt
+2025-10-12 18:06:13.292 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-10.pt
+2025-10-12 18:06:20.775 INFO: Epoch 11: head: Default, loss=0.03618638, RMSE_E_per_atom=   36.39 meV, RMSE_F=  189.94 meV / A
+2025-10-12 18:06:20.780 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-10.pt
+2025-10-12 18:06:20.782 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-11.pt
+2025-10-12 18:06:28.648 INFO: Epoch 12: head: Default, loss=0.03677380, RMSE_E_per_atom=   36.16 meV, RMSE_F=  191.57 meV / A
+2025-10-12 18:06:36.478 INFO: Epoch 13: head: Default, loss=0.04376390, RMSE_E_per_atom=   38.35 meV, RMSE_F=  209.05 meV / A
+2025-10-12 18:06:44.292 INFO: Epoch 14: head: Default, loss=0.03543477, RMSE_E_per_atom=   34.04 meV, RMSE_F=  188.11 meV / A
+2025-10-12 18:06:44.296 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-11.pt
+2025-10-12 18:06:44.298 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-14.pt
+2025-10-12 18:06:52.140 INFO: Epoch 15: head: Default, loss=0.03618526, RMSE_E_per_atom=   31.67 meV, RMSE_F=  190.16 meV / A
+2025-10-12 18:06:59.948 INFO: Epoch 16: head: Default, loss=0.03536488, RMSE_E_per_atom=   31.35 meV, RMSE_F=  187.99 meV / A
+2025-10-12 18:06:59.953 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-14.pt
+2025-10-12 18:06:59.955 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-16.pt
+2025-10-12 18:07:07.804 INFO: Epoch 17: head: Default, loss=0.03223326, RMSE_E_per_atom=   29.07 meV, RMSE_F=  179.48 meV / A
+2025-10-12 18:07:07.808 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-16.pt
+2025-10-12 18:07:07.811 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-17.pt
+2025-10-12 18:07:15.707 INFO: Epoch 18: head: Default, loss=0.03716129, RMSE_E_per_atom=   28.20 meV, RMSE_F=  192.79 meV / A
+2025-10-12 18:07:23.550 INFO: Epoch 19: head: Default, loss=0.03514192, RMSE_E_per_atom=   28.75 meV, RMSE_F=  187.46 meV / A
+2025-10-12 18:07:31.352 INFO: Epoch 20: head: Default, loss=0.03390903, RMSE_E_per_atom=   28.03 meV, RMSE_F=  184.14 meV / A
+2025-10-12 18:07:31.354 DEBUG: Running inference on train_Default dataset
+2025-10-12 18:07:31.442 DEBUG: Plotting failed: too many indices for tensor of dimension 1
+2025-10-12 18:07:38.861 INFO: Epoch 21: head: Default, loss=0.03261946, RMSE_E_per_atom=   25.51 meV, RMSE_F=  180.63 meV / A
+2025-10-12 18:07:46.684 INFO: Epoch 22: head: Default, loss=0.03250125, RMSE_E_per_atom=   24.85 meV, RMSE_F=  180.31 meV / A
+2025-10-12 18:07:54.477 INFO: Epoch 23: head: Default, loss=0.03285964, RMSE_E_per_atom=   25.52 meV, RMSE_F=  181.30 meV / A
+2025-10-12 18:08:02.270 INFO: Epoch 24: head: Default, loss=0.03250359, RMSE_E_per_atom=   25.00 meV, RMSE_F=  180.33 meV / A
+2025-10-12 18:08:10.074 INFO: Epoch 25: head: Default, loss=0.03155551, RMSE_E_per_atom=   25.06 meV, RMSE_F=  177.67 meV / A
+2025-10-12 18:08:10.078 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-17.pt
+2025-10-12 18:08:10.080 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-25.pt
+2025-10-12 18:08:17.940 INFO: Epoch 26: head: Default, loss=0.03142036, RMSE_E_per_atom=   25.61 meV, RMSE_F=  177.28 meV / A
+2025-10-12 18:08:17.945 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-25.pt
+2025-10-12 18:08:17.947 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-26.pt
+2025-10-12 18:08:25.833 INFO: Epoch 27: head: Default, loss=0.03091287, RMSE_E_per_atom=   24.37 meV, RMSE_F=  175.85 meV / A
+2025-10-12 18:08:25.838 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-26.pt
+2025-10-12 18:08:25.840 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-27.pt
+2025-10-12 18:08:33.727 INFO: Epoch 28: head: Default, loss=0.03171346, RMSE_E_per_atom=   23.78 meV, RMSE_F=  178.13 meV / A
+2025-10-12 18:08:41.564 INFO: Epoch 29: head: Default, loss=0.02975222, RMSE_E_per_atom=   23.62 meV, RMSE_F=  172.52 meV / A
+2025-10-12 18:08:41.568 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-27.pt
+2025-10-12 18:08:41.570 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-29.pt
+2025-10-12 18:08:49.477 INFO: Epoch 30: head: Default, loss=0.02871909, RMSE_E_per_atom=   23.33 meV, RMSE_F=  169.50 meV / A
+2025-10-12 18:08:49.479 DEBUG: Running inference on train_Default dataset
+2025-10-12 18:08:49.565 DEBUG: Plotting failed: too many indices for tensor of dimension 1
+2025-10-12 18:08:49.568 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-29.pt
+2025-10-12 18:08:49.570 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-30.pt
+2025-10-12 18:08:57.000 INFO: Epoch 31: head: Default, loss=0.03018515, RMSE_E_per_atom=   23.74 meV, RMSE_F=  173.77 meV / A
+2025-10-12 18:09:04.825 INFO: Epoch 32: head: Default, loss=0.02789937, RMSE_E_per_atom=   22.78 meV, RMSE_F=  167.05 meV / A
+2025-10-12 18:09:04.830 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-30.pt
+2025-10-12 18:09:04.832 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-32.pt
+2025-10-12 18:09:12.715 INFO: Epoch 33: head: Default, loss=0.02656340, RMSE_E_per_atom=   22.51 meV, RMSE_F=  163.01 meV / A
+2025-10-12 18:09:12.720 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-32.pt
+2025-10-12 18:09:12.722 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-33.pt
+2025-10-12 18:09:20.627 INFO: Epoch 34: head: Default, loss=0.02717870, RMSE_E_per_atom=   22.44 meV, RMSE_F=  164.91 meV / A
+2025-10-12 18:09:28.442 INFO: Epoch 35: head: Default, loss=0.02700165, RMSE_E_per_atom=   22.62 meV, RMSE_F=  164.37 meV / A
+2025-10-12 18:09:36.249 INFO: Epoch 36: head: Default, loss=0.02944651, RMSE_E_per_atom=   22.47 meV, RMSE_F=  171.68 meV / A
+2025-10-12 18:09:44.068 INFO: Epoch 37: head: Default, loss=0.02869315, RMSE_E_per_atom=   22.70 meV, RMSE_F=  169.46 meV / A
+2025-10-12 18:09:51.878 INFO: Epoch 38: head: Default, loss=0.02805554, RMSE_E_per_atom=   22.25 meV, RMSE_F=  167.57 meV / A
+2025-10-12 18:09:59.653 INFO: Epoch 39: head: Default, loss=0.02768841, RMSE_E_per_atom=   22.19 meV, RMSE_F=  166.47 meV / A
+2025-10-12 18:10:07.467 INFO: Epoch 40: head: Default, loss=0.02727531, RMSE_E_per_atom=   22.24 meV, RMSE_F=  165.22 meV / A
+2025-10-12 18:10:07.469 DEBUG: Running inference on train_Default dataset
+2025-10-12 18:10:07.550 DEBUG: Plotting failed: too many indices for tensor of dimension 1
+2025-10-12 18:10:14.950 INFO: Epoch 41: head: Default, loss=0.02803714, RMSE_E_per_atom=   23.60 meV, RMSE_F=  167.47 meV / A
+2025-10-12 18:10:22.759 INFO: Epoch 42: head: Default, loss=0.02638022, RMSE_E_per_atom=   22.35 meV, RMSE_F=  162.46 meV / A
+2025-10-12 18:10:22.763 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-33.pt
+2025-10-12 18:10:22.775 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-42.pt
+2025-10-12 18:10:30.683 INFO: Epoch 43: head: Default, loss=0.02502917, RMSE_E_per_atom=   21.59 meV, RMSE_F=  158.25 meV / A
+2025-10-12 18:10:30.687 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-42.pt
+2025-10-12 18:10:30.700 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-43.pt
+2025-10-12 18:10:38.543 INFO: Epoch 44: head: Default, loss=0.02511166, RMSE_E_per_atom=   21.53 meV, RMSE_F=  158.52 meV / A
+2025-10-12 18:10:46.391 INFO: Epoch 45: head: Default, loss=0.02411225, RMSE_E_per_atom=   21.48 meV, RMSE_F=  155.33 meV / A
+2025-10-12 18:10:46.395 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-43.pt
+2025-10-12 18:10:46.398 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-45.pt
+2025-10-12 18:10:54.282 INFO: Epoch 46: head: Default, loss=0.02582095, RMSE_E_per_atom=   21.44 meV, RMSE_F=  160.76 meV / A
+2025-10-12 18:11:02.112 INFO: Epoch 47: head: Default, loss=0.02485658, RMSE_E_per_atom=   21.39 meV, RMSE_F=  157.72 meV / A
+2025-10-12 18:11:09.950 INFO: Epoch 48: head: Default, loss=0.02492181, RMSE_E_per_atom=   21.35 meV, RMSE_F=  157.93 meV / A
+2025-10-12 18:11:17.767 INFO: Epoch 49: head: Default, loss=0.02494059, RMSE_E_per_atom=   21.35 meV, RMSE_F=  157.99 meV / A
+2025-10-12 18:11:25.583 INFO: Epoch 50: head: Default, loss=0.02498709, RMSE_E_per_atom=   21.57 meV, RMSE_F=  158.14 meV / A
+2025-10-12 18:11:25.585 DEBUG: Running inference on train_Default dataset
+2025-10-12 18:11:25.672 DEBUG: Plotting failed: too many indices for tensor of dimension 1
+2025-10-12 18:11:33.103 INFO: Epoch 51: head: Default, loss=0.02710828, RMSE_E_per_atom=   29.23 meV, RMSE_F=  164.62 meV / A
+2025-10-12 18:11:40.898 INFO: Epoch 52: head: Default, loss=0.02551317, RMSE_E_per_atom=   25.32 meV, RMSE_F=  159.75 meV / A
+2025-10-12 18:11:48.692 INFO: Epoch 53: head: Default, loss=0.02495610, RMSE_E_per_atom=   23.92 meV, RMSE_F=  158.01 meV / A
+2025-10-12 18:11:56.499 INFO: Epoch 54: head: Default, loss=0.02364597, RMSE_E_per_atom=   23.15 meV, RMSE_F=  153.80 meV / A
+2025-10-12 18:11:56.503 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-45.pt
+2025-10-12 18:11:56.505 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-54.pt
+2025-10-12 18:12:04.379 INFO: Epoch 55: head: Default, loss=0.02344542, RMSE_E_per_atom=   21.63 meV, RMSE_F=  153.17 meV / A
+2025-10-12 18:12:04.383 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-54.pt
+2025-10-12 18:12:04.386 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-55.pt
+2025-10-12 18:12:12.273 INFO: Epoch 56: head: Default, loss=0.02369142, RMSE_E_per_atom=   21.37 meV, RMSE_F=  153.98 meV / A
+2025-10-12 18:12:20.081 INFO: Epoch 57: head: Default, loss=0.02344478, RMSE_E_per_atom=   20.84 meV, RMSE_F=  153.18 meV / A
+2025-10-12 18:12:20.086 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-55.pt
+2025-10-12 18:12:20.088 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-57.pt
+2025-10-12 18:12:27.922 INFO: Epoch 58: head: Default, loss=0.02305955, RMSE_E_per_atom=   20.77 meV, RMSE_F=  151.92 meV / A
+2025-10-12 18:12:27.927 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-57.pt
+2025-10-12 18:12:27.930 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-58.pt
+2025-10-12 18:12:35.830 INFO: Epoch 59: head: Default, loss=0.02365613, RMSE_E_per_atom=   20.70 meV, RMSE_F=  153.88 meV / A
+2025-10-12 18:12:43.663 INFO: Epoch 60: head: Default, loss=0.02278549, RMSE_E_per_atom=   20.76 meV, RMSE_F=  151.01 meV / A
+2025-10-12 18:12:43.665 DEBUG: Running inference on train_Default dataset
+2025-10-12 18:12:43.748 DEBUG: Plotting failed: too many indices for tensor of dimension 1
+2025-10-12 18:12:43.752 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-58.pt
+2025-10-12 18:12:43.755 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-60.pt
+2025-10-12 18:12:51.284 INFO: Epoch 61: head: Default, loss=0.02196140, RMSE_E_per_atom=   20.85 meV, RMSE_F=  148.24 meV / A
+2025-10-12 18:12:51.288 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-60.pt
+2025-10-12 18:12:51.290 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-61.pt
+2025-10-12 18:12:59.220 INFO: Epoch 62: head: Default, loss=0.02113208, RMSE_E_per_atom=   20.77 meV, RMSE_F=  145.42 meV / A
+2025-10-12 18:12:59.224 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-61.pt
+2025-10-12 18:12:59.226 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-62.pt
+2025-10-12 18:13:07.119 INFO: Epoch 63: head: Default, loss=0.02194053, RMSE_E_per_atom=   20.62 meV, RMSE_F=  148.17 meV / A
+2025-10-12 18:13:14.953 INFO: Epoch 64: head: Default, loss=0.02326867, RMSE_E_per_atom=   20.52 meV, RMSE_F=  152.60 meV / A
+2025-10-12 18:13:22.755 INFO: Epoch 65: head: Default, loss=0.02474586, RMSE_E_per_atom=   20.49 meV, RMSE_F=  157.39 meV / A
+2025-10-12 18:13:30.588 INFO: Epoch 66: head: Default, loss=0.02514685, RMSE_E_per_atom=   20.20 meV, RMSE_F=  158.67 meV / A
+2025-10-12 18:13:38.417 INFO: Epoch 67: head: Default, loss=0.02213152, RMSE_E_per_atom=   20.32 meV, RMSE_F=  148.83 meV / A
+2025-10-12 18:13:46.198 INFO: Epoch 68: head: Default, loss=0.02183976, RMSE_E_per_atom=   20.19 meV, RMSE_F=  147.84 meV / A
+2025-10-12 18:13:54.030 INFO: Epoch 69: head: Default, loss=0.02447681, RMSE_E_per_atom=   20.33 meV, RMSE_F=  156.53 meV / A
+2025-10-12 18:14:01.842 INFO: Epoch 70: head: Default, loss=0.02375720, RMSE_E_per_atom=   19.96 meV, RMSE_F=  154.21 meV / A
+2025-10-12 18:14:01.844 DEBUG: Running inference on train_Default dataset
+2025-10-12 18:14:01.929 DEBUG: Plotting failed: too many indices for tensor of dimension 1
+2025-10-12 18:14:09.366 INFO: Epoch 71: head: Default, loss=0.02439106, RMSE_E_per_atom=   19.97 meV, RMSE_F=  156.26 meV / A
+2025-10-12 18:14:17.171 INFO: Epoch 72: head: Default, loss=0.02491069, RMSE_E_per_atom=   19.82 meV, RMSE_F=  157.93 meV / A
+2025-10-12 18:14:24.947 INFO: Epoch 73: head: Default, loss=0.02362577, RMSE_E_per_atom=   19.77 meV, RMSE_F=  153.80 meV / A
+2025-10-12 18:14:32.742 INFO: Epoch 74: head: Default, loss=0.02221819, RMSE_E_per_atom=   19.70 meV, RMSE_F=  149.14 meV / A
+2025-10-12 18:14:40.568 INFO: Epoch 75: head: Default, loss=0.02365192, RMSE_E_per_atom=   19.67 meV, RMSE_F=  153.89 meV / A
+2025-10-12 18:14:48.388 INFO: Epoch 76: head: Default, loss=0.02150234, RMSE_E_per_atom=   20.01 meV, RMSE_F=  146.70 meV / A
+2025-10-12 18:14:56.232 INFO: Epoch 77: head: Default, loss=0.02339066, RMSE_E_per_atom=   19.73 meV, RMSE_F=  153.02 meV / A
+2025-10-12 18:15:04.059 INFO: Epoch 78: head: Default, loss=0.02292724, RMSE_E_per_atom=   19.88 meV, RMSE_F=  151.49 meV / A
+2025-10-12 18:15:11.876 INFO: Epoch 79: head: Default, loss=0.02724764, RMSE_E_per_atom=   19.75 meV, RMSE_F=  165.19 meV / A
+2025-10-12 18:15:19.750 INFO: Epoch 80: head: Default, loss=0.02223475, RMSE_E_per_atom=   19.77 meV, RMSE_F=  149.19 meV / A
+2025-10-12 18:15:19.752 DEBUG: Running inference on train_Default dataset
+2025-10-12 18:15:19.839 DEBUG: Plotting failed: too many indices for tensor of dimension 1
+2025-10-12 18:15:27.281 INFO: Epoch 81: head: Default, loss=0.02191240, RMSE_E_per_atom=   19.50 meV, RMSE_F=  148.11 meV / A
+2025-10-12 18:15:35.136 INFO: Epoch 82: head: Default, loss=0.02435859, RMSE_E_per_atom=   19.51 meV, RMSE_F=  156.18 meV / A
+2025-10-12 18:15:42.994 INFO: Epoch 83: head: Default, loss=0.02489010, RMSE_E_per_atom=   19.48 meV, RMSE_F=  157.88 meV / A
+2025-10-12 18:15:50.839 INFO: Epoch 84: head: Default, loss=0.02215840, RMSE_E_per_atom=   19.40 meV, RMSE_F=  148.95 meV / A
+2025-10-12 18:15:58.650 INFO: Epoch 85: head: Default, loss=0.02278478, RMSE_E_per_atom=   19.62 meV, RMSE_F=  151.04 meV / A
+2025-10-12 18:16:06.458 INFO: Epoch 86: head: Default, loss=0.02371459, RMSE_E_per_atom=   19.45 meV, RMSE_F=  154.10 meV / A
+2025-10-12 18:16:14.238 INFO: Epoch 87: head: Default, loss=0.02351410, RMSE_E_per_atom=   19.46 meV, RMSE_F=  153.44 meV / A
+2025-10-12 18:16:22.042 INFO: Epoch 88: head: Default, loss=0.02514344, RMSE_E_per_atom=   19.62 meV, RMSE_F=  158.68 meV / A
+2025-10-12 18:16:29.862 INFO: Epoch 89: head: Default, loss=0.02189428, RMSE_E_per_atom=   19.40 meV, RMSE_F=  148.04 meV / A
+2025-10-12 18:16:37.680 INFO: Epoch 90: head: Default, loss=0.02289632, RMSE_E_per_atom=   19.55 meV, RMSE_F=  151.39 meV / A
+2025-10-12 18:16:37.683 DEBUG: Running inference on train_Default dataset
+2025-10-12 18:16:37.769 DEBUG: Plotting failed: too many indices for tensor of dimension 1
+2025-10-12 18:16:45.191 INFO: Epoch 91: head: Default, loss=0.02694283, RMSE_E_per_atom=   19.27 meV, RMSE_F=  164.28 meV / A
+2025-10-12 18:16:53.005 INFO: Epoch 92: head: Default, loss=0.03029994, RMSE_E_per_atom=   19.21 meV, RMSE_F=  174.24 meV / A
+2025-10-12 18:17:00.829 INFO: Epoch 93: head: Default, loss=0.02823321, RMSE_E_per_atom=   19.30 meV, RMSE_F=  168.18 meV / A
+2025-10-12 18:17:08.644 INFO: Epoch 94: head: Default, loss=0.02790200, RMSE_E_per_atom=   19.25 meV, RMSE_F=  167.18 meV / A
+2025-10-12 18:17:16.449 INFO: Epoch 95: head: Default, loss=0.02513570, RMSE_E_per_atom=   19.18 meV, RMSE_F=  158.66 meV / A
+2025-10-12 18:17:24.248 INFO: Epoch 96: head: Default, loss=0.02384068, RMSE_E_per_atom=   19.05 meV, RMSE_F=  154.51 meV / A
+2025-10-12 18:17:32.103 INFO: Epoch 97: head: Default, loss=0.02317867, RMSE_E_per_atom=   19.09 meV, RMSE_F=  152.34 meV / A
+2025-10-12 18:17:39.925 INFO: Epoch 98: head: Default, loss=0.02304133, RMSE_E_per_atom=   18.93 meV, RMSE_F=  151.90 meV / A
+2025-10-12 18:17:47.771 INFO: Epoch 99: head: Default, loss=0.02278600, RMSE_E_per_atom=   19.05 meV, RMSE_F=  151.05 meV / A
+2025-10-12 18:17:55.596 INFO: Epoch 100: head: Default, loss=0.02325606, RMSE_E_per_atom=   18.97 meV, RMSE_F=  152.60 meV / A
+2025-10-12 18:17:55.598 DEBUG: Running inference on train_Default dataset
+2025-10-12 18:17:55.685 DEBUG: Plotting failed: too many indices for tensor of dimension 1
+2025-10-12 18:18:03.070 INFO: Epoch 101: head: Default, loss=0.02463350, RMSE_E_per_atom=   22.55 meV, RMSE_F=  157.02 meV / A
+2025-10-12 18:18:10.904 INFO: Epoch 102: head: Default, loss=0.02282973, RMSE_E_per_atom=   20.41 meV, RMSE_F=  151.16 meV / A
+2025-10-12 18:18:18.674 INFO: Epoch 103: head: Default, loss=0.02336236, RMSE_E_per_atom=   19.43 meV, RMSE_F=  152.94 meV / A
+2025-10-12 18:18:26.508 INFO: Epoch 104: head: Default, loss=0.02239640, RMSE_E_per_atom=   19.53 meV, RMSE_F=  149.73 meV / A
+2025-10-12 18:18:34.352 INFO: Epoch 105: head: Default, loss=0.02146692, RMSE_E_per_atom=   19.14 meV, RMSE_F=  146.59 meV / A
+2025-10-12 18:18:42.168 INFO: Epoch 106: head: Default, loss=0.02133095, RMSE_E_per_atom=   19.03 meV, RMSE_F=  146.13 meV / A
+2025-10-12 18:18:50.000 INFO: Epoch 107: head: Default, loss=0.02021448, RMSE_E_per_atom=   19.06 meV, RMSE_F=  142.24 meV / A
+2025-10-12 18:18:50.005 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-62.pt
+2025-10-12 18:18:50.007 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-107.pt
+2025-10-12 18:18:57.889 INFO: Epoch 108: head: Default, loss=0.02123266, RMSE_E_per_atom=   18.86 meV, RMSE_F=  145.80 meV / A
+2025-10-12 18:19:05.725 INFO: Epoch 109: head: Default, loss=0.02150763, RMSE_E_per_atom=   18.66 meV, RMSE_F=  146.75 meV / A
+2025-10-12 18:19:13.532 INFO: Epoch 110: head: Default, loss=0.02129347, RMSE_E_per_atom=   18.76 meV, RMSE_F=  146.01 meV / A
+2025-10-12 18:19:13.534 DEBUG: Running inference on train_Default dataset
+2025-10-12 18:19:13.615 DEBUG: Plotting failed: too many indices for tensor of dimension 1
+2025-10-12 18:19:21.025 INFO: Epoch 111: head: Default, loss=0.02267049, RMSE_E_per_atom=   21.77 meV, RMSE_F=  150.60 meV / A
+2025-10-12 18:19:28.839 INFO: Epoch 112: head: Default, loss=0.02289866, RMSE_E_per_atom=   20.15 meV, RMSE_F=  151.39 meV / A
+2025-10-12 18:19:36.663 INFO: Epoch 113: head: Default, loss=0.02299882, RMSE_E_per_atom=   19.23 meV, RMSE_F=  151.74 meV / A
+2025-10-12 18:19:44.517 INFO: Epoch 114: head: Default, loss=0.02291734, RMSE_E_per_atom=   18.44 meV, RMSE_F=  151.48 meV / A
+2025-10-12 18:19:52.340 INFO: Epoch 115: head: Default, loss=0.02311893, RMSE_E_per_atom=   18.42 meV, RMSE_F=  152.15 meV / A
+2025-10-12 18:20:00.514 INFO: Epoch 116: head: Default, loss=0.02292264, RMSE_E_per_atom=   18.26 meV, RMSE_F=  151.51 meV / A
+2025-10-12 18:20:08.339 INFO: Epoch 117: head: Default, loss=0.02261887, RMSE_E_per_atom=   18.27 meV, RMSE_F=  150.50 meV / A
+2025-10-12 18:20:16.162 INFO: Epoch 118: head: Default, loss=0.02275399, RMSE_E_per_atom=   18.22 meV, RMSE_F=  150.95 meV / A
+2025-10-12 18:20:24.011 INFO: Epoch 119: head: Default, loss=0.02145666, RMSE_E_per_atom=   18.31 meV, RMSE_F=  146.58 meV / A
+2025-10-12 18:20:31.844 INFO: Epoch 120: head: Default, loss=0.02173887, RMSE_E_per_atom=   18.28 meV, RMSE_F=  147.54 meV / A
+2025-10-12 18:20:31.846 DEBUG: Running inference on train_Default dataset
+2025-10-12 18:20:31.933 DEBUG: Plotting failed: too many indices for tensor of dimension 1
+2025-10-12 18:20:39.398 INFO: Epoch 121: head: Default, loss=0.02192389, RMSE_E_per_atom=   18.60 meV, RMSE_F=  148.17 meV / A
+2025-10-12 18:20:47.225 INFO: Epoch 122: head: Default, loss=0.02164369, RMSE_E_per_atom=   18.43 meV, RMSE_F=  147.22 meV / A
+2025-10-12 18:20:55.061 INFO: Epoch 123: head: Default, loss=0.02175462, RMSE_E_per_atom=   18.39 meV, RMSE_F=  147.60 meV / A
+2025-10-12 18:21:02.904 INFO: Epoch 124: head: Default, loss=0.02128923, RMSE_E_per_atom=   18.37 meV, RMSE_F=  146.01 meV / A
+2025-10-12 18:21:10.752 INFO: Epoch 125: head: Default, loss=0.02200304, RMSE_E_per_atom=   18.34 meV, RMSE_F=  148.45 meV / A
+2025-10-12 18:21:18.572 INFO: Epoch 126: head: Default, loss=0.02105428, RMSE_E_per_atom=   18.17 meV, RMSE_F=  145.20 meV / A
+2025-10-12 18:21:26.424 INFO: Epoch 127: head: Default, loss=0.02121712, RMSE_E_per_atom=   18.09 meV, RMSE_F=  145.77 meV / A
+2025-10-12 18:21:34.244 INFO: Epoch 128: head: Default, loss=0.02046476, RMSE_E_per_atom=   18.38 meV, RMSE_F=  143.15 meV / A
+2025-10-12 18:21:42.079 INFO: Epoch 129: head: Default, loss=0.02077739, RMSE_E_per_atom=   18.36 meV, RMSE_F=  144.24 meV / A
+2025-10-12 18:21:49.900 INFO: Epoch 130: head: Default, loss=0.02085079, RMSE_E_per_atom=   18.27 meV, RMSE_F=  144.50 meV / A
+2025-10-12 18:21:49.902 DEBUG: Running inference on train_Default dataset
+2025-10-12 18:21:49.989 DEBUG: Plotting failed: too many indices for tensor of dimension 1
+2025-10-12 18:21:57.409 INFO: Epoch 131: head: Default, loss=0.02183261, RMSE_E_per_atom=   21.64 meV, RMSE_F=  147.82 meV / A
+2025-10-12 18:22:05.239 INFO: Epoch 132: head: Default, loss=0.02169208, RMSE_E_per_atom=   20.08 meV, RMSE_F=  147.37 meV / A
+2025-10-12 18:22:13.071 INFO: Epoch 133: head: Default, loss=0.02113141, RMSE_E_per_atom=   19.03 meV, RMSE_F=  145.46 meV / A
+2025-10-12 18:22:20.913 INFO: Epoch 134: head: Default, loss=0.02294792, RMSE_E_per_atom=   18.72 meV, RMSE_F=  151.60 meV / A
+2025-10-12 18:22:28.780 INFO: Epoch 135: head: Default, loss=0.02418663, RMSE_E_per_atom=   18.44 meV, RMSE_F=  155.65 meV / A
+2025-10-12 18:22:36.661 INFO: Epoch 136: head: Default, loss=0.02302482, RMSE_E_per_atom=   18.17 meV, RMSE_F=  151.86 meV / A
+2025-10-12 18:22:44.508 INFO: Epoch 137: head: Default, loss=0.02261288, RMSE_E_per_atom=   17.95 meV, RMSE_F=  150.50 meV / A
+2025-10-12 18:22:52.338 INFO: Epoch 138: head: Default, loss=0.02120140, RMSE_E_per_atom=   17.79 meV, RMSE_F=  145.71 meV / A
+2025-10-12 18:23:00.175 INFO: Epoch 139: head: Default, loss=0.01964018, RMSE_E_per_atom=   17.94 meV, RMSE_F=  140.23 meV / A
+2025-10-12 18:23:00.180 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-107.pt
+2025-10-12 18:23:00.182 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-139.pt
+2025-10-12 18:23:08.047 INFO: Epoch 140: head: Default, loss=0.02237029, RMSE_E_per_atom=   17.90 meV, RMSE_F=  149.69 meV / A
+2025-10-12 18:23:08.049 DEBUG: Running inference on train_Default dataset
+2025-10-12 18:23:08.138 DEBUG: Plotting failed: too many indices for tensor of dimension 1
+2025-10-12 18:23:15.528 INFO: Epoch 141: head: Default, loss=0.02298018, RMSE_E_per_atom=   17.74 meV, RMSE_F=  151.71 meV / A
+2025-10-12 18:23:23.378 INFO: Epoch 142: head: Default, loss=0.02023416, RMSE_E_per_atom=   17.58 meV, RMSE_F=  142.34 meV / A
+2025-10-12 18:23:31.188 INFO: Epoch 143: head: Default, loss=0.02102632, RMSE_E_per_atom=   17.60 meV, RMSE_F=  145.11 meV / A
+2025-10-12 18:23:39.041 INFO: Epoch 144: head: Default, loss=0.02083355, RMSE_E_per_atom=   17.60 meV, RMSE_F=  144.44 meV / A
+2025-10-12 18:23:46.873 INFO: Epoch 145: head: Default, loss=0.02119853, RMSE_E_per_atom=   17.69 meV, RMSE_F=  145.71 meV / A
+2025-10-12 18:23:54.674 INFO: Epoch 146: head: Default, loss=0.02119136, RMSE_E_per_atom=   17.66 meV, RMSE_F=  145.68 meV / A
+2025-10-12 18:24:02.548 INFO: Epoch 147: head: Default, loss=0.02081155, RMSE_E_per_atom=   17.59 meV, RMSE_F=  144.37 meV / A
+2025-10-12 18:24:10.390 INFO: Epoch 148: head: Default, loss=0.02066244, RMSE_E_per_atom=   17.53 meV, RMSE_F=  143.85 meV / A
+2025-10-12 18:24:18.236 INFO: Epoch 149: head: Default, loss=0.02070146, RMSE_E_per_atom=   17.49 meV, RMSE_F=  143.99 meV / A
+2025-10-12 18:24:18.239 INFO: Changing loss based on Stage Two Weights
+2025-10-12 18:24:26.090 INFO: Epoch 150: head: Default, loss=0.23614529, RMSE_E_per_atom=   17.20 meV, RMSE_F=  143.93 meV / A
+2025-10-12 18:24:26.092 DEBUG: Running inference on train_Default dataset
+2025-10-12 18:24:26.177 DEBUG: Plotting failed: too many indices for tensor of dimension 1
+2025-10-12 18:24:26.180 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-150_swa.pt
+2025-10-12 18:24:33.645 INFO: Epoch 151: head: Default, loss=0.39009433, RMSE_E_per_atom=   42.11 meV, RMSE_F=  146.07 meV / A
+2025-10-12 18:24:41.485 INFO: Epoch 152: head: Default, loss=0.29402383, RMSE_E_per_atom=   29.15 meV, RMSE_F=  144.79 meV / A
+2025-10-12 18:24:49.304 INFO: Epoch 153: head: Default, loss=0.27741319, RMSE_E_per_atom=   25.25 meV, RMSE_F=  146.36 meV / A
+2025-10-12 18:24:57.132 INFO: Epoch 154: head: Default, loss=0.26952912, RMSE_E_per_atom=   20.32 meV, RMSE_F=  151.26 meV / A
+2025-10-12 18:25:04.983 INFO: Epoch 155: head: Default, loss=0.26777651, RMSE_E_per_atom=   19.46 meV, RMSE_F=  151.81 meV / A
+2025-10-12 18:25:12.794 INFO: Epoch 156: head: Default, loss=0.26049116, RMSE_E_per_atom=   17.27 meV, RMSE_F=  152.07 meV / A
+2025-10-12 18:25:20.648 INFO: Epoch 157: head: Default, loss=0.26219644, RMSE_E_per_atom=   16.69 meV, RMSE_F=  153.27 meV / A
+2025-10-12 18:25:28.485 INFO: Epoch 158: head: Default, loss=0.26100237, RMSE_E_per_atom=   15.02 meV, RMSE_F=  154.62 meV / A
+2025-10-12 18:25:36.380 INFO: Epoch 159: head: Default, loss=0.26543485, RMSE_E_per_atom=   13.95 meV, RMSE_F=  157.04 meV / A
+2025-10-12 18:25:44.248 INFO: Epoch 160: head: Default, loss=0.26727904, RMSE_E_per_atom=   14.09 meV, RMSE_F=  157.50 meV / A
+2025-10-12 18:25:44.250 DEBUG: Running inference on train_Default dataset
+2025-10-12 18:25:44.338 DEBUG: Plotting failed: too many indices for tensor of dimension 1
+2025-10-12 18:25:51.805 INFO: Epoch 161: head: Default, loss=0.28310324, RMSE_E_per_atom=   17.69 meV, RMSE_F=  158.90 meV / A
+2025-10-12 18:25:59.708 INFO: Epoch 162: head: Default, loss=0.27087801, RMSE_E_per_atom=   14.62 meV, RMSE_F=  158.16 meV / A
+2025-10-12 18:26:07.534 INFO: Epoch 163: head: Default, loss=0.26385647, RMSE_E_per_atom=   12.95 meV, RMSE_F=  157.39 meV / A
+2025-10-12 18:26:15.359 INFO: Epoch 164: head: Default, loss=0.26348349, RMSE_E_per_atom=   12.43 meV, RMSE_F=  157.69 meV / A
+2025-10-12 18:26:23.234 INFO: Epoch 165: head: Default, loss=0.26478459, RMSE_E_per_atom=   11.85 meV, RMSE_F=  158.56 meV / A
+2025-10-12 18:26:31.073 INFO: Epoch 166: head: Default, loss=0.25467574, RMSE_E_per_atom=   11.28 meV, RMSE_F=  155.75 meV / A
+2025-10-12 18:26:38.897 INFO: Epoch 167: head: Default, loss=0.25435982, RMSE_E_per_atom=   10.98 meV, RMSE_F=  155.87 meV / A
+2025-10-12 18:26:46.733 INFO: Epoch 168: head: Default, loss=0.25300200, RMSE_E_per_atom=   10.63 meV, RMSE_F=  155.68 meV / A
+2025-10-12 18:26:54.576 INFO: Epoch 169: head: Default, loss=0.24920616, RMSE_E_per_atom=   10.31 meV, RMSE_F=  154.67 meV / A
+2025-10-12 18:27:02.901 INFO: Epoch 170: head: Default, loss=0.24805104, RMSE_E_per_atom=   10.03 meV, RMSE_F=  154.48 meV / A
+2025-10-12 18:27:02.903 DEBUG: Running inference on train_Default dataset
+2025-10-12 18:27:02.990 DEBUG: Plotting failed: too many indices for tensor of dimension 1
+2025-10-12 18:27:10.425 INFO: Epoch 171: head: Default, loss=0.27166483, RMSE_E_per_atom=   18.75 meV, RMSE_F=  154.00 meV / A
+2025-10-12 18:27:18.266 INFO: Epoch 172: head: Default, loss=0.26192673, RMSE_E_per_atom=   15.45 meV, RMSE_F=  154.49 meV / A
+2025-10-12 18:27:26.092 INFO: Epoch 173: head: Default, loss=0.26206633, RMSE_E_per_atom=   13.52 meV, RMSE_F=  156.35 meV / A
+2025-10-12 18:27:33.933 INFO: Epoch 174: head: Default, loss=0.26116717, RMSE_E_per_atom=   11.34 meV, RMSE_F=  157.80 meV / A
+2025-10-12 18:27:41.756 INFO: Epoch 175: head: Default, loss=0.25638180, RMSE_E_per_atom=    9.63 meV, RMSE_F=  157.41 meV / A
+2025-10-12 18:27:49.592 INFO: Epoch 176: head: Default, loss=0.25175024, RMSE_E_per_atom=    9.04 meV, RMSE_F=  156.28 meV / A
+2025-10-12 18:27:57.445 INFO: Epoch 177: head: Default, loss=0.24766618, RMSE_E_per_atom=    8.97 meV, RMSE_F=  155.01 meV / A
+2025-10-12 18:28:05.272 INFO: Epoch 178: head: Default, loss=0.23879893, RMSE_E_per_atom=    8.52 meV, RMSE_F=  152.37 meV / A
+2025-10-12 18:28:13.103 INFO: Epoch 179: head: Default, loss=0.23409496, RMSE_E_per_atom=    8.13 meV, RMSE_F=  151.02 meV / A
+2025-10-12 18:28:13.107 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-150_swa.pt
+2025-10-12 18:28:13.109 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-179_swa.pt
+2025-10-12 18:28:21.014 INFO: Epoch 180: head: Default, loss=0.23740723, RMSE_E_per_atom=    7.82 meV, RMSE_F=  152.29 meV / A
+2025-10-12 18:28:21.016 DEBUG: Running inference on train_Default dataset
+2025-10-12 18:28:21.101 DEBUG: Plotting failed: too many indices for tensor of dimension 1
+2025-10-12 18:28:28.559 INFO: Epoch 181: head: Default, loss=0.25891114, RMSE_E_per_atom=   14.27 meV, RMSE_F=  154.66 meV / A
+2025-10-12 18:28:36.401 INFO: Epoch 182: head: Default, loss=0.24943834, RMSE_E_per_atom=   12.54 meV, RMSE_F=  153.08 meV / A
+2025-10-12 18:28:44.251 INFO: Epoch 183: head: Default, loss=0.25480340, RMSE_E_per_atom=   11.93 meV, RMSE_F=  155.32 meV / A
+2025-10-12 18:28:52.082 INFO: Epoch 184: head: Default, loss=0.27405909, RMSE_E_per_atom=    8.26 meV, RMSE_F=  163.71 meV / A
+2025-10-12 18:28:59.904 INFO: Epoch 185: head: Default, loss=0.26964434, RMSE_E_per_atom=    7.67 meV, RMSE_F=  162.63 meV / A
+2025-10-12 18:29:07.708 INFO: Epoch 186: head: Default, loss=0.26880394, RMSE_E_per_atom=    7.41 meV, RMSE_F=  162.50 meV / A
+2025-10-12 18:29:15.540 INFO: Epoch 187: head: Default, loss=0.32634211, RMSE_E_per_atom=    7.35 meV, RMSE_F=  179.42 meV / A
+2025-10-12 18:29:23.370 INFO: Epoch 188: head: Default, loss=0.31704606, RMSE_E_per_atom=    7.05 meV, RMSE_F=  176.93 meV / A
+2025-10-12 18:29:31.203 INFO: Epoch 189: head: Default, loss=0.29164150, RMSE_E_per_atom=    6.75 meV, RMSE_F=  169.69 meV / A
+2025-10-12 18:29:39.067 INFO: Epoch 190: head: Default, loss=0.26918533, RMSE_E_per_atom=    6.67 meV, RMSE_F=  162.94 meV / A
+2025-10-12 18:29:39.069 DEBUG: Running inference on train_Default dataset
+2025-10-12 18:29:39.158 DEBUG: Plotting failed: too many indices for tensor of dimension 1
+2025-10-12 18:29:46.578 INFO: Epoch 191: head: Default, loss=0.26465539, RMSE_E_per_atom=    6.74 meV, RMSE_F=  161.50 meV / A
+2025-10-12 18:29:54.410 INFO: Epoch 192: head: Default, loss=0.25748176, RMSE_E_per_atom=    6.48 meV, RMSE_F=  159.37 meV / A
+2025-10-12 18:30:02.243 INFO: Epoch 193: head: Default, loss=0.24631367, RMSE_E_per_atom=    6.40 meV, RMSE_F=  155.85 meV / A
+2025-10-12 18:30:10.070 INFO: Epoch 194: head: Default, loss=0.23935770, RMSE_E_per_atom=    6.27 meV, RMSE_F=  153.65 meV / A
+2025-10-12 18:30:17.916 INFO: Epoch 195: head: Default, loss=0.23624412, RMSE_E_per_atom=    6.44 meV, RMSE_F=  152.56 meV / A
+2025-10-12 18:30:25.792 INFO: Epoch 196: head: Default, loss=0.23476432, RMSE_E_per_atom=    6.22 meV, RMSE_F=  152.17 meV / A
+2025-10-12 18:30:33.656 INFO: Epoch 197: head: Default, loss=0.23562897, RMSE_E_per_atom=    6.09 meV, RMSE_F=  152.51 meV / A
+2025-10-12 18:30:41.520 INFO: Epoch 198: head: Default, loss=0.23395275, RMSE_E_per_atom=    6.01 meV, RMSE_F=  151.99 meV / A
+2025-10-12 18:30:41.525 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-179_swa.pt
+2025-10-12 18:30:41.527 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-198_swa.pt
+2025-10-12 18:30:49.420 INFO: Epoch 199: head: Default, loss=0.23239090, RMSE_E_per_atom=    5.90 meV, RMSE_F=  151.51 meV / A
+2025-10-12 18:30:49.425 DEBUG: Deleting old checkpoint file: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-198_swa.pt
+2025-10-12 18:30:49.427 DEBUG: Saving checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-199_swa.pt
+2025-10-12 18:30:49.477 INFO: Training complete
+2025-10-12 18:30:49.479 INFO: 
+2025-10-12 18:30:49.480 INFO: ===========RESULTS===========
+2025-10-12 18:30:59.537 INFO: Loading checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-180.pt
+2025-10-12 18:30:59.586 INFO: Loaded Stage one model from epoch 180 for evaluation
+2025-10-12 18:30:59.588 INFO: Saving model to al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123.model
+2025-10-12 18:30:59.644 INFO: RUNING CUEQ TO E3NN
+2025-10-12 18:30:59.699 INFO: Creating new model without CuEq settings
+2025-10-12 18:31:00.796 DEBUG: Transferring additional key: interactions.1.conv_tp_weights.layer1.weight
+2025-10-12 18:31:00.796 DEBUG: Transferring additional key: radial_embedding.bessel_fn.r_max
+2025-10-12 18:31:00.796 DEBUG: Transferring additional key: interactions.1.conv_tp_weights.layer3.weight
+2025-10-12 18:31:00.796 DEBUG: Transferring key readouts.1.linear_1.weight after adapting shape (1, 2048) → (2048,)
+2025-10-12 18:31:00.797 DEBUG: Transferring key readouts.0.linear.weight after adapting shape (1, 128) → (128,)
+2025-10-12 18:31:00.797 DEBUG: Transferring additional key: atomic_energies_fn.atomic_energies
+2025-10-12 18:31:00.797 DEBUG: Transferring additional key: interactions.0.conv_tp_weights.layer3.weight
+2025-10-12 18:31:00.797 DEBUG: Transferring key products.1.linear.weight after adapting shape (1, 16384) → (16384,)
+2025-10-12 18:31:00.797 DEBUG: Transferring additional key: scale_shift.shift
+2025-10-12 18:31:00.797 DEBUG: Transferring additional key: r_max
+2025-10-12 18:31:00.797 DEBUG: Transferring additional key: interactions.0.conv_tp_weights.layer1.weight
+2025-10-12 18:31:00.797 DEBUG: Transferring key interactions.0.skip_tp.weight after adapting shape (1, 32768) → (32768,)
+2025-10-12 18:31:00.797 DEBUG: Transferring additional key: radial_embedding.bessel_fn.prefactor
+2025-10-12 18:31:00.797 DEBUG: Transferring additional key: radial_embedding.cutoff_fn.r_max
+2025-10-12 18:31:00.798 DEBUG: Transferring key interactions.1.skip_tp.weight after adapting shape (1, 32768) → (32768,)
+2025-10-12 18:31:00.798 DEBUG: Transferring additional key: radial_embedding.cutoff_fn.p
+2025-10-12 18:31:00.798 DEBUG: Transferring additional key: interactions.0.conv_tp_weights.layer0.weight
+2025-10-12 18:31:00.798 DEBUG: Transferring key interactions.0.linear_up.weight after adapting shape (1, 16384) → (16384,)
+2025-10-12 18:31:00.798 DEBUG: Transferring key interactions.1.linear.weight after adapting shape (1, 65536) → (65536,)
+2025-10-12 18:31:00.798 DEBUG: Transferring additional key: interactions.0.conv_tp_weights.layer2.weight
+2025-10-12 18:31:00.798 DEBUG: Transferring additional key: scale_shift.scale
+2025-10-12 18:31:00.798 DEBUG: Transferring key products.0.linear.weight after adapting shape (1, 16384) → (16384,)
+2025-10-12 18:31:00.798 DEBUG: Transferring additional key: atomic_numbers
+2025-10-12 18:31:00.798 DEBUG: Transferring key interactions.1.linear_up.weight after adapting shape (1, 16384) → (16384,)
+2025-10-12 18:31:00.798 DEBUG: Transferring additional key: interactions.1.conv_tp_weights.layer0.weight
+2025-10-12 18:31:00.798 DEBUG: Transferring additional key: num_interactions
+2025-10-12 18:31:00.798 DEBUG: Transferring key interactions.0.linear.weight after adapting shape (1, 65536) → (65536,)
+2025-10-12 18:31:00.799 DEBUG: Transferring additional key: radial_embedding.bessel_fn.bessel_weights
+2025-10-12 18:31:00.799 DEBUG: Transferring additional key: interactions.1.conv_tp_weights.layer2.weight
+2025-10-12 18:31:00.799 DEBUG: Transferring key readouts.1.linear_2.weight after adapting shape (1, 16) → (16,)
+2025-10-12 18:31:00.799 DEBUG: Transferring key node_embedding.linear.weight after adapting shape (1, 256) → (256,)
+2025-10-12 18:31:00.904 INFO: Compiling model, saving metadata to al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_compiled.model
+2025-10-12 18:31:01.551 INFO: Computing metrics for training, validation, and test sets
+2025-10-12 18:31:01.554 INFO: Skipping evaluation for heads: ['pt_head']
+2025-10-12 18:31:01.555 INFO: Evaluating train_Default ...
+2025-10-12 18:31:04.640 INFO: Evaluating valid_Default ...
+2025-10-12 18:31:05.566 INFO: Error-table on TRAIN and VALID:
++---------------+---------------------+------------------+-------------------+
+|  config_type  | RMSE E / meV / atom | RMSE F / meV / A | relative F RMSE % |
++---------------+---------------------+------------------+-------------------+
+| train_Default |           43.8      |         99.3     |          1.97     |
+| valid_Default |           43.9      |         88.8     |          1.84     |
++---------------+---------------------+------------------+-------------------+
+2025-10-12 18:31:05.568 INFO: Evaluating Default_Default ...
+2025-10-12 18:31:11.092 INFO: Error-table on TEST:
++-----------------+---------------------+------------------+-------------------+
+|   config_type   | RMSE E / meV / atom | RMSE F / meV / A | relative F RMSE % |
++-----------------+---------------------+------------------+-------------------+
+| Default_Default |           57.3      |         62.0     |          3.96     |
++-----------------+---------------------+------------------+-------------------+
+2025-10-12 18:31:11.094 DEBUG: Running inference on train_Default dataset
+2025-10-12 18:31:11.576 DEBUG: Plotting failed: too many indices for tensor of dimension 1
+2025-10-12 18:31:11.579 INFO: Loading checkpoint: al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_epoch-249_swa.pt
+2025-10-12 18:31:11.651 INFO: Loaded Stage two model from epoch 249 for evaluation
+2025-10-12 18:31:11.653 INFO: Saving model to al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_run-123_stagetwo.model
+2025-10-12 18:31:11.708 INFO: RUNING CUEQ TO E3NN
+2025-10-12 18:31:11.763 INFO: Creating new model without CuEq settings
+2025-10-12 18:31:12.841 DEBUG: Transferring additional key: interactions.1.conv_tp_weights.layer1.weight
+2025-10-12 18:31:12.841 DEBUG: Transferring additional key: radial_embedding.bessel_fn.r_max
+2025-10-12 18:31:12.841 DEBUG: Transferring additional key: interactions.1.conv_tp_weights.layer3.weight
+2025-10-12 18:31:12.841 DEBUG: Transferring key readouts.1.linear_1.weight after adapting shape (1, 2048) → (2048,)
+2025-10-12 18:31:12.841 DEBUG: Transferring key readouts.0.linear.weight after adapting shape (1, 128) → (128,)
+2025-10-12 18:31:12.842 DEBUG: Transferring additional key: atomic_energies_fn.atomic_energies
+2025-10-12 18:31:12.842 DEBUG: Transferring additional key: interactions.0.conv_tp_weights.layer3.weight
+2025-10-12 18:31:12.842 DEBUG: Transferring key products.1.linear.weight after adapting shape (1, 16384) → (16384,)
+2025-10-12 18:31:12.842 DEBUG: Transferring additional key: scale_shift.shift
+2025-10-12 18:31:12.842 DEBUG: Transferring additional key: r_max
+2025-10-12 18:31:12.842 DEBUG: Transferring additional key: interactions.0.conv_tp_weights.layer1.weight
+2025-10-12 18:31:12.842 DEBUG: Transferring key interactions.0.skip_tp.weight after adapting shape (1, 32768) → (32768,)
+2025-10-12 18:31:12.842 DEBUG: Transferring additional key: radial_embedding.bessel_fn.prefactor
+2025-10-12 18:31:12.842 DEBUG: Transferring additional key: radial_embedding.cutoff_fn.r_max
+2025-10-12 18:31:12.842 DEBUG: Transferring key interactions.1.skip_tp.weight after adapting shape (1, 32768) → (32768,)
+2025-10-12 18:31:12.842 DEBUG: Transferring additional key: radial_embedding.cutoff_fn.p
+2025-10-12 18:31:12.842 DEBUG: Transferring additional key: interactions.0.conv_tp_weights.layer0.weight
+2025-10-12 18:31:12.843 DEBUG: Transferring key interactions.0.linear_up.weight after adapting shape (1, 16384) → (16384,)
+2025-10-12 18:31:12.843 DEBUG: Transferring key interactions.1.linear.weight after adapting shape (1, 65536) → (65536,)
+2025-10-12 18:31:12.843 DEBUG: Transferring additional key: interactions.0.conv_tp_weights.layer2.weight
+2025-10-12 18:31:12.843 DEBUG: Transferring additional key: scale_shift.scale
+2025-10-12 18:31:12.843 DEBUG: Transferring key products.0.linear.weight after adapting shape (1, 16384) → (16384,)
+2025-10-12 18:31:12.843 DEBUG: Transferring additional key: atomic_numbers
+2025-10-12 18:31:12.844 DEBUG: Transferring key interactions.1.linear_up.weight after adapting shape (1, 16384) → (16384,)
+2025-10-12 18:31:12.844 DEBUG: Transferring additional key: interactions.1.conv_tp_weights.layer0.weight
+2025-10-12 18:31:12.844 DEBUG: Transferring additional key: num_interactions
+2025-10-12 18:31:12.844 DEBUG: Transferring key interactions.0.linear.weight after adapting shape (1, 65536) → (65536,)
+2025-10-12 18:31:12.844 DEBUG: Transferring additional key: radial_embedding.bessel_fn.bessel_weights
+2025-10-12 18:31:12.844 DEBUG: Transferring additional key: interactions.1.conv_tp_weights.layer2.weight
+2025-10-12 18:31:12.844 DEBUG: Transferring key readouts.1.linear_2.weight after adapting shape (1, 16) → (16,)
+2025-10-12 18:31:12.844 DEBUG: Transferring key node_embedding.linear.weight after adapting shape (1, 256) → (256,)
+2025-10-12 18:31:12.958 INFO: Compiling model, saving metadata al-al2o3_models/al-al2o3_small_ft-1/small-ft_al-al2o3_stagetwo_compiled.model
+2025-10-12 18:31:13.646 INFO: Computing metrics for training, validation, and test sets
+2025-10-12 18:31:13.649 INFO: Skipping evaluation for heads: ['pt_head']
+2025-10-12 18:31:13.650 INFO: Evaluating train_Default ...
+2025-10-12 18:31:16.716 INFO: Evaluating valid_Default ...
+2025-10-12 18:31:17.424 INFO: Error-table on TRAIN and VALID:
++---------------+---------------------+------------------+-------------------+
+|  config_type  | RMSE E / meV / atom | RMSE F / meV / A | relative F RMSE % |
++---------------+---------------------+------------------+-------------------+
+| train_Default |            5.6      |         74.2     |          1.47     |
+| valid_Default |            6.0      |         88.9     |          1.85     |
++---------------+---------------------+------------------+-------------------+
+2025-10-12 18:31:17.426 INFO: Evaluating Default_Default ...
+2025-10-12 18:31:22.995 INFO: Error-table on TEST:
++-----------------+---------------------+------------------+-------------------+
+|   config_type   | RMSE E / meV / atom | RMSE F / meV / A | relative F RMSE % |
++-----------------+---------------------+------------------+-------------------+
+| Default_Default |            5.4      |         58.7     |          3.75     |
++-----------------+---------------------+------------------+-------------------+
+2025-10-12 18:31:22.997 DEBUG: Running inference on train_Default dataset
+2025-10-12 18:31:23.412 DEBUG: Plotting failed: too many indices for tensor of dimension 1
+2025-10-12 18:31:23.413 INFO: Done

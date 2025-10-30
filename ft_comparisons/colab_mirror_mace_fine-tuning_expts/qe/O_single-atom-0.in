@@ -1,0 +1,32 @@
+&CONTROL
+  calculation = 'scf',
+  prefix = 'O_atom',
+  pseudo_dir = './pp',
+  outdir = './o_single-atom_0'
+/
+&SYSTEM
+  ibrav = 0,
+  nat = 1,
+  ntyp = 1,
+  ecutwfc = 90.0,
+  occupations = 'smearing',
+  smearing = 'marzari-vanderbilt',
+  degauss = 1.0d-3,
+/
+&ELECTRONS
+  conv_thr = 1.0d-6,
+  mixing_beta = 0.7,
+/
+ATOMIC_SPECIES
+  O 15.999 O.pbe_oncv_standard_0.5.upf
+
+CELL_PARAMETERS angstrom
+  25.0 0.0 0.0
+  0.0 25.0 0.0
+  0.0 0.0 25.0
+
+ATOMIC_POSITIONS angstrom
+  O  12.5 12.5 12.5
+
+K_POINTS automatic
+  1 1 1 0 0 0

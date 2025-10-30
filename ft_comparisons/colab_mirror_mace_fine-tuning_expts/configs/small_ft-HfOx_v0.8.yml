@@ -1,0 +1,40 @@
+
+model: 'MACE'
+foundation_model: 'small'
+multiheads_finetuning: False
+train_file: 'data/random_subsample_trainval-1.xyz'
+valid_fraction: 0.2
+test_file: 'data/test.xyz'
+energy_key: "REF_energy"
+forces_key: "REF_forces"
+E0s: {8: -443.8224565134432, 72: -1529.4984727695407}
+name: "small_ft-HfOx"
+model_dir: "models/small_HfOx-ft_8"
+log_dir: "models/small_HfOx-ft_8"
+results_dir: "models/small_HfOx-ft_8"
+checkpoints_dir: "models/small_HfOx-ft_8"
+device: cuda
+batch_size: 14
+max_num_epochs: 500
+lr: 0.01
+ema: True
+ema_decay: 0.99
+optimizer: adamw
+weight_decay: 5e-7
+swa: True
+seed: 123
+stress_weight: 0.0
+forces_weight: 100.0
+energy_weight: 1.0
+wandb: True
+enable_cueq: True
+wandb_project: "MACE_HfOx_ft"
+wandb_name: "small_model_rss-4"
+wandb_log_hypers: ["lr", "lr_factor", "lr_scheduler_gamma", "scheduler",
+                   "swa", "swa_lr", "start_swa",
+                   "swa_energy_weight", "swa_forces_weight",
+                   "energy_weight", "forces_weight",
+                   "ema", "ema_decay", "weight_decay",
+                   "huber_delta", "optimizer", "amsgrad", "beta",
+                   "batch_size", "max_num_epochs", "seed"]
+

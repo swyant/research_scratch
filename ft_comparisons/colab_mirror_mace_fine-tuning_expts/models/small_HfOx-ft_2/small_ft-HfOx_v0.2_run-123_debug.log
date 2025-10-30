@@ -1,0 +1,143 @@
+2025-10-01 13:57:05.774 INFO: ===========VERIFYING SETTINGS===========
+2025-10-01 13:57:05.776 INFO: MACE version: 0.3.14
+2025-10-01 13:57:05.777 DEBUG: Configuration: Namespace(config='configs/small_ft-HfOx_v0.2.yml', name='small_ft-HfOx_v0.2', seed=123, work_dir='.', log_dir='models/small_HfOx-ft_2', model_dir='models/small_HfOx-ft_2', checkpoints_dir='models/small_HfOx-ft_2', results_dir='models/small_HfOx-ft_2', downloads_dir='./downloads', device='cuda', default_dtype='float64', distributed=False, launcher='slurm', log_level='INFO', plot=True, plot_frequency=10, plot_interaction_e=False, error_table='PerAtomRMSE', model='MACE', r_max=5.0, radial_type='bessel', num_radial_basis=8, num_cutoff_basis=5, pair_repulsion=False, distance_transform='None', apply_cutoff=True, use_last_readout_only=False, use_embedding_readout=False, interaction='RealAgnosticResidualInteractionBlock', interaction_first='RealAgnosticResidualInteractionBlock', max_ell=3, correlation=3, use_reduced_cg=False, use_so3=False, use_agnostic_product=False, num_interactions=2, MLP_irreps='16x0e', radial_MLP='[64, 64, 64]', hidden_irreps='128x0e + 128x1o', edge_irreps=None, num_channels=128, max_L=1, gate='silu', scaling='rms_forces_scaling', avg_num_neighbors=1, compute_avg_num_neighbors=True, compute_stress=False, compute_forces=True, compute_polarizability=<function str2bool at 0x7dc5cede99e0>, compute_atomic_dipole=<function str2bool at 0x7dc5cede99e0>, train_file='data/HfOx_Hf_trainval.xyz', valid_file=None, valid_fraction=0.1, test_file='data/HfOx_Hf_test.xyz', test_dir=None, multi_processed_test=False, num_workers=0, pin_memory=True, atomic_numbers=None, mean=None, std=None, statistics_file=None, les_arguments=None, E0s='{8: -443.8224565134432, 72: -1529.4984727695407}', pseudolabel_replay=False, foundation_filter_elements=True, heads=None, multiheads_finetuning=False, foundation_head=None, weight_pt_head=1.0, real_pt_data_ratio_threshold=0.1, num_samples_pt=10000, force_mh_ft_lr=False, subselect_pt='random', filter_type_pt='none', allow_random_padding_pt=True, pt_train_file=None, pt_valid_file=None, foundation_model_elements=False, keep_isolated_atoms=False, energy_key='REF_energy', forces_key='REF_forces', virials_key='REF_virials', stress_key='REF_stress', dipole_key='dipole', polarizability_key='polarizability', head_key='head', charges_key='REF_charges', elec_temp_key='elec_temp', total_spin_key='total_spin', total_charge_key='total_charge', embedding_specs=None, skip_evaluate_heads='pt_head', loss='weighted', forces_weight=50.0, swa_forces_weight=100.0, energy_weight=1.0, swa_energy_weight=1000.0, virials_weight=1.0, swa_virials_weight=10.0, stress_weight=0.0, swa_stress_weight=10.0, dipole_weight=1.0, swa_dipole_weight=1.0, swa_polarizability_weight=1.0, polarizability_weight=1.0, config_type_weights='{"Default":1.0}', huber_delta=0.01, optimizer='adam', beta=0.9, batch_size=5, valid_batch_size=10, lr=0.01, swa_lr=0.001, weight_decay=5e-07, amsgrad=True, scheduler='ReduceLROnPlateau', lr_factor=0.8, scheduler_patience=50, lr_scheduler_gamma=0.9993, swa=True, start_swa=375, lbfgs=False, ema=False, ema_decay=0.99, max_num_epochs=500, patience=2048, foundation_model='small', foundation_model_readout=True, eval_interval=1, keep_checkpoints=False, save_all_checkpoints=False, restart_latest=False, save_cpu=False, clip_grad=10.0, dry_run=False, enable_cueq=False, only_cueq=False, enable_oeq=False, wandb=False, wandb_dir=None, wandb_project='', wandb_entity='', wandb_name='', wandb_log_hypers=['num_channels', 'max_L', 'correlation', 'lr', 'swa_lr', 'weight_decay', 'batch_size', 'max_num_epochs', 'start_swa', 'energy_weight', 'forces_weight'], key_specification=KeySpecification(info_keys={'energy': 'REF_energy', 'stress': 'REF_stress', 'virials': 'REF_virials', 'dipole': 'dipole', 'head': 'head', 'elec_temp': 'elec_temp', 'total_charge': 'total_charge', 'polarizability': 'polarizability', 'total_spin': 'total_spin'}, arrays_keys={'forces': 'REF_forces', 'charges': 'REF_charges'}))
+2025-10-01 13:57:05.885 INFO: CUDA version: 12.6, CUDA device: 0
+2025-10-01 13:57:06.074 DEBUG: Popen(['git', 'version'], cwd=/content/drive/My Drive/colab_temp/mace_fine-tuning_expts, stdin=None, shell=False, universal_newlines=False)
+2025-10-01 13:57:06.103 DEBUG: Popen(['git', 'version'], cwd=/content/drive/My Drive/colab_temp/mace_fine-tuning_expts, stdin=None, shell=False, universal_newlines=False)
+2025-10-01 13:57:06.106 DEBUG: sys.platform='linux', git_executable='git'
+2025-10-01 13:57:06.108 DEBUG: Error accessing Git repository: /content/drive/My Drive/colab_temp/mace_fine-tuning_expts
+2025-10-01 13:57:06.108 INFO: Using foundation model mace-mp-0 small as initial checkpoint.
+2025-10-01 13:57:08.240 INFO: CUDA version: 12.6, CUDA device: 0
+2025-10-01 13:57:08.251 INFO: ===========LOADING INPUT DATA===========
+2025-10-01 13:57:08.252 INFO: Using heads: ['Default']
+2025-10-01 13:57:08.253 INFO: Using the key specifications to parse data:
+2025-10-01 13:57:08.254 INFO: Default: KeySpecification(info_keys={'energy': 'REF_energy', 'stress': 'REF_stress', 'virials': 'REF_virials', 'dipole': 'dipole', 'head': 'head', 'elec_temp': 'elec_temp', 'total_charge': 'total_charge', 'polarizability': 'polarizability', 'total_spin': 'total_spin'}, arrays_keys={'forces': 'REF_forces', 'charges': 'REF_charges'})
+2025-10-01 13:57:08.254 INFO: =============    Processing head Default     ===========
+2025-10-01 13:57:08.256 DEBUG: Loading training file: data/HfOx_Hf_trainval.xyz
+2025-10-01 13:57:16.935 INFO: Training set 1/1 [energy: 5278, stress: 5278, virials: 0, dipole components: 0, head: 5278, elec_temp: 0, total_charge: 0, polarizability: 0, total_spin: 0, forces: 5278, charges: 0]
+2025-10-01 13:57:16.965 INFO: Total Training set [energy: 5278, stress: 5278, virials: 0, dipole components: 0, head: 5278, elec_temp: 0, total_charge: 0, polarizability: 0, total_spin: 0, forces: 5278, charges: 0]
+2025-10-01 13:57:16.966 INFO: No validation set provided, splitting training data instead.
+2025-10-01 13:57:17.769 INFO: Using random 10% of training set for validation with indices saved in: ./valid_indices_123.txt
+2025-10-01 13:57:17.802 INFO: Random Split Training set [energy: 4751, stress: 4751, virials: 0, dipole components: 0, head: 4751, elec_temp: 0, total_charge: 0, polarizability: 0, total_spin: 0, forces: 4751, charges: 0]
+2025-10-01 13:57:17.807 INFO: Random Split Validation set [energy: 527, stress: 527, virials: 0, dipole components: 0, head: 527, elec_temp: 0, total_charge: 0, polarizability: 0, total_spin: 0, forces: 527, charges: 0]
+2025-10-01 13:57:21.058 INFO: Test set 1/1 [energy: 940, stress: 940, virials: 0, dipole components: 0, head: 940, elec_temp: 0, total_charge: 0, polarizability: 0, total_spin: 0, forces: 940, charges: 0]
+2025-10-01 13:57:21.064 INFO: Total Test set [energy: 940, stress: 940, virials: 0, dipole components: 0, head: 940, elec_temp: 0, total_charge: 0, polarizability: 0, total_spin: 0, forces: 940, charges: 0]
+2025-10-01 13:57:21.065 INFO: Total number of configurations: train=4751, valid=527, tests=[Default_Default: 940],
+2025-10-01 13:57:21.139 INFO: Atomic Numbers used: [8, 72]
+2025-10-01 13:57:21.141 INFO: Isolated Atomic Energies (E0s) not in training file, using command line argument
+2025-10-01 13:57:21.142 INFO: Atomic Energies used (z: eV) for head Default: {8: -443.8224565134432, 72: -1529.4984727695407}
+2025-10-01 13:57:21.142 INFO: Processing datasets for head 'Default'
+2025-10-01 13:57:50.293 DEBUG: Successfully loaded dataset from ASE files: ['data/HfOx_Hf_trainval.xyz']
+2025-10-01 13:57:50.294 INFO: Combining 1 list datasets for head 'Default'
+2025-10-01 13:57:53.535 INFO: Head 'Default' training dataset size: 4751
+2025-10-01 13:57:53.537 INFO: Computing average number of neighbors
+2025-10-01 13:57:57.403 INFO: Average number of neighbors: 56.193491342463
+2025-10-01 13:57:57.405 INFO: During training the following quantities will be reported: energy, forces
+2025-10-01 13:57:57.405 INFO: ===========MODEL DETAILS===========
+2025-10-01 13:58:00.282 INFO: Loading FOUNDATION model
+2025-10-01 13:58:00.284 INFO: Using filtered elements: [8, 72]
+2025-10-01 13:58:00.285 INFO: Model configuration extracted from foundation model
+2025-10-01 13:58:00.286 INFO: Using weighted loss function for fine-tuning
+2025-10-01 13:58:00.287 INFO: Message passing with hidden irreps 128x0e)
+2025-10-01 13:58:00.288 INFO: 2 layers, each with correlation order: 3 (body order: 4) and spherical harmonics up to: l=3
+2025-10-01 13:58:00.288 INFO: Radial cutoff: 6.0 A (total receptive field for each atom: 12.0 A)
+2025-10-01 13:58:00.289 INFO: Distance transform for radial basis functions: None
+2025-10-01 13:58:01.612 DEBUG: ScaleShiftMACE(
+  (node_embedding): LinearNodeEmbeddingBlock(
+    (linear): Linear(2x0e -> 128x0e | 256 weights)
+  )
+  (radial_embedding): RadialEmbeddingBlock(
+    (bessel_fn): BesselBasis(r_max=6.0, num_basis=10, trainable=True)
+    (cutoff_fn): PolynomialCutoff(p=5, r_max=6.0)
+  )
+  (spherical_harmonics): SphericalHarmonics()
+  (atomic_energies_fn): AtomicEnergiesBlock(energies=[[-443.8225, -1529.4985]])
+  (interactions): ModuleList(
+    (0-1): 2 x RealAgnosticResidualInteractionBlock(
+      (linear_up): Linear(128x0e -> 128x0e | 16384 weights)
+      (conv_tp): TensorProduct(128x0e x 1x0e+1x1o+1x2e+1x3o -> 128x0e+128x1o+128x2e+128x3o | 512 paths | 512 weights)
+      (conv_tp_weights): FullyConnectedNet[10, 64, 64, 64, 512]
+      (linear): Linear(128x0e+128x1o+128x2e+128x3o -> 128x0e+128x1o+128x2e+128x3o | 65536 weights)
+      (skip_tp): FullyConnectedTensorProduct(128x0e x 2x0e -> 128x0e | 32768 paths | 32768 weights)
+      (reshape): reshape_irreps()
+    )
+  )
+  (products): ModuleList(
+    (0-1): 2 x EquivariantProductBasisBlock(
+      (symmetric_contractions): SymmetricContraction(
+        (contractions): ModuleList(
+          (0): Contraction(
+            (contractions_weighting): ModuleList(
+              (0-1): 2 x GraphModule()
+            )
+            (contractions_features): ModuleList(
+              (0-1): 2 x GraphModule()
+            )
+            (weights): ParameterList(
+                (0): Parameter containing: [torch.float64 of size 2x4x128 (cuda:0)]
+                (1): Parameter containing: [torch.float64 of size 2x1x128 (cuda:0)]
+            )
+            (graph_opt_main): GraphModule()
+          )
+        )
+      )
+      (linear): Linear(128x0e -> 128x0e | 16384 weights)
+    )
+  )
+  (readouts): ModuleList(
+    (0): LinearReadoutBlock(
+      (linear): Linear(128x0e -> 1x0e | 128 weights)
+    )
+    (1): NonLinearReadoutBlock(
+      (linear_1): Linear(128x0e -> 16x0e | 2048 weights)
+      (non_linearity): Activation [x] (16x0e -> 16x0e)
+      (linear_2): Linear(16x0e -> 1x0e | 16 weights)
+    )
+  )
+  (scale_shift): ScaleShiftBlock(scale=0.8042, shift=0.1641)
+)
+2025-10-01 13:58:01.614 INFO: Total number of parameters: 362138
+2025-10-01 13:58:01.615 INFO: 
+2025-10-01 13:58:01.616 INFO: ===========OPTIMIZER INFORMATION===========
+2025-10-01 13:58:01.617 INFO: Using ADAM as parameter optimizer
+2025-10-01 13:58:01.618 INFO: Batch size: 5
+2025-10-01 13:58:01.619 INFO: Number of gradient updates: 475100
+2025-10-01 13:58:01.619 INFO: Learning rate: 0.01, weight decay: 5e-07
+2025-10-01 13:58:01.620 INFO: WeightedEnergyForcesLoss(energy_weight=1.000, forces_weight=50.000)
+2025-10-01 13:58:01.622 INFO: Stage Two (after 375 epochs) with loss function: WeightedEnergyForcesLoss(energy_weight=1000.000, forces_weight=100.000), with energy weight : 1000.0, forces weight : 100.0 and learning rate : 0.001
+2025-10-01 13:58:01.709 INFO: Using gradient clipping with tolerance=10.000
+2025-10-01 13:58:01.710 INFO: 
+2025-10-01 13:58:01.711 INFO: ===========TRAINING===========
+2025-10-01 13:58:01.712 INFO: Started training, reporting errors on validation set
+2025-10-01 13:58:01.712 INFO: Loss metrics on validation set
+2025-10-01 13:58:09.396 INFO: Initial: head: Default, loss=1234.81285034, RMSE_E_per_atom= 7688.04 meV, RMSE_F=16249.39 meV / A
+2025-10-01 13:59:43.765 INFO: Epoch 0: head: Default, loss=7.98710490, RMSE_E_per_atom=  142.82 meV, RMSE_F= 1287.94 meV / A
+2025-10-01 13:59:43.766 DEBUG: Running inference on train_Default dataset
+2025-10-01 13:59:43.812 DEBUG: Plotting failed: too many indices for tensor of dimension 1
+2025-10-01 13:59:43.814 DEBUG: Saving checkpoint: models/small_HfOx-ft_2/small_ft-HfOx_v0.2_run-123_epoch-0.pt
+2025-10-01 14:01:07.759 INFO: Epoch 1: head: Default, loss=7.98710490, RMSE_E_per_atom=  142.82 meV, RMSE_F= 1287.94 meV / A
+2025-10-01 14:02:36.412 INFO: Epoch 2: head: Default, loss=16.41680831, RMSE_E_per_atom=  262.44 meV, RMSE_F= 1862.41 meV / A
+2025-10-01 14:04:05.409 INFO: Epoch 3: head: Default, loss=30.01302522, RMSE_E_per_atom=  143.24 meV, RMSE_F= 2528.03 meV / A
+2025-10-01 14:05:34.517 INFO: Epoch 4: head: Default, loss=26.44615388, RMSE_E_per_atom=  146.23 meV, RMSE_F= 2376.73 meV / A
+2025-10-01 14:07:03.751 INFO: Epoch 5: head: Default, loss=7.60059846, RMSE_E_per_atom=  275.23 meV, RMSE_F= 1254.16 meV / A
+2025-10-01 14:07:03.753 DEBUG: Deleting old checkpoint file: models/small_HfOx-ft_2/small_ft-HfOx_v0.2_run-123_epoch-0.pt
+2025-10-01 14:07:03.755 DEBUG: Saving checkpoint: models/small_HfOx-ft_2/small_ft-HfOx_v0.2_run-123_epoch-5.pt
+2025-10-01 14:08:32.675 INFO: Epoch 6: head: Default, loss=1.80232949, RMSE_E_per_atom=  159.52 meV, RMSE_F=  608.31 meV / A
+2025-10-01 14:08:32.677 DEBUG: Deleting old checkpoint file: models/small_HfOx-ft_2/small_ft-HfOx_v0.2_run-123_epoch-5.pt
+2025-10-01 14:08:32.680 DEBUG: Saving checkpoint: models/small_HfOx-ft_2/small_ft-HfOx_v0.2_run-123_epoch-6.pt
+2025-10-01 14:10:02.168 INFO: Epoch 7: head: Default, loss=1.44455102, RMSE_E_per_atom=   98.73 meV, RMSE_F=  546.28 meV / A
+2025-10-01 14:10:02.170 DEBUG: Deleting old checkpoint file: models/small_HfOx-ft_2/small_ft-HfOx_v0.2_run-123_epoch-6.pt
+2025-10-01 14:10:02.172 DEBUG: Saving checkpoint: models/small_HfOx-ft_2/small_ft-HfOx_v0.2_run-123_epoch-7.pt
+2025-10-01 14:11:31.805 INFO: Epoch 8: head: Default, loss=15.18327870, RMSE_E_per_atom=  159.73 meV, RMSE_F= 1797.06 meV / A
+2025-10-01 14:13:01.325 INFO: Epoch 9: head: Default, loss=3.74522157, RMSE_E_per_atom=  184.17 meV, RMSE_F=  885.53 meV / A
+2025-10-01 14:14:31.092 INFO: Epoch 10: head: Default, loss=0.88713925, RMSE_E_per_atom=  146.23 meV, RMSE_F=  426.98 meV / A
+2025-10-01 14:14:31.093 DEBUG: Running inference on train_Default dataset
+2025-10-01 14:14:31.127 DEBUG: Plotting failed: too many indices for tensor of dimension 1
+2025-10-01 14:14:31.129 DEBUG: Deleting old checkpoint file: models/small_HfOx-ft_2/small_ft-HfOx_v0.2_run-123_epoch-7.pt
+2025-10-01 14:14:31.131 DEBUG: Saving checkpoint: models/small_HfOx-ft_2/small_ft-HfOx_v0.2_run-123_epoch-10.pt
+2025-10-01 14:15:55.133 INFO: Epoch 11: head: Default, loss=0.88713925, RMSE_E_per_atom=  146.23 meV, RMSE_F=  426.98 meV / A
+2025-10-01 14:17:24.096 INFO: Epoch 12: head: Default, loss=2.41946151, RMSE_E_per_atom=  102.34 meV, RMSE_F=  716.86 meV / A
+2025-10-01 14:18:53.152 INFO: Epoch 13: head: Default, loss=9.97908202, RMSE_E_per_atom=   95.57 meV, RMSE_F= 1455.89 meV / A
+2025-10-01 14:20:22.068 INFO: Epoch 14: head: Default, loss=15.54637747, RMSE_E_per_atom=  121.09 meV, RMSE_F= 1820.36 meV / A
+2025-10-01 14:21:51.593 INFO: Epoch 15: head: Default, loss=5.49671075, RMSE_E_per_atom=  139.92 meV, RMSE_F= 1082.51 meV / A
+2025-10-01 14:23:21.181 INFO: Epoch 16: head: Default, loss=4.64033827, RMSE_E_per_atom=   83.48 meV, RMSE_F=  995.54 meV / A

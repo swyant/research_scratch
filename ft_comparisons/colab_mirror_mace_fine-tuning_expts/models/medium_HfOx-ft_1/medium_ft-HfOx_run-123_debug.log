@@ -1,0 +1,781 @@
+2025-10-05 03:16:34.125 INFO: ===========VERIFYING SETTINGS===========
+2025-10-05 03:16:34.127 INFO: MACE version: 0.3.14
+2025-10-05 03:16:34.129 DEBUG: Configuration: Namespace(config='configs//medium_ft-HfOx_v0.1.yml', name='medium_ft-HfOx', seed=123, work_dir='.', log_dir='models/medium_HfOx-ft_1', model_dir='models/medium_HfOx-ft_1', checkpoints_dir='models/medium_HfOx-ft_1', results_dir='models/medium_HfOx-ft_1', downloads_dir='./downloads', device='cuda', default_dtype='float64', distributed=False, launcher='slurm', log_level='INFO', plot=True, plot_frequency=10, plot_interaction_e=False, error_table='PerAtomRMSE', model='MACE', r_max=5.0, radial_type='bessel', num_radial_basis=8, num_cutoff_basis=5, pair_repulsion=False, distance_transform='None', apply_cutoff=True, use_last_readout_only=False, use_embedding_readout=False, interaction='RealAgnosticResidualInteractionBlock', interaction_first='RealAgnosticResidualInteractionBlock', max_ell=3, correlation=3, use_reduced_cg=False, use_so3=False, use_agnostic_product=False, num_interactions=2, MLP_irreps='16x0e', radial_MLP='[64, 64, 64]', hidden_irreps='128x0e + 128x1o', edge_irreps=None, num_channels=128, max_L=1, gate='silu', scaling='rms_forces_scaling', avg_num_neighbors=1, compute_avg_num_neighbors=True, compute_stress=False, compute_forces=True, compute_polarizability=<function str2bool at 0x7c22c72f34c0>, compute_atomic_dipole=<function str2bool at 0x7c22c72f34c0>, train_file='data/random_subsample_trainval-1.xyz', valid_file=None, valid_fraction=0.2, test_file='data/test.xyz', test_dir=None, multi_processed_test=False, num_workers=0, pin_memory=True, atomic_numbers=None, mean=None, std=None, statistics_file=None, les_arguments=None, E0s='{8: -443.8224565134432, 72: -1529.4984727695407}', pseudolabel_replay=False, foundation_filter_elements=True, heads=None, multiheads_finetuning=False, foundation_head=None, weight_pt_head=1.0, real_pt_data_ratio_threshold=0.1, num_samples_pt=10000, force_mh_ft_lr=False, subselect_pt='random', filter_type_pt='none', allow_random_padding_pt=True, pt_train_file=None, pt_valid_file=None, foundation_model_elements=False, keep_isolated_atoms=False, energy_key='REF_energy', forces_key='REF_forces', virials_key='REF_virials', stress_key='REF_stress', dipole_key='dipole', polarizability_key='polarizability', head_key='head', charges_key='REF_charges', elec_temp_key='elec_temp', total_spin_key='total_spin', total_charge_key='total_charge', embedding_specs=None, skip_evaluate_heads='pt_head', loss='weighted', forces_weight=100.0, swa_forces_weight=100.0, energy_weight=1.0, swa_energy_weight=1000.0, virials_weight=1.0, swa_virials_weight=10.0, stress_weight=0.0, swa_stress_weight=10.0, dipole_weight=1.0, swa_dipole_weight=1.0, swa_polarizability_weight=1.0, polarizability_weight=1.0, config_type_weights='{"Default":1.0}', huber_delta=0.01, optimizer='adamw', beta=0.9, batch_size=14, valid_batch_size=10, lr=0.01, swa_lr=0.001, weight_decay=5e-07, amsgrad=True, scheduler='ReduceLROnPlateau', lr_factor=0.2, scheduler_patience=20, lr_scheduler_gamma=0.9993, swa=True, start_swa=375, lbfgs=False, ema=True, ema_decay=0.99, max_num_epochs=500, patience=2048, foundation_model='medium', foundation_model_readout=True, eval_interval=1, keep_checkpoints=False, save_all_checkpoints=False, restart_latest=False, save_cpu=False, clip_grad=10.0, dry_run=False, enable_cueq=True, only_cueq=False, enable_oeq=False, wandb=True, wandb_dir=None, wandb_project='MACE_HfOx_ft', wandb_entity='', wandb_name='medium_model_rss-1', wandb_log_hypers=['lr', 'lr_factor', 'lr_scheduler_gamma', 'scheduler', 'swa', 'swa_lr', 'start_swa', 'scheduler_patience', 'swa_energy_weight', 'swa_forces_weight', 'energy_weight', 'forces_weight', 'ema', 'ema_decay', 'weight_decay', 'huber_delta', 'optimizer', 'amsgrad', 'beta', 'batch_size', 'max_num_epochs', 'seed'], key_specification=KeySpecification(info_keys={'energy': 'REF_energy', 'stress': 'REF_stress', 'virials': 'REF_virials', 'dipole': 'dipole', 'head': 'head', 'elec_temp': 'elec_temp', 'total_charge': 'total_charge', 'polarizability': 'polarizability', 'total_spin': 'total_spin'}, arrays_keys={'forces': 'REF_forces', 'charges': 'REF_charges'}))
+2025-10-05 03:16:34.129 INFO: CUDA version: 12.6, CUDA device: 0
+2025-10-05 03:16:34.130 DEBUG: sys.platform='linux', git_executable='git'
+2025-10-05 03:16:34.132 DEBUG: Error accessing Git repository: /content/drive/MyDrive/colab_temp/mace_fine-tuning_expts
+2025-10-05 03:16:34.132 INFO: Using foundation model mace-mp-0 medium as initial checkpoint.
+2025-10-05 03:16:35.085 INFO: CUDA version: 12.6, CUDA device: 0
+2025-10-05 03:16:35.090 INFO: ===========LOADING INPUT DATA===========
+2025-10-05 03:16:35.091 INFO: Using heads: ['Default']
+2025-10-05 03:16:35.092 INFO: Using the key specifications to parse data:
+2025-10-05 03:16:35.093 INFO: Default: KeySpecification(info_keys={'energy': 'REF_energy', 'stress': 'REF_stress', 'virials': 'REF_virials', 'dipole': 'dipole', 'head': 'head', 'elec_temp': 'elec_temp', 'total_charge': 'total_charge', 'polarizability': 'polarizability', 'total_spin': 'total_spin'}, arrays_keys={'forces': 'REF_forces', 'charges': 'REF_charges'})
+2025-10-05 03:16:35.094 INFO: =============    Processing head Default     ===========
+2025-10-05 03:16:35.096 DEBUG: Loading training file: data/random_subsample_trainval-1.xyz
+2025-10-05 03:16:35.441 INFO: Training set 1/1 [energy: 451, stress: 451, virials: 0, dipole components: 0, head: 451, elec_temp: 0, total_charge: 0, polarizability: 0, total_spin: 0, forces: 451, charges: 0]
+2025-10-05 03:16:35.445 INFO: Total Training set [energy: 451, stress: 451, virials: 0, dipole components: 0, head: 451, elec_temp: 0, total_charge: 0, polarizability: 0, total_spin: 0, forces: 451, charges: 0]
+2025-10-05 03:16:35.447 INFO: No validation set provided, splitting training data instead.
+2025-10-05 03:16:35.463 INFO: Using random 20% of training set for validation with indices saved in: ./valid_indices_123.txt
+2025-10-05 03:16:35.467 INFO: Random Split Training set [energy: 361, stress: 361, virials: 0, dipole components: 0, head: 361, elec_temp: 0, total_charge: 0, polarizability: 0, total_spin: 0, forces: 361, charges: 0]
+2025-10-05 03:16:35.469 INFO: Random Split Validation set [energy: 90, stress: 90, virials: 0, dipole components: 0, head: 90, elec_temp: 0, total_charge: 0, polarizability: 0, total_spin: 0, forces: 90, charges: 0]
+2025-10-05 03:16:36.105 INFO: Test set 1/1 [energy: 816, stress: 816, virials: 0, dipole components: 0, head: 816, elec_temp: 0, total_charge: 0, polarizability: 0, total_spin: 0, forces: 816, charges: 0]
+2025-10-05 03:16:36.112 INFO: Total Test set [energy: 816, stress: 816, virials: 0, dipole components: 0, head: 816, elec_temp: 0, total_charge: 0, polarizability: 0, total_spin: 0, forces: 816, charges: 0]
+2025-10-05 03:16:36.113 INFO: Total number of configurations: train=361, valid=90, tests=[Default_Default: 816],
+2025-10-05 03:16:36.121 INFO: Atomic Numbers used: [8, 72]
+2025-10-05 03:16:36.123 INFO: Isolated Atomic Energies (E0s) not in training file, using command line argument
+2025-10-05 03:16:36.124 INFO: Atomic Energies used (z: eV) for head Default: {8: -443.8224565134432, 72: -1529.4984727695407}
+2025-10-05 03:16:36.125 INFO: Processing datasets for head 'Default'
+2025-10-05 03:16:38.432 DEBUG: Successfully loaded dataset from ASE files: ['data/random_subsample_trainval-1.xyz']
+2025-10-05 03:16:38.433 INFO: Combining 1 list datasets for head 'Default'
+2025-10-05 03:16:39.012 INFO: Head 'Default' training dataset size: 361
+2025-10-05 03:16:39.014 INFO: Computing average number of neighbors
+2025-10-05 03:16:39.195 INFO: Average number of neighbors: 57.789612929199976
+2025-10-05 03:16:39.197 INFO: During training the following quantities will be reported: energy, forces
+2025-10-05 03:16:39.198 INFO: ===========MODEL DETAILS===========
+2025-10-05 03:16:39.363 INFO: Loading FOUNDATION model
+2025-10-05 03:16:39.365 INFO: Using filtered elements: [8, 72]
+2025-10-05 03:16:39.367 INFO: Model configuration extracted from foundation model
+2025-10-05 03:16:39.368 INFO: Using weighted loss function for fine-tuning
+2025-10-05 03:16:39.369 INFO: Message passing with hidden irreps 128x0e+128x1o)
+2025-10-05 03:16:39.370 INFO: 2 layers, each with correlation order: 3 (body order: 4) and spherical harmonics up to: l=3
+2025-10-05 03:16:39.371 INFO: Radial cutoff: 6.0 A (total receptive field for each atom: 12.0 A)
+2025-10-05 03:16:39.373 INFO: Distance transform for radial basis functions: None
+2025-10-05 03:16:40.896 DEBUG: ScaleShiftMACE(
+  (node_embedding): LinearNodeEmbeddingBlock(
+    (linear): Linear(2x0e -> 128x0e | 256 weights)
+  )
+  (radial_embedding): RadialEmbeddingBlock(
+    (bessel_fn): BesselBasis(r_max=6.0, num_basis=10, trainable=True)
+    (cutoff_fn): PolynomialCutoff(p=5, r_max=6.0)
+  )
+  (spherical_harmonics): SphericalHarmonics()
+  (atomic_energies_fn): AtomicEnergiesBlock(energies=[[-443.8225, -1529.4985]])
+  (interactions): ModuleList(
+    (0): RealAgnosticResidualInteractionBlock(
+      (linear_up): Linear(128x0e -> 128x0e | 16384 weights)
+      (conv_tp): TensorProduct(128x0e x 1x0e+1x1o+1x2e+1x3o -> 128x0e+128x1o+128x2e+128x3o | 512 paths | 512 weights)
+      (conv_tp_weights): FullyConnectedNet[10, 64, 64, 64, 512]
+      (linear): Linear(128x0e+128x1o+128x2e+128x3o -> 128x0e+128x1o+128x2e+128x3o | 65536 weights)
+      (skip_tp): FullyConnectedTensorProduct(128x0e x 2x0e -> 128x0e+128x1o | 32768 paths | 32768 weights)
+      (reshape): reshape_irreps()
+    )
+    (1): RealAgnosticResidualInteractionBlock(
+      (linear_up): Linear(128x0e+128x1o -> 128x0e+128x1o | 32768 weights)
+      (conv_tp): TensorProduct(128x0e+128x1o x 1x0e+1x1o+1x2e+1x3o -> 256x0e+384x1o+384x2e+256x3o | 1280 paths | 1280 weights)
+      (conv_tp_weights): FullyConnectedNet[10, 64, 64, 64, 1280]
+      (linear): Linear(128x0e+128x0e+128x1o+128x1o+128x1o+128x2e+128x2e+128x2e+128x3o+128x3o -> 128x0e+128x1o+128x2e+128x3o | 163840 weights)
+      (skip_tp): FullyConnectedTensorProduct(128x0e+128x1o x 2x0e -> 128x0e | 32768 paths | 32768 weights)
+      (reshape): reshape_irreps()
+    )
+  )
+  (products): ModuleList(
+    (0): EquivariantProductBasisBlock(
+      (symmetric_contractions): SymmetricContraction(
+        (contractions): ModuleList(
+          (0): Contraction(
+            (contractions_weighting): ModuleList(
+              (0-1): 2 x GraphModule()
+            )
+            (contractions_features): ModuleList(
+              (0-1): 2 x GraphModule()
+            )
+            (weights): ParameterList(
+                (0): Parameter containing: [torch.float64 of size 2x4x128 (cuda:0)]
+                (1): Parameter containing: [torch.float64 of size 2x1x128 (cuda:0)]
+            )
+            (graph_opt_main): GraphModule()
+          )
+          (1): Contraction(
+            (contractions_weighting): ModuleList(
+              (0-1): 2 x GraphModule()
+            )
+            (contractions_features): ModuleList(
+              (0-1): 2 x GraphModule()
+            )
+            (weights): ParameterList(
+                (0): Parameter containing: [torch.float64 of size 2x6x128 (cuda:0)]
+                (1): Parameter containing: [torch.float64 of size 2x1x128 (cuda:0)]
+            )
+            (graph_opt_main): GraphModule()
+          )
+        )
+      )
+      (linear): Linear(128x0e+128x1o -> 128x0e+128x1o | 32768 weights)
+    )
+    (1): EquivariantProductBasisBlock(
+      (symmetric_contractions): SymmetricContraction(
+        (contractions): ModuleList(
+          (0): Contraction(
+            (contractions_weighting): ModuleList(
+              (0-1): 2 x GraphModule()
+            )
+            (contractions_features): ModuleList(
+              (0-1): 2 x GraphModule()
+            )
+            (weights): ParameterList(
+                (0): Parameter containing: [torch.float64 of size 2x4x128 (cuda:0)]
+                (1): Parameter containing: [torch.float64 of size 2x1x128 (cuda:0)]
+            )
+            (graph_opt_main): GraphModule()
+          )
+        )
+      )
+      (linear): Linear(128x0e -> 128x0e | 16384 weights)
+    )
+  )
+  (readouts): ModuleList(
+    (0): LinearReadoutBlock(
+      (linear): Linear(128x0e+128x1o -> 1x0e | 128 weights)
+    )
+    (1): NonLinearReadoutBlock(
+      (linear_1): Linear(128x0e -> 16x0e | 2048 weights)
+      (non_linearity): Activation [x] (16x0e -> 16x0e)
+      (linear_2): Linear(16x0e -> 1x0e | 16 weights)
+    )
+  )
+  (scale_shift): ScaleShiftBlock(scale=0.8042, shift=0.1641)
+)
+2025-10-05 03:16:40.898 INFO: Total number of parameters: 557210
+2025-10-05 03:16:40.899 INFO: 
+2025-10-05 03:16:40.900 INFO: ===========OPTIMIZER INFORMATION===========
+2025-10-05 03:16:40.902 INFO: Using ADAMW as parameter optimizer
+2025-10-05 03:16:40.903 INFO: Batch size: 14
+2025-10-05 03:16:40.904 INFO: Using Exponential Moving Average with decay: 0.99
+2025-10-05 03:16:40.905 INFO: Number of gradient updates: 12892
+2025-10-05 03:16:40.906 INFO: Learning rate: 0.01, weight decay: 5e-07
+2025-10-05 03:16:40.907 INFO: WeightedEnergyForcesLoss(energy_weight=1.000, forces_weight=100.000)
+2025-10-05 03:16:40.908 INFO: Converting model to CUEQ for accelerated training
+2025-10-05 03:16:41.024 INFO: Creating new model with cuequivariance settings
+2025-10-05 03:16:41.027 DEBUG: Normalized paths for operand 2 in uv,iu,iv operands=[(2, 128)],[(1, 2)],[(1, 128)] paths=[op0[0]*op1[0]*op2[0]*1.]: got uv,iu,iv operands=[(2, 128)],[(1, 2)],[(1, 128)] paths=[op0[0]*op1[0]*op2[0]*0.71]
+2025-10-05 03:16:41.046 DEBUG: Normalized paths for operand 2 in uv,iu,iv operands=[(128, 128)],[(1, 128)],[(1, 128)] paths=[op0[0]*op1[0]*op2[0]*1.]: got uv,iu,iv operands=[(128, 128)],[(1, 128)],[(1, 128)] paths=[op0[0]*op1[0]*op2[0]*0.09]
+2025-10-05 03:16:41.061 DEBUG: Normalized paths for operand 3 in uv,iu,jv,kuv+ijk sizes=512,128,16,2048 num_segments=4,1,4,4 num_paths=4 i=1 j={1, 3, 5, 7} k={1, 3, 5, 7} u=128 v=1: got uv,iu,jv,kuv+ijk sizes=512,128,16,2048 num_segments=4,1,4,4 num_paths=4 i=1 j={1, 3, 5, 7} k={1, 3, 5, 7} u=128 v=1
+2025-10-05 03:16:41.062 DEBUG: Flattened ijk in uv,iu,jv,kuv+ijk sizes=512,128,16,2048 num_segments=4,1,4,4 num_paths=4 i=1 j={1, 3, 5, 7} k={1, 3, 5, 7} u=128 v=1: got uv,u,v,uv sizes=512,128,16,2048 num_segments=4,1,16,16 num_paths=16 u=128 v=1
+2025-10-05 03:16:41.064 DEBUG: Squeezed uv,u,v,uv sizes=512,128,16,2048 num_segments=4,1,16,16 num_paths=16 u=128 v=1 to u,u,,u sizes=512,128,16,2048 num_segments=4,1,16,16 num_paths=16 u=128
+2025-10-05 03:16:41.065 DEBUG: Flattened ijk in uv,iu,jv,kuv+ijk sizes=512,128,16,2048 num_segments=4,1,4,4 num_paths=4 i=1 j={1, 3, 5, 7} k={1, 3, 5, 7} u=128 v=1: got uv,u,v,uv sizes=512,128,16,2048 num_segments=4,1,16,16 num_paths=16 u=128 v=1
+2025-10-05 03:16:41.067 DEBUG: Squeezed uv,u,v,uv sizes=512,128,16,2048 num_segments=4,1,16,16 num_paths=16 u=128 v=1 to u,u,,u sizes=512,128,16,2048 num_segments=4,1,16,16 num_paths=16 u=128
+2025-10-05 03:16:41.103 DEBUG: Normalized paths for operand 2 in uv,iu,iv sizes=65536,2048,2048 num_segments=4,4,4 num_paths=4 i={1, 3, 5, 7} u=128 v=128: got uv,iu,iv sizes=65536,2048,2048 num_segments=4,4,4 num_paths=4 i={1, 3, 5, 7} u=128 v=128
+2025-10-05 03:16:41.137 DEBUG: Normalized paths for operand 3 in uvw,iu,jv,kw+ijk sizes=32768,128,2,512 num_segments=1,1,1,2 num_paths=1 i=1 j=1 k={1, 3} u=128 v=2 w=128: got uvw,iu,jv,kw+ijk sizes=32768,128,2,512 num_segments=1,1,1,2 num_paths=1 i=1 j=1 k={1, 3} u=128 v=2 w=128
+2025-10-05 03:16:41.171 DEBUG: Flattened abciu in u,a,b,c,i+abcui operands=[(23,)],[(16,)],[(16,)],[(16,)],[(1,)] paths=[op0[0]*op1[0]*op2[0]*op3[0]*op4[0]*c c.shape=(16, 16, 16, 23, 1) c.nnz=276]: got ,,,, sizes=23,16,16,16,1 num_segments=23,16,16,16,1 num_paths=276
+2025-10-05 03:16:41.177 DEBUG: Flattened abiu in u,a,b,i+abui operands=[(4,)],[(16,)],[(16,)],[(1,)] paths=[op0[0]*op1[0]*op2[0]*op3[0]*c c.shape=(16, 16, 4, 1) c.nnz=16]: got ,,, sizes=4,16,16,1 num_segments=4,16,16,1 num_paths=16
+2025-10-05 03:16:41.179 DEBUG: Flattened aiu in u,a,i+aui operands=[(1,)],[(16,)],[(1,)] paths=[op0[0]*op1[0]*op2[0]*c c.shape=(16, 1, 1) c.nnz=1]: got ,, sizes=1,16,1 num_segments=1,16,1 num_paths=1
+2025-10-05 03:16:41.267 DEBUG: Flattened abciu in u,a,b,c,i+abcui operands=[(51,)],[(16,)],[(16,)],[(16,)],[(3,)] paths=[op0[0]*op1[0]*op2[0]*op3[0]*op4[0]*c c.shape=(16, 16, 16, 51, 3) c.nnz=1554]: got ,,,, sizes=51,16,16,16,3 num_segments=51,16,16,16,3 num_paths=1554
+2025-10-05 03:16:41.285 DEBUG: Flattened abiu in u,a,b,i+abui operands=[(6,)],[(16,)],[(16,)],[(3,)] paths=[op0[0]*op1[0]*op2[0]*op3[0]*c c.shape=(16, 16, 6, 3) c.nnz=70]: got ,,, sizes=6,16,16,3 num_segments=6,16,16,3 num_paths=70
+2025-10-05 03:16:41.288 DEBUG: Flattened aiu in u,a,i+aui operands=[(1,)],[(16,)],[(3,)] paths=[op0[0]*op1[0]*op2[0]*c c.shape=(16, 1, 3) c.nnz=3]: got ,, sizes=1,16,3 num_segments=1,16,3 num_paths=3
+2025-10-05 03:16:41.489 DEBUG: _reduced_tensor_product_basis (0e+1o+2e+3o,), frozenset({(1, (0,))}), keep_ir=frozenset({0e, 1o})
+2025-10-05 03:16:41.491 DEBUG: Normalized paths for operand 2 in w,a,i+aiw sizes=2,16,4 num_segments=2,1,2 num_paths=2 a=16 i={1, 3} w=1: got w,a,i+aiw sizes=2,16,4 num_segments=2,1,2 num_paths=2 a=16 i={1, 3} w=1
+2025-10-05 03:16:41.492 DEBUG: Flattened aiw in w,a,i+aiw sizes=2,16,4 num_segments=2,1,2 num_paths=2 a=16 i={1, 3} w=1: got ,, sizes=2,16,4 num_segments=2,16,4 num_paths=4
+2025-10-05 03:16:41.492 DEBUG: _reduced_tensor_product_basis (0e+1o+2e+3o, 0e+1o+2e+3o), frozenset({(1, (0, 1)), (1, (1, 0))}), keep_ir=frozenset({0e, 1o}), use _optimized_reduced_symmetric_tensor_product_basis
+2025-10-05 03:16:41.493 DEBUG: _reduced_tensor_product_basis (0e,), frozenset({(1, (0,))}), keep_ir=frozenset({0e, 2o, 3o, 2e, 3e, 1e, 1o, 4e})
+2025-10-05 03:16:41.493 DEBUG: _reduced_tensor_product_basis (0e, 0e), frozenset({(1, (0, 1)), (1, (1, 0))}), keep_ir=frozenset({0e, 1o})
+2025-10-05 03:16:41.495 DEBUG: _reduced_tensor_product_basis (1o,), frozenset({(1, (0,))}), keep_ir=frozenset({0e, 2o, 3o, 2e, 3e, 1e, 1o, 4e})
+2025-10-05 03:16:41.495 DEBUG: _reduced_tensor_product_basis (1o, 1o), frozenset({(1, (0, 1)), (1, (1, 0))}), keep_ir=frozenset({0e, 1o})
+2025-10-05 03:16:41.497 DEBUG: _reduced_tensor_product_basis (2e,), frozenset({(1, (0,))}), keep_ir=frozenset({0e, 2o, 3o, 2e, 3e, 1e, 1o, 4e})
+2025-10-05 03:16:41.498 DEBUG: _reduced_tensor_product_basis (2e, 2e), frozenset({(1, (0, 1)), (1, (1, 0))}), keep_ir=frozenset({0e, 1o})
+2025-10-05 03:16:41.500 DEBUG: _reduced_tensor_product_basis (3o,), frozenset({(1, (0,))}), keep_ir=frozenset({0e, 2o, 3o, 2e, 3e, 1e, 1o, 4e})
+2025-10-05 03:16:41.500 DEBUG: _reduced_tensor_product_basis (3o, 3o), frozenset({(1, (0, 1)), (1, (1, 0))}), keep_ir=frozenset({0e, 1o})
+2025-10-05 03:16:41.509 DEBUG: Normalized paths for operand 3 in w,a,b,i+abiw sizes=7,16,16,4 num_segments=2,1,1,2 num_paths=2 a=16 b=16 i={1, 3} w={3, 4}: got w,a,b,i+abiw sizes=7,16,16,4 num_segments=2,1,1,2 num_paths=2 a=16 b=16 i={1, 3} w={3, 4}
+2025-10-05 03:16:41.511 DEBUG: Flattened abiw in w,a,b,i+abiw sizes=7,16,16,4 num_segments=2,1,1,2 num_paths=2 a=16 b=16 i={1, 3} w={3, 4}: got ,,, sizes=7,16,16,4 num_segments=7,16,16,4 num_paths=86
+2025-10-05 03:16:41.513 DEBUG: _reduced_tensor_product_basis (0e+1o+2e+3o, 0e+1o+2e+3o, 0e+1o+2e+3o), frozenset({(1, (0, 1, 2)), (1, (1, 0, 2)), (1, (2, 0, 1)), (1, (1, 2, 0)), (1, (0, 2, 1)), (1, (2, 1, 0))}), keep_ir=frozenset({0e, 1o}), use _optimized_reduced_symmetric_tensor_product_basis
+2025-10-05 03:16:41.513 DEBUG: _reduced_tensor_product_basis (0e,), frozenset({(1, (0,))}), keep_ir=frozenset({0e, 2o, 7o, 3o, 2e, 4e, 3e, 5o, 6e, 1e, 6o, 1o, 5e, 4o, 0o})
+2025-10-05 03:16:41.513 DEBUG: _reduced_tensor_product_basis (0e, 0e), frozenset({(1, (0, 1)), (1, (1, 0))}), keep_ir=frozenset({0e, 2o, 3o, 2e, 3e, 1e, 1o, 4e})
+2025-10-05 03:16:41.515 DEBUG: _reduced_tensor_product_basis (0e, 0e, 0e), frozenset({(1, (0, 1, 2)), (1, (1, 0, 2)), (1, (2, 0, 1)), (1, (1, 2, 0)), (1, (0, 2, 1)), (1, (2, 1, 0))}), keep_ir=frozenset({0e, 1o})
+2025-10-05 03:16:41.517 DEBUG: _reduced_tensor_product_basis (1o,), frozenset({(1, (0,))}), keep_ir=frozenset({0e, 2o, 7o, 3o, 2e, 4e, 3e, 5o, 6e, 1e, 6o, 1o, 5e, 4o, 0o})
+2025-10-05 03:16:41.517 DEBUG: _reduced_tensor_product_basis (1o, 1o), frozenset({(1, (0, 1)), (1, (1, 0))}), keep_ir=frozenset({0e, 2o, 3o, 2e, 3e, 1e, 1o, 4e})
+2025-10-05 03:16:41.520 DEBUG: _reduced_tensor_product_basis (1o, 1o, 1o), frozenset({(1, (0, 1, 2)), (1, (1, 0, 2)), (1, (2, 0, 1)), (1, (1, 2, 0)), (1, (0, 2, 1)), (1, (2, 1, 0))}), keep_ir=frozenset({0e, 1o})
+2025-10-05 03:16:41.520 DEBUG: _reduced_tensor_product_basis (1o, 1o), frozenset({(1, (0, 1)), (1, (1, 0))}), keep_ir=frozenset({0e, 1e, 2e, 1o})
+2025-10-05 03:16:41.524 DEBUG: _reduced_tensor_product_basis (2e,), frozenset({(1, (0,))}), keep_ir=frozenset({0e, 2o, 7o, 3o, 2e, 4e, 3e, 5o, 6e, 1e, 6o, 1o, 5e, 4o, 0o})
+2025-10-05 03:16:41.525 DEBUG: _reduced_tensor_product_basis (2e, 2e), frozenset({(1, (0, 1)), (1, (1, 0))}), keep_ir=frozenset({0e, 2o, 3o, 2e, 3e, 1e, 1o, 4e})
+2025-10-05 03:16:41.529 DEBUG: _reduced_tensor_product_basis (2e, 2e, 2e), frozenset({(1, (0, 1, 2)), (1, (1, 0, 2)), (1, (2, 0, 1)), (1, (1, 2, 0)), (1, (0, 2, 1)), (1, (2, 1, 0))}), keep_ir=frozenset({0e, 1o})
+2025-10-05 03:16:41.529 DEBUG: _reduced_tensor_product_basis (2e, 2e), frozenset({(1, (0, 1)), (1, (1, 0))}), keep_ir=frozenset({3o, 1o, 2o, 2e})
+2025-10-05 03:16:41.532 DEBUG: _reduced_tensor_product_basis (3o,), frozenset({(1, (0,))}), keep_ir=frozenset({0e, 2o, 7o, 3o, 2e, 4e, 3e, 5o, 6e, 1e, 6o, 1o, 5e, 4o, 0o})
+2025-10-05 03:16:41.533 DEBUG: _reduced_tensor_product_basis (3o, 3o), frozenset({(1, (0, 1)), (1, (1, 0))}), keep_ir=frozenset({0e, 2o, 3o, 2e, 3e, 1e, 1o, 4e})
+2025-10-05 03:16:41.538 DEBUG: _reduced_tensor_product_basis (3o, 3o, 3o), frozenset({(1, (0, 1, 2)), (1, (1, 0, 2)), (1, (2, 0, 1)), (1, (1, 2, 0)), (1, (0, 2, 1)), (1, (2, 1, 0))}), keep_ir=frozenset({0e, 1o})
+2025-10-05 03:16:41.538 DEBUG: _reduced_tensor_product_basis (3o, 3o), frozenset({(1, (0, 1)), (1, (1, 0))}), keep_ir=frozenset({3e, 3o, 2e, 4e})
+2025-10-05 03:16:41.662 DEBUG: Normalized paths for operand 4 in w,a,b,c,i+abciw sizes=20,16,16,16,4 num_segments=2,1,1,1,2 num_paths=2 a=16 b=16 c=16 i={1, 3} w={8, 12}: got w,a,b,c,i+abciw sizes=20,16,16,16,4 num_segments=2,1,1,1,2 num_paths=2 a=16 b=16 c=16 i={1, 3} w={8, 12}
+2025-10-05 03:16:41.704 DEBUG: Flattened abciw in w,a,b,c,i+abciw sizes=20,16,16,16,4 num_segments=2,1,1,1,2 num_paths=2 a=16 b=16 c=16 i={1, 3} w={8, 12}: got ,,,, sizes=20,16,16,16,4 num_segments=20,16,16,16,4 num_paths=1949
+2025-10-05 03:16:43.059 DEBUG: Normalized paths for operand 2 in uv,iu,iv sizes=32768,512,512 num_segments=2,2,2 num_paths=2 i={1, 3} u=128 v=128: got uv,iu,iv sizes=32768,512,512 num_segments=2,2,2 num_paths=2 i={1, 3} u=128 v=128
+2025-10-05 03:16:43.089 DEBUG: Normalized paths for operand 2 in uv,iu,iv sizes=128,512,1 num_segments=1,2,1 num_paths=1 i={1, 3} u=128 v=1: got uv,iu,iv sizes=128,512,1 num_segments=1,2,1 num_paths=1 i={1, 3} u=128 v=1
+2025-10-05 03:16:43.106 DEBUG: Normalized paths for operand 2 in uv,iu,iv sizes=32768,512,512 num_segments=2,2,2 num_paths=2 i={1, 3} u=128 v=128: got uv,iu,iv sizes=32768,512,512 num_segments=2,2,2 num_paths=2 i={1, 3} u=128 v=128
+2025-10-05 03:16:43.130 DEBUG: Normalized paths for operand 3 in uv,iu,jv,kuv+ijk sizes=1280,512,16,5120 num_segments=10,2,4,10 num_paths=10 i={1, 3} j={1, 3, 5, 7} k={1, 3, 5, 7} u=128 v=1: got uv,iu,jv,kuv+ijk sizes=1280,512,16,5120 num_segments=10,2,4,10 num_paths=10 i={1, 3} j={1, 3, 5, 7} k={1, 3, 5, 7} u=128 v=1
+2025-10-05 03:16:43.134 DEBUG: Flattened ijk in uv,iu,jv,kuv+ijk sizes=1280,512,16,5120 num_segments=10,2,4,10 num_paths=10 i={1, 3} j={1, 3, 5, 7} k={1, 3, 5, 7} u=128 v=1: got uv,u,v,uv sizes=1280,512,16,5120 num_segments=10,4,16,40 num_paths=86 u=128 v=1
+2025-10-05 03:16:43.137 DEBUG: Squeezed uv,u,v,uv sizes=1280,512,16,5120 num_segments=10,4,16,40 num_paths=86 u=128 v=1 to u,u,,u sizes=1280,512,16,5120 num_segments=10,4,16,40 num_paths=86 u=128
+2025-10-05 03:16:43.141 DEBUG: Flattened ijk in uv,iu,jv,kuv+ijk sizes=1280,512,16,5120 num_segments=10,2,4,10 num_paths=10 i={1, 3} j={1, 3, 5, 7} k={1, 3, 5, 7} u=128 v=1: got uv,u,v,uv sizes=1280,512,16,5120 num_segments=10,4,16,40 num_paths=86 u=128 v=1
+2025-10-05 03:16:43.145 DEBUG: Squeezed uv,u,v,uv sizes=1280,512,16,5120 num_segments=10,4,16,40 num_paths=86 u=128 v=1 to u,u,,u sizes=1280,512,16,5120 num_segments=10,4,16,40 num_paths=86 u=128
+2025-10-05 03:16:43.182 DEBUG: Normalized paths for operand 2 in uv,iu,iv sizes=163840,5120,2048 num_segments=10,10,4 num_paths=10 i={1, 3, 5, 7} u=128 v=128: got uv,iu,iv sizes=163840,5120,2048 num_segments=10,10,4 num_paths=10 i={1, 3, 5, 7} u=128 v=128
+2025-10-05 03:16:43.255 DEBUG: Normalized paths for operand 3 in uvw,iu,jv,kw+ijk sizes=32768,512,2,128 num_segments=1,2,1,1 num_paths=1 i={1, 3} j=1 k=1 u=128 v=2 w=128: got uvw,iu,jv,kw+ijk sizes=32768,512,2,128 num_segments=1,2,1,1 num_paths=1 i={1, 3} j=1 k=1 u=128 v=2 w=128
+2025-10-05 03:16:43.278 DEBUG: Normalized paths for operand 2 in uv,iu,iv operands=[(128, 128)],[(1, 128)],[(1, 128)] paths=[op0[0]*op1[0]*op2[0]*1.]: got uv,iu,iv operands=[(128, 128)],[(1, 128)],[(1, 128)] paths=[op0[0]*op1[0]*op2[0]*0.09]
+2025-10-05 03:16:43.291 DEBUG: Normalized paths for operand 2 in uv,iu,iv operands=[(128, 16)],[(1, 128)],[(1, 16)] paths=[op0[0]*op1[0]*op2[0]*1.]: got uv,iu,iv operands=[(128, 16)],[(1, 128)],[(1, 16)] paths=[op0[0]*op1[0]*op2[0]*0.09]
+2025-10-05 03:16:43.334 DEBUG: Normalized paths for operand 2 in uv,iu,iv operands=[(16, 1)],[(1, 16)],[(1, 1)] paths=[op0[0]*op1[0]*op2[0]*1.]: got uv,iu,iv operands=[(16, 1)],[(1, 16)],[(1, 1)] paths=[op0[0]*op1[0]*op2[0]*0.25]
+2025-10-05 03:16:43.353 DEBUG: Transferring additional key: interactions.1.conv_tp_weights.layer3.weight
+2025-10-05 03:16:43.353 DEBUG: Transferring additional key: interactions.1.conv_tp_weights.layer1.weight
+2025-10-05 03:16:43.353 DEBUG: Transferring key node_embedding.linear.weight after adapting shape (256,) → (1, 256) -> torch.Size([1, 256])
+2025-10-05 03:16:43.353 DEBUG: Transferring additional key: atomic_energies_fn.atomic_energies
+2025-10-05 03:16:43.353 DEBUG: Transferring additional key: radial_embedding.cutoff_fn.p
+2025-10-05 03:16:43.353 DEBUG: Transferring additional key: interactions.0.conv_tp_weights.layer2.weight
+2025-10-05 03:16:43.353 DEBUG: Transferring additional key: radial_embedding.cutoff_fn.r_max
+2025-10-05 03:16:43.353 DEBUG: Transferring additional key: radial_embedding.bessel_fn.bessel_weights
+2025-10-05 03:16:43.353 DEBUG: Transferring additional key: interactions.0.conv_tp_weights.layer0.weight
+2025-10-05 03:16:43.353 DEBUG: Transferring key interactions.0.linear.weight after adapting shape (65536,) → (1, 65536) -> torch.Size([1, 65536])
+2025-10-05 03:16:43.354 DEBUG: Transferring key readouts.1.linear_1.weight after adapting shape (2048,) → (1, 2048) -> torch.Size([1, 2048])
+2025-10-05 03:16:43.354 DEBUG: Transferring additional key: radial_embedding.bessel_fn.r_max
+2025-10-05 03:16:43.354 DEBUG: Transferring key interactions.1.linear_up.weight after adapting shape (32768,) → (1, 32768) -> torch.Size([1, 32768])
+2025-10-05 03:16:43.354 DEBUG: Transferring additional key: interactions.0.conv_tp_weights.layer1.weight
+2025-10-05 03:16:43.354 DEBUG: Transferring key interactions.1.linear.weight after adapting shape (163840,) → (1, 163840) -> torch.Size([1, 163840])
+2025-10-05 03:16:43.354 DEBUG: Transferring additional key: interactions.1.conv_tp_weights.layer0.weight
+2025-10-05 03:16:43.354 DEBUG: Transferring key interactions.0.skip_tp.weight after adapting shape (32768,) → (1, 32768) -> torch.Size([1, 32768])
+2025-10-05 03:16:43.354 DEBUG: Transferring additional key: interactions.1.conv_tp_weights.layer2.weight
+2025-10-05 03:16:43.354 DEBUG: Transferring key readouts.0.linear.weight after adapting shape (128,) → (1, 128) -> torch.Size([1, 128])
+2025-10-05 03:16:43.354 DEBUG: Transferring key interactions.0.linear_up.weight after adapting shape (16384,) → (1, 16384) -> torch.Size([1, 16384])
+2025-10-05 03:16:43.354 DEBUG: Transferring additional key: interactions.0.conv_tp_weights.layer3.weight
+2025-10-05 03:16:43.354 DEBUG: Transferring additional key: scale_shift.shift
+2025-10-05 03:16:43.355 DEBUG: Transferring additional key: radial_embedding.bessel_fn.prefactor
+2025-10-05 03:16:43.355 DEBUG: Transferring additional key: r_max
+2025-10-05 03:16:43.355 DEBUG: Transferring additional key: scale_shift.scale
+2025-10-05 03:16:43.355 DEBUG: Transferring key products.0.linear.weight after adapting shape (32768,) → (1, 32768) -> torch.Size([1, 32768])
+2025-10-05 03:16:43.355 DEBUG: Transferring key interactions.1.skip_tp.weight after adapting shape (32768,) → (1, 32768) -> torch.Size([1, 32768])
+2025-10-05 03:16:43.355 DEBUG: Transferring key products.1.linear.weight after adapting shape (16384,) → (1, 16384) -> torch.Size([1, 16384])
+2025-10-05 03:16:43.355 DEBUG: Transferring additional key: atomic_numbers
+2025-10-05 03:16:43.355 DEBUG: Transferring key readouts.1.linear_2.weight after adapting shape (16,) → (1, 16) -> torch.Size([1, 16])
+2025-10-05 03:16:43.355 DEBUG: Transferring additional key: num_interactions
+2025-10-05 03:16:43.364 INFO: Stage Two (after 375 epochs) with loss function: WeightedEnergyForcesLoss(energy_weight=1000.000, forces_weight=100.000), with energy weight : 1000.0, forces weight : 100.0 and learning rate : 0.001
+2025-10-05 03:16:43.459 INFO: Using Weights and Biases for logging
+2025-10-05 03:16:43.862 DEBUG: sys.platform='linux', git_executable='git'
+2025-10-05 03:16:44.696 INFO: Using gradient clipping with tolerance=10.000
+2025-10-05 03:16:44.697 INFO: 
+2025-10-05 03:16:44.698 INFO: ===========TRAINING===========
+2025-10-05 03:16:44.699 INFO: Started training, reporting errors on validation set
+2025-10-05 03:16:44.701 INFO: Loss metrics on validation set
+2025-10-05 03:17:24.970 INFO: Initial: head: Default, loss=8.14378773, RMSE_E_per_atom= 7667.48 meV, RMSE_F=  476.52 meV / A
+2025-10-05 03:20:28.770 INFO: Epoch 0: head: Default, loss=2.60023001, RMSE_E_per_atom= 2019.00 meV, RMSE_F=  468.25 meV / A
+2025-10-05 03:20:28.772 DEBUG: Running inference on train_Default dataset
+2025-10-05 03:20:28.833 DEBUG: Plotting failed: too many indices for tensor of dimension 1
+2025-10-05 03:20:28.838 DEBUG: Saving checkpoint: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-0.pt
+2025-10-05 03:21:35.252 INFO: Epoch 1: head: Default, loss=2.89725409, RMSE_E_per_atom= 1767.65 meV, RMSE_F=  508.41 meV / A
+2025-10-05 03:21:38.875 INFO: Epoch 2: head: Default, loss=1.34605298, RMSE_E_per_atom=  856.32 meV, RMSE_F=  356.42 meV / A
+2025-10-05 03:21:38.880 DEBUG: Deleting old checkpoint file: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-0.pt
+2025-10-05 03:21:38.883 DEBUG: Saving checkpoint: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-2.pt
+2025-10-05 03:21:42.608 INFO: Epoch 3: head: Default, loss=1.04618739, RMSE_E_per_atom=  407.06 meV, RMSE_F=  320.41 meV / A
+2025-10-05 03:21:42.613 DEBUG: Deleting old checkpoint file: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-2.pt
+2025-10-05 03:21:42.616 DEBUG: Saving checkpoint: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-3.pt
+2025-10-05 03:21:46.359 INFO: Epoch 4: head: Default, loss=0.90746724, RMSE_E_per_atom=  312.34 meV, RMSE_F=  299.17 meV / A
+2025-10-05 03:21:46.363 DEBUG: Deleting old checkpoint file: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-3.pt
+2025-10-05 03:21:46.367 DEBUG: Saving checkpoint: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-4.pt
+2025-10-05 03:21:50.149 INFO: Epoch 5: head: Default, loss=0.81131871, RMSE_E_per_atom=  263.89 meV, RMSE_F=  283.19 meV / A
+2025-10-05 03:21:50.202 DEBUG: Deleting old checkpoint file: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-4.pt
+2025-10-05 03:21:50.206 DEBUG: Saving checkpoint: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-5.pt
+2025-10-05 03:21:53.980 INFO: Epoch 6: head: Default, loss=0.79990736, RMSE_E_per_atom=  258.14 meV, RMSE_F=  281.23 meV / A
+2025-10-05 03:21:53.985 DEBUG: Deleting old checkpoint file: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-5.pt
+2025-10-05 03:21:53.988 DEBUG: Saving checkpoint: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-6.pt
+2025-10-05 03:21:57.742 INFO: Epoch 7: head: Default, loss=0.75096295, RMSE_E_per_atom=  189.81 meV, RMSE_F=  272.99 meV / A
+2025-10-05 03:21:57.746 DEBUG: Deleting old checkpoint file: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-6.pt
+2025-10-05 03:21:57.750 DEBUG: Saving checkpoint: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-7.pt
+2025-10-05 03:22:01.500 INFO: Epoch 8: head: Default, loss=0.68452312, RMSE_E_per_atom=  160.19 meV, RMSE_F=  260.76 meV / A
+2025-10-05 03:22:01.505 DEBUG: Deleting old checkpoint file: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-7.pt
+2025-10-05 03:22:01.508 DEBUG: Saving checkpoint: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-8.pt
+2025-10-05 03:22:05.203 INFO: Epoch 9: head: Default, loss=0.65890478, RMSE_E_per_atom=  128.70 meV, RMSE_F=  256.02 meV / A
+2025-10-05 03:22:05.208 DEBUG: Deleting old checkpoint file: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-8.pt
+2025-10-05 03:22:05.211 DEBUG: Saving checkpoint: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-9.pt
+2025-10-05 03:22:08.923 INFO: Epoch 10: head: Default, loss=0.63862855, RMSE_E_per_atom=  129.52 meV, RMSE_F=  252.08 meV / A
+2025-10-05 03:22:08.926 DEBUG: Running inference on train_Default dataset
+2025-10-05 03:22:08.983 DEBUG: Plotting failed: too many indices for tensor of dimension 1
+2025-10-05 03:22:08.987 DEBUG: Deleting old checkpoint file: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-9.pt
+2025-10-05 03:22:08.991 DEBUG: Saving checkpoint: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-10.pt
+2025-10-05 03:22:12.524 INFO: Epoch 11: head: Default, loss=0.77297743, RMSE_E_per_atom=  189.00 meV, RMSE_F=  277.10 meV / A
+2025-10-05 03:22:16.246 INFO: Epoch 12: head: Default, loss=0.65763773, RMSE_E_per_atom=  163.15 meV, RMSE_F=  255.63 meV / A
+2025-10-05 03:22:19.928 INFO: Epoch 13: head: Default, loss=0.62692011, RMSE_E_per_atom=  146.66 meV, RMSE_F=  249.61 meV / A
+2025-10-05 03:22:19.932 DEBUG: Deleting old checkpoint file: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-10.pt
+2025-10-05 03:22:19.935 DEBUG: Saving checkpoint: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-13.pt
+2025-10-05 03:22:23.679 INFO: Epoch 14: head: Default, loss=0.60344425, RMSE_E_per_atom=  127.30 meV, RMSE_F=  244.98 meV / A
+2025-10-05 03:22:23.684 DEBUG: Deleting old checkpoint file: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-13.pt
+2025-10-05 03:22:23.687 DEBUG: Saving checkpoint: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-14.pt
+2025-10-05 03:22:27.438 INFO: Epoch 15: head: Default, loss=0.57643233, RMSE_E_per_atom=  112.21 meV, RMSE_F=  239.50 meV / A
+2025-10-05 03:22:27.443 DEBUG: Deleting old checkpoint file: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-14.pt
+2025-10-05 03:22:27.446 DEBUG: Saving checkpoint: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-15.pt
+2025-10-05 03:22:31.169 INFO: Epoch 16: head: Default, loss=0.56198885, RMSE_E_per_atom=  100.83 meV, RMSE_F=  236.52 meV / A
+2025-10-05 03:22:31.173 DEBUG: Deleting old checkpoint file: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-15.pt
+2025-10-05 03:22:31.176 DEBUG: Saving checkpoint: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-16.pt
+2025-10-05 03:22:34.861 INFO: Epoch 17: head: Default, loss=0.55393176, RMSE_E_per_atom=   94.18 meV, RMSE_F=  234.86 meV / A
+2025-10-05 03:22:34.865 DEBUG: Deleting old checkpoint file: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-16.pt
+2025-10-05 03:22:34.868 DEBUG: Saving checkpoint: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-17.pt
+2025-10-05 03:22:38.626 INFO: Epoch 18: head: Default, loss=0.57015060, RMSE_E_per_atom=   86.86 meV, RMSE_F=  238.27 meV / A
+2025-10-05 03:22:42.296 INFO: Epoch 19: head: Default, loss=0.55787981, RMSE_E_per_atom=   99.24 meV, RMSE_F=  235.64 meV / A
+2025-10-05 03:22:45.961 INFO: Epoch 20: head: Default, loss=0.54905537, RMSE_E_per_atom=   95.05 meV, RMSE_F=  233.78 meV / A
+2025-10-05 03:22:45.963 DEBUG: Running inference on train_Default dataset
+2025-10-05 03:22:46.023 DEBUG: Plotting failed: too many indices for tensor of dimension 1
+2025-10-05 03:22:46.027 DEBUG: Deleting old checkpoint file: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-17.pt
+2025-10-05 03:22:46.030 DEBUG: Saving checkpoint: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-20.pt
+2025-10-05 03:22:49.532 INFO: Epoch 21: head: Default, loss=0.55415990, RMSE_E_per_atom=   98.76 meV, RMSE_F=  234.83 meV / A
+2025-10-05 03:22:53.180 INFO: Epoch 22: head: Default, loss=0.54216458, RMSE_E_per_atom=   89.41 meV, RMSE_F=  232.33 meV / A
+2025-10-05 03:22:53.184 DEBUG: Deleting old checkpoint file: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-20.pt
+2025-10-05 03:22:53.187 DEBUG: Saving checkpoint: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-22.pt
+2025-10-05 03:22:56.894 INFO: Epoch 23: head: Default, loss=0.53109286, RMSE_E_per_atom=   84.95 meV, RMSE_F=  229.98 meV / A
+2025-10-05 03:22:56.899 DEBUG: Deleting old checkpoint file: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-22.pt
+2025-10-05 03:22:56.902 DEBUG: Saving checkpoint: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-23.pt
+2025-10-05 03:23:00.629 INFO: Epoch 24: head: Default, loss=0.52496749, RMSE_E_per_atom=   77.89 meV, RMSE_F=  228.66 meV / A
+2025-10-05 03:23:00.634 DEBUG: Deleting old checkpoint file: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-23.pt
+2025-10-05 03:23:00.637 DEBUG: Saving checkpoint: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-24.pt
+2025-10-05 03:23:04.392 INFO: Epoch 25: head: Default, loss=0.52533705, RMSE_E_per_atom=   73.96 meV, RMSE_F=  228.79 meV / A
+2025-10-05 03:23:08.038 INFO: Epoch 26: head: Default, loss=0.51986023, RMSE_E_per_atom=   77.56 meV, RMSE_F=  227.58 meV / A
+2025-10-05 03:23:08.043 DEBUG: Deleting old checkpoint file: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-24.pt
+2025-10-05 03:23:08.045 DEBUG: Saving checkpoint: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-26.pt
+2025-10-05 03:23:11.769 INFO: Epoch 27: head: Default, loss=0.51179705, RMSE_E_per_atom=   76.34 meV, RMSE_F=  225.82 meV / A
+2025-10-05 03:23:11.774 DEBUG: Deleting old checkpoint file: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-26.pt
+2025-10-05 03:23:11.777 DEBUG: Saving checkpoint: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-27.pt
+2025-10-05 03:23:15.499 INFO: Epoch 28: head: Default, loss=0.51476448, RMSE_E_per_atom=   88.92 meV, RMSE_F=  226.43 meV / A
+2025-10-05 03:23:19.180 INFO: Epoch 29: head: Default, loss=0.50801545, RMSE_E_per_atom=   80.61 meV, RMSE_F=  224.96 meV / A
+2025-10-05 03:23:19.185 DEBUG: Deleting old checkpoint file: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-27.pt
+2025-10-05 03:23:19.188 DEBUG: Saving checkpoint: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-29.pt
+2025-10-05 03:23:22.923 INFO: Epoch 30: head: Default, loss=0.50487774, RMSE_E_per_atom=   75.42 meV, RMSE_F=  224.29 meV / A
+2025-10-05 03:23:22.925 DEBUG: Running inference on train_Default dataset
+2025-10-05 03:23:22.981 DEBUG: Plotting failed: too many indices for tensor of dimension 1
+2025-10-05 03:23:22.985 DEBUG: Deleting old checkpoint file: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-29.pt
+2025-10-05 03:23:22.988 DEBUG: Saving checkpoint: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-30.pt
+2025-10-05 03:23:26.478 INFO: Epoch 31: head: Default, loss=0.53445034, RMSE_E_per_atom=  111.52 meV, RMSE_F=  230.72 meV / A
+2025-10-05 03:23:30.179 INFO: Epoch 32: head: Default, loss=0.51899668, RMSE_E_per_atom=  101.29 meV, RMSE_F=  227.39 meV / A
+2025-10-05 03:23:33.841 INFO: Epoch 33: head: Default, loss=0.50499932, RMSE_E_per_atom=   96.00 meV, RMSE_F=  224.27 meV / A
+2025-10-05 03:23:37.469 INFO: Epoch 34: head: Default, loss=0.49776792, RMSE_E_per_atom=   85.03 meV, RMSE_F=  222.71 meV / A
+2025-10-05 03:23:37.473 DEBUG: Deleting old checkpoint file: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-30.pt
+2025-10-05 03:23:37.477 DEBUG: Saving checkpoint: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-34.pt
+2025-10-05 03:23:41.215 INFO: Epoch 35: head: Default, loss=0.48863232, RMSE_E_per_atom=   80.82 meV, RMSE_F=  220.66 meV / A
+2025-10-05 03:23:41.219 DEBUG: Deleting old checkpoint file: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-34.pt
+2025-10-05 03:23:41.223 DEBUG: Saving checkpoint: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-35.pt
+2025-10-05 03:23:44.957 INFO: Epoch 36: head: Default, loss=0.48203400, RMSE_E_per_atom=   74.98 meV, RMSE_F=  219.18 meV / A
+2025-10-05 03:23:44.962 DEBUG: Deleting old checkpoint file: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-35.pt
+2025-10-05 03:23:44.965 DEBUG: Saving checkpoint: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-36.pt
+2025-10-05 03:23:48.658 INFO: Epoch 37: head: Default, loss=0.47732293, RMSE_E_per_atom=   76.24 meV, RMSE_F=  218.11 meV / A
+2025-10-05 03:23:48.663 DEBUG: Deleting old checkpoint file: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-36.pt
+2025-10-05 03:23:48.666 DEBUG: Saving checkpoint: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-37.pt
+2025-10-05 03:23:52.401 INFO: Epoch 38: head: Default, loss=0.47459969, RMSE_E_per_atom=   76.32 meV, RMSE_F=  217.48 meV / A
+2025-10-05 03:23:52.406 DEBUG: Deleting old checkpoint file: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-37.pt
+2025-10-05 03:23:52.409 DEBUG: Saving checkpoint: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-38.pt
+2025-10-05 03:23:56.150 INFO: Epoch 39: head: Default, loss=0.47198656, RMSE_E_per_atom=   70.77 meV, RMSE_F=  216.90 meV / A
+2025-10-05 03:23:56.154 DEBUG: Deleting old checkpoint file: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-38.pt
+2025-10-05 03:23:56.158 DEBUG: Saving checkpoint: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-39.pt
+2025-10-05 03:23:59.910 INFO: Epoch 40: head: Default, loss=0.46773125, RMSE_E_per_atom=   69.90 meV, RMSE_F=  215.92 meV / A
+2025-10-05 03:23:59.912 DEBUG: Running inference on train_Default dataset
+2025-10-05 03:23:59.969 DEBUG: Plotting failed: too many indices for tensor of dimension 1
+2025-10-05 03:23:59.973 DEBUG: Deleting old checkpoint file: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-39.pt
+2025-10-05 03:23:59.976 DEBUG: Saving checkpoint: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-40.pt
+2025-10-05 03:24:03.464 INFO: Epoch 41: head: Default, loss=0.47448092, RMSE_E_per_atom=   68.51 meV, RMSE_F=  217.45 meV / A
+2025-10-05 03:24:07.142 INFO: Epoch 42: head: Default, loss=0.46924705, RMSE_E_per_atom=   63.73 meV, RMSE_F=  216.26 meV / A
+2025-10-05 03:24:10.809 INFO: Epoch 43: head: Default, loss=0.46761622, RMSE_E_per_atom=   73.32 meV, RMSE_F=  215.86 meV / A
+2025-10-05 03:24:10.814 DEBUG: Deleting old checkpoint file: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-40.pt
+2025-10-05 03:24:10.818 DEBUG: Saving checkpoint: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-43.pt
+2025-10-05 03:24:14.563 INFO: Epoch 44: head: Default, loss=0.46511046, RMSE_E_per_atom=   64.75 meV, RMSE_F=  215.32 meV / A
+2025-10-05 03:24:14.567 DEBUG: Deleting old checkpoint file: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-43.pt
+2025-10-05 03:24:14.570 DEBUG: Saving checkpoint: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-44.pt
+2025-10-05 03:24:18.290 INFO: Epoch 45: head: Default, loss=0.46192298, RMSE_E_per_atom=   68.15 meV, RMSE_F=  214.58 meV / A
+2025-10-05 03:24:18.295 DEBUG: Deleting old checkpoint file: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-44.pt
+2025-10-05 03:24:18.299 DEBUG: Saving checkpoint: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-45.pt
+2025-10-05 03:24:22.089 INFO: Epoch 46: head: Default, loss=0.46150739, RMSE_E_per_atom=   71.06 meV, RMSE_F=  214.46 meV / A
+2025-10-05 03:24:22.093 DEBUG: Deleting old checkpoint file: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-45.pt
+2025-10-05 03:24:22.097 DEBUG: Saving checkpoint: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-46.pt
+2025-10-05 03:24:25.857 INFO: Epoch 47: head: Default, loss=0.45791174, RMSE_E_per_atom=   67.50 meV, RMSE_F=  213.65 meV / A
+2025-10-05 03:24:25.862 DEBUG: Deleting old checkpoint file: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-46.pt
+2025-10-05 03:24:25.865 DEBUG: Saving checkpoint: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-47.pt
+2025-10-05 03:24:29.599 INFO: Epoch 48: head: Default, loss=0.45584092, RMSE_E_per_atom=   64.62 meV, RMSE_F=  213.18 meV / A
+2025-10-05 03:24:29.604 DEBUG: Deleting old checkpoint file: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-47.pt
+2025-10-05 03:24:29.608 DEBUG: Saving checkpoint: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-48.pt
+2025-10-05 03:24:33.375 INFO: Epoch 49: head: Default, loss=0.45339349, RMSE_E_per_atom=   58.94 meV, RMSE_F=  212.63 meV / A
+2025-10-05 03:24:33.379 DEBUG: Deleting old checkpoint file: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-48.pt
+2025-10-05 03:24:33.384 DEBUG: Saving checkpoint: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-49.pt
+2025-10-05 03:24:37.117 INFO: Epoch 50: head: Default, loss=0.45439000, RMSE_E_per_atom=   62.02 meV, RMSE_F=  212.86 meV / A
+2025-10-05 03:24:37.119 DEBUG: Running inference on train_Default dataset
+2025-10-05 03:24:37.178 DEBUG: Plotting failed: too many indices for tensor of dimension 1
+2025-10-05 03:24:40.625 INFO: Epoch 51: head: Default, loss=0.46641341, RMSE_E_per_atom=   51.88 meV, RMSE_F=  215.62 meV / A
+2025-10-05 03:24:44.353 INFO: Epoch 52: head: Default, loss=0.46274803, RMSE_E_per_atom=   52.50 meV, RMSE_F=  214.77 meV / A
+2025-10-05 03:24:48.016 INFO: Epoch 53: head: Default, loss=0.45629858, RMSE_E_per_atom=   52.97 meV, RMSE_F=  213.28 meV / A
+2025-10-05 03:24:51.701 INFO: Epoch 54: head: Default, loss=0.45770526, RMSE_E_per_atom=   51.86 meV, RMSE_F=  213.62 meV / A
+2025-10-05 03:24:55.363 INFO: Epoch 55: head: Default, loss=0.45478951, RMSE_E_per_atom=   57.74 meV, RMSE_F=  212.94 meV / A
+2025-10-05 03:24:59.024 INFO: Epoch 56: head: Default, loss=0.45202708, RMSE_E_per_atom=   55.36 meV, RMSE_F=  212.32 meV / A
+2025-10-05 03:24:59.028 DEBUG: Deleting old checkpoint file: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-49.pt
+2025-10-05 03:24:59.031 DEBUG: Saving checkpoint: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-56.pt
+2025-10-05 03:25:02.733 INFO: Epoch 57: head: Default, loss=0.45022886, RMSE_E_per_atom=   55.75 meV, RMSE_F=  211.88 meV / A
+2025-10-05 03:25:02.737 DEBUG: Deleting old checkpoint file: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-56.pt
+2025-10-05 03:25:02.742 DEBUG: Saving checkpoint: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-57.pt
+2025-10-05 03:25:06.463 INFO: Epoch 58: head: Default, loss=0.45030941, RMSE_E_per_atom=   57.34 meV, RMSE_F=  211.89 meV / A
+2025-10-05 03:25:10.146 INFO: Epoch 59: head: Default, loss=0.44858064, RMSE_E_per_atom=   59.54 meV, RMSE_F=  211.48 meV / A
+2025-10-05 03:25:10.151 DEBUG: Deleting old checkpoint file: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-57.pt
+2025-10-05 03:25:10.163 DEBUG: Saving checkpoint: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-59.pt
+2025-10-05 03:25:13.876 INFO: Epoch 60: head: Default, loss=0.44703026, RMSE_E_per_atom=   59.26 meV, RMSE_F=  211.13 meV / A
+2025-10-05 03:25:13.878 DEBUG: Running inference on train_Default dataset
+2025-10-05 03:25:13.937 DEBUG: Plotting failed: too many indices for tensor of dimension 1
+2025-10-05 03:25:13.941 DEBUG: Deleting old checkpoint file: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-59.pt
+2025-10-05 03:25:13.944 DEBUG: Saving checkpoint: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-60.pt
+2025-10-05 03:25:17.443 INFO: Epoch 61: head: Default, loss=0.44774971, RMSE_E_per_atom=   55.79 meV, RMSE_F=  211.31 meV / A
+2025-10-05 03:25:21.120 INFO: Epoch 62: head: Default, loss=0.44268924, RMSE_E_per_atom=   53.31 meV, RMSE_F=  210.13 meV / A
+2025-10-05 03:25:21.125 DEBUG: Deleting old checkpoint file: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-60.pt
+2025-10-05 03:25:21.128 DEBUG: Saving checkpoint: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-62.pt
+2025-10-05 03:25:24.846 INFO: Epoch 63: head: Default, loss=0.43940918, RMSE_E_per_atom=   52.82 meV, RMSE_F=  209.34 meV / A
+2025-10-05 03:25:24.850 DEBUG: Deleting old checkpoint file: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-62.pt
+2025-10-05 03:25:24.853 DEBUG: Saving checkpoint: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-63.pt
+2025-10-05 03:25:28.561 INFO: Epoch 64: head: Default, loss=0.43860406, RMSE_E_per_atom=   58.74 meV, RMSE_F=  209.13 meV / A
+2025-10-05 03:25:28.565 DEBUG: Deleting old checkpoint file: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-63.pt
+2025-10-05 03:25:28.569 DEBUG: Saving checkpoint: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-64.pt
+2025-10-05 03:25:32.285 INFO: Epoch 65: head: Default, loss=0.43685449, RMSE_E_per_atom=   57.37 meV, RMSE_F=  208.73 meV / A
+2025-10-05 03:25:32.290 DEBUG: Deleting old checkpoint file: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-64.pt
+2025-10-05 03:25:32.293 DEBUG: Saving checkpoint: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-65.pt
+2025-10-05 03:25:36.037 INFO: Epoch 66: head: Default, loss=0.43410129, RMSE_E_per_atom=   56.94 meV, RMSE_F=  208.08 meV / A
+2025-10-05 03:25:36.042 DEBUG: Deleting old checkpoint file: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-65.pt
+2025-10-05 03:25:36.059 DEBUG: Saving checkpoint: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-66.pt
+2025-10-05 03:25:39.781 INFO: Epoch 67: head: Default, loss=0.43178060, RMSE_E_per_atom=   59.85 meV, RMSE_F=  207.52 meV / A
+2025-10-05 03:25:39.786 DEBUG: Deleting old checkpoint file: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-66.pt
+2025-10-05 03:25:39.789 DEBUG: Saving checkpoint: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-67.pt
+2025-10-05 03:25:43.502 INFO: Epoch 68: head: Default, loss=0.42991266, RMSE_E_per_atom=   60.18 meV, RMSE_F=  207.07 meV / A
+2025-10-05 03:25:43.506 DEBUG: Deleting old checkpoint file: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-67.pt
+2025-10-05 03:25:43.509 DEBUG: Saving checkpoint: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-68.pt
+2025-10-05 03:25:47.279 INFO: Epoch 69: head: Default, loss=0.43220368, RMSE_E_per_atom=   59.76 meV, RMSE_F=  207.62 meV / A
+2025-10-05 03:25:50.941 INFO: Epoch 70: head: Default, loss=0.43171626, RMSE_E_per_atom=   62.70 meV, RMSE_F=  207.50 meV / A
+2025-10-05 03:25:50.943 DEBUG: Running inference on train_Default dataset
+2025-10-05 03:25:51.007 DEBUG: Plotting failed: too many indices for tensor of dimension 1
+2025-10-05 03:25:54.492 INFO: Epoch 71: head: Default, loss=0.43873853, RMSE_E_per_atom=   64.03 meV, RMSE_F=  209.19 meV / A
+2025-10-05 03:25:58.161 INFO: Epoch 72: head: Default, loss=0.43625649, RMSE_E_per_atom=   62.66 meV, RMSE_F=  208.61 meV / A
+2025-10-05 03:26:01.817 INFO: Epoch 73: head: Default, loss=0.43356546, RMSE_E_per_atom=   61.00 meV, RMSE_F=  207.97 meV / A
+2025-10-05 03:26:05.460 INFO: Epoch 74: head: Default, loss=0.43450776, RMSE_E_per_atom=   58.12 meV, RMSE_F=  208.21 meV / A
+2025-10-05 03:26:09.533 INFO: Epoch 75: head: Default, loss=0.42990595, RMSE_E_per_atom=   53.93 meV, RMSE_F=  207.10 meV / A
+2025-10-05 03:26:09.538 DEBUG: Deleting old checkpoint file: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-68.pt
+2025-10-05 03:26:09.540 DEBUG: Saving checkpoint: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-75.pt
+2025-10-05 03:26:13.272 INFO: Epoch 76: head: Default, loss=0.42584346, RMSE_E_per_atom=   53.76 meV, RMSE_F=  206.12 meV / A
+2025-10-05 03:26:13.276 DEBUG: Deleting old checkpoint file: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-75.pt
+2025-10-05 03:26:13.279 DEBUG: Saving checkpoint: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-76.pt
+2025-10-05 03:26:17.002 INFO: Epoch 77: head: Default, loss=0.42566848, RMSE_E_per_atom=   52.97 meV, RMSE_F=  206.08 meV / A
+2025-10-05 03:26:17.007 DEBUG: Deleting old checkpoint file: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-76.pt
+2025-10-05 03:26:17.010 DEBUG: Saving checkpoint: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-77.pt
+2025-10-05 03:26:20.785 INFO: Epoch 78: head: Default, loss=0.42457990, RMSE_E_per_atom=   54.69 meV, RMSE_F=  205.82 meV / A
+2025-10-05 03:26:20.789 DEBUG: Deleting old checkpoint file: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-77.pt
+2025-10-05 03:26:20.792 DEBUG: Saving checkpoint: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-78.pt
+2025-10-05 03:26:24.564 INFO: Epoch 79: head: Default, loss=0.42344523, RMSE_E_per_atom=   49.80 meV, RMSE_F=  205.54 meV / A
+2025-10-05 03:26:24.568 DEBUG: Deleting old checkpoint file: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-78.pt
+2025-10-05 03:26:24.572 DEBUG: Saving checkpoint: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-79.pt
+2025-10-05 03:26:28.284 INFO: Epoch 80: head: Default, loss=0.42281419, RMSE_E_per_atom=   52.38 meV, RMSE_F=  205.38 meV / A
+2025-10-05 03:26:28.286 DEBUG: Running inference on train_Default dataset
+2025-10-05 03:26:28.345 DEBUG: Plotting failed: too many indices for tensor of dimension 1
+2025-10-05 03:26:28.349 DEBUG: Deleting old checkpoint file: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-79.pt
+2025-10-05 03:26:28.353 DEBUG: Saving checkpoint: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-80.pt
+2025-10-05 03:26:31.869 INFO: Epoch 81: head: Default, loss=0.42474374, RMSE_E_per_atom=   49.66 meV, RMSE_F=  205.89 meV / A
+2025-10-05 03:26:35.522 INFO: Epoch 82: head: Default, loss=0.41966691, RMSE_E_per_atom=   49.10 meV, RMSE_F=  204.65 meV / A
+2025-10-05 03:26:35.527 DEBUG: Deleting old checkpoint file: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-80.pt
+2025-10-05 03:26:35.531 DEBUG: Saving checkpoint: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-82.pt
+2025-10-05 03:26:39.233 INFO: Epoch 83: head: Default, loss=0.41644706, RMSE_E_per_atom=   51.56 meV, RMSE_F=  203.86 meV / A
+2025-10-05 03:26:39.237 DEBUG: Deleting old checkpoint file: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-82.pt
+2025-10-05 03:26:39.240 DEBUG: Saving checkpoint: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-83.pt
+2025-10-05 03:26:42.990 INFO: Epoch 84: head: Default, loss=0.41320469, RMSE_E_per_atom=   45.55 meV, RMSE_F=  203.08 meV / A
+2025-10-05 03:26:42.995 DEBUG: Deleting old checkpoint file: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-83.pt
+2025-10-05 03:26:42.998 DEBUG: Saving checkpoint: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-84.pt
+2025-10-05 03:26:46.706 INFO: Epoch 85: head: Default, loss=0.41270039, RMSE_E_per_atom=   48.34 meV, RMSE_F=  202.94 meV / A
+2025-10-05 03:26:46.711 DEBUG: Deleting old checkpoint file: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-84.pt
+2025-10-05 03:26:46.715 DEBUG: Saving checkpoint: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-85.pt
+2025-10-05 03:26:50.449 INFO: Epoch 86: head: Default, loss=0.41565748, RMSE_E_per_atom=   47.64 meV, RMSE_F=  203.66 meV / A
+2025-10-05 03:26:54.132 INFO: Epoch 87: head: Default, loss=0.41267097, RMSE_E_per_atom=   50.55 meV, RMSE_F=  202.91 meV / A
+2025-10-05 03:26:54.137 DEBUG: Deleting old checkpoint file: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-85.pt
+2025-10-05 03:26:54.149 DEBUG: Saving checkpoint: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-87.pt
+2025-10-05 03:26:57.850 INFO: Epoch 88: head: Default, loss=0.41514030, RMSE_E_per_atom=   53.20 meV, RMSE_F=  203.51 meV / A
+2025-10-05 03:27:01.491 INFO: Epoch 89: head: Default, loss=0.41439960, RMSE_E_per_atom=   53.39 meV, RMSE_F=  203.32 meV / A
+2025-10-05 03:27:05.183 INFO: Epoch 90: head: Default, loss=0.41690400, RMSE_E_per_atom=   52.50 meV, RMSE_F=  203.93 meV / A
+2025-10-05 03:27:05.185 DEBUG: Running inference on train_Default dataset
+2025-10-05 03:27:05.245 DEBUG: Plotting failed: too many indices for tensor of dimension 1
+2025-10-05 03:27:08.676 INFO: Epoch 91: head: Default, loss=0.43010933, RMSE_E_per_atom=   58.63 meV, RMSE_F=  207.11 meV / A
+2025-10-05 03:27:12.309 INFO: Epoch 92: head: Default, loss=0.43056500, RMSE_E_per_atom=   59.47 meV, RMSE_F=  207.21 meV / A
+2025-10-05 03:27:15.976 INFO: Epoch 93: head: Default, loss=0.42859942, RMSE_E_per_atom=   53.08 meV, RMSE_F=  206.76 meV / A
+2025-10-05 03:27:19.617 INFO: Epoch 94: head: Default, loss=0.42576782, RMSE_E_per_atom=   54.39 meV, RMSE_F=  206.09 meV / A
+2025-10-05 03:27:23.284 INFO: Epoch 95: head: Default, loss=0.42535102, RMSE_E_per_atom=   56.70 meV, RMSE_F=  205.97 meV / A
+2025-10-05 03:27:26.974 INFO: Epoch 96: head: Default, loss=0.42286243, RMSE_E_per_atom=   55.65 meV, RMSE_F=  205.38 meV / A
+2025-10-05 03:27:30.615 INFO: Epoch 97: head: Default, loss=0.42291933, RMSE_E_per_atom=   53.93 meV, RMSE_F=  205.41 meV / A
+2025-10-05 03:27:34.255 INFO: Epoch 98: head: Default, loss=0.41907670, RMSE_E_per_atom=   52.33 meV, RMSE_F=  204.48 meV / A
+2025-10-05 03:27:37.906 INFO: Epoch 99: head: Default, loss=0.41733937, RMSE_E_per_atom=   49.28 meV, RMSE_F=  204.07 meV / A
+2025-10-05 03:27:41.580 INFO: Epoch 100: head: Default, loss=0.41496138, RMSE_E_per_atom=   51.32 meV, RMSE_F=  203.48 meV / A
+2025-10-05 03:27:41.582 DEBUG: Running inference on train_Default dataset
+2025-10-05 03:27:41.644 DEBUG: Plotting failed: too many indices for tensor of dimension 1
+2025-10-05 03:27:45.080 INFO: Epoch 101: head: Default, loss=0.42192830, RMSE_E_per_atom=   62.69 meV, RMSE_F=  205.15 meV / A
+2025-10-05 03:27:48.710 INFO: Epoch 102: head: Default, loss=0.41929835, RMSE_E_per_atom=   56.78 meV, RMSE_F=  204.54 meV / A
+2025-10-05 03:27:52.352 INFO: Epoch 103: head: Default, loss=0.41874416, RMSE_E_per_atom=   54.65 meV, RMSE_F=  204.42 meV / A
+2025-10-05 03:27:55.962 INFO: Epoch 104: head: Default, loss=0.41517981, RMSE_E_per_atom=   53.40 meV, RMSE_F=  203.55 meV / A
+2025-10-05 03:27:59.592 INFO: Epoch 105: head: Default, loss=0.41191854, RMSE_E_per_atom=   49.88 meV, RMSE_F=  202.76 meV / A
+2025-10-05 03:27:59.596 DEBUG: Deleting old checkpoint file: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-87.pt
+2025-10-05 03:27:59.599 DEBUG: Saving checkpoint: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-105.pt
+2025-10-05 03:28:03.294 INFO: Epoch 106: head: Default, loss=0.41082235, RMSE_E_per_atom=   49.62 meV, RMSE_F=  202.49 meV / A
+2025-10-05 03:28:03.298 DEBUG: Deleting old checkpoint file: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-105.pt
+2025-10-05 03:28:03.301 DEBUG: Saving checkpoint: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-106.pt
+2025-10-05 03:28:07.019 INFO: Epoch 107: head: Default, loss=0.40935047, RMSE_E_per_atom=   48.10 meV, RMSE_F=  202.13 meV / A
+2025-10-05 03:28:07.023 DEBUG: Deleting old checkpoint file: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-106.pt
+2025-10-05 03:28:07.027 DEBUG: Saving checkpoint: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-107.pt
+2025-10-05 03:28:10.736 INFO: Epoch 108: head: Default, loss=0.40874392, RMSE_E_per_atom=   46.80 meV, RMSE_F=  201.99 meV / A
+2025-10-05 03:28:10.741 DEBUG: Deleting old checkpoint file: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-107.pt
+2025-10-05 03:28:10.744 DEBUG: Saving checkpoint: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-108.pt
+2025-10-05 03:28:14.466 INFO: Epoch 109: head: Default, loss=0.40816166, RMSE_E_per_atom=   49.20 meV, RMSE_F=  201.84 meV / A
+2025-10-05 03:28:14.470 DEBUG: Deleting old checkpoint file: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-108.pt
+2025-10-05 03:28:14.473 DEBUG: Saving checkpoint: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-109.pt
+2025-10-05 03:28:18.211 INFO: Epoch 110: head: Default, loss=0.40863650, RMSE_E_per_atom=   46.48 meV, RMSE_F=  201.97 meV / A
+2025-10-05 03:28:18.213 DEBUG: Running inference on train_Default dataset
+2025-10-05 03:28:18.277 DEBUG: Plotting failed: too many indices for tensor of dimension 1
+2025-10-05 03:28:21.723 INFO: Epoch 111: head: Default, loss=0.41179693, RMSE_E_per_atom=   44.94 meV, RMSE_F=  202.76 meV / A
+2025-10-05 03:28:25.350 INFO: Epoch 112: head: Default, loss=0.40987799, RMSE_E_per_atom=   43.28 meV, RMSE_F=  202.29 meV / A
+2025-10-05 03:28:29.069 INFO: Epoch 113: head: Default, loss=0.40818426, RMSE_E_per_atom=   41.93 meV, RMSE_F=  201.88 meV / A
+2025-10-05 03:28:32.718 INFO: Epoch 114: head: Default, loss=0.40865414, RMSE_E_per_atom=   43.65 meV, RMSE_F=  201.98 meV / A
+2025-10-05 03:28:36.370 INFO: Epoch 115: head: Default, loss=0.40603418, RMSE_E_per_atom=   43.30 meV, RMSE_F=  201.33 meV / A
+2025-10-05 03:28:36.374 DEBUG: Deleting old checkpoint file: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-109.pt
+2025-10-05 03:28:36.377 DEBUG: Saving checkpoint: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-115.pt
+2025-10-05 03:28:40.125 INFO: Epoch 116: head: Default, loss=0.40598920, RMSE_E_per_atom=   45.24 meV, RMSE_F=  201.31 meV / A
+2025-10-05 03:28:40.129 DEBUG: Deleting old checkpoint file: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-115.pt
+2025-10-05 03:28:40.133 DEBUG: Saving checkpoint: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-116.pt
+2025-10-05 03:28:43.825 INFO: Epoch 117: head: Default, loss=0.40528110, RMSE_E_per_atom=   45.73 meV, RMSE_F=  201.13 meV / A
+2025-10-05 03:28:43.829 DEBUG: Deleting old checkpoint file: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-116.pt
+2025-10-05 03:28:43.832 DEBUG: Saving checkpoint: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-117.pt
+2025-10-05 03:28:47.538 INFO: Epoch 118: head: Default, loss=0.40329790, RMSE_E_per_atom=   43.90 meV, RMSE_F=  200.65 meV / A
+2025-10-05 03:28:47.543 DEBUG: Deleting old checkpoint file: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-117.pt
+2025-10-05 03:28:47.547 DEBUG: Saving checkpoint: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-118.pt
+2025-10-05 03:28:51.261 INFO: Epoch 119: head: Default, loss=0.40164611, RMSE_E_per_atom=   44.87 meV, RMSE_F=  200.23 meV / A
+2025-10-05 03:28:51.265 DEBUG: Deleting old checkpoint file: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-118.pt
+2025-10-05 03:28:51.269 DEBUG: Saving checkpoint: models/medium_HfOx-ft_1/medium_ft-HfOx_run-123_epoch-119.pt
+2025-10-05 03:28:55.390 INFO: Epoch 120: head: Default, loss=0.40400797, RMSE_E_per_atom=   48.46 meV, RMSE_F=  200.81 meV / A
+2025-10-05 03:28:55.392 DEBUG: Running inference on train_Default dataset
+2025-10-05 03:28:55.450 DEBUG: Plotting failed: too many indices for tensor of dimension 1
+2025-10-05 03:28:58.915 INFO: Epoch 121: head: Default, loss=0.41444531, RMSE_E_per_atom=   47.49 meV, RMSE_F=  203.42 meV / A
+2025-10-05 03:29:02.527 INFO: Epoch 122: head: Default, loss=0.41144116, RMSE_E_per_atom=   47.38 meV, RMSE_F=  202.67 meV / A
+2025-10-05 03:29:06.214 INFO: Epoch 123: head: Default, loss=0.41017806, RMSE_E_per_atom=   45.17 meV, RMSE_F=  202.36 meV / A
+2025-10-05 03:29:09.848 INFO: Epoch 124: head: Default, loss=0.40998303, RMSE_E_per_atom=   45.28 meV, RMSE_F=  202.31 meV / A
+2025-10-05 03:29:13.482 INFO: Epoch 125: head: Default, loss=0.40926762, RMSE_E_per_atom=   46.05 meV, RMSE_F=  202.13 meV / A
+2025-10-05 03:29:17.179 INFO: Epoch 126: head: Default, loss=0.40883497, RMSE_E_per_atom=   44.46 meV, RMSE_F=  202.03 meV / A
+2025-10-05 03:29:20.849 INFO: Epoch 127: head: Default, loss=0.40822187, RMSE_E_per_atom=   42.83 meV, RMSE_F=  201.89 meV / A
+2025-10-05 03:29:24.488 INFO: Epoch 128: head: Default, loss=0.40809772, RMSE_E_per_atom=   41.89 meV, RMSE_F=  201.85 meV / A
+2025-10-05 03:29:28.167 INFO: Epoch 129: head: Default, loss=0.40599208, RMSE_E_per_atom=   41.80 meV, RMSE_F=  201.33 meV / A
+2025-10-05 03:29:31.849 INFO: Epoch 130: head: Default, loss=0.40715934, RMSE_E_per_atom=   43.76 meV, RMSE_F=  201.63 meV / A
+2025-10-05 03:29:31.851 DEBUG: Running inference on train_Default dataset
+2025-10-05 03:29:31.909 DEBUG: Plotting failed: too many indices for tensor of dimension 1
+2025-10-05 03:29:35.356 INFO: Epoch 131: head: Default, loss=0.41365445, RMSE_E_per_atom=   46.19 meV, RMSE_F=  203.23 meV / A
+2025-10-05 03:29:39.003 INFO: Epoch 132: head: Default, loss=0.41240822, RMSE_E_per_atom=   43.92 meV, RMSE_F=  202.92 meV / A
+2025-10-05 03:29:42.662 INFO: Epoch 133: head: Default, loss=0.41106659, RMSE_E_per_atom=   42.79 meV, RMSE_F=  202.59 meV / A
+2025-10-05 03:29:46.336 INFO: Epoch 134: head: Default, loss=0.40968742, RMSE_E_per_atom=   42.79 meV, RMSE_F=  202.26 meV / A
+2025-10-05 03:29:49.989 INFO: Epoch 135: head: Default, loss=0.41042662, RMSE_E_per_atom=   44.58 meV, RMSE_F=  202.43 meV / A
+2025-10-05 03:29:53.657 INFO: Epoch 136: head: Default, loss=0.41151875, RMSE_E_per_atom=   45.27 meV, RMSE_F=  202.69 meV / A
+2025-10-05 03:29:57.347 INFO: Epoch 137: head: Default, loss=0.41207413, RMSE_E_per_atom=   42.98 meV, RMSE_F=  202.81 meV / A
+2025-10-05 03:30:01.008 INFO: Epoch 138: head: Default, loss=0.41506052, RMSE_E_per_atom=   46.71 meV, RMSE_F=  203.55 meV / A
+2025-10-05 03:30:04.662 INFO: Epoch 139: head: Default, loss=0.41498932, RMSE_E_per_atom=   47.82 meV, RMSE_F=  203.54 meV / A
+2025-10-05 03:30:08.363 INFO: Epoch 140: head: Default, loss=0.41556179, RMSE_E_per_atom=   47.05 meV, RMSE_F=  203.67 meV / A
+2025-10-05 03:30:08.365 DEBUG: Running inference on train_Default dataset
+2025-10-05 03:30:08.420 DEBUG: Plotting failed: too many indices for tensor of dimension 1
+2025-10-05 03:30:11.924 INFO: Epoch 141: head: Default, loss=0.42664395, RMSE_E_per_atom=   65.25 meV, RMSE_F=  206.36 meV / A
+2025-10-05 03:30:15.615 INFO: Epoch 142: head: Default, loss=0.42456161, RMSE_E_per_atom=   62.82 meV, RMSE_F=  205.86 meV / A
+2025-10-05 03:30:19.258 INFO: Epoch 143: head: Default, loss=0.42272214, RMSE_E_per_atom=   57.36 meV, RMSE_F=  205.43 meV / A
+2025-10-05 03:30:22.911 INFO: Epoch 144: head: Default, loss=0.42176045, RMSE_E_per_atom=   52.26 meV, RMSE_F=  205.22 meV / A
+2025-10-05 03:30:26.555 INFO: Epoch 145: head: Default, loss=0.42181677, RMSE_E_per_atom=   47.66 meV, RMSE_F=  205.25 meV / A
+2025-10-05 03:30:30.221 INFO: Epoch 146: head: Default, loss=0.42213201, RMSE_E_per_atom=   44.87 meV, RMSE_F=  205.34 meV / A
+2025-10-05 03:30:33.968 INFO: Epoch 147: head: Default, loss=0.42276762, RMSE_E_per_atom=   42.77 meV, RMSE_F=  205.51 meV / A
+2025-10-05 03:30:37.633 INFO: Epoch 148: head: Default, loss=0.42336461, RMSE_E_per_atom=   40.35 meV, RMSE_F=  205.67 meV / A
+2025-10-05 03:30:41.290 INFO: Epoch 149: head: Default, loss=0.42464608, RMSE_E_per_atom=   39.04 meV, RMSE_F=  205.99 meV / A
+2025-10-05 03:30:44.960 INFO: Epoch 150: head: Default, loss=0.42565726, RMSE_E_per_atom=   38.16 meV, RMSE_F=  206.25 meV / A
+2025-10-05 03:30:44.962 DEBUG: Running inference on train_Default dataset
+2025-10-05 03:30:45.017 DEBUG: Plotting failed: too many indices for tensor of dimension 1
+2025-10-05 03:30:48.455 INFO: Epoch 151: head: Default, loss=0.42729453, RMSE_E_per_atom=   38.23 meV, RMSE_F=  206.65 meV / A
+2025-10-05 03:30:52.101 INFO: Epoch 152: head: Default, loss=0.42741293, RMSE_E_per_atom=   37.79 meV, RMSE_F=  206.69 meV / A
+2025-10-05 03:30:55.763 INFO: Epoch 153: head: Default, loss=0.42847443, RMSE_E_per_atom=   37.00 meV, RMSE_F=  206.96 meV / A
+2025-10-05 03:30:59.472 INFO: Epoch 154: head: Default, loss=0.42892418, RMSE_E_per_atom=   36.37 meV, RMSE_F=  207.08 meV / A
+2025-10-05 03:31:03.111 INFO: Epoch 155: head: Default, loss=0.42953484, RMSE_E_per_atom=   35.76 meV, RMSE_F=  207.23 meV / A
+2025-10-05 03:31:06.779 INFO: Epoch 156: head: Default, loss=0.42954096, RMSE_E_per_atom=   35.39 meV, RMSE_F=  207.24 meV / A
+2025-10-05 03:31:10.423 INFO: Epoch 157: head: Default, loss=0.42912754, RMSE_E_per_atom=   35.27 meV, RMSE_F=  207.14 meV / A
+2025-10-05 03:31:14.066 INFO: Epoch 158: head: Default, loss=0.42876135, RMSE_E_per_atom=   34.79 meV, RMSE_F=  207.05 meV / A
+2025-10-05 03:31:17.716 INFO: Epoch 159: head: Default, loss=0.42872837, RMSE_E_per_atom=   34.45 meV, RMSE_F=  207.05 meV / A
+2025-10-05 03:31:21.352 INFO: Epoch 160: head: Default, loss=0.42958729, RMSE_E_per_atom=   34.29 meV, RMSE_F=  207.26 meV / A
+2025-10-05 03:31:21.354 DEBUG: Running inference on train_Default dataset
+2025-10-05 03:31:21.416 DEBUG: Plotting failed: too many indices for tensor of dimension 1
+2025-10-05 03:31:24.903 INFO: Epoch 161: head: Default, loss=0.43052168, RMSE_E_per_atom=   34.06 meV, RMSE_F=  207.49 meV / A
+2025-10-05 03:31:28.582 INFO: Epoch 162: head: Default, loss=0.43113729, RMSE_E_per_atom=   33.94 meV, RMSE_F=  207.64 meV / A
+2025-10-05 03:31:32.236 INFO: Epoch 163: head: Default, loss=0.43154042, RMSE_E_per_atom=   33.74 meV, RMSE_F=  207.74 meV / A
+2025-10-05 03:31:35.905 INFO: Epoch 164: head: Default, loss=0.43186753, RMSE_E_per_atom=   33.50 meV, RMSE_F=  207.83 meV / A
+2025-10-05 03:31:39.544 INFO: Epoch 165: head: Default, loss=0.43220313, RMSE_E_per_atom=   33.41 meV, RMSE_F=  207.91 meV / A
+2025-10-05 03:31:43.176 INFO: Epoch 166: head: Default, loss=0.43240169, RMSE_E_per_atom=   33.30 meV, RMSE_F=  207.96 meV / A
+2025-10-05 03:31:46.848 INFO: Epoch 167: head: Default, loss=0.43242073, RMSE_E_per_atom=   33.21 meV, RMSE_F=  207.97 meV / A
+2025-10-05 03:31:50.522 INFO: Epoch 168: head: Default, loss=0.43274925, RMSE_E_per_atom=   33.12 meV, RMSE_F=  208.05 meV / A
+2025-10-05 03:31:54.160 INFO: Epoch 169: head: Default, loss=0.43261328, RMSE_E_per_atom=   33.10 meV, RMSE_F=  208.02 meV / A
+2025-10-05 03:31:57.802 INFO: Epoch 170: head: Default, loss=0.43284466, RMSE_E_per_atom=   32.98 meV, RMSE_F=  208.08 meV / A
+2025-10-05 03:31:57.804 DEBUG: Running inference on train_Default dataset
+2025-10-05 03:31:57.861 DEBUG: Plotting failed: too many indices for tensor of dimension 1
+2025-10-05 03:32:01.372 INFO: Epoch 171: head: Default, loss=0.43331092, RMSE_E_per_atom=   32.88 meV, RMSE_F=  208.19 meV / A
+2025-10-05 03:32:05.034 INFO: Epoch 172: head: Default, loss=0.43342887, RMSE_E_per_atom=   32.81 meV, RMSE_F=  208.22 meV / A
+2025-10-05 03:32:08.685 INFO: Epoch 173: head: Default, loss=0.43323148, RMSE_E_per_atom=   32.74 meV, RMSE_F=  208.17 meV / A
+2025-10-05 03:32:12.369 INFO: Epoch 174: head: Default, loss=0.43332115, RMSE_E_per_atom=   32.67 meV, RMSE_F=  208.20 meV / A
+2025-10-05 03:32:16.031 INFO: Epoch 175: head: Default, loss=0.43337144, RMSE_E_per_atom=   32.66 meV, RMSE_F=  208.21 meV / A
+2025-10-05 03:32:19.665 INFO: Epoch 176: head: Default, loss=0.43296830, RMSE_E_per_atom=   32.72 meV, RMSE_F=  208.11 meV / A
+2025-10-05 03:32:23.331 INFO: Epoch 177: head: Default, loss=0.43286558, RMSE_E_per_atom=   32.63 meV, RMSE_F=  208.09 meV / A
+2025-10-05 03:32:27.013 INFO: Epoch 178: head: Default, loss=0.43292370, RMSE_E_per_atom=   32.72 meV, RMSE_F=  208.10 meV / A
+2025-10-05 03:32:30.629 INFO: Epoch 179: head: Default, loss=0.43296905, RMSE_E_per_atom=   32.59 meV, RMSE_F=  208.12 meV / A
+2025-10-05 03:32:34.289 INFO: Epoch 180: head: Default, loss=0.43327414, RMSE_E_per_atom=   32.61 meV, RMSE_F=  208.19 meV / A
+2025-10-05 03:32:34.291 DEBUG: Running inference on train_Default dataset
+2025-10-05 03:32:34.346 DEBUG: Plotting failed: too many indices for tensor of dimension 1
+2025-10-05 03:32:37.845 INFO: Epoch 181: head: Default, loss=0.43337062, RMSE_E_per_atom=   32.61 meV, RMSE_F=  208.22 meV / A
+2025-10-05 03:32:41.508 INFO: Epoch 182: head: Default, loss=0.43320741, RMSE_E_per_atom=   32.49 meV, RMSE_F=  208.18 meV / A
+2025-10-05 03:32:45.160 INFO: Epoch 183: head: Default, loss=0.43333170, RMSE_E_per_atom=   32.45 meV, RMSE_F=  208.21 meV / A
+2025-10-05 03:32:48.816 INFO: Epoch 184: head: Default, loss=0.43331258, RMSE_E_per_atom=   32.45 meV, RMSE_F=  208.20 meV / A
+2025-10-05 03:32:52.468 INFO: Epoch 185: head: Default, loss=0.43324044, RMSE_E_per_atom=   32.41 meV, RMSE_F=  208.19 meV / A
+2025-10-05 03:32:56.095 INFO: Epoch 186: head: Default, loss=0.43311302, RMSE_E_per_atom=   32.38 meV, RMSE_F=  208.16 meV / A
+2025-10-05 03:32:59.775 INFO: Epoch 187: head: Default, loss=0.43307988, RMSE_E_per_atom=   32.37 meV, RMSE_F=  208.15 meV / A
+2025-10-05 03:33:03.520 INFO: Epoch 188: head: Default, loss=0.43297291, RMSE_E_per_atom=   32.36 meV, RMSE_F=  208.12 meV / A
+2025-10-05 03:33:07.159 INFO: Epoch 189: head: Default, loss=0.43299543, RMSE_E_per_atom=   32.33 meV, RMSE_F=  208.13 meV / A
+2025-10-05 03:33:10.791 INFO: Epoch 190: head: Default, loss=0.43310661, RMSE_E_per_atom=   32.30 meV, RMSE_F=  208.16 meV / A
+2025-10-05 03:33:10.793 DEBUG: Running inference on train_Default dataset
+2025-10-05 03:33:10.850 DEBUG: Plotting failed: too many indices for tensor of dimension 1
+2025-10-05 03:33:14.316 INFO: Epoch 191: head: Default, loss=0.43315067, RMSE_E_per_atom=   32.28 meV, RMSE_F=  208.17 meV / A
+2025-10-05 03:33:17.973 INFO: Epoch 192: head: Default, loss=0.43319988, RMSE_E_per_atom=   32.25 meV, RMSE_F=  208.18 meV / A
+2025-10-05 03:33:21.597 INFO: Epoch 193: head: Default, loss=0.43338412, RMSE_E_per_atom=   32.23 meV, RMSE_F=  208.23 meV / A
+2025-10-05 03:33:25.255 INFO: Epoch 194: head: Default, loss=0.43329664, RMSE_E_per_atom=   32.23 meV, RMSE_F=  208.20 meV / A
+2025-10-05 03:33:28.935 INFO: Epoch 195: head: Default, loss=0.43338688, RMSE_E_per_atom=   32.22 meV, RMSE_F=  208.23 meV / A
+2025-10-05 03:33:32.588 INFO: Epoch 196: head: Default, loss=0.43347335, RMSE_E_per_atom=   32.20 meV, RMSE_F=  208.25 meV / A
+2025-10-05 03:33:36.259 INFO: Epoch 197: head: Default, loss=0.43343936, RMSE_E_per_atom=   32.19 meV, RMSE_F=  208.24 meV / A
+2025-10-05 03:33:39.863 INFO: Epoch 198: head: Default, loss=0.43346527, RMSE_E_per_atom=   32.18 meV, RMSE_F=  208.25 meV / A
+2025-10-05 03:33:43.546 INFO: Epoch 199: head: Default, loss=0.43353246, RMSE_E_per_atom=   32.20 meV, RMSE_F=  208.26 meV / A
+2025-10-05 03:33:47.207 INFO: Epoch 200: head: Default, loss=0.43355385, RMSE_E_per_atom=   32.20 meV, RMSE_F=  208.27 meV / A
+2025-10-05 03:33:47.209 DEBUG: Running inference on train_Default dataset
+2025-10-05 03:33:47.264 DEBUG: Plotting failed: too many indices for tensor of dimension 1
+2025-10-05 03:33:50.692 INFO: Epoch 201: head: Default, loss=0.43353631, RMSE_E_per_atom=   32.20 meV, RMSE_F=  208.26 meV / A
+2025-10-05 03:33:54.366 INFO: Epoch 202: head: Default, loss=0.43354765, RMSE_E_per_atom=   32.18 meV, RMSE_F=  208.27 meV / A
+2025-10-05 03:33:58.011 INFO: Epoch 203: head: Default, loss=0.43359166, RMSE_E_per_atom=   32.18 meV, RMSE_F=  208.28 meV / A
+2025-10-05 03:34:01.649 INFO: Epoch 204: head: Default, loss=0.43365594, RMSE_E_per_atom=   32.19 meV, RMSE_F=  208.29 meV / A
+2025-10-05 03:34:05.312 INFO: Epoch 205: head: Default, loss=0.43368444, RMSE_E_per_atom=   32.19 meV, RMSE_F=  208.30 meV / A
+2025-10-05 03:34:08.983 INFO: Epoch 206: head: Default, loss=0.43372989, RMSE_E_per_atom=   32.18 meV, RMSE_F=  208.31 meV / A
+2025-10-05 03:34:12.643 INFO: Epoch 207: head: Default, loss=0.43378500, RMSE_E_per_atom=   32.18 meV, RMSE_F=  208.33 meV / A
+2025-10-05 03:34:16.284 INFO: Epoch 208: head: Default, loss=0.43378737, RMSE_E_per_atom=   32.17 meV, RMSE_F=  208.33 meV / A
+2025-10-05 03:34:19.927 INFO: Epoch 209: head: Default, loss=0.43379545, RMSE_E_per_atom=   32.17 meV, RMSE_F=  208.33 meV / A
+2025-10-05 03:34:23.570 INFO: Epoch 210: head: Default, loss=0.43377835, RMSE_E_per_atom=   32.17 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:34:23.572 DEBUG: Running inference on train_Default dataset
+2025-10-05 03:34:23.630 DEBUG: Plotting failed: too many indices for tensor of dimension 1
+2025-10-05 03:34:27.057 INFO: Epoch 211: head: Default, loss=0.43376791, RMSE_E_per_atom=   32.16 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:34:30.717 INFO: Epoch 212: head: Default, loss=0.43375623, RMSE_E_per_atom=   32.16 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:34:34.366 INFO: Epoch 213: head: Default, loss=0.43375382, RMSE_E_per_atom=   32.15 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:34:38.030 INFO: Epoch 214: head: Default, loss=0.43374685, RMSE_E_per_atom=   32.15 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:34:41.689 INFO: Epoch 215: head: Default, loss=0.43373020, RMSE_E_per_atom=   32.15 meV, RMSE_F=  208.31 meV / A
+2025-10-05 03:34:45.433 INFO: Epoch 216: head: Default, loss=0.43373990, RMSE_E_per_atom=   32.15 meV, RMSE_F=  208.31 meV / A
+2025-10-05 03:34:49.055 INFO: Epoch 217: head: Default, loss=0.43372734, RMSE_E_per_atom=   32.14 meV, RMSE_F=  208.31 meV / A
+2025-10-05 03:34:52.695 INFO: Epoch 218: head: Default, loss=0.43374194, RMSE_E_per_atom=   32.14 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:34:56.386 INFO: Epoch 219: head: Default, loss=0.43375399, RMSE_E_per_atom=   32.13 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:35:00.087 INFO: Epoch 220: head: Default, loss=0.43374569, RMSE_E_per_atom=   32.13 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:35:00.090 DEBUG: Running inference on train_Default dataset
+2025-10-05 03:35:00.148 DEBUG: Plotting failed: too many indices for tensor of dimension 1
+2025-10-05 03:35:03.590 INFO: Epoch 221: head: Default, loss=0.43374393, RMSE_E_per_atom=   32.13 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:35:07.226 INFO: Epoch 222: head: Default, loss=0.43370172, RMSE_E_per_atom=   32.13 meV, RMSE_F=  208.31 meV / A
+2025-10-05 03:35:10.940 INFO: Epoch 223: head: Default, loss=0.43367664, RMSE_E_per_atom=   32.13 meV, RMSE_F=  208.30 meV / A
+2025-10-05 03:35:14.608 INFO: Epoch 224: head: Default, loss=0.43370895, RMSE_E_per_atom=   32.12 meV, RMSE_F=  208.31 meV / A
+2025-10-05 03:35:18.280 INFO: Epoch 225: head: Default, loss=0.43373445, RMSE_E_per_atom=   32.12 meV, RMSE_F=  208.31 meV / A
+2025-10-05 03:35:21.939 INFO: Epoch 226: head: Default, loss=0.43375062, RMSE_E_per_atom=   32.11 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:35:25.548 INFO: Epoch 227: head: Default, loss=0.43375943, RMSE_E_per_atom=   32.11 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:35:29.177 INFO: Epoch 228: head: Default, loss=0.43376237, RMSE_E_per_atom=   32.11 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:35:32.856 INFO: Epoch 229: head: Default, loss=0.43376072, RMSE_E_per_atom=   32.11 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:35:36.551 INFO: Epoch 230: head: Default, loss=0.43375929, RMSE_E_per_atom=   32.11 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:35:36.553 DEBUG: Running inference on train_Default dataset
+2025-10-05 03:35:36.612 DEBUG: Plotting failed: too many indices for tensor of dimension 1
+2025-10-05 03:35:40.081 INFO: Epoch 231: head: Default, loss=0.43376029, RMSE_E_per_atom=   32.10 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:35:43.730 INFO: Epoch 232: head: Default, loss=0.43376519, RMSE_E_per_atom=   32.10 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:35:47.414 INFO: Epoch 233: head: Default, loss=0.43377381, RMSE_E_per_atom=   32.10 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:35:51.024 INFO: Epoch 234: head: Default, loss=0.43378044, RMSE_E_per_atom=   32.10 meV, RMSE_F=  208.33 meV / A
+2025-10-05 03:35:54.682 INFO: Epoch 235: head: Default, loss=0.43378303, RMSE_E_per_atom=   32.10 meV, RMSE_F=  208.33 meV / A
+2025-10-05 03:35:58.377 INFO: Epoch 236: head: Default, loss=0.43378123, RMSE_E_per_atom=   32.10 meV, RMSE_F=  208.33 meV / A
+2025-10-05 03:36:02.041 INFO: Epoch 237: head: Default, loss=0.43377446, RMSE_E_per_atom=   32.11 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:36:05.681 INFO: Epoch 238: head: Default, loss=0.43376819, RMSE_E_per_atom=   32.11 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:36:09.393 INFO: Epoch 239: head: Default, loss=0.43376495, RMSE_E_per_atom=   32.10 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:36:13.067 INFO: Epoch 240: head: Default, loss=0.43376140, RMSE_E_per_atom=   32.10 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:36:13.069 DEBUG: Running inference on train_Default dataset
+2025-10-05 03:36:13.132 DEBUG: Plotting failed: too many indices for tensor of dimension 1
+2025-10-05 03:36:16.590 INFO: Epoch 241: head: Default, loss=0.43375865, RMSE_E_per_atom=   32.10 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:36:20.253 INFO: Epoch 242: head: Default, loss=0.43375775, RMSE_E_per_atom=   32.11 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:36:23.960 INFO: Epoch 243: head: Default, loss=0.43375318, RMSE_E_per_atom=   32.11 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:36:27.614 INFO: Epoch 244: head: Default, loss=0.43375222, RMSE_E_per_atom=   32.11 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:36:31.282 INFO: Epoch 245: head: Default, loss=0.43375383, RMSE_E_per_atom=   32.11 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:36:34.956 INFO: Epoch 246: head: Default, loss=0.43375584, RMSE_E_per_atom=   32.11 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:36:38.633 INFO: Epoch 247: head: Default, loss=0.43375784, RMSE_E_per_atom=   32.11 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:36:42.288 INFO: Epoch 248: head: Default, loss=0.43375789, RMSE_E_per_atom=   32.11 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:36:45.962 INFO: Epoch 249: head: Default, loss=0.43375728, RMSE_E_per_atom=   32.11 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:36:49.678 INFO: Epoch 250: head: Default, loss=0.43375791, RMSE_E_per_atom=   32.11 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:36:49.680 DEBUG: Running inference on train_Default dataset
+2025-10-05 03:36:49.738 DEBUG: Plotting failed: too many indices for tensor of dimension 1
+2025-10-05 03:36:53.181 INFO: Epoch 251: head: Default, loss=0.43375832, RMSE_E_per_atom=   32.11 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:36:56.799 INFO: Epoch 252: head: Default, loss=0.43376002, RMSE_E_per_atom=   32.11 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:37:00.476 INFO: Epoch 253: head: Default, loss=0.43376226, RMSE_E_per_atom=   32.11 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:37:04.130 INFO: Epoch 254: head: Default, loss=0.43376328, RMSE_E_per_atom=   32.11 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:37:07.752 INFO: Epoch 255: head: Default, loss=0.43376327, RMSE_E_per_atom=   32.10 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:37:11.405 INFO: Epoch 256: head: Default, loss=0.43376382, RMSE_E_per_atom=   32.10 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:37:15.087 INFO: Epoch 257: head: Default, loss=0.43376349, RMSE_E_per_atom=   32.10 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:37:18.742 INFO: Epoch 258: head: Default, loss=0.43376315, RMSE_E_per_atom=   32.10 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:37:22.395 INFO: Epoch 259: head: Default, loss=0.43376166, RMSE_E_per_atom=   32.11 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:37:26.044 INFO: Epoch 260: head: Default, loss=0.43376210, RMSE_E_per_atom=   32.10 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:37:26.046 DEBUG: Running inference on train_Default dataset
+2025-10-05 03:37:26.107 DEBUG: Plotting failed: too many indices for tensor of dimension 1
+2025-10-05 03:37:29.560 INFO: Epoch 261: head: Default, loss=0.43376319, RMSE_E_per_atom=   32.10 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:37:33.214 INFO: Epoch 262: head: Default, loss=0.43376325, RMSE_E_per_atom=   32.10 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:37:36.844 INFO: Epoch 263: head: Default, loss=0.43376336, RMSE_E_per_atom=   32.10 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:37:40.507 INFO: Epoch 264: head: Default, loss=0.43376195, RMSE_E_per_atom=   32.10 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:37:44.138 INFO: Epoch 265: head: Default, loss=0.43376146, RMSE_E_per_atom=   32.11 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:37:47.813 INFO: Epoch 266: head: Default, loss=0.43376001, RMSE_E_per_atom=   32.11 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:37:51.492 INFO: Epoch 267: head: Default, loss=0.43375903, RMSE_E_per_atom=   32.11 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:37:55.143 INFO: Epoch 268: head: Default, loss=0.43375797, RMSE_E_per_atom=   32.11 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:37:58.778 INFO: Epoch 269: head: Default, loss=0.43375729, RMSE_E_per_atom=   32.11 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:38:02.433 INFO: Epoch 270: head: Default, loss=0.43375678, RMSE_E_per_atom=   32.11 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:38:02.435 DEBUG: Running inference on train_Default dataset
+2025-10-05 03:38:02.492 DEBUG: Plotting failed: too many indices for tensor of dimension 1
+2025-10-05 03:38:05.951 INFO: Epoch 271: head: Default, loss=0.43375627, RMSE_E_per_atom=   32.11 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:38:09.637 INFO: Epoch 272: head: Default, loss=0.43375587, RMSE_E_per_atom=   32.11 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:38:13.287 INFO: Epoch 273: head: Default, loss=0.43375564, RMSE_E_per_atom=   32.11 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:38:16.951 INFO: Epoch 274: head: Default, loss=0.43375562, RMSE_E_per_atom=   32.11 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:38:20.634 INFO: Epoch 275: head: Default, loss=0.43375556, RMSE_E_per_atom=   32.11 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:38:24.255 INFO: Epoch 276: head: Default, loss=0.43375555, RMSE_E_per_atom=   32.11 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:38:27.944 INFO: Epoch 277: head: Default, loss=0.43375540, RMSE_E_per_atom=   32.11 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:38:31.600 INFO: Epoch 278: head: Default, loss=0.43375560, RMSE_E_per_atom=   32.11 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:38:35.238 INFO: Epoch 279: head: Default, loss=0.43375569, RMSE_E_per_atom=   32.11 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:38:38.879 INFO: Epoch 280: head: Default, loss=0.43375554, RMSE_E_per_atom=   32.11 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:38:38.881 DEBUG: Running inference on train_Default dataset
+2025-10-05 03:38:38.941 DEBUG: Plotting failed: too many indices for tensor of dimension 1
+2025-10-05 03:38:42.403 INFO: Epoch 281: head: Default, loss=0.43375539, RMSE_E_per_atom=   32.11 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:38:46.060 INFO: Epoch 282: head: Default, loss=0.43375510, RMSE_E_per_atom=   32.11 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:38:49.684 INFO: Epoch 283: head: Default, loss=0.43375484, RMSE_E_per_atom=   32.11 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:38:53.389 INFO: Epoch 284: head: Default, loss=0.43375444, RMSE_E_per_atom=   32.11 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:38:57.087 INFO: Epoch 285: head: Default, loss=0.43375413, RMSE_E_per_atom=   32.11 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:39:00.761 INFO: Epoch 286: head: Default, loss=0.43375395, RMSE_E_per_atom=   32.11 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:39:04.452 INFO: Epoch 287: head: Default, loss=0.43375372, RMSE_E_per_atom=   32.11 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:39:08.144 INFO: Epoch 288: head: Default, loss=0.43375354, RMSE_E_per_atom=   32.11 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:39:11.792 INFO: Epoch 289: head: Default, loss=0.43375348, RMSE_E_per_atom=   32.11 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:39:15.457 INFO: Epoch 290: head: Default, loss=0.43375345, RMSE_E_per_atom=   32.11 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:39:15.459 DEBUG: Running inference on train_Default dataset
+2025-10-05 03:39:15.514 DEBUG: Plotting failed: too many indices for tensor of dimension 1
+2025-10-05 03:39:18.998 INFO: Epoch 291: head: Default, loss=0.43375343, RMSE_E_per_atom=   32.11 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:39:22.682 INFO: Epoch 292: head: Default, loss=0.43375339, RMSE_E_per_atom=   32.11 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:39:26.311 INFO: Epoch 293: head: Default, loss=0.43375326, RMSE_E_per_atom=   32.11 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:39:30.009 INFO: Epoch 294: head: Default, loss=0.43375321, RMSE_E_per_atom=   32.11 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:39:33.683 INFO: Epoch 295: head: Default, loss=0.43375316, RMSE_E_per_atom=   32.11 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:39:37.365 INFO: Epoch 296: head: Default, loss=0.43375312, RMSE_E_per_atom=   32.11 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:39:41.060 INFO: Epoch 297: head: Default, loss=0.43375309, RMSE_E_per_atom=   32.11 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:39:44.739 INFO: Epoch 298: head: Default, loss=0.43375301, RMSE_E_per_atom=   32.11 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:39:48.408 INFO: Epoch 299: head: Default, loss=0.43375293, RMSE_E_per_atom=   32.11 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:39:52.063 INFO: Epoch 300: head: Default, loss=0.43375291, RMSE_E_per_atom=   32.11 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:39:52.065 DEBUG: Running inference on train_Default dataset
+2025-10-05 03:39:52.126 DEBUG: Plotting failed: too many indices for tensor of dimension 1
+2025-10-05 03:39:55.591 INFO: Epoch 301: head: Default, loss=0.43375288, RMSE_E_per_atom=   32.11 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:39:59.263 INFO: Epoch 302: head: Default, loss=0.43375288, RMSE_E_per_atom=   32.11 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:40:02.919 INFO: Epoch 303: head: Default, loss=0.43375282, RMSE_E_per_atom=   32.11 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:40:06.567 INFO: Epoch 304: head: Default, loss=0.43375279, RMSE_E_per_atom=   32.11 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:40:10.202 INFO: Epoch 305: head: Default, loss=0.43375276, RMSE_E_per_atom=   32.11 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:40:13.819 INFO: Epoch 306: head: Default, loss=0.43375275, RMSE_E_per_atom=   32.11 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:40:17.429 INFO: Epoch 307: head: Default, loss=0.43375273, RMSE_E_per_atom=   32.11 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:40:21.088 INFO: Epoch 308: head: Default, loss=0.43375269, RMSE_E_per_atom=   32.11 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:40:24.718 INFO: Epoch 309: head: Default, loss=0.43375267, RMSE_E_per_atom=   32.11 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:40:28.380 INFO: Epoch 310: head: Default, loss=0.43375266, RMSE_E_per_atom=   32.11 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:40:28.382 DEBUG: Running inference on train_Default dataset
+2025-10-05 03:40:28.442 DEBUG: Plotting failed: too many indices for tensor of dimension 1
+2025-10-05 03:40:31.963 INFO: Epoch 311: head: Default, loss=0.43375264, RMSE_E_per_atom=   32.11 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:40:35.660 INFO: Epoch 312: head: Default, loss=0.43375263, RMSE_E_per_atom=   32.11 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:40:39.321 INFO: Epoch 313: head: Default, loss=0.43375261, RMSE_E_per_atom=   32.11 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:40:43.003 INFO: Epoch 314: head: Default, loss=0.43375259, RMSE_E_per_atom=   32.11 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:40:46.668 INFO: Epoch 315: head: Default, loss=0.43375257, RMSE_E_per_atom=   32.11 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:40:50.329 INFO: Epoch 316: head: Default, loss=0.43375255, RMSE_E_per_atom=   32.11 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:40:53.967 INFO: Epoch 317: head: Default, loss=0.43375254, RMSE_E_per_atom=   32.11 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:40:57.671 INFO: Epoch 318: head: Default, loss=0.43375253, RMSE_E_per_atom=   32.11 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:41:01.374 INFO: Epoch 319: head: Default, loss=0.43375254, RMSE_E_per_atom=   32.11 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:41:05.057 INFO: Epoch 320: head: Default, loss=0.43375254, RMSE_E_per_atom=   32.11 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:41:05.059 DEBUG: Running inference on train_Default dataset
+2025-10-05 03:41:05.120 DEBUG: Plotting failed: too many indices for tensor of dimension 1
+2025-10-05 03:41:08.614 INFO: Epoch 321: head: Default, loss=0.43375254, RMSE_E_per_atom=   32.11 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:41:12.269 INFO: Epoch 322: head: Default, loss=0.43375252, RMSE_E_per_atom=   32.11 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:41:15.897 INFO: Epoch 323: head: Default, loss=0.43375251, RMSE_E_per_atom=   32.11 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:41:19.513 INFO: Epoch 324: head: Default, loss=0.43375250, RMSE_E_per_atom=   32.11 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:41:23.166 INFO: Epoch 325: head: Default, loss=0.43375250, RMSE_E_per_atom=   32.11 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:41:26.826 INFO: Epoch 326: head: Default, loss=0.43375249, RMSE_E_per_atom=   32.11 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:41:30.442 INFO: Epoch 327: head: Default, loss=0.43375248, RMSE_E_per_atom=   32.11 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:41:34.076 INFO: Epoch 328: head: Default, loss=0.43375246, RMSE_E_per_atom=   32.11 meV, RMSE_F=  208.32 meV / A
+2025-10-05 03:41:37.748 INFO: Epoch 329: head: Default, loss=0.43375247, RMSE_E_per_atom=   32.11 meV, RMSE_F=  208.32 meV / A

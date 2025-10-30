@@ -1,0 +1,45 @@
+
+model: 'MACE'
+foundation_model: 'small'
+multiheads_finetuning: False
+train_file: 'al-al2o3_data/400_dpp_trainval_no-rd.xyz'
+valid_fraction: 0.15
+test_file: 'al-al2o3_data/mace_test.xyz'
+energy_key: "REF_energy"
+forces_key: "REF_forces"
+E0s: {8: -0.20523646, 13: -0.01543451}
+name: "small-ft_al-al2o3"
+model_dir: "al-al2o3_models/al-al2o3_small_ft-3"
+log_dir: "al-al2o3_models/al-al2o3_small_ft-3"
+results_dir: "al-al2o3_models/al-al2o3_small_ft-3"
+checkpoints_dir: "al-al2o3_models/al-al2o3_small_ft-3"
+device: cuda
+batch_size: 10
+max_num_epochs: 200
+lr: 0.001
+ema: True
+ema_decay: 0.99
+optimizer: adamw
+weight_decay: 5e-7
+swa: True
+seed: 123
+stress_weight: 0.0
+forces_weight: 100.0
+energy_weight: 1.0
+#scheduler_patience: 20
+#lr_factor: 0.2
+huber_delta: 0.01
+#scheduler: ExponentialLR
+wandb: True
+enable_cueq: True
+wandb_project: "MACE_Al-Al2O3"
+wandb_name: "small_ft_lr0.001_wd5e-7_100f1e_400dpp_bs10_plateau-1"
+wandb_log_hypers: ["lr", "lr_factor", "lr_scheduler_gamma", "scheduler",
+                   "swa", "swa_lr", "start_swa", "scheduler_patience",
+                   "swa_energy_weight", "swa_forces_weight",
+                   "energy_weight", "forces_weight",
+                   "ema", "ema_decay", "weight_decay",
+                   "huber_delta", "optimizer", "amsgrad", "beta",
+                   "batch_size", "max_num_epochs", "seed",
+                   "hidden_irreps", "max_ell", "max_L", "correlation",
+                   "r_max", "radial_MLP", "scaling", "num_channels"]

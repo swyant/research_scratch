@@ -1,0 +1,24 @@
+
+model: 'MACE'
+foundation_model: 'small'
+multiheads_finetuning: False
+train_file: 'data/HfOx_Hf_trainval.xyz'
+valid_fraction: 0.1
+test_file: 'data/HfOx_Hf_test.xyz'
+energy_key: "REF_energy"
+forces_key: "REF_forces"
+E0s: {8: -443.8224565134432, 72: -1529.4984727695407}
+name: "small_ft-HfOx_v0.2"
+model_dir: "models/small_HfOx-ft_2"
+log_dir: "models/small_HfOx-ft_2"
+results_dir: "models/small_HfOx-ft_2"
+checkpoints_dir: "models/small_HfOx-ft_2"
+device: cuda
+batch_size: 5
+max_num_epochs: 500
+lr: 0.01
+swa: True
+seed: 123
+stress_weight: 0.0
+forces_weight: 50.0
+energy_weight: 1.0

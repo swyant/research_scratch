@@ -1,0 +1,23 @@
+[project]
+name = "polycrytal-workspace"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Spencer Wyant", email = "17836774+swyant@users.noreply.github.com" }
+]
+requires-python = ">=3.13"
+dependencies = [
+    "ase>=3.26.0",
+    "pymatgen>=2025.10.7",
+    "pymatgen-analysis-defects>=2025.9.26",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[dependency-groups]
+dev = [
+    "ipykernel>=7.1.0",
+]

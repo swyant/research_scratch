@@ -1,2 +1,5 @@
 *dump 
 *DATA
+*.xyz 
+*.npz
+*.mp4

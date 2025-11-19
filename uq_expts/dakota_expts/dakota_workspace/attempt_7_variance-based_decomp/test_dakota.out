@@ -1,0 +1,1732 @@
+Dakota version 6.22 released May 15 2025.
+Repository revision 923926248 (2025-05-08) built May  8 2025 10:29:41.
+Running MPI Dakota executable in serial mode.
+Start time: Wed Nov 19 09:14:17 2025
+
+-----------------------
+Begin DAKOTA input file
+dakota_platewithhole.in
+-----------------------
+environment 
+    tabular_data 
+
+method 
+    # output normal #???
+    sampling 
+        sample_type random 
+        samples = 10 
+        seed = 123
+        variance_based_decomp
+
+variables 
+    uniform_uncertain = 2 
+        lower_bounds  = 9E4  0.35 
+        upper_bounds  = 1.38E5 0.37
+        descriptors   =  'E'  'nu'
+
+interface 
+    analysis_drivers 'wrapper_driver.sh'
+        fork 
+            work_directory named 'workdir/run'
+                directory_tag directory_save 
+                link_files 'partial_plate_with_hole.vtk' 'plate_with_hole.py' 'plate_with_hole_input.template' 'DakotaSubDriver.py'
+            parameters_file 'params.in'
+            results_file 'results.out' 
+            file_tag file_save 
+    asynchronous evaluation_concurrency 4
+
+response 
+    response_functions 1 
+    descriptors 'max_von_Mises_stres'
+    no_gradients no_hessians 
+---------------------
+End DAKOTA input file
+---------------------
+
+Using Dakota input file 'dakota_platewithhole.in'
+Writing new restart file 'dakota.rst'.
+
+>>>>> Executing environment.
+
+>>>>> Running random_sampling iterator.
+
+NonD random Samples = 10 Seed (user-specified) = 123
+
+NonD random Samples = 10 Seed not reset from previous LHS execution
+
+---------------------
+Begin Evaluation    1
+---------------------
+Parameters for evaluation 1:
+                      1.1646310873e+05 E
+                      3.5279901526e-01 nu
+
+(Asynchronous job 1 added to queue)
+
+---------------------
+Begin Evaluation    2
+---------------------
+Parameters for evaluation 2:
+                      1.2453451059e+05 E
+                      3.6560055521e-01 nu
+
+(Asynchronous job 2 added to queue)
+
+---------------------
+Begin Evaluation    3
+---------------------
+Parameters for evaluation 3:
+                      1.2422185543e+05 E
+                      3.5846212921e-01 nu
+
+(Asynchronous job 3 added to queue)
+
+---------------------
+Begin Evaluation    4
+---------------------
+Parameters for evaluation 4:
+                      1.0088886984e+05 E
+                      3.5821848736e-01 nu
+
+(Asynchronous job 4 added to queue)
+
+---------------------
+Begin Evaluation    5
+---------------------
+Parameters for evaluation 5:
+                      1.0373468826e+05 E
+                      3.5961863815e-01 nu
+
+(Asynchronous job 5 added to queue)
+
+---------------------
+Begin Evaluation    6
+---------------------
+Parameters for evaluation 6:
+                      1.2343052099e+05 E
+                      3.6369659469e-01 nu
+
+(Asynchronous job 6 added to queue)
+
+---------------------
+Begin Evaluation    7
+---------------------
+Parameters for evaluation 7:
+                      1.1056660440e+05 E
+                      3.6961528401e-01 nu
+
+(Asynchronous job 7 added to queue)
+
+---------------------
+Begin Evaluation    8
+---------------------
+Parameters for evaluation 8:
+                      1.2451921482e+05 E
+                      3.5802035108e-01 nu
+
+(Asynchronous job 8 added to queue)
+
+---------------------
+Begin Evaluation    9
+---------------------
+Parameters for evaluation 9:
+                      1.2316247287e+05 E
+                      3.5784235035e-01 nu
+
+(Asynchronous job 9 added to queue)
+
+---------------------
+Begin Evaluation   10
+---------------------
+Parameters for evaluation 10:
+                      1.1357370877e+05 E
+                      3.6159388595e-01 nu
+
+(Asynchronous job 10 added to queue)
+
+---------------------
+Begin Evaluation   11
+---------------------
+Parameters for evaluation 11:
+                      1.1362006911e+05 E
+                      3.5456526471e-01 nu
+
+(Asynchronous job 11 added to queue)
+
+---------------------
+Begin Evaluation   12
+---------------------
+Parameters for evaluation 12:
+                      1.2553422657e+05 E
+                      3.5834419894e-01 nu
+
+(Asynchronous job 12 added to queue)
+
+---------------------
+Begin Evaluation   13
+---------------------
+Parameters for evaluation 13:
+                      1.1552772425e+05 E
+                      3.6309442619e-01 nu
+
+(Asynchronous job 13 added to queue)
+
+---------------------
+Begin Evaluation   14
+---------------------
+Parameters for evaluation 14:
+                      1.0717098816e+05 E
+                      3.6975990569e-01 nu
+
+(Asynchronous job 14 added to queue)
+
+---------------------
+Begin Evaluation   15
+---------------------
+Parameters for evaluation 15:
+                      1.2477385543e+05 E
+                      3.5747602864e-01 nu
+
+(Asynchronous job 15 added to queue)
+
+---------------------
+Begin Evaluation   16
+---------------------
+Parameters for evaluation 16:
+                      1.1053744750e+05 E
+                      3.5587428079e-01 nu
+
+(Asynchronous job 16 added to queue)
+
+---------------------
+Begin Evaluation   17
+---------------------
+Parameters for evaluation 17:
+                      1.1932912870e+05 E
+                      3.5723577316e-01 nu
+
+(Asynchronous job 17 added to queue)
+
+---------------------
+Begin Evaluation   18
+---------------------
+Parameters for evaluation 18:
+                      1.0429346391e+05 E
+                      3.5645917818e-01 nu
+
+(Asynchronous job 18 added to queue)
+
+---------------------
+Begin Evaluation   19
+---------------------
+Parameters for evaluation 19:
+                      1.3077272612e+05 E
+                      3.5469025747e-01 nu
+
+(Asynchronous job 19 added to queue)
+
+---------------------
+Begin Evaluation   20
+---------------------
+Parameters for evaluation 20:
+                      1.2045124617e+05 E
+                      3.6444886768e-01 nu
+
+(Asynchronous job 20 added to queue)
+
+---------------------
+Begin Evaluation   21
+---------------------
+Parameters for evaluation 21:
+                      1.1646310873e+05 E
+                      3.5456526471e-01 nu
+
+(Asynchronous job 21 added to queue)
+
+---------------------
+Begin Evaluation   22
+---------------------
+Parameters for evaluation 22:
+                      1.2453451059e+05 E
+                      3.5834419894e-01 nu
+
+(Asynchronous job 22 added to queue)
+
+---------------------
+Begin Evaluation   23
+---------------------
+Parameters for evaluation 23:
+                      1.2422185543e+05 E
+                      3.6309442619e-01 nu
+
+(Asynchronous job 23 added to queue)
+
+---------------------
+Begin Evaluation   24
+---------------------
+Parameters for evaluation 24:
+                      1.0088886984e+05 E
+                      3.6975990569e-01 nu
+
+(Asynchronous job 24 added to queue)
+
+---------------------
+Begin Evaluation   25
+---------------------
+Parameters for evaluation 25:
+                      1.0373468826e+05 E
+                      3.5747602864e-01 nu
+
+(Asynchronous job 25 added to queue)
+
+---------------------
+Begin Evaluation   26
+---------------------
+Parameters for evaluation 26:
+                      1.2343052099e+05 E
+                      3.5587428079e-01 nu
+
+(Asynchronous job 26 added to queue)
+
+---------------------
+Begin Evaluation   27
+---------------------
+Parameters for evaluation 27:
+                      1.1056660440e+05 E
+                      3.5723577316e-01 nu
+
+(Asynchronous job 27 added to queue)
+
+---------------------
+Begin Evaluation   28
+---------------------
+Parameters for evaluation 28:
+                      1.2451921482e+05 E
+                      3.5645917818e-01 nu
+
+(Asynchronous job 28 added to queue)
+
+---------------------
+Begin Evaluation   29
+---------------------
+Parameters for evaluation 29:
+                      1.2316247287e+05 E
+                      3.5469025747e-01 nu
+
+(Asynchronous job 29 added to queue)
+
+---------------------
+Begin Evaluation   30
+---------------------
+Parameters for evaluation 30:
+                      1.1357370877e+05 E
+                      3.6444886768e-01 nu
+
+(Asynchronous job 30 added to queue)
+
+---------------------
+Begin Evaluation   31
+---------------------
+Parameters for evaluation 31:
+                      1.1362006911e+05 E
+                      3.5279901526e-01 nu
+
+(Asynchronous job 31 added to queue)
+
+---------------------
+Begin Evaluation   32
+---------------------
+Parameters for evaluation 32:
+                      1.2553422657e+05 E
+                      3.6560055521e-01 nu
+
+(Asynchronous job 32 added to queue)
+
+---------------------
+Begin Evaluation   33
+---------------------
+Parameters for evaluation 33:
+                      1.1552772425e+05 E
+                      3.5846212921e-01 nu
+
+(Asynchronous job 33 added to queue)
+
+---------------------
+Begin Evaluation   34
+---------------------
+Parameters for evaluation 34:
+                      1.0717098816e+05 E
+                      3.5821848736e-01 nu
+
+(Asynchronous job 34 added to queue)
+
+---------------------
+Begin Evaluation   35
+---------------------
+Parameters for evaluation 35:
+                      1.2477385543e+05 E
+                      3.5961863815e-01 nu
+
+(Asynchronous job 35 added to queue)
+
+---------------------
+Begin Evaluation   36
+---------------------
+Parameters for evaluation 36:
+                      1.1053744750e+05 E
+                      3.6369659469e-01 nu
+
+(Asynchronous job 36 added to queue)
+
+---------------------
+Begin Evaluation   37
+---------------------
+Parameters for evaluation 37:
+                      1.1932912870e+05 E
+                      3.6961528401e-01 nu
+
+(Asynchronous job 37 added to queue)
+
+---------------------
+Begin Evaluation   38
+---------------------
+Parameters for evaluation 38:
+                      1.0429346391e+05 E
+                      3.5802035108e-01 nu
+
+(Asynchronous job 38 added to queue)
+
+---------------------
+Begin Evaluation   39
+---------------------
+Parameters for evaluation 39:
+                      1.3077272612e+05 E
+                      3.5784235035e-01 nu
+
+(Asynchronous job 39 added to queue)
+
+---------------------
+Begin Evaluation   40
+---------------------
+Parameters for evaluation 40:
+                      1.2045124617e+05 E
+                      3.6159388595e-01 nu
+
+(Asynchronous job 40 added to queue)
+
+Blocking synchronize of 40 asynchronous evaluations
+First pass: initiating 4 local asynchronous jobs
+Initiating evaluation 1
+nonblocking fork: wrapper_driver.sh params.in.1 results.out.1
+Initiating evaluation 2
+nonblocking fork: wrapper_driver.sh params.in.2 results.out.2
+Initiating evaluation 3
+nonblocking fork: wrapper_driver.sh params.in.3 results.out.3
+Initiating evaluation 4
+nonblocking fork: wrapper_driver.sh params.in.4 results.out.4
+Second pass: scheduling 36 remaining local asynchronous jobs
+Waiting on completed jobs
+ _______  _______  ___      __   __  _______  _______
+|       ||       ||   |    |  | |  ||       ||       |
+|    ___||    ___||   |    |  | |  ||    _  ||    ___|
+|   |___ |   |___ |   |    |  |_|  ||   |_| ||   |___
+|    ___||    ___||   |___ |       ||    ___||    ___|
+|   |    |   |___ |       ||       ||   |    |   |___
+|___|    |_______||_______||_______||___|    |_______|
+FElupe Version 9.5.0
+macOS-14.7.8 x86_64 64bit
+
+Run Job
+=======
+Begin Evaluation of Step 1.
+
+Newton-Rhapson solver
+=====================
+
+| # | norm(fun) |  norm(dx) |
+|---|-----------|-----------|
+| 1 | 4.075e-13 | 4.384e-02 |
+
+Converged in 1 iterations (Assembly: 0.01528 s, Solve: 0.01266 s).
+
+Substep 1/1 of Step 1/1 successful.
+ _______  _______  ___      __   __  _______  _______
+|       ||       ||   |    |  | |  ||       ||       |
+|    ___||    ___||   |    |  | |  ||    _  ||    ___|
+|   |___ |   |___ |   |    |  |_|  ||   |_| ||   |___
+|    ___||    ___||   |___ |       ||    ___||    ___|
+|   |    |   |___ |       ||       ||   |    |   |___
+|___|    |_______||_______||_______||___|    |_______|
+FElupe Version 9.5.0
+macOS-14.7.8 x86_64 64bit
+
+Run Job
+=======
+Begin Evaluation of Step 1.
+
+Newton-Rhapson solver
+=====================
+
+| # | norm(fun) |  norm(dx) |
+|---|-----------|-----------|
+| 1 | 4.905e-13 | 3.554e-02 |
+
+Converged in 1 iterations (Assembly: 0.01579 s, Solve: 0.01205 s).
+
+Substep 1/1 of Step 1/1 successful.
+ _______  _______  ___      __   __  _______  _______
+|       ||       ||   |    |  | |  ||       ||       |
+|    ___||    ___||   |    |  | |  ||    _  ||    ___|
+|   |___ |   |___ |   |    |  |_|  ||   |_| ||   |___
+|    ___||    ___||   |___ |       ||    ___||    ___|
+|   |    |   |___ |       ||       ||   |    |   |___
+|___|    |_______||_______||_______||___|    |_______|
+FElupe Version 9.5.0
+macOS-14.7.8 x86_64 64bit
+
+Run Job
+=======
+Begin Evaluation of Step 1.
+
+Newton-Rhapson solver
+=====================
+
+| # | norm(fun) |  norm(dx) |
+|---|-----------|-----------|
+| 1 | 4.888e-13 | 3.561e-02 |
+
+Converged in 1 iterations (Assembly: 0.01573 s, Solve: 0.01225 s).
+
+Substep 1/1 of Step 1/1 successful.
+ _______  _______  ___      __   __  _______  _______
+|       ||       ||   |    |  | |  ||       ||       |
+|    ___||    ___||   |    |  | |  ||    _  ||    ___|
+|   |___ |   |___ |   |    |  |_|  ||   |_| ||   |___
+|    ___||    ___||   |___ |       ||    ___||    ___|
+|   |    |   |___ |       ||       ||   |    |   |___
+|___|    |_______||_______||_______||___|    |_______|
+FElupe Version 9.5.0
+macOS-14.7.8 x86_64 64bit
+
+Run Job
+=======
+Begin Evaluation of Step 1.
+
+Newton-Rhapson solver
+=====================
+
+| # | norm(fun) |  norm(dx) |
+|---|-----------|-----------|
+| 1 | 4.531e-13 | 3.796e-02 |
+
+Converged in 1 iterations (Assembly: 0.01751 s, Solve: 0.01037 s).
+
+Substep 1/1 of Step 1/1 successful.
+Evaluation 1 has completed
+Evaluation 2 has completed
+Evaluation 3 has completed
+Evaluation 4 has completed
+Initiating evaluation 5
+nonblocking fork: wrapper_driver.sh params.in.5 results.out.5
+Initiating evaluation 6
+nonblocking fork: wrapper_driver.sh params.in.6 results.out.6
+Initiating evaluation 7
+nonblocking fork: wrapper_driver.sh params.in.7 results.out.7
+Initiating evaluation 8
+nonblocking fork: wrapper_driver.sh params.in.8 results.out.8
+Waiting on completed jobs
+ _______  _______  ___      __   __  _______  _______
+|       ||       ||   |    |  | |  ||       ||       |
+|    ___||    ___||   |    |  | |  ||    _  ||    ___|
+|   |___ |   |___ |   |    |  |_|  ||   |_| ||   |___
+|    ___||    ___||   |___ |       ||    ___||    ___|
+|   |    |   |___ |       ||       ||   |    |   |___
+|___|    |_______||_______||_______||___|    |_______|
+FElupe Version 9.5.0
+macOS-14.7.8 x86_64 64bit
+
+Run Job
+=======
+Begin Evaluation of Step 1.
+
+Newton-Rhapson solver
+=====================
+
+| # | norm(fun) |  norm(dx) |
+|---|-----------|-----------|
+| 1 | 5.085e-13 | 3.552e-02 |
+
+Converged in 1 iterations (Assembly: 0.01243 s, Solve: 0.009655 s).
+
+Substep 1/1 of Step 1/1 successful.
+ _______  _______  ___      __   __  _______  _______
+|       ||       ||   |    |  | |  ||       ||       |
+|    ___||    ___||   |    |  | |  ||    _  ||    ___|
+|   |___ |   |___ |   |    |  |_|  ||   |_| ||   |___
+|    ___||    ___||   |___ |       ||    ___||    ___|
+|   |    |   |___ |       ||       ||   |    |   |___
+|___|    |_______||_______||_______||___|    |_______|
+FElupe Version 9.5.0
+macOS-14.7.8 x86_64 64bit
+
+Run Job
+=======
+Begin Evaluation of Step 1.
+
+Newton-Rhapson solver
+=====================
+
+| # | norm(fun) |  norm(dx) |
+|---|-----------|-----------|
+| 1 | 4.538e-13 | 4.004e-02 |
+
+Converged in 1 iterations (Assembly: 0.0123 s, Solve: 0.009751 s).
+
+Substep 1/1 of Step 1/1 successful.
+ _______  _______  ___      __   __  _______  _______
+|       ||       ||   |    |  | |  ||       ||       |
+|    ___||    ___||   |    |  | |  ||    _  ||    ___|
+|   |___ |   |___ |   |    |  |_|  ||   |_| ||   |___
+|    ___||    ___||   |___ |       ||    ___||    ___|
+|   |    |   |___ |       ||       ||   |    |   |___
+|___|    |_______||_______||_______||___|    |_______|
+FElupe Version 9.5.0
+macOS-14.7.8 x86_64 64bit
+
+Run Job
+=======
+Begin Evaluation of Step 1.
+
+Newton-Rhapson solver
+=====================
+
+| # | norm(fun) |  norm(dx) |
+|---|-----------|-----------|
+| 1 | 4.161e-13 | 4.264e-02 |
+
+Converged in 1 iterations (Assembly: 0.01232 s, Solve: 0.009733 s).
+
+Substep 1/1 of Step 1/1 successful.
+ _______  _______  ___      __   __  _______  _______
+|       ||       ||   |    |  | |  ||       ||       |
+|    ___||    ___||   |    |  | |  ||    _  ||    ___|
+|   |___ |   |___ |   |    |  |_|  ||   |_| ||   |___
+|    ___||    ___||   |___ |       ||    ___||    ___|
+|   |    |   |___ |       ||       ||   |    |   |___
+|___|    |_______||_______||_______||___|    |_______|
+FElupe Version 9.5.0
+macOS-14.7.8 x86_64 64bit
+
+Run Job
+=======
+Begin Evaluation of Step 1.
+
+Newton-Rhapson solver
+=====================
+
+| # | norm(fun) |  norm(dx) |
+|---|-----------|-----------|
+| 1 | 4.988e-13 | 3.585e-02 |
+
+Converged in 1 iterations (Assembly: 0.01217 s, Solve: 0.01012 s).
+
+Substep 1/1 of Step 1/1 successful.
+Evaluation 5 has completed
+Evaluation 6 has completed
+Evaluation 7 has completed
+Initiating evaluation 9
+nonblocking fork: wrapper_driver.sh params.in.9 results.out.9
+Initiating evaluation 10
+nonblocking fork: wrapper_driver.sh params.in.10 results.out.10
+Initiating evaluation 11
+nonblocking fork: wrapper_driver.sh params.in.11 results.out.11
+Waiting on completed jobs
+Evaluation 8 has completed
+Initiating evaluation 12
+nonblocking fork: wrapper_driver.sh params.in.12 results.out.12
+Waiting on completed jobs
+ _______  _______  ___      __   __  _______  _______
+|       ||       ||   |    |  | |  ||       ||       |
+|    ___||    ___||   |    |  | |  ||    _  ||    ___|
+|   |___ |   |___ |   |    |  |_|  ||   |_| ||   |___
+|    ___||    ___||   |___ |       ||    ___||    ___|
+|   |    |   |___ |       ||       ||   |    |   |___
+|___|    |_______||_______||_______||___|    |_______|
+FElupe Version 9.5.0
+macOS-14.7.8 x86_64 64bit
+
+Run Job
+=======
+Begin Evaluation of Step 1.
+
+Newton-Rhapson solver
+=====================
+
+| # | norm(fun) |  norm(dx) |
+|---|-----------|-----------|
+| 1 | 4.941e-13 | 3.523e-02 |
+
+Converged in 1 iterations (Assembly: 0.01242 s, Solve: 0.009513 s).
+
+Substep 1/1 of Step 1/1 successful.
+ _______  _______  ___      __   __  _______  _______
+|       ||       ||   |    |  | |  ||       ||       |
+|    ___||    ___||   |    |  | |  ||    _  ||    ___|
+|   |___ |   |___ |   |    |  |_|  ||   |_| ||   |___
+|    ___||    ___||   |___ |       ||    ___||    ___|
+|   |    |   |___ |       ||       ||   |    |   |___
+|___|    |_______||_______||_______||___|    |_______|
+FElupe Version 9.5.0
+macOS-14.7.8 x86_64 64bit
+
+Run Job
+=======
+Begin Evaluation of Step 1.
+
+Newton-Rhapson solver
+=====================
+
+| # | norm(fun) |  norm(dx) |
+|---|-----------|-----------|
+| 1 | 4.871e-13 | 3.591e-02 |
+
+Converged in 1 iterations (Assembly: 0.01205 s, Solve: 0.00966 s).
+
+Substep 1/1 of Step 1/1 successful.
+ _______  _______  ___      __   __  _______  _______
+|       ||       ||   |    |  | |  ||       ||       |
+|    ___||    ___||   |    |  | |  ||    _  ||    ___|
+|   |___ |   |___ |   |    |  |_|  ||   |_| ||   |___
+|    ___||    ___||   |___ |       ||    ___||    ___|
+|   |    |   |___ |       ||       ||   |    |   |___
+|___|    |_______||_______||_______||___|    |_______|
+FElupe Version 9.5.0
+macOS-14.7.8 x86_64 64bit
+
+Run Job
+=======
+Begin Evaluation of Step 1.
+
+Newton-Rhapson solver
+=====================
+
+| # | norm(fun) |  norm(dx) |
+|---|-----------|-----------|
+| 1 | 4.687e-13 | 3.895e-02 |
+
+Converged in 1 iterations (Assembly: 0.01234 s, Solve: 0.009564 s).
+
+Substep 1/1 of Step 1/1 successful.
+ _______  _______  ___      __   __  _______  _______
+|       ||       ||   |    |  | |  ||       ||       |
+|    ___||    ___||   |    |  | |  ||    _  ||    ___|
+|   |___ |   |___ |   |    |  |_|  ||   |_| ||   |___
+|    ___||    ___||   |___ |       ||    ___||    ___|
+|   |    |   |___ |       ||       ||   |    |   |___
+|___|    |_______||_______||_______||___|    |_______|
+FElupe Version 9.5.0
+macOS-14.7.8 x86_64 64bit
+
+Run Job
+=======
+Begin Evaluation of Step 1.
+
+Newton-Rhapson solver
+=====================
+
+| # | norm(fun) |  norm(dx) |
+|---|-----------|-----------|
+| 1 | 4.535e-13 | 3.892e-02 |
+
+Converged in 1 iterations (Assembly: 0.01214 s, Solve: 0.009728 s).
+
+Substep 1/1 of Step 1/1 successful.
+Evaluation 10 has completed
+Evaluation 12 has completed
+Initiating evaluation 13
+nonblocking fork: wrapper_driver.sh params.in.13 results.out.13
+Initiating evaluation 14
+nonblocking fork: wrapper_driver.sh params.in.14 results.out.14
+Waiting on completed jobs
+Evaluation 9 has completed
+Evaluation 11 has completed
+Initiating evaluation 15
+nonblocking fork: wrapper_driver.sh params.in.15 results.out.15
+Initiating evaluation 16
+nonblocking fork: wrapper_driver.sh params.in.16 results.out.16
+Waiting on completed jobs
+ _______  _______  ___      __   __  _______  _______
+|       ||       ||   |    |  | |  ||       ||       |
+|    ___||    ___||   |    |  | |  ||    _  ||    ___|
+|   |___ |   |___ |   |    |  |_|  ||   |_| ||   |___
+|    ___||    ___||   |___ |       ||    ___||    ___|
+|   |    |   |___ |       ||       ||   |    |   |___
+|___|    |_______||_______||_______||___|    |_______|
+FElupe Version 9.5.0
+macOS-14.7.8 x86_64 64bit
+
+Run Job
+=======
+Begin Evaluation of Step 1.
+
+Newton-Rhapson solver
+=====================
+
+| # | norm(fun) |  norm(dx) |
+|---|-----------|-----------|
+| 1 | 4.273e-13 | 4.131e-02 |
+
+Converged in 1 iterations (Assembly: 0.01239 s, Solve: 0.01057 s).
+
+Substep 1/1 of Step 1/1 successful.
+ _______  _______  ___      __   __  _______  _______
+|       ||       ||   |    |  | |  ||       ||       |
+|    ___||    ___||   |    |  | |  ||    _  ||    ___|
+|   |___ |   |___ |   |    |  |_|  ||   |_| ||   |___
+|    ___||    ___||   |___ |       ||    ___||    ___|
+|   |    |   |___ |       ||       ||   |    |   |___
+|___|    |_______||_______||_______||___|    |_______|
+FElupe Version 9.5.0
+macOS-14.7.8 x86_64 64bit
+
+Run Job
+=======
+Begin Evaluation of Step 1.
+
+Newton-Rhapson solver
+=====================
+
+| # | norm(fun) |  norm(dx) |
+|---|-----------|-----------|
+| 1 | 4.516e-13 | 3.830e-02 |
+
+Converged in 1 iterations (Assembly: 0.01274 s, Solve: 0.01046 s).
+
+Substep 1/1 of Step 1/1 successful.
+ _______  _______  ___      __   __  _______  _______
+|       ||       ||   |    |  | |  ||       ||       |
+|    ___||    ___||   |    |  | |  ||    _  ||    ___|
+|   |___ |   |___ |   |    |  |_|  ||   |_| ||   |___
+|    ___||    ___||   |___ |       ||    ___||    ___|
+|   |    |   |___ |       ||       ||   |    |   |___
+|___|    |_______||_______||_______||___|    |_______|
+FElupe Version 9.5.0
+macOS-14.7.8 x86_64 64bit
+
+Run Job
+=======
+Begin Evaluation of Step 1.
+
+Newton-Rhapson solver
+=====================
+
+| # | norm(fun) |  norm(dx) |
+|---|-----------|-----------|
+| 1 | 4.601e-13 | 4.000e-02 |
+
+Converged in 1 iterations (Assembly: 0.01616 s, Solve: 0.01136 s).
+
+Substep 1/1 of Step 1/1 successful.
+ _______  _______  ___      __   __  _______  _______
+|       ||       ||   |    |  | |  ||       ||       |
+|    ___||    ___||   |    |  | |  ||    _  ||    ___|
+|   |___ |   |___ |   |    |  |_|  ||   |_| ||   |___
+|    ___||    ___||   |___ |       ||    ___||    ___|
+|   |    |   |___ |       ||       ||   |    |   |___
+|___|    |_______||_______||_______||___|    |_______|
+FElupe Version 9.5.0
+macOS-14.7.8 x86_64 64bit
+
+Run Job
+=======
+Begin Evaluation of Step 1.
+
+Newton-Rhapson solver
+=====================
+
+| # | norm(fun) |  norm(dx) |
+|---|-----------|-----------|
+| 1 | 5.132e-13 | 3.545e-02 |
+
+Converged in 1 iterations (Assembly: 0.01633 s, Solve: 0.01129 s).
+
+Substep 1/1 of Step 1/1 successful.
+Evaluation 13 has completed
+Evaluation 14 has completed
+Initiating evaluation 17
+nonblocking fork: wrapper_driver.sh params.in.17 results.out.17
+Initiating evaluation 18
+nonblocking fork: wrapper_driver.sh params.in.18 results.out.18
+Waiting on completed jobs
+Evaluation 15 has completed
+Evaluation 16 has completed
+Initiating evaluation 19
+nonblocking fork: wrapper_driver.sh params.in.19 results.out.19
+Initiating evaluation 20
+nonblocking fork: wrapper_driver.sh params.in.20 results.out.20
+Waiting on completed jobs
+ _______  _______  ___      __   __  _______  _______
+|       ||       ||   |    |  | |  ||       ||       |
+|    ___||    ___||   |    |  | |  ||    _  ||    ___|
+|   |___ |   |___ |   |    |  |_|  ||   |_| ||   |___
+|    ___||    ___||   |___ |       ||    ___||    ___|
+|   |    |   |___ |       ||       ||   |    |   |___
+|___|    |_______||_______||_______||___|    |_______|
+FElupe Version 9.5.0
+macOS-14.7.8 x86_64 64bit
+
+Run Job
+=======
+Begin Evaluation of Step 1.
+
+Newton-Rhapson solver
+=====================
+
+| # | norm(fun) |  norm(dx) |
+|---|-----------|-----------|
+| 1 | 4.886e-13 | 3.706e-02 |
+
+Converged in 1 iterations (Assembly: 0.01408 s, Solve: 0.01051 s).
+
+Substep 1/1 of Step 1/1 successful.
+ _______  _______  ___      __   __  _______  _______
+|       ||       ||   |    |  | |  ||       ||       |
+|    ___||    ___||   |    |  | |  ||    _  ||    ___|
+|   |___ |   |___ |   |    |  |_|  ||   |_| ||   |___
+|    ___||    ___||   |___ |       ||    ___||    ___|
+|   |    |   |___ |       ||       ||   |    |   |___
+|___|    |_______||_______||_______||___|    |_______|
+FElupe Version 9.5.0
+macOS-14.7.8 x86_64 64bit
+
+Run Job
+=======
+Begin Evaluation of Step 1.
+
+Newton-Rhapson solver
+=====================
+
+| # | norm(fun) |  norm(dx) |
+|---|-----------|-----------|
+| 1 | 4.181e-13 | 4.240e-02 |
+
+Converged in 1 iterations (Assembly: 0.01431 s, Solve: 0.01046 s).
+
+Substep 1/1 of Step 1/1 successful.
+ _______  _______  ___      __   __  _______  _______
+|       ||       ||   |    |  | |  ||       ||       |
+|    ___||    ___||   |    |  | |  ||    _  ||    ___|
+|   |___ |   |___ |   |    |  |_|  ||   |_| ||   |___
+|    ___||    ___||   |___ |       ||    ___||    ___|
+|   |    |   |___ |       ||       ||   |    |   |___
+|___|    |_______||_______||_______||___|    |_______|
+FElupe Version 9.5.0
+macOS-14.7.8 x86_64 64bit
+
+Run Job
+=======
+Begin Evaluation of Step 1.
+
+Newton-Rhapson solver
+=====================
+
+| # | norm(fun) |  norm(dx) |
+|---|-----------|-----------|
+| 1 | 4.726e-13 | 3.674e-02 |
+
+Converged in 1 iterations (Assembly: 0.01313 s, Solve: 0.01197 s).
+
+Substep 1/1 of Step 1/1 successful.
+ _______  _______  ___      __   __  _______  _______
+|       ||       ||   |    |  | |  ||       ||       |
+|    ___||    ___||   |    |  | |  ||    _  ||    ___|
+|   |___ |   |___ |   |    |  |_|  ||   |_| ||   |___
+|    ___||    ___||   |___ |       ||    ___||    ___|
+|   |    |   |___ |       ||       ||   |    |   |___
+|___|    |_______||_______||_______||___|    |_______|
+FElupe Version 9.5.0
+macOS-14.7.8 x86_64 64bit
+
+Run Job
+=======
+Begin Evaluation of Step 1.
+
+Newton-Rhapson solver
+=====================
+
+| # | norm(fun) |  norm(dx) |
+|---|-----------|-----------|
+| 1 | 5.179e-13 | 3.381e-02 |
+
+Converged in 1 iterations (Assembly: 0.02575 s, Solve: 0.01772 s).
+
+Substep 1/1 of Step 1/1 successful.
+Evaluation 17 has completed
+Initiating evaluation 21
+nonblocking fork: wrapper_driver.sh params.in.21 results.out.21
+Waiting on completed jobs
+Evaluation 18 has completed
+Initiating evaluation 22
+nonblocking fork: wrapper_driver.sh params.in.22 results.out.22
+Waiting on completed jobs
+Evaluation 20 has completed
+Initiating evaluation 23
+nonblocking fork: wrapper_driver.sh params.in.23 results.out.23
+Waiting on completed jobs
+Evaluation 19 has completed
+Initiating evaluation 24
+nonblocking fork: wrapper_driver.sh params.in.24 results.out.24
+Waiting on completed jobs
+ _______  _______  ___      __   __  _______  _______
+|       ||       ||   |    |  | |  ||       ||       |
+|    ___||    ___||   |    |  | |  ||    _  ||    ___|
+|   |___ |   |___ |   |    |  |_|  ||   |_| ||   |___
+|    ___||    ___||   |___ |       ||    ___||    ___|
+|   |    |   |___ |       ||       ||   |    |   |___
+|___|    |_______||_______||_______||___|    |_______|
+FElupe Version 9.5.0
+macOS-14.7.8 x86_64 64bit
+
+Run Job
+=======
+Begin Evaluation of Step 1.
+
+Newton-Rhapson solver
+=====================
+
+| # | norm(fun) |  norm(dx) |
+|---|-----------|-----------|
+| 1 | 4.636e-13 | 3.797e-02 |
+
+Converged in 1 iterations (Assembly: 0.01281 s, Solve: 0.009673 s).
+
+Substep 1/1 of Step 1/1 successful.
+ _______  _______  ___      __   __  _______  _______
+|       ||       ||   |    |  | |  ||       ||       |
+|    ___||    ___||   |    |  | |  ||    _  ||    ___|
+|   |___ |   |___ |   |    |  |_|  ||   |_| ||   |___
+|    ___||    ___||   |___ |       ||    ___||    ___|
+|   |    |   |___ |       ||       ||   |    |   |___
+|___|    |_______||_______||_______||___|    |_______|
+FElupe Version 9.5.0
+macOS-14.7.8 x86_64 64bit
+
+Run Job
+=======
+Begin Evaluation of Step 1.
+
+Newton-Rhapson solver
+=====================
+
+| # | norm(fun) |  norm(dx) |
+|---|-----------|-----------|
+| 1 | 5.035e-13 | 3.552e-02 |
+
+Converged in 1 iterations (Assembly: 0.01416 s, Solve: 0.009821 s).
+
+Substep 1/1 of Step 1/1 successful.
+ _______  _______  ___      __   __  _______  _______
+|       ||       ||   |    |  | |  ||       ||       |
+|    ___||    ___||   |    |  | |  ||    _  ||    ___|
+|   |___ |   |___ |   |    |  |_|  ||   |_| ||   |___
+|    ___||    ___||   |___ |       ||    ___||    ___|
+|   |    |   |___ |       ||       ||   |    |   |___
+|___|    |_______||_______||_______||___|    |_______|
+FElupe Version 9.5.0
+macOS-14.7.8 x86_64 64bit
+
+Run Job
+=======
+Begin Evaluation of Step 1.
+
+Newton-Rhapson solver
+=====================
+
+| # | norm(fun) |  norm(dx) |
+|---|-----------|-----------|
+| 1 | 4.933e-13 | 3.562e-02 |
+
+Converged in 1 iterations (Assembly: 0.01273 s, Solve: 0.01001 s).
+
+Substep 1/1 of Step 1/1 successful.
+ _______  _______  ___      __   __  _______  _______
+|       ||       ||   |    |  | |  ||       ||       |
+|    ___||    ___||   |    |  | |  ||    _  ||    ___|
+|   |___ |   |___ |   |    |  |_|  ||   |_| ||   |___
+|    ___||    ___||   |___ |       ||    ___||    ___|
+|   |    |   |___ |       ||       ||   |    |   |___
+|___|    |_______||_______||_______||___|    |_______|
+FElupe Version 9.5.0
+macOS-14.7.8 x86_64 64bit
+
+Run Job
+=======
+Begin Evaluation of Step 1.
+
+Newton-Rhapson solver
+=====================
+
+| # | norm(fun) |  norm(dx) |
+|---|-----------|-----------|
+| 1 | 4.173e-13 | 4.388e-02 |
+
+Converged in 1 iterations (Assembly: 0.01402 s, Solve: 0.01098 s).
+
+Substep 1/1 of Step 1/1 successful.
+Evaluation 22 has completed
+Evaluation 23 has completed
+Initiating evaluation 25
+nonblocking fork: wrapper_driver.sh params.in.25 results.out.25
+Initiating evaluation 26
+nonblocking fork: wrapper_driver.sh params.in.26 results.out.26
+Waiting on completed jobs
+Evaluation 21 has completed
+Initiating evaluation 27
+nonblocking fork: wrapper_driver.sh params.in.27 results.out.27
+Waiting on completed jobs
+Evaluation 24 has completed
+Initiating evaluation 28
+nonblocking fork: wrapper_driver.sh params.in.28 results.out.28
+Waiting on completed jobs
+ _______  _______  ___      __   __  _______  _______
+|       ||       ||   |    |  | |  ||       ||       |
+|    ___||    ___||   |    |  | |  ||    _  ||    ___|
+|   |___ |   |___ |   |    |  |_|  ||   |_| ||   |___
+|    ___||    ___||   |___ |       ||    ___||    ___|
+|   |    |   |___ |       ||       ||   |    |   |___
+|___|    |_______||_______||_______||___|    |_______|
+FElupe Version 9.5.0
+macOS-14.7.8 x86_64 64bit
+
+Run Job
+=======
+Begin Evaluation of Step 1.
+
+Newton-Rhapson solver
+=====================
+
+| # | norm(fun) |  norm(dx) |
+|---|-----------|-----------|
+| 1 | 4.186e-13 | 4.263e-02 |
+
+Converged in 1 iterations (Assembly: 0.01265 s, Solve: 0.009927 s).
+
+Substep 1/1 of Step 1/1 successful.
+ _______  _______  ___      __   __  _______  _______
+|       ||       ||   |    |  | |  ||       ||       |
+|    ___||    ___||   |    |  | |  ||    _  ||    ___|
+|   |___ |   |___ |   |    |  |_|  ||   |_| ||   |___
+|    ___||    ___||   |___ |       ||    ___||    ___|
+|   |    |   |___ |       ||       ||   |    |   |___
+|___|    |_______||_______||_______||___|    |_______|
+FElupe Version 9.5.0
+macOS-14.7.8 x86_64 64bit
+
+Run Job
+=======
+Begin Evaluation of Step 1.
+
+Newton-Rhapson solver
+=====================
+
+| # | norm(fun) |  norm(dx) |
+|---|-----------|-----------|
+| 1 | 5.086e-13 | 3.583e-02 |
+
+Converged in 1 iterations (Assembly: 0.01215 s, Solve: 0.009953 s).
+
+Substep 1/1 of Step 1/1 successful.
+ _______  _______  ___      __   __  _______  _______
+|       ||       ||   |    |  | |  ||       ||       |
+|    ___||    ___||   |    |  | |  ||    _  ||    ___|
+|   |___ |   |___ |   |    |  |_|  ||   |_| ||   |___
+|    ___||    ___||   |___ |       ||    ___||    ___|
+|   |    |   |___ |       ||       ||   |    |   |___
+|___|    |_______||_______||_______||___|    |_______|
+FElupe Version 9.5.0
+macOS-14.7.8 x86_64 64bit
+
+Run Job
+=======
+Begin Evaluation of Step 1.
+
+Newton-Rhapson solver
+=====================
+
+| # | norm(fun) |  norm(dx) |
+|---|-----------|-----------|
+| 1 | 4.559e-13 | 4.000e-02 |
+
+Converged in 1 iterations (Assembly: 0.01232 s, Solve: 0.009931 s).
+
+Substep 1/1 of Step 1/1 successful.
+ _______  _______  ___      __   __  _______  _______
+|       ||       ||   |    |  | |  ||       ||       |
+|    ___||    ___||   |    |  | |  ||    _  ||    ___|
+|   |___ |   |___ |   |    |  |_|  ||   |_| ||   |___
+|    ___||    ___||   |___ |       ||    ___||    ___|
+|   |    |   |___ |       ||       ||   |    |   |___
+|___|    |_______||_______||_______||___|    |_______|
+FElupe Version 9.5.0
+macOS-14.7.8 x86_64 64bit
+
+Run Job
+=======
+Begin Evaluation of Step 1.
+
+Newton-Rhapson solver
+=====================
+
+| # | norm(fun) |  norm(dx) |
+|---|-----------|-----------|
+| 1 | 5.042e-13 | 3.552e-02 |
+
+Converged in 1 iterations (Assembly: 0.0121 s, Solve: 0.009964 s).
+
+Substep 1/1 of Step 1/1 successful.
+Evaluation 25 has completed
+Evaluation 26 has completed
+Initiating evaluation 29
+nonblocking fork: wrapper_driver.sh params.in.29 results.out.29
+Initiating evaluation 30
+nonblocking fork: wrapper_driver.sh params.in.30 results.out.30
+Waiting on completed jobs
+Evaluation 27 has completed
+Evaluation 28 has completed
+Initiating evaluation 31
+nonblocking fork: wrapper_driver.sh params.in.31 results.out.31
+Initiating evaluation 32
+nonblocking fork: wrapper_driver.sh params.in.32 results.out.32
+Waiting on completed jobs
+ _______  _______  ___      __   __  _______  _______
+|       ||       ||   |    |  | |  ||       ||       |
+|    ___||    ___||   |    |  | |  ||    _  ||    ___|
+|   |___ |   |___ |   |    |  |_|  ||   |_| ||   |___
+|    ___||    ___||   |___ |       ||    ___||    ___|
+|   |    |   |___ |       ||       ||   |    |   |___
+|___|    |_______||_______||_______||___|    |_______|
+FElupe Version 9.5.0
+macOS-14.7.8 x86_64 64bit
+
+Run Job
+=======
+Begin Evaluation of Step 1.
+
+Newton-Rhapson solver
+=====================
+
+| # | norm(fun) |  norm(dx) |
+|---|-----------|-----------|
+| 1 | 4.616e-13 | 3.896e-02 |
+
+Converged in 1 iterations (Assembly: 0.01373 s, Solve: 0.00971 s).
+
+Substep 1/1 of Step 1/1 successful.
+ _______  _______  ___      __   __  _______  _______
+|       ||       ||   |    |  | |  ||       ||       |
+|    ___||    ___||   |    |  | |  ||    _  ||    ___|
+|   |___ |   |___ |   |    |  |_|  ||   |_| ||   |___
+|    ___||    ___||   |___ |       ||    ___||    ___|
+|   |    |   |___ |       ||       ||   |    |   |___
+|___|    |_______||_______||_______||___|    |_______|
+FElupe Version 9.5.0
+macOS-14.7.8 x86_64 64bit
+
+Run Job
+=======
+Begin Evaluation of Step 1.
+
+Newton-Rhapson solver
+=====================
+
+| # | norm(fun) |  norm(dx) |
+|---|-----------|-----------|
+| 1 | 4.874e-13 | 3.590e-02 |
+
+Converged in 1 iterations (Assembly: 0.0123 s, Solve: 0.009668 s).
+
+Substep 1/1 of Step 1/1 successful.
+ _______  _______  ___      __   __  _______  _______
+|       ||       ||   |    |  | |  ||       ||       |
+|    ___||    ___||   |    |  | |  ||    _  ||    ___|
+|   |___ |   |___ |   |    |  |_|  ||   |_| ||   |___
+|    ___||    ___||   |___ |       ||    ___||    ___|
+|   |    |   |___ |       ||       ||   |    |   |___
+|___|    |_______||_______||_______||___|    |_______|
+FElupe Version 9.5.0
+macOS-14.7.8 x86_64 64bit
+
+Run Job
+=======
+Begin Evaluation of Step 1.
+
+Newton-Rhapson solver
+=====================
+
+| # | norm(fun) |  norm(dx) |
+|---|-----------|-----------|
+| 1 | 5.097e-13 | 3.526e-02 |
+
+Converged in 1 iterations (Assembly: 0.01247 s, Solve: 0.009694 s).
+
+Substep 1/1 of Step 1/1 successful.
+ _______  _______  ___      __   __  _______  _______
+|       ||       ||   |    |  | |  ||       ||       |
+|    ___||    ___||   |    |  | |  ||    _  ||    ___|
+|   |___ |   |___ |   |    |  |_|  ||   |_| ||   |___
+|    ___||    ___||   |___ |       ||    ___||    ___|
+|   |    |   |___ |       ||       ||   |    |   |___
+|___|    |_______||_______||_______||___|    |_______|
+FElupe Version 9.5.0
+macOS-14.7.8 x86_64 64bit
+
+Run Job
+=======
+Begin Evaluation of Step 1.
+
+Newton-Rhapson solver
+=====================
+
+| # | norm(fun) |  norm(dx) |
+|---|-----------|-----------|
+| 1 | 4.514e-13 | 3.891e-02 |
+
+Converged in 1 iterations (Assembly: 0.01316 s, Solve: 0.01013 s).
+
+Substep 1/1 of Step 1/1 successful.
+Evaluation 29 has completed
+Evaluation 30 has completed
+Evaluation 32 has completed
+Initiating evaluation 33
+nonblocking fork: wrapper_driver.sh params.in.33 results.out.33
+Initiating evaluation 34
+nonblocking fork: wrapper_driver.sh params.in.34 results.out.34
+Initiating evaluation 35
+nonblocking fork: wrapper_driver.sh params.in.35 results.out.35
+Waiting on completed jobs
+Evaluation 31 has completed
+Initiating evaluation 36
+nonblocking fork: wrapper_driver.sh params.in.36 results.out.36
+Waiting on completed jobs
+ _______  _______  ___      __   __  _______  _______
+|       ||       ||   |    |  | |  ||       ||       |
+|    ___||    ___||   |    |  | |  ||    _  ||    ___|
+|   |___ |   |___ |   |    |  |_|  ||   |_| ||   |___
+|    ___||    ___||   |___ |       ||    ___||    ___|
+|   |    |   |___ |       ||       ||   |    |   |___
+|___|    |_______||_______||_______||___|    |_______|
+FElupe Version 9.5.0
+macOS-14.7.8 x86_64 64bit
+
+Run Job
+=======
+Begin Evaluation of Step 1.
+
+Newton-Rhapson solver
+=====================
+
+| # | norm(fun) |  norm(dx) |
+|---|-----------|-----------|
+| 1 | 4.428e-13 | 4.127e-02 |
+
+Converged in 1 iterations (Assembly: 0.01279 s, Solve: 0.01072 s).
+
+Substep 1/1 of Step 1/1 successful.
+ _______  _______  ___      __   __  _______  _______
+|       ||       ||   |    |  | |  ||       ||       |
+|    ___||    ___||   |    |  | |  ||    _  ||    ___|
+|   |___ |   |___ |   |    |  |_|  ||   |_| ||   |___
+|    ___||    ___||   |___ |       ||    ___||    ___|
+|   |    |   |___ |       ||       ||   |    |   |___
+|___|    |_______||_______||_______||___|    |_______|
+FElupe Version 9.5.0
+macOS-14.7.8 x86_64 64bit
+
+Run Job
+=======
+Begin Evaluation of Step 1.
+
+Newton-Rhapson solver
+=====================
+
+| # | norm(fun) |  norm(dx) |
+|---|-----------|-----------|
+| 1 | 4.711e-13 | 3.829e-02 |
+
+Converged in 1 iterations (Assembly: 0.01301 s, Solve: 0.01003 s).
+
+Substep 1/1 of Step 1/1 successful.
+ _______  _______  ___      __   __  _______  _______
+|       ||       ||   |    |  | |  ||       ||       |
+|    ___||    ___||   |    |  | |  ||    _  ||    ___|
+|   |___ |   |___ |   |    |  |_|  ||   |_| ||   |___
+|    ___||    ___||   |___ |       ||    ___||    ___|
+|   |    |   |___ |       ||       ||   |    |   |___
+|___|    |_______||_______||_______||___|    |_______|
+FElupe Version 9.5.0
+macOS-14.7.8 x86_64 64bit
+
+Run Job
+=======
+Begin Evaluation of Step 1.
+
+Newton-Rhapson solver
+=====================
+
+| # | norm(fun) |  norm(dx) |
+|---|-----------|-----------|
+| 1 | 5.013e-13 | 3.545e-02 |
+
+Converged in 1 iterations (Assembly: 0.01269 s, Solve: 0.01108 s).
+
+Substep 1/1 of Step 1/1 successful.
+ _______  _______  ___      __   __  _______  _______
+|       ||       ||   |    |  | |  ||       ||       |
+|    ___||    ___||   |    |  | |  ||    _  ||    ___|
+|   |___ |   |___ |   |    |  |_|  ||   |_| ||   |___
+|    ___||    ___||   |___ |       ||    ___||    ___|
+|   |    |   |___ |       ||       ||   |    |   |___
+|___|    |_______||_______||_______||___|    |_______|
+FElupe Version 9.5.0
+macOS-14.7.8 x86_64 64bit
+
+Run Job
+=======
+Begin Evaluation of Step 1.
+
+Newton-Rhapson solver
+=====================
+
+| # | norm(fun) |  norm(dx) |
+|---|-----------|-----------|
+| 1 | 4.656e-13 | 4.003e-02 |
+
+Converged in 1 iterations (Assembly: 0.01372 s, Solve: 0.01198 s).
+
+Substep 1/1 of Step 1/1 successful.
+Evaluation 33 has completed
+Evaluation 34 has completed
+Evaluation 35 has completed
+Evaluation 36 has completed
+Initiating evaluation 37
+nonblocking fork: wrapper_driver.sh params.in.37 results.out.37
+Initiating evaluation 38
+nonblocking fork: wrapper_driver.sh params.in.38 results.out.38
+Initiating evaluation 39
+nonblocking fork: wrapper_driver.sh params.in.39 results.out.39
+Initiating evaluation 40
+nonblocking fork: wrapper_driver.sh params.in.40 results.out.40
+Waiting on completed jobs
+ _______  _______  ___      __   __  _______  _______
+|       ||       ||   |    |  | |  ||       ||       |
+|    ___||    ___||   |    |  | |  ||    _  ||    ___|
+|   |___ |   |___ |   |    |  |_|  ||   |_| ||   |___
+|    ___||    ___||   |___ |       ||    ___||    ___|
+|   |    |   |___ |       ||       ||   |    |   |___
+|___|    |_______||_______||_______||___|    |_______|
+FElupe Version 9.5.0
+macOS-14.7.8 x86_64 64bit
+
+Run Job
+=======
+Begin Evaluation of Step 1.
+
+Newton-Rhapson solver
+=====================
+
+| # | norm(fun) |  norm(dx) |
+|---|-----------|-----------|
+| 1 | 4.913e-13 | 3.673e-02 |
+
+Converged in 1 iterations (Assembly: 0.01329 s, Solve: 0.009888 s).
+
+Substep 1/1 of Step 1/1 successful.
+ _______  _______  ___      __   __  _______  _______
+|       ||       ||   |    |  | |  ||       ||       |
+|    ___||    ___||   |    |  | |  ||    _  ||    ___|
+|   |___ |   |___ |   |    |  |_|  ||   |_| ||   |___
+|    ___||    ___||   |___ |       ||    ___||    ___|
+|   |    |   |___ |       ||       ||   |    |   |___
+|___|    |_______||_______||_______||___|    |_______|
+FElupe Version 9.5.0
+macOS-14.7.8 x86_64 64bit
+
+Run Job
+=======
+Begin Evaluation of Step 1.
+
+Newton-Rhapson solver
+=====================
+
+| # | norm(fun) |  norm(dx) |
+|---|-----------|-----------|
+| 1 | 4.215e-13 | 4.241e-02 |
+
+Converged in 1 iterations (Assembly: 0.01309 s, Solve: 0.009857 s).
+
+Substep 1/1 of Step 1/1 successful.
+ _______  _______  ___      __   __  _______  _______
+|       ||       ||   |    |  | |  ||       ||       |
+|    ___||    ___||   |    |  | |  ||    _  ||    ___|
+|   |___ |   |___ |   |    |  |_|  ||   |_| ||   |___
+|    ___||    ___||   |___ |       ||    ___||    ___|
+|   |    |   |___ |       ||       ||   |    |   |___
+|___|    |_______||_______||_______||___|    |_______|
+FElupe Version 9.5.0
+macOS-14.7.8 x86_64 64bit
+
+Run Job
+=======
+Begin Evaluation of Step 1.
+
+Newton-Rhapson solver
+=====================
+
+| # | norm(fun) |  norm(dx) |
+|---|-----------|-----------|
+| 1 | 5.348e-13 | 3.382e-02 |
+
+Converged in 1 iterations (Assembly: 0.01327 s, Solve: 0.009963 s).
+
+Substep 1/1 of Step 1/1 successful.
+ _______  _______  ___      __   __  _______  _______
+|       ||       ||   |    |  | |  ||       ||       |
+|    ___||    ___||   |    |  | |  ||    _  ||    ___|
+|   |___ |   |___ |   |    |  |_|  ||   |_| ||   |___
+|    ___||    ___||   |___ |       ||    ___||    ___|
+|   |    |   |___ |       ||       ||   |    |   |___
+|___|    |_______||_______||_______||___|    |_______|
+FElupe Version 9.5.0
+macOS-14.7.8 x86_64 64bit
+
+Run Job
+=======
+Begin Evaluation of Step 1.
+
+Newton-Rhapson solver
+=====================
+
+| # | norm(fun) |  norm(dx) |
+|---|-----------|-----------|
+| 1 | 4.850e-13 | 3.710e-02 |
+
+Converged in 1 iterations (Assembly: 0.0136 s, Solve: 0.009993 s).
+
+Substep 1/1 of Step 1/1 successful.
+Evaluation 37 has completed
+Evaluation 38 has completed
+Evaluation 39 has completed
+Evaluation 40 has completed
+
+Active response data for evaluation 1:
+Active set vector = { 1 }
+                      3.3974445501e+02 max_von_Mises_stres
+
+
+Active response data for evaluation 2:
+Active set vector = { 1 }
+                      3.3990987005e+02 max_von_Mises_stres
+
+
+Active response data for evaluation 3:
+Active set vector = { 1 }
+                      3.3981963266e+02 max_von_Mises_stres
+
+
+Active response data for evaluation 4:
+Active set vector = { 1 }
+                      3.3979753608e+02 max_von_Mises_stres
+
+
+Active response data for evaluation 5:
+Active set vector = { 1 }
+                      3.3981770306e+02 max_von_Mises_stres
+
+
+Active response data for evaluation 6:
+Active set vector = { 1 }
+                      3.3988487973e+02 max_von_Mises_stres
+
+
+Active response data for evaluation 7:
+Active set vector = { 1 }
+                      3.3995075337e+02 max_von_Mises_stres
+
+
+Active response data for evaluation 8:
+Active set vector = { 1 }
+                      3.3981433409e+02 max_von_Mises_stres
+
+
+Active response data for evaluation 9:
+Active set vector = { 1 }
+                      3.3981121734e+02 max_von_Mises_stres
+
+
+Active response data for evaluation 10:
+Active set vector = { 1 }
+                      3.3985102483e+02 max_von_Mises_stres
+
+
+Active response data for evaluation 11:
+Active set vector = { 1 }
+                      3.3976386153e+02 max_von_Mises_stres
+
+
+Active response data for evaluation 12:
+Active set vector = { 1 }
+                      3.3981902716e+02 max_von_Mises_stres
+
+
+Active response data for evaluation 13:
+Active set vector = { 1 }
+                      3.3987148064e+02 max_von_Mises_stres
+
+
+Active response data for evaluation 14:
+Active set vector = { 1 }
+                      3.3994957584e+02 max_von_Mises_stres
+
+
+Active response data for evaluation 15:
+Active set vector = { 1 }
+                      3.3980774232e+02 max_von_Mises_stres
+
+
+Active response data for evaluation 16:
+Active set vector = { 1 }
+                      3.3977744057e+02 max_von_Mises_stres
+
+
+Active response data for evaluation 17:
+Active set vector = { 1 }
+                      3.3980103013e+02 max_von_Mises_stres
+
+
+Active response data for evaluation 18:
+Active set vector = { 1 }
+                      3.3977912872e+02 max_von_Mises_stres
+
+
+Active response data for evaluation 19:
+Active set vector = { 1 }
+                      3.3977707617e+02 max_von_Mises_stres
+
+
+Active response data for evaluation 20:
+Active set vector = { 1 }
+                      3.3989234058e+02 max_von_Mises_stres
+
+
+Active response data for evaluation 21:
+Active set vector = { 1 }
+                      3.3976603482e+02 max_von_Mises_stres
+
+
+Active response data for evaluation 22:
+Active set vector = { 1 }
+                      3.3981837193e+02 max_von_Mises_stres
+
+
+Active response data for evaluation 23:
+Active set vector = { 1 }
+                      3.3987778646e+02 max_von_Mises_stres
+
+
+Active response data for evaluation 24:
+Active set vector = { 1 }
+                      3.3994339666e+02 max_von_Mises_stres
+
+
+Active response data for evaluation 25:
+Active set vector = { 1 }
+                      3.3979113823e+02 max_von_Mises_stres
+
+
+Active response data for evaluation 26:
+Active set vector = { 1 }
+                      3.3978704202e+02 max_von_Mises_stres
+
+
+Active response data for evaluation 27:
+Active set vector = { 1 }
+                      3.3979425134e+02 max_von_Mises_stres
+
+
+Active response data for evaluation 28:
+Active set vector = { 1 }
+                      3.3979498351e+02 max_von_Mises_stres
+
+
+Active response data for evaluation 29:
+Active set vector = { 1 }
+                      3.3977229388e+02 max_von_Mises_stres
+
+
+Active response data for evaluation 30:
+Active set vector = { 1 }
+                      3.3988708447e+02 max_von_Mises_stres
+
+
+Active response data for evaluation 31:
+Active set vector = { 1 }
+                      3.3974229474e+02 max_von_Mises_stres
+
+
+Active response data for evaluation 32:
+Active set vector = { 1 }
+                      3.3991054122e+02 max_von_Mises_stres
+
+
+Active response data for evaluation 33:
+Active set vector = { 1 }
+                      3.3981342320e+02 max_von_Mises_stres
+
+
+Active response data for evaluation 34:
+Active set vector = { 1 }
+                      3.3980348494e+02 max_von_Mises_stres
+
+
+Active response data for evaluation 35:
+Active set vector = { 1 }
+                      3.3983442672e+02 max_von_Mises_stres
+
+
+Active response data for evaluation 36:
+Active set vector = { 1 }
+                      3.3987502448e+02 max_von_Mises_stres
+
+
+Active response data for evaluation 37:
+Active set vector = { 1 }
+                      3.3995781456e+02 max_von_Mises_stres
+
+
+Active response data for evaluation 38:
+Active set vector = { 1 }
+                      3.3979839584e+02 max_von_Mises_stres
+
+
+Active response data for evaluation 39:
+Active set vector = { 1 }
+                      3.3981605075e+02 max_von_Mises_stres
+
+
+Active response data for evaluation 40:
+Active set vector = { 1 }
+                      3.3985623163e+02 max_von_Mises_stres
+
+<<<<< Function evaluation summary: 40 total (40 new, 0 duplicate)
+
+Global sensitivity indices for each response function:
+max_von_Mises_stres Sobol' indices:
+                                  Main             Total
+                     -1.3250759551e-02  1.1843135857e-02 E
+                      1.0771560710e+00  1.0610019632e+00 nu
+
+<<<<< Iterator random_sampling completed.
+<<<<< Environment execution completed.
+DAKOTA execution time in seconds:
+  Total CPU        =    0.04524 [parent =   0.045237, child =      3e-06]
+  Total wall clock =    9.06478

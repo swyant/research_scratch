@@ -1,0 +1,31 @@
+environment 
+    tabular_data 
+
+method 
+    # output normal #???
+    sampling 
+        sample_type random 
+        samples = 10 
+        seed = 123
+
+variables 
+    uniform_uncertain = 2 
+        lower_bounds  = 90E9  0.35 
+        upper_bounds  = 138E9 0.37
+        descriptors   =  'E'  'nu'
+
+interface 
+    analysis_drivers 'wrapper_driver.sh'
+        fork 
+            work_directory named 'workdir/run'
+                directory_tag directory_save 
+                link_files 'partial_plate_with_hole.vtk' 'plate_with_hole.py' 'plate_with_hole_input.template' 'DakotaSubDriver.py'
+            parameters_file 'params.in'
+            results_file 'results.out' 
+            file_tag file_save 
+    #asynchronous evaluation_concurrency 4
+
+response 
+    response_functions 1 
+    descriptors 'max_von_Mises_stres'
+    no_gradients no_hessians 

@@ -1,0 +1,499 @@
+Dakota version 6.22 released May 15 2025.
+Repository revision 923926248 (2025-05-08) built May  8 2025 10:29:41.
+Running MPI Dakota executable in serial mode.
+Start time: Tue Nov 18 16:59:26 2025
+
+-----------------------
+Begin DAKOTA input file
+dakota_platewithhole.in
+-----------------------
+environment 
+    tabular_data 
+
+method 
+    # output normal #???
+    sampling 
+        sample_type random 
+        samples = 10 
+        seed = 123
+
+variables 
+    uniform_uncertain = 2 
+        lower_bounds  = 90E9  0.35 
+        upper_bounds  = 138E9 0.37
+        descriptors   =  'E'  'nu'
+
+interface 
+    analysis_drivers 'wrapper_driver.sh'
+        fork 
+            work_directory named 'workdir/run'
+                directory_tag directory_save 
+                link_files 'partial_plate_with_hole.vtk' 'plate_with_hole.py' 'plate_with_hole_input.template' 'DakotaSubDriver.py'
+            parameters_file 'params.in'
+            results_file 'results.out' 
+            file_tag file_save 
+    #asynchronous evaluation_concurrency 4
+
+response 
+    response_functions 1 
+    descriptors 'max_von_Mises_stres'
+    no_gradients no_hessians 
+---------------------
+End DAKOTA input file
+---------------------
+
+Using Dakota input file 'dakota_platewithhole.in'
+Writing new restart file 'dakota.rst'.
+
+>>>>> Executing environment.
+
+>>>>> Running random_sampling iterator.
+
+NonD random Samples = 10 Seed (user-specified) = 123
+
+---------------------
+Begin Evaluation    1
+---------------------
+Parameters for evaluation 1:
+                      1.1646310873e+11 E
+                      3.5279901526e-01 nu
+
+blocking fork: wrapper_driver.sh params.in.1 results.out.1
+ _______  _______  ___      __   __  _______  _______
+|       ||       ||   |    |  | |  ||       ||       |
+|    ___||    ___||   |    |  | |  ||    _  ||    ___|
+|   |___ |   |___ |   |    |  |_|  ||   |_| ||   |___
+|    ___||    ___||   |___ |       ||    ___||    ___|
+|   |    |   |___ |       ||       ||   |    |   |___
+|___|    |_______||_______||_______||___|    |_______|
+FElupe Version 9.5.0
+macOS-14.7.8 x86_64 64bit
+
+Run Job
+=======
+Begin Evaluation of Step 1.
+
+Newton-Rhapson solver
+=====================
+
+| # | norm(fun) |  norm(dx) |
+|---|-----------|-----------|
+| 1 | 7.975e-13 | 2.096e-02 |
+
+Converged in 1 iterations (Assembly: 0.01378 s, Solve: 0.01117 s).
+
+Substep 1/1 of Step 1/1 successful.
+HEYYY
+
+Active response data for evaluation 1:
+Active set vector = { 1 }
+                      3.3918979235e+02 max_von_Mises_stres
+
+
+
+---------------------
+Begin Evaluation    2
+---------------------
+Parameters for evaluation 2:
+                      1.2453451059e+11 E
+                      3.6560055521e-01 nu
+
+blocking fork: wrapper_driver.sh params.in.2 results.out.2
+ _______  _______  ___      __   __  _______  _______
+|       ||       ||   |    |  | |  ||       ||       |
+|    ___||    ___||   |    |  | |  ||    _  ||    ___|
+|   |___ |   |___ |   |    |  |_|  ||   |_| ||   |___
+|    ___||    ___||   |___ |       ||    ___||    ___|
+|   |    |   |___ |       ||       ||   |    |   |___
+|___|    |_______||_______||_______||___|    |_______|
+FElupe Version 9.5.0
+macOS-14.7.8 x86_64 64bit
+
+Run Job
+=======
+Begin Evaluation of Step 1.
+
+Newton-Rhapson solver
+=====================
+
+| # | norm(fun) |  norm(dx) |
+|---|-----------|-----------|
+| 1 | 7.975e-13 | 2.096e-02 |
+
+Converged in 1 iterations (Assembly: 0.01391 s, Solve: 0.01021 s).
+
+Substep 1/1 of Step 1/1 successful.
+HEYYY
+
+Active response data for evaluation 2:
+Active set vector = { 1 }
+                      3.3918979235e+02 max_von_Mises_stres
+
+
+
+---------------------
+Begin Evaluation    3
+---------------------
+Parameters for evaluation 3:
+                      1.2422185543e+11 E
+                      3.5846212921e-01 nu
+
+blocking fork: wrapper_driver.sh params.in.3 results.out.3
+ _______  _______  ___      __   __  _______  _______
+|       ||       ||   |    |  | |  ||       ||       |
+|    ___||    ___||   |    |  | |  ||    _  ||    ___|
+|   |___ |   |___ |   |    |  |_|  ||   |_| ||   |___
+|    ___||    ___||   |___ |       ||    ___||    ___|
+|   |    |   |___ |       ||       ||   |    |   |___
+|___|    |_______||_______||_______||___|    |_______|
+FElupe Version 9.5.0
+macOS-14.7.8 x86_64 64bit
+
+Run Job
+=======
+Begin Evaluation of Step 1.
+
+Newton-Rhapson solver
+=====================
+
+| # | norm(fun) |  norm(dx) |
+|---|-----------|-----------|
+| 1 | 7.975e-13 | 2.096e-02 |
+
+Converged in 1 iterations (Assembly: 0.02474 s, Solve: 0.02206 s).
+
+Substep 1/1 of Step 1/1 successful.
+HEYYY
+
+Active response data for evaluation 3:
+Active set vector = { 1 }
+                      3.3918979235e+02 max_von_Mises_stres
+
+
+
+---------------------
+Begin Evaluation    4
+---------------------
+Parameters for evaluation 4:
+                      1.0088886984e+11 E
+                      3.5821848736e-01 nu
+
+blocking fork: wrapper_driver.sh params.in.4 results.out.4
+ _______  _______  ___      __   __  _______  _______
+|       ||       ||   |    |  | |  ||       ||       |
+|    ___||    ___||   |    |  | |  ||    _  ||    ___|
+|   |___ |   |___ |   |    |  |_|  ||   |_| ||   |___
+|    ___||    ___||   |___ |       ||    ___||    ___|
+|   |    |   |___ |       ||       ||   |    |   |___
+|___|    |_______||_______||_______||___|    |_______|
+FElupe Version 9.5.0
+macOS-14.7.8 x86_64 64bit
+
+Run Job
+=======
+Begin Evaluation of Step 1.
+
+Newton-Rhapson solver
+=====================
+
+| # | norm(fun) |  norm(dx) |
+|---|-----------|-----------|
+| 1 | 7.975e-13 | 2.096e-02 |
+
+Converged in 1 iterations (Assembly: 0.01498 s, Solve: 0.01082 s).
+
+Substep 1/1 of Step 1/1 successful.
+HEYYY
+
+Active response data for evaluation 4:
+Active set vector = { 1 }
+                      3.3918979235e+02 max_von_Mises_stres
+
+
+
+---------------------
+Begin Evaluation    5
+---------------------
+Parameters for evaluation 5:
+                      1.0373468826e+11 E
+                      3.5961863815e-01 nu
+
+blocking fork: wrapper_driver.sh params.in.5 results.out.5
+ _______  _______  ___      __   __  _______  _______
+|       ||       ||   |    |  | |  ||       ||       |
+|    ___||    ___||   |    |  | |  ||    _  ||    ___|
+|   |___ |   |___ |   |    |  |_|  ||   |_| ||   |___
+|    ___||    ___||   |___ |       ||    ___||    ___|
+|   |    |   |___ |       ||       ||   |    |   |___
+|___|    |_______||_______||_______||___|    |_______|
+FElupe Version 9.5.0
+macOS-14.7.8 x86_64 64bit
+
+Run Job
+=======
+Begin Evaluation of Step 1.
+
+Newton-Rhapson solver
+=====================
+
+| # | norm(fun) |  norm(dx) |
+|---|-----------|-----------|
+| 1 | 7.975e-13 | 2.096e-02 |
+
+Converged in 1 iterations (Assembly: 0.01522 s, Solve: 0.008755 s).
+
+Substep 1/1 of Step 1/1 successful.
+HEYYY
+
+Active response data for evaluation 5:
+Active set vector = { 1 }
+                      3.3918979235e+02 max_von_Mises_stres
+
+
+
+---------------------
+Begin Evaluation    6
+---------------------
+Parameters for evaluation 6:
+                      1.2343052099e+11 E
+                      3.6369659469e-01 nu
+
+blocking fork: wrapper_driver.sh params.in.6 results.out.6
+ _______  _______  ___      __   __  _______  _______
+|       ||       ||   |    |  | |  ||       ||       |
+|    ___||    ___||   |    |  | |  ||    _  ||    ___|
+|   |___ |   |___ |   |    |  |_|  ||   |_| ||   |___
+|    ___||    ___||   |___ |       ||    ___||    ___|
+|   |    |   |___ |       ||       ||   |    |   |___
+|___|    |_______||_______||_______||___|    |_______|
+FElupe Version 9.5.0
+macOS-14.7.8 x86_64 64bit
+
+Run Job
+=======
+Begin Evaluation of Step 1.
+
+Newton-Rhapson solver
+=====================
+
+| # | norm(fun) |  norm(dx) |
+|---|-----------|-----------|
+| 1 | 7.975e-13 | 2.096e-02 |
+
+Converged in 1 iterations (Assembly: 0.01037 s, Solve: 0.008867 s).
+
+Substep 1/1 of Step 1/1 successful.
+HEYYY
+
+Active response data for evaluation 6:
+Active set vector = { 1 }
+                      3.3918979235e+02 max_von_Mises_stres
+
+
+
+---------------------
+Begin Evaluation    7
+---------------------
+Parameters for evaluation 7:
+                      1.1056660440e+11 E
+                      3.6961528401e-01 nu
+
+blocking fork: wrapper_driver.sh params.in.7 results.out.7
+ _______  _______  ___      __   __  _______  _______
+|       ||       ||   |    |  | |  ||       ||       |
+|    ___||    ___||   |    |  | |  ||    _  ||    ___|
+|   |___ |   |___ |   |    |  |_|  ||   |_| ||   |___
+|    ___||    ___||   |___ |       ||    ___||    ___|
+|   |    |   |___ |       ||       ||   |    |   |___
+|___|    |_______||_______||_______||___|    |_______|
+FElupe Version 9.5.0
+macOS-14.7.8 x86_64 64bit
+
+Run Job
+=======
+Begin Evaluation of Step 1.
+
+Newton-Rhapson solver
+=====================
+
+| # | norm(fun) |  norm(dx) |
+|---|-----------|-----------|
+| 1 | 7.975e-13 | 2.096e-02 |
+
+Converged in 1 iterations (Assembly: 0.01272 s, Solve: 0.009917 s).
+
+Substep 1/1 of Step 1/1 successful.
+HEYYY
+
+Active response data for evaluation 7:
+Active set vector = { 1 }
+                      3.3918979235e+02 max_von_Mises_stres
+
+
+
+---------------------
+Begin Evaluation    8
+---------------------
+Parameters for evaluation 8:
+                      1.2451921482e+11 E
+                      3.5802035108e-01 nu
+
+blocking fork: wrapper_driver.sh params.in.8 results.out.8
+ _______  _______  ___      __   __  _______  _______
+|       ||       ||   |    |  | |  ||       ||       |
+|    ___||    ___||   |    |  | |  ||    _  ||    ___|
+|   |___ |   |___ |   |    |  |_|  ||   |_| ||   |___
+|    ___||    ___||   |___ |       ||    ___||    ___|
+|   |    |   |___ |       ||       ||   |    |   |___
+|___|    |_______||_______||_______||___|    |_______|
+FElupe Version 9.5.0
+macOS-14.7.8 x86_64 64bit
+
+Run Job
+=======
+Begin Evaluation of Step 1.
+
+Newton-Rhapson solver
+=====================
+
+| # | norm(fun) |  norm(dx) |
+|---|-----------|-----------|
+| 1 | 7.975e-13 | 2.096e-02 |
+
+Converged in 1 iterations (Assembly: 0.01205 s, Solve: 0.009901 s).
+
+Substep 1/1 of Step 1/1 successful.
+HEYYY
+
+Active response data for evaluation 8:
+Active set vector = { 1 }
+                      3.3918979235e+02 max_von_Mises_stres
+
+
+
+---------------------
+Begin Evaluation    9
+---------------------
+Parameters for evaluation 9:
+                      1.2316247287e+11 E
+                      3.5784235035e-01 nu
+
+blocking fork: wrapper_driver.sh params.in.9 results.out.9
+ _______  _______  ___      __   __  _______  _______
+|       ||       ||   |    |  | |  ||       ||       |
+|    ___||    ___||   |    |  | |  ||    _  ||    ___|
+|   |___ |   |___ |   |    |  |_|  ||   |_| ||   |___
+|    ___||    ___||   |___ |       ||    ___||    ___|
+|   |    |   |___ |       ||       ||   |    |   |___
+|___|    |_______||_______||_______||___|    |_______|
+FElupe Version 9.5.0
+macOS-14.7.8 x86_64 64bit
+
+Run Job
+=======
+Begin Evaluation of Step 1.
+
+Newton-Rhapson solver
+=====================
+
+| # | norm(fun) |  norm(dx) |
+|---|-----------|-----------|
+| 1 | 7.975e-13 | 2.096e-02 |
+
+Converged in 1 iterations (Assembly: 0.01032 s, Solve: 0.008919 s).
+
+Substep 1/1 of Step 1/1 successful.
+HEYYY
+
+Active response data for evaluation 9:
+Active set vector = { 1 }
+                      3.3918979235e+02 max_von_Mises_stres
+
+
+
+---------------------
+Begin Evaluation   10
+---------------------
+Parameters for evaluation 10:
+                      1.1357370877e+11 E
+                      3.6159388595e-01 nu
+
+blocking fork: wrapper_driver.sh params.in.10 results.out.10
+ _______  _______  ___      __   __  _______  _______
+|       ||       ||   |    |  | |  ||       ||       |
+|    ___||    ___||   |    |  | |  ||    _  ||    ___|
+|   |___ |   |___ |   |    |  |_|  ||   |_| ||   |___
+|    ___||    ___||   |___ |       ||    ___||    ___|
+|   |    |   |___ |       ||       ||   |    |   |___
+|___|    |_______||_______||_______||___|    |_______|
+FElupe Version 9.5.0
+macOS-14.7.8 x86_64 64bit
+
+Run Job
+=======
+Begin Evaluation of Step 1.
+
+Newton-Rhapson solver
+=====================
+
+| # | norm(fun) |  norm(dx) |
+|---|-----------|-----------|
+| 1 | 7.975e-13 | 2.096e-02 |
+
+Converged in 1 iterations (Assembly: 0.01169 s, Solve: 0.008994 s).
+
+Substep 1/1 of Step 1/1 successful.
+HEYYY
+
+Active response data for evaluation 10:
+Active set vector = { 1 }
+                      3.3918979235e+02 max_von_Mises_stres
+
+
+<<<<< Function evaluation summary: 10 total (10 new, 0 duplicate)
+-----------------------------------------------------------------------------
+Statistics based on 10 samples:
+
+Sample moment statistics for each response function:
+                            Mean           Std Dev          Skewness          Kurtosis
+max_von_Mises_stres  3.3918979235e+02  5.9918224530e-14  1.1858541226e+00 -2.5714285714e+00
+
+95% confidence intervals for each response function:
+                    LowerCI_Mean      UpperCI_Mean    LowerCI_StdDev     UpperCI_StdDev
+max_von_Mises_stres  3.3918979235e+02  3.3918979235e+02  4.1213864358e-14  1.0938732082e-13
+
+
+At least one correlation coefficient is nan or inf. This commonly occurs when
+discrete variables (including histogram variables) are present, a response is
+completely insensitive to variables (response variance equal to 0), there are
+fewer samples than variables, or some samples are approximately collinear.
+
+Simple Correlation Matrix among all inputs and outputs:
+                        E           nu max_von_Mises_stres 
+           E  1.00000e+00 
+          nu -8.58998e-04  1.00000e+00 
+max_von_Mises_stres  2.47009e-15 -3.66471e-15  1.00000e+00 
+
+Partial Correlation Matrix between input and output:
+             max_von_Mises_stres 
+           E  2.49481e-15 
+          nu -3.69268e-15 
+
+Simple Rank Correlation Matrix among all inputs and outputs:
+                        E           nu max_von_Mises_stres 
+           E  1.00000e+00 
+          nu  1.81818e-02  1.00000e+00 
+max_von_Mises_stres          nan          nan          nan 
+
+Partial Rank Correlation Matrix between input and output:
+             max_von_Mises_stres 
+           E          nan 
+          nu          nan 
+
+-----------------------------------------------------------------------------
+
+<<<<< Iterator random_sampling completed.
+<<<<< Environment execution completed.
+DAKOTA execution time in seconds:
+  Total CPU        =   0.015974 [parent =   0.015973, child =      1e-06]
+  Total wall clock =    7.73479

@@ -1,0 +1,61 @@
+Dakota version 6.22 released May 15 2025.
+Repository revision 923926248 (2025-05-08) built May  8 2025 10:29:41.
+Running MPI Dakota executable in serial mode.
+Start time: Tue Nov 18 15:45:01 2025
+
+-----------------------
+Begin DAKOTA input file
+dakota_platewithhole.in
+-----------------------
+environment 
+    tabular_data 
+
+method 
+    # output normal #???
+    sampling 
+        sample_type random 
+        samples = 10 
+        seed = 123
+
+variables 
+    uniform_uncertain = 2 
+        lower_bounds  = 90E9  0.35 
+        upper_bounds  = 138E9 0.37
+        descriptors   =  'E'  'nu'
+
+interface 
+    analysis_drivers 'DakotaDriver.py' 
+        fork 
+            work_directory named 'workdir/run'
+                directory_tag directory_save 
+                link_files 'partial_plate_with_hole.vtk' 'plate_with_hole_template.py'
+            parameters_file 'params.in'
+            results_file 'results.out' 
+            file_tag file_save 
+    #asynchronous evaluation_concurrency 4
+
+response 
+    response_functions 1 
+    descriptors 'max_von_Mises_stres'
+    no_gradients no_hessians 
+---------------------
+End DAKOTA input file
+---------------------
+
+Using Dakota input file 'dakota_platewithhole.in'
+Writing new restart file 'dakota.rst'.
+
+>>>>> Executing environment.
+
+>>>>> Running random_sampling iterator.
+
+NonD random Samples = 10 Seed (user-specified) = 123
+
+---------------------
+Begin Evaluation    1
+---------------------
+Parameters for evaluation 1:
+                      1.1646310873e+11 E
+                      3.5279901526e-01 nu
+
+blocking fork: DakotaDriver.py params.in.1 results.out.1

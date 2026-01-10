@@ -913,6 +913,7 @@ dependencies = [
     { name = "ovito" },
     { name = "pymatgen" },
     { name = "pymatgen-analysis-defects" },
+    { name = "scipy" },
     { name = "vesin" },
 ]
 
@@ -929,6 +930,7 @@ requires-dist = [
     { name = "ovito", specifier = ">=3.14.1" },
     { name = "pymatgen", specifier = ">=2025.10.7" },
     { name = "pymatgen-analysis-defects", specifier = ">=2025.9.26" },
+    { name = "scipy", specifier = ">=1.16.3" },
     { name = "vesin", specifier = ">=0.4.2" },
 ]
 

@@ -1,0 +1,69 @@
+{
+  "label": "sample_10000",
+  "response_functions": {
+    "E_effective": {
+      "parameters": {
+        "rho": {
+          "main": 0.0,
+          "total": 0.0
+        },
+        "E": {
+          "main": 0.99944312864,
+          "total": 0.99960316628
+        },
+        "nu": {
+          "main": 0.0015397459677,
+          "total": 0.0015647081776
+        }
+      }
+    },
+    "stress": {
+      "parameters": {
+        "rho": {
+          "main": 0.0,
+          "total": 0.0
+        },
+        "E": {
+          "main": 1.0009774264,
+          "total": 1.0014890849
+        },
+        "nu": {
+          "main": -1.7594935619e-08,
+          "total": 2.6397981465e-09
+        }
+      }
+    },
+    "strain": {
+      "parameters": {
+        "rho": {
+          "main": -0.0,
+          "total": -0.0
+        },
+        "E": {
+          "main": -0.0,
+          "total": -0.0
+        },
+        "nu": {
+          "main": -0.0,
+          "total": -0.0
+        }
+      }
+    },
+    "max_von_Mises_stress": {
+      "parameters": {
+        "rho": {
+          "main": 0.0,
+          "total": 0.0
+        },
+        "E": {
+          "main": 1.0009623503,
+          "total": 1.0015069781
+        },
+        "nu": {
+          "main": 1.0581562243e-05,
+          "total": 1.2577121768e-05
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,109 @@
+LAMMPS (27 Jun 2024)
+OMP_NUM_THREADS environment is not set. Defaulting to 1 thread. (src/comm.cpp:98)
+  using 1 OpenMP thread(s) per MPI task
+Reading data file ...
+  orthogonal box = (0 0 0) to (48.302314 50.197237 45.139088)
+  2 by 2 by 2 MPI processor grid
+  reading atoms ...
+  4861 atoms
+  read_data CPU = 0.027 seconds
+**************** Begin of POD Potentials ****************
+species: Hf O 
+periodic boundary conditions: 1 1 1
+number of environment clusters: 1
+number of principal compoments: 2
+inner cut-off radius: 1
+outer cut-off radius: 5.5
+cut-off function type: 1
+gaussian_exponents: 
+polynomial_degrees: 
+bessel polynomial degree: 4
+inverse polynomial degree: 8
+one-body potential: 1
+two-body radial basis functions: 8
+three-body radial basis functions: 6
+three-body angular degree: 4
+four-body radial basis functions: 4
+four-body angular degree: 2
+five-body radial basis functions: 4
+five-body angular degree: 2
+six-body radial basis functions: 3
+six-body angular degree: 2
+seven-body radial basis functions: 0
+seven-body angular degree: 0
+number of local descriptors per element for one-body potential: 1
+number of local descriptors per element for two-body potential: 16
+number of local descriptors per element for three-body potential: 90
+number of local descriptors per element for four-body potential: 64
+number of local descriptors per element for five-body potential: 192
+number of local descriptors per element for six-body potential: 198
+number of local descriptors per element for seven-body potential: 0
+number of local descriptors per element for all potentials: 561
+number of global descriptors: 1122
+**************** End of POD Potentials ****************
+
+**************** Begin of Model Coefficients ****************
+total number of coefficients for POD potential: 1122
+total number of elements for PCA projection matrix: 0
+total number of elements for PCA centroids: 0
+**************** End of Model Coefficients ****************
+
+
+CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE
+
+Your simulation uses code contributions which should be cited:
+- Type Label Framework: https://doi.org/10.1021/acs.jpcb.3c08419
+The log file lists these citations in BibTeX format.
+
+CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE
+
+Neighbor list info ...
+  update: every = 1 steps, delay = 0 steps, check = yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 7.5
+  ghost atom cutoff = 7.5
+  binsize = 3.75, bins = 13 14 13
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair pod, perpetual
+      attributes: full, newton on
+      pair build: full/bin/atomonly
+      stencil: full/bin/3d
+      bin: standard
+Setting up Verlet run ...
+  Unit style    : metal
+  Current step  : 0
+  Time step     : 0.001
+Per MPI rank memory allocation (min/avg/max) = 3.174 | 3.174 | 3.174 Mbytes
+   Step          Temp        c_temp_all       TotEng         PotEng         KinEng         Press          Volume    
+         0   50             50            -27061.309     -27092.719      31.410215     -3094.2294      109446.16    
+       100   10.398876      10.398876     -27061.307     -27067.84       6.5326189     -2602.6232      109446.16    
+       200   25.099141      25.099141     -27061.307     -27077.075      15.767389     -2668.552       109446.16    
+       300   27.046379      27.046379     -27061.308     -27078.298      16.990651     -2835.4384      109446.16    
+       400   25.860748      25.860748     -27061.308     -27077.554      16.245833     -2791.234       109446.16    
+       500   25.308078      25.308078     -27061.308     -27077.206      15.898643     -2742.582       109446.16    
+       600   22.270956      22.270956     -27061.307     -27075.298      13.99071      -2708.6687      109446.16    
+       700   26.888862      26.888862     -27061.308     -27078.199      16.891699     -2791.8958      109446.16    
+       800   25.283641      25.283641     -27061.308     -27077.191      15.883292     -2763.05        109446.16    
+       900   23.875061      23.875061     -27061.308     -27076.306      14.998416     -2741.8467      109446.16    
+      1000   25.522212      25.522212     -27061.308     -27077.341      16.033164     -2754.5902      109446.16    
+      1100   24.807677      24.807677     -27061.308     -27076.892      15.584289     -2775.5992      109446.16    
+      1200   26.09713       26.09713      -27061.308     -27077.702      16.39433      -2766.2743      109446.16    
+      1300   23.73983       23.73983      -27061.308     -27076.221      14.913464     -2741.6369      109446.16    
+      1400   25.213147      25.213147     -27061.308     -27077.147      15.839008     -2753.152       109446.16    
+      1500   25.40233       25.40233      -27061.308     -27077.265      15.957853     -2771.1233      109446.16    
+      1600   24.776108      24.776108     -27061.308     -27076.872      15.564458     -2761.4123      109446.16    
+      1700   25.162594      25.162594     -27061.308     -27077.115      15.80725      -2754.8889      109446.16    
+      1800   24.488312      24.488312     -27061.308     -27076.691      15.383663     -2756.7659      109446.16    
+      1900   26.008386      26.008386     -27061.308     -27077.646      16.33858      -2766.8574      109446.16    
+      2000   24.412791      24.412791     -27061.308     -27076.644      15.33622      -2753.5986      109446.16    
+      2100   24.815414      24.815414     -27061.308     -27076.897      15.58915      -2751.792       109446.16    
+      2200   25.372227      25.372227     -27061.308     -27077.247      15.938942     -2762.6297      109446.16    
+      2300   24.654665      24.654665     -27061.308     -27076.796      15.488166     -2759.9978      109446.16    
+      2400   25.764492      25.764492     -27061.308     -27077.493      16.185365     -2773.1116      109446.16    
+      2500   24.147303      24.147303     -27061.308     -27076.477      15.16944      -2740.4649      109446.16    
+      2600   25.232692      25.232692     -27061.308     -27077.159      15.851286     -2758.9399      109446.16    
+      2700   25.156796      25.156796     -27061.308     -27077.111      15.803608     -2761.4091      109446.16    
+      2800   24.859074      24.859074     -27061.308     -27076.924      15.616577     -2755.2214      109446.16    
+      2900   25.454282      25.454282     -27061.308     -27077.298      15.990489     -2760.3165      109446.16    
+      3000   24.912161      24.912161     -27061.308     -27076.958      15.649927     -2763.8343      109446.16    
+      3100   24.891445      24.891445     -27061.308     -27076.945      15.636913     -2747.7052      109446.16    

@@ -1,0 +1,24 @@
+{
+  "center": [
+    24.14,
+    25.07,
+    22.58
+  ],
+  "core_radius": 5.0,
+  "transition_width": 10.0,
+  "n_shells": 4,
+  "continuous": false,
+  "core_temp": 500.0,
+  "edge_temp": 100.0,
+  "temp_profile": "linear",
+  "mode": 1,
+  "boundary": "p p p",
+  "timestep": 0.001,
+  "thermostat_damp": 0.1,
+  "n_steps": 5000,
+  "dynamic_every": 100,
+  "diag_every": 500,
+  "diag_dir": "diagnostics",
+  "data_file": "",
+  "output_dir": "workspace/test_03_mode1_4shell"
+}

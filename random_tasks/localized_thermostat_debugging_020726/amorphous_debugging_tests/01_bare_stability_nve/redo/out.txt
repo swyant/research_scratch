@@ -1,0 +1,109 @@
+LAMMPS (27 Jun 2024)
+OMP_NUM_THREADS environment is not set. Defaulting to 1 thread. (src/comm.cpp:98)
+  using 1 OpenMP thread(s) per MPI task
+Reading data file ...
+  orthogonal box = (0 0 0) to (48.302314 50.197237 45.139088)
+  2 by 2 by 2 MPI processor grid
+  reading atoms ...
+  4861 atoms
+  read_data CPU = 0.021 seconds
+**************** Begin of POD Potentials ****************
+species: Hf O 
+periodic boundary conditions: 1 1 1
+number of environment clusters: 5
+number of principal compoments: 1
+inner cut-off radius: 1
+outer cut-off radius: 5
+cut-off function type: 1
+gaussian_exponents: 
+polynomial_degrees: 
+bessel polynomial degree: 2
+inverse polynomial degree: 12
+one-body potential: 1
+two-body radial basis functions: 8
+three-body radial basis functions: 8
+three-body angular degree: 4
+four-body radial basis functions: 7
+four-body angular degree: 3
+five-body radial basis functions: 6
+five-body angular degree: 3
+six-body radial basis functions: 4
+six-body angular degree: 1
+seven-body radial basis functions: 0
+seven-body angular degree: 0
+number of local descriptors per element for one-body potential: 1
+number of local descriptors per element for two-body potential: 16
+number of local descriptors per element for three-body potential: 120
+number of local descriptors per element for four-body potential: 196
+number of local descriptors per element for five-body potential: 648
+number of local descriptors per element for six-body potential: 153
+number of local descriptors per element for seven-body potential: 0
+number of local descriptors per element for all potentials: 1134
+number of global descriptors: 11332
+**************** End of POD Potentials ****************
+
+**************** Begin of Model Coefficients ****************
+total number of coefficients for POD potential: 11332
+total number of elements for PCA projection matrix: 2266
+total number of elements for PCA centroids: 10
+**************** End of Model Coefficients ****************
+
+
+CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE
+
+Your simulation uses code contributions which should be cited:
+- Type Label Framework: https://doi.org/10.1021/acs.jpcb.3c08419
+The log file lists these citations in BibTeX format.
+
+CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE
+
+Neighbor list info ...
+  update: every = 1 steps, delay = 0 steps, check = yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 7
+  ghost atom cutoff = 7
+  binsize = 3.5, bins = 14 15 13
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair pod, perpetual
+      attributes: full, newton on
+      pair build: full/bin/atomonly
+      stencil: full/bin/3d
+      bin: standard
+Setting up Verlet run ...
+  Unit style    : metal
+  Current step  : 0
+  Time step     : 0.001
+Per MPI rank memory allocation (min/avg/max) = 3.168 | 3.168 | 3.168 Mbytes
+   Step          Temp        c_temp_all       TotEng         PotEng         KinEng         Press          Volume    
+         0   50             50            -41717.797     -41749.207      31.410215     -1102854.9      109446.16    
+       100   109.08834      109.08834     -41717.791     -41786.321      68.529763     -1081757.2      109446.16    
+       200   2866.0074      2866.0074     -41717.756     -43518.195      1800.4382     -697350.1       109446.16    
+       300   11090.296      11090.296     -41718.552     -48685.524      6966.9719     -209363.02      109446.16    
+       400   13309.079      13309.079     -41718.759     -50079.579      8360.8206     -125779.38      109446.16    
+       500   13647.775      13647.775     -41718.87      -50292.461      8573.5911     -94818.213      109446.16    
+       600   13972.239      13972.239     -41718.865     -50496.286      8777.4209     -101052.99      109446.16    
+       700   13857.858      13857.858     -41718.874     -50424.44       8705.5658     -94120.757      109446.16    
+       800   13869.362      13869.362     -41718.883     -50431.677      8712.7931     -108545.32      109446.16    
+       900   13874.788      13874.788     -41718.923     -50435.125      8716.2017     -100669.91      109446.16    
+      1000   14061.333      14061.333     -41718.869     -50552.259      8833.3898     -93839.301      109446.16    
+      1100   14184.077      14184.077     -41719.039     -50629.538      8910.4984     -106972.44      109446.16    
+      1200   14166.985      14166.985     -41718.898     -50618.659      8899.7612     -111828.83      109446.16    
+      1300   13850.657      13850.657     -41718.819     -50419.861      8701.0425     -97849.486      109446.16    
+      1400   13817.387      13817.387     -41718.818     -50398.959      8680.1418     -97828.371      109446.16    
+      1500   14019.752      14019.752     -41718.923     -50526.192      8807.2688     -108543.75      109446.16    
+      1600   14058.5        14058.5       -41718.893     -50550.504      8831.6103     -99197.001      109446.16    
+      1700   13960.097      13960.097     -41718.866     -50488.66       8769.7932     -99328.411      109446.16    
+      1800   13906.965      13906.965     -41718.885     -50455.301      8736.4154     -93664.496      109446.16    
+      1900   13877.49       13877.49      -41718.865     -50436.763      8717.8989     -98025.585      109446.16    
+      2000   13808.345      13808.345     -41718.826     -50393.288      8674.462      -110674.71      109446.16    
+      2100   13999.112      13999.112     -41718.874     -50513.176      8794.3022     -82821.273      109446.16    
+      2200   14008.189      14008.189     -41718.979     -50518.984      8800.0044     -96378.546      109446.16    
+      2300   13928.138      13928.138     -41718.821     -50468.537      8749.7161     -92643.177      109446.16    
+      2400   13932.664      13932.664     -41718.9       -50471.459      8752.5597     -101567.19      109446.16    
+      2500   13780.864      13780.864     -41718.863     -50376.062      8657.1983     -100918.1       109446.16    
+      2600   14040.604      14040.604     -41718.952     -50539.319      8820.3677     -82106.767      109446.16    
+      2700   13990.56       13990.56      -41718.976     -50507.906      8788.9298     -98091.138      109446.16    
+      2800   13962.078      13962.078     -41718.915     -50489.953      8771.0377     -79426.211      109446.16    
+      2900   14022.842      14022.842     -41718.884     -50528.094      8809.2096     -90725.055      109446.16    
+      3000   13937.644      13937.644     -41718.849     -50474.537      8755.6881     -105514.01      109446.16    
+      3100   14064.094      14064.094     -41718.887     -50554.012      8835.1243     -91466.874      109446.16    

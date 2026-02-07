@@ -1,0 +1,120 @@
+LAMMPS (27 Jun 2024)
+OMP_NUM_THREADS environment is not set. Defaulting to 1 thread. (src/comm.cpp:98)
+  using 1 OpenMP thread(s) per MPI task
+# Bare stability test: NVE, no thermostat, no frozen atoms
+# Tests whether the POD potential + structure are stable on their own
+# All atoms initialized at 50 K
+
+units metal
+atom_style atomic
+boundary p p p
+
+read_data thermostat.data
+Reading data file ...
+  orthogonal box = (0 0 0) to (48.302314 50.197237 45.139088)
+  2 by 2 by 2 MPI processor grid
+  reading atoms ...
+  4861 atoms
+  read_data CPU = 0.021 seconds
+
+neighbor 2.0 bin
+neigh_modify every 1 delay 0 check yes
+
+pair_style pod
+pair_coeff * * HfO2_param.pod HfO2_coefficients.pod Hf O
+**************** Begin of POD Potentials ****************
+species: Hf O 
+periodic boundary conditions: 1 1 1
+number of environment clusters: 5
+number of principal compoments: 1
+inner cut-off radius: 1
+outer cut-off radius: 5
+cut-off function type: 1
+gaussian_exponents: 
+polynomial_degrees: 
+bessel polynomial degree: 2
+inverse polynomial degree: 12
+one-body potential: 1
+two-body radial basis functions: 8
+three-body radial basis functions: 8
+three-body angular degree: 4
+four-body radial basis functions: 7
+four-body angular degree: 3
+five-body radial basis functions: 6
+five-body angular degree: 3
+six-body radial basis functions: 4
+six-body angular degree: 1
+seven-body radial basis functions: 0
+seven-body angular degree: 0
+number of local descriptors per element for one-body potential: 1
+number of local descriptors per element for two-body potential: 16
+number of local descriptors per element for three-body potential: 120
+number of local descriptors per element for four-body potential: 196
+number of local descriptors per element for five-body potential: 648
+number of local descriptors per element for six-body potential: 153
+number of local descriptors per element for seven-body potential: 0
+number of local descriptors per element for all potentials: 1134
+number of global descriptors: 11332
+**************** End of POD Potentials ****************
+
+**************** Begin of Model Coefficients ****************
+total number of coefficients for POD potential: 11332
+total number of elements for PCA projection matrix: 2266
+total number of elements for PCA centroids: 10
+**************** End of Model Coefficients ****************
+
+
+# Initialize all atoms at low temperature
+velocity all create 50.0 12345 dist gaussian
+
+# Pure NVE — no thermostat
+fix integ all nve
+timestep 0.001
+
+# --- Diagnostics ---
+shell mkdir diagnostics
+compute ke_per_atom all ke/atom
+
+# Mobile atoms only (backward compatible)
+dump diag_traj all custom 100 diagnostics/ke_trajectory.lammpstrj id type x y z c_ke_per_atom
+dump_modify diag_traj sort id format line "%d %d %14.8f %14.8f %14.8f %14.8e"
+
+# FULL structure including frozen atoms (for visualization)
+dump full_traj all custom 100 diagnostics/full_trajectory.lammpstrj id type x y z c_ke_per_atom
+dump_modify full_traj sort id format line "%d %d %14.8f %14.8f %14.8f %14.8e"
+
+
+# Thermo
+compute temp_all all temp
+thermo 100
+thermo_style custom step temp c_temp_all etotal pe ke press vol
+
+run 5000
+
+CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE
+
+Your simulation uses code contributions which should be cited:
+
+- Type Label Framework: https://doi.org/10.1021/acs.jpcb.3c08419
+
+@Article{Gissinger24,
+ author = {Jacob R. Gissinger, Ilia Nikiforov, Yaser Afshar, Brendon Waters, Moon-ki Choi, Daniel S. Karls, Alexander Stukowski, Wonpil Im, Hendrik Heinz, Axel Kohlmeyer, and Ellad B. Tadmor},
+ title = {Type Label Framework for Bonded Force Fields in LAMMPS},
+ journal = {J. Phys. Chem. B},
+ year =    2024,
+ volume =  128,
+ number =  13,
+ pages =   {3282–-3297}
+}
+
+CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE
+
+Neighbor list info ...
+  update: every = 1 steps, delay = 0 steps, check = yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 7
+  ghost atom cutoff = 7
+  binsize = 3.5, bins = 14 15 13
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair pod, perpetual
+      attributes: full, newton 
